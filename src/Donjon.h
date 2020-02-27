@@ -1,9 +1,9 @@
 #include "Salle.h"
 
-const unsigned Gmax = 21;
+const unsigned maxSize = 21; 
 
-const unsigned Smin = 5; // Nombre max et min de salles
-const unsigned Smax = 15;
+const unsigned minRooms = 5; // Nombre max et min de salles
+const unsigned maxRooms = 15;
 
 class Donjon{
     
@@ -20,14 +20,15 @@ public:
     void setRandom(bool);
     bool getRandom();
 
-    void affectationDoorType(int); // Affecte a chaque salles un type en fonction de son nombre de portes (tableau)
+    void doorCount();
+    void doorTypeAffect(int); // Affecte a chaque salles un type en fonction de son nombre de portes (tableau)
      
 private:
     
-    Room RoomsMap[Gmax][Gmax];
+    Room RoomsMap[maxSize][maxSize];
 
     int seed;
-    int nbRoom;
+    int roomNb;
 
     bool random;
-}
+};

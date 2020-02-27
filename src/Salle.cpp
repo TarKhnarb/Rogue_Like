@@ -1,10 +1,9 @@
 #include "Salle.h"
-#include <iostream>
 
 using namespace std;
 
 Room::Room() {
-    nbDoor = 0;
+    nbDoors = 0;
 }
 
 char Room::getTypeRoom(){

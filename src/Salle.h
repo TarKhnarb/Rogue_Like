@@ -1,5 +1,3 @@
-const unsigned NbType = 14;
-
 class Door{     // Savoir si la porte existe ou pas, si elle necessite une clé ou un etage clear, 0 nord, 1 est, 2 sud, 3 ouest
 public:
 
@@ -17,12 +15,12 @@ private:
 
 
 
-enum TypeRoom{
+enum roomType{
     Start;
-    Start
+    End;
 }; // Types de salles
 
-class Rooms{
+class Room{
 
 public:
 
@@ -37,9 +35,9 @@ public:
 
 private:
 
-    int nbDoor; // Nombre de porte(s) dans la salle
+    int nbDoors; // Nombre de porte(s) dans la salle
 
-    Door Doors[4]; // indice: (0: nord, 1: est, 2: sud, 3: ouest), Donne le tableau des portes ne fonction de leur posistion
+    Door Door[4]; // indice: (0: nord, 1: est, 2: sud, 3: ouest), Donne le tableau des portes ne fonction de leur posistion
 
-    TypeRoom type;
+    roomType type;
 };

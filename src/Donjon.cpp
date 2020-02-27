@@ -13,7 +13,7 @@ using namespace std;
     //------------//
 Donjon::Donjon(){
     
-    for(int i = 0; i < Gmax; i++)Room();
+    for(int i = 0; i < maxSize(); i++)Room();
     ~Room();
 
     int countDoor(bool); // Retourne un tableau avec le nombre de portes de chaque pièces et sont orientation
