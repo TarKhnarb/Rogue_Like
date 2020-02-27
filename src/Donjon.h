@@ -14,8 +14,8 @@ public:
     
     void generate(); // Génère le donjon
     
-    void setSeed(int);
-    int getSeed();
+    void setSeed(unsigned);
+    unsigned getSeed();
 
     void setRandom(bool);
     bool getRandom();
@@ -27,8 +27,8 @@ private:
     
     Room* RoomsMap[maxSize][maxSize];
 
-    int seed;
-    int roomNb;
+    unsigned seed;
+    int roomsNb;
 
     bool random;
 };

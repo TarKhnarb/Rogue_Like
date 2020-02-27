@@ -36,13 +36,29 @@ Donjon::~Donjon(){
     delete[] RoomsMap;
 }
 
+      //-------------//
+     //Genere_donjon//
+    //-------------//
+void Donjon::generate(){
+    
+    if(random) seed = time(0);
+	srand(seed);
+
+	roomsNb = rand()%(maxRooms-minRooms+1)+minRooms;
+
+	// Initialise la premiere salle au centre du tableau
+    unsigned mid = (maxSize - 1)/2;
+    RoomsMap[mid][mid]->setType(roomType::Start);
+
+}
+
   // Set la seed du donjon
-void Donjon::setSeed(int value){
-	seed = abs(value);
+void Donjon::setSeed(unsigned value){
+	seed = value;
 }
 
     //Récupère la seed du donjon
-int Donjon::getSeed(){
+unsigned Donjon::getSeed(){
 	return seed;
 }
 
@@ -54,25 +70,6 @@ bool Donjon::getRandom(){
     return random;
 }
 
-      //-------------//
-     //Genere_donjon//
-    //-------------//
-void Donjon::generate(){
-    
-    for(int i = 0; i < Gmax; i++)
-	{
-		for(int j = 0; j < Gmax; j++)
-		{
-			RoomsMap[i][j] = 0;
-		}
-	}
-    
-    if(Random::random) seed = time(0);
-	srand(seed);
-
-	nbRoom = rand()%(Smax-Smin+1)+Smin;
-
-	// Initialise la premiere salle au centre du tableau
-    RoomsMap[10][10] = Room::setTypeRoom();
-
-}
+// à coder:
+//void Donjon::countDoors();
+//void Donjon::doorTypeAffect(int);
