@@ -1,7 +1,7 @@
 #include "Salle.h"
 
 Room::Room() {
-    nbDoors = 0;
+    doorsNb = 0;
 
     for(int i = 0; i < 4; i++){
         Doors[i] = Door();

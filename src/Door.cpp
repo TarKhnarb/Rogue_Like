@@ -7,5 +7,5 @@ Door::Door(){
 }
 
 void Door::openIt(){
-    if(! key) open = true;
+    if(! key && exist) open = true; // Si la porte ne necessite pas de cle et existe ouvrir la porte
 }
