@@ -1,4 +1,4 @@
-#include "Salle.h"
+#include "Room.h"
 
 Room::Room() {
     doorsNb = 0;

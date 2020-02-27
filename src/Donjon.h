@@ -1,4 +1,4 @@
-#include "Salle.h"
+#include "Room.h"
 
 const unsigned maxSize = 21; // doit être un nombre impair
 

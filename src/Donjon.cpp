@@ -1,5 +1,5 @@
 #include "Donjon.h"
-#include "Salle.cpp"
+#include "Room.cpp"
 
 #include <cstdlib>
 #include <ctime>
