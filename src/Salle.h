@@ -28,14 +28,14 @@ public:
     ~Rooms();
 
     void openDoors(); // ouvre toutes les portes;
-    void countDoors();
+    void setDoorsNb(int);
 
     void getType();
     void setType(int); // prend le seed et retourne le type de la salle en fonction du nb de portes
 
 private:
 
-    int nbDoors; // Nombre de porte(s) dans la salle
+    int doorsNb; // Nombre de porte(s) dans la salle
 
     Door Door[4]; // indice: (0: nord, 1: est, 2: sud, 3: ouest), Donne le tableau des portes ne fonction de leur posistion
 

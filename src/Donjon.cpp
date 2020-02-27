@@ -1,29 +1,21 @@
 #include "Donjon.h"
 #include "Salle.cpp"
 
-#include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <cmath>
-
-using namespace std;
 
      //-------------//
      //Constructeur//
     //------------//
 Donjon::Donjon(){
     
-    for(int i = 0; i < maxSize(); i++)Room();
-    ~Room();
-
-    int countDoor(bool); // Retourne un tableau avec le nombre de portes de chaque pièces et sont orientation
-    void affectationDoorType();
-	{
-		for(int j = 0; j < Gmax; j++)
-		{
-			RoomsMap[i][j] = 0;
-		}
-	}
+    for(int i = 0; i < maxSize; i++)
+    {
+        for(int j = 0; j < maxSize; j++)
+        {
+            RoomsMap[i][j] = new Room();
+        }
+    }
 	
 	seed = 1;
     random = true;
@@ -32,7 +24,17 @@ Donjon::Donjon(){
       //-----------//
      //Destructeur//
     //-----------//
-Donjon::~Donjon(){ }
+Donjon::~Donjon(){
+    for(int i = 0; i < maxSize; i++)
+    {
+        for(int j = 0; j < maxSize; j++)
+        {
+            RoomsMap[i][j] = nullptr;
+        }
+    }
+
+    delete[] RoomsMap;
+}
 
   // Set la seed du donjon
 void Donjon::setSeed(int value){
