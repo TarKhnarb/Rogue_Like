@@ -4,27 +4,32 @@ using namespace std;
 
 Room::Room() {
     nbDoors = 0;
+
+    for(int i = 0; i < 4; i++){
+        Door[i].exist = false;
+        Door[i].key = false;
+        Door[i].open = false;
+    }
+    type = 0;
 }
 
-char Room::getTypeRoom(){
-    return typeRoom;
-};
-
-void Room::setTypeRoom(char type){
-    typeRoom = type;
-}
-
-int Donjon::countDoor(Room tab) {
-    for(int i = 0; i < Gmax; i++){
-
-        for(int j = 0; j < Gmax; j++){
-
-            if(tab[i][j] != 0){
-                if(tab[i-1][j] != 0 || tab[i+1][j] != 0 || tab[i][j-1] != 0 || tab[i][j+1] != 0) {
-                    tab[i][j].nbDoor++;
-                    Room::Doors[0].exist = true;
-                }
-            }
+void Room::openDoors(){
+    for(int i = 0; i < 4; i++){
+        if(! Door[i].key){
+            Door[i].open = true;
         }
     }
+}
+
+void Room::setDoorsNb(int i){
+    doorsNb = i;
+}
+
+
+char Room::getType(){
+    return type;
+};
+
+void Room::setType(int i){
+    type = i;
 }
