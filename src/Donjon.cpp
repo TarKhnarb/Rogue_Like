@@ -29,7 +29,7 @@ Donjon::~Donjon(){
         for(int unsigned j = 0; j < maxSize; j++)
         {
             RoomsMap[i][j] = nullptr;
-            delete [] RoomsMap;
+            delete [] ((Donjon*)this)->Donjon::RoomsMap;
         }
     }
 }
@@ -46,7 +46,7 @@ void Donjon::generate(){
 
 	// Initialise la premiere salle au centre du tableau
     unsigned mid = (maxSize - 1)/2;
-    RoomsMap[mid][mid]->setType(roomType::Start);
+    RoomsMap[mid][mid]->setType(Room::roomType::Start);
 
 }
 
@@ -70,14 +70,16 @@ bool Donjon::getRandom(){
 
 // à coder:
 void Donjon::countDoors(){
+
     for(int unsigned i = 0; i < maxSize; i++){
         for(int unsigned j = 0; j < maxSize; j ++){
-            if(RoomsMap[i][j].getType() != 0)
+            int var = RoomsMap[i][j]->getDoorsNb();
+            if(RoomsMap[i][j]->getType() != 0)
             {
-                if(RoomsMap[i+1][j]->getType() == 0) setDoorsNb(1); // VERRIFIER SI ++ FOCTIONNE SINON CRÉER UNE AUTRE FONCTION AVECSET ET GET DE NBDOOR
-                if(RoomsMap[i-1][j]->getType() == 0) setDoorsNb(1);
-                if(RoomsMap[i][j+1]->getType() == 0) setDoorsNb(1);
-                if(RoomsMap[i][j-1]->getType() == 0) setDoorsNb(1);
+                if(RoomsMap[i+1][j]->getType() == 0) RoomsMap[i][j]->setDoorsNb(var++);
+                if(RoomsMap[i-1][j]->getType() == 0) RoomsMap[i][j]->setDoorsNb(var++);
+                if(RoomsMap[i][j+1]->getType() == 0) RoomsMap[i][j]->setDoorsNb(var++);
+                if(RoomsMap[i][j-1]->getType() == 0) RoomsMap[i][j]->setDoorsNb(var++);
             }
         }
     }

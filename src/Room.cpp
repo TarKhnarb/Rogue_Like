@@ -8,12 +8,12 @@ Room::Room() {
         Doors[i] = Door();
     }
 
-    type = 0;
+    type = Common;
 }
 
 void Room::openDoors(){
     for(int i = 0; i < 4; i++){
-        Doors[i] = openIt();
+        Doors[i].openIt();
     }
 }
 
@@ -21,11 +21,15 @@ void Room::setDoorsNb(int i){
     doorsNb = i;
 }
 
+int Room::getDoorsNb(){
+    return doorsNb;
+}
+
 
 int Room::getType(){
     return type;
 };
 
-void Room::setType(int i){
+void Room::setType(roomType i){
     type = i;
 }
