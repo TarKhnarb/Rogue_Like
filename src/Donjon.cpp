@@ -1,17 +1,16 @@
 #include "Donjon.h"
-#include "Room.cpp"
 
 #include <cstdlib>
 #include <ctime>
 
-     //-------------//
+      //------------//
      //Constructeur//
     //------------//
 Donjon::Donjon(){
     
-    for(int i = 0; i < maxSize; i++)
+    for(int unsigned i = 0; i < maxSize; i++)
     {
-        for(int j = 0; j < maxSize; j++)
+        for(int unsigned j = 0; j < maxSize; j++)
         {
             RoomsMap[i][j] = new Room();
         }
@@ -25,15 +24,14 @@ Donjon::Donjon(){
      //Destructeur//
     //-----------//
 Donjon::~Donjon(){
-    for(int i = 0; i < maxSize; i++)
+    for(int unsigned i = 0; i < maxSize; i++)
     {
-        for(int j = 0; j < maxSize; j++)
+        for(int unsigned j = 0; j < maxSize; j++)
         {
             RoomsMap[i][j] = nullptr;
+            delete [] RoomsMap;
         }
     }
-
-    delete[] RoomsMap;
 }
 
       //-------------//
@@ -72,14 +70,14 @@ bool Donjon::getRandom(){
 
 // à coder:
 void Donjon::countDoors(){
-    for(int i = 0; i < maxSize; i++){
-        for(int j = 0; j < maxSize; j ++){
+    for(int unsigned i = 0; i < maxSize; i++){
+        for(int unsigned j = 0; j < maxSize; j ++){
             if(RoomsMap[i][j].getType() != 0)
             {
-                if(RoomsMap[i+1][j].getType() = 0) setDoorsNb(++); // VERRIFIER SI ++ FOCTIONNE SINON CRÉER UNE AUTRE FONCTION AVECSET ET GET DE NBDOOR
-                if(RoomsMap[i-1][j].getType() = 0) setDoorsNb(++);
-                if(RoomsMap[i][j+1].getType() = 0) setDoorsNb(++);
-                if(RoomsMap[i][j-1].getType() = 0) setDoorsNb(++);
+                if(RoomsMap[i+1][j]->getType() = 0) setDoorsNb(1); // VERRIFIER SI ++ FOCTIONNE SINON CRÉER UNE AUTRE FONCTION AVECSET ET GET DE NBDOOR
+                if(RoomsMap[i-1][j]->getType() = 0) setDoorsNb(1);
+                if(RoomsMap[i][j+1]->getType() = 0) setDoorsNb(1);
+                if(RoomsMap[i][j-1]->getType() = 0) setDoorsNb(1);
             }
         }
     }

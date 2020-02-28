@@ -1,11 +1,13 @@
 #include "Room.h"
 
 Room::Room() {
+
     doorsNb = 0;
 
     for(int i = 0; i < 4; i++){
         Doors[i] = Door();
     }
+
     type = 0;
 }
 
@@ -20,7 +22,7 @@ void Room::setDoorsNb(int i){
 }
 
 
-char Room::getType(){
+int Room::getType(){
     return type;
 };
 

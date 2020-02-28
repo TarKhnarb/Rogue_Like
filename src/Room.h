@@ -1,11 +1,5 @@
 #include "Door.h"
 
-enum roomType{
-    Common;
-    Start;
-    End;
-}; // Types de salles
-
 class Room{
 
 public:
@@ -16,7 +10,7 @@ public:
     void openDoors(); // Ouvre toutes les portes
     void setDoorsNb(int); // Set la valeur du nobre de portes de la salle
 
-    void getType();
+    int getType();
     void setType(int); // Prend le seed et retourne le type de la salle en fonction du nb de portes
 
 private:
@@ -25,5 +19,12 @@ private:
 
     Door Doors[4]; // Indice: (0: nord, 1: est, 2: sud, 3: ouest), Donne le tableau des portes ne fonction de leur posistion
 
+    enum roomType{
+        Common,
+        Start,
+        End,
+    }; // Types de salles
+
     roomType type; // type de la salle
+
 };
