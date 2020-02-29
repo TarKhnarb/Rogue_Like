@@ -29,14 +29,11 @@ Donjon::~Donjon(){
         for(int unsigned j = 0; j < maxSize; j++)
         {
             RoomsMap[i][j] = nullptr;
-            delete [] ((Donjon*)this)->Donjon::RoomsMap;
+            delete [] Donjon::RoomsMap;
         }
     }
 }
 
-      //-------------//
-     //Genere_donjon//
-    //-------------//
 void Donjon::generate(){
     
     if(random) seed = time(0);
@@ -47,6 +44,8 @@ void Donjon::generate(){
 	// Initialise la premiere salle au centre du tableau
     unsigned mid = (maxSize - 1)/2;
     RoomsMap[mid][mid]->setType(Room::roomType::Start);
+
+    // Maintenant c'est la merde
 
 }
 
@@ -74,12 +73,24 @@ void Donjon::countDoors(){
     for(int unsigned i = 0; i < maxSize; i++){
         for(int unsigned j = 0; j < maxSize; j ++){
             int var = RoomsMap[i][j]->getDoorsNb();
-            if(RoomsMap[i][j]->getType() != 0)
+            if(RoomsMap[i][j]->getType() != Room::roomType::Common)
             {
-                if(RoomsMap[i+1][j]->getType() == 0) RoomsMap[i][j]->setDoorsNb(var++);
-                if(RoomsMap[i-1][j]->getType() == 0) RoomsMap[i][j]->setDoorsNb(var++);
-                if(RoomsMap[i][j+1]->getType() == 0) RoomsMap[i][j]->setDoorsNb(var++);
-                if(RoomsMap[i][j-1]->getType() == 0) RoomsMap[i][j]->setDoorsNb(var++);
+                if(RoomsMap[i+1][j]->getType() != Room::roomType::Common){ // Est (1)
+                    RoomsMap[i][j]->setDoorsNb(var++);
+                    RoomsMap[i][j]->setDoorExist(1, true);
+                }
+                if(RoomsMap[i-1][j]->getType() != Room::roomType::Common){ // West (3)
+                    RoomsMap[i][j]->setDoorsNb(var++);
+                    RoomsMap[i][j]->setDoorExist(3, true);
+                }
+                if(RoomsMap[i][j+1]->getType() != Room::roomType::Common){ // Sud (2)
+                    RoomsMap[i][j]->setDoorsNb(var++);
+                    RoomsMap[i][j]->setDoorExist(2, true);
+                }
+                if(RoomsMap[i][j-1]->getType() != Room::roomType::Common) { // Nord (0)
+                    RoomsMap[i][j]->setDoorsNb(var++);
+                    RoomsMap[i][j]->setDoorExist(0, true);
+                }
             }
         }
     }

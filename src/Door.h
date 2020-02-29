@@ -8,6 +8,16 @@ public:
     ~Door();
 
     void openIt();
+    void closeIt();
+
+    bool getExist();
+    void setExist(bool);
+
+    bool getKey();
+    void setKey(bool);
+
+    bool getOpen();
+    void setOpen(bool);
 
 private:
 

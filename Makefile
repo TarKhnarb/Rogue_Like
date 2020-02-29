@@ -5,8 +5,8 @@ FLAGS = -c -Wall
 
 all: $(B)jeu
 
-$(B)jeu: $(O)Donjon.o $(O)Room.o
-	g++ -o $(B)jeu $(O)Donjon.o $(O)Room.o
+$(B)jeu: $(S)jeu.cpp $(O)Donjon.o $(O)Room.o $(O)Door.o
+	g++ $(S)jeu.cpp -o $(B)jeu $(O)Donjon.o $(O)Room.o $(O)Door.o
 
 $(O)Donjon.o: $(S)Donjon.cpp $(S)Donjon.h $(S)Room.h $(S)Door.h
 	g++ $(FLAGS) $(S)Donjon.cpp -o $(O)Donjon.o
