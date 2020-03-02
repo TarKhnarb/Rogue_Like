@@ -1,7 +1,9 @@
+#ifndef ROOM_H
+#define ROOM_H
+
 #include "Door.h"
 
 enum roomType{
-    None,
     Common,
     Start,
     End,
@@ -19,9 +21,9 @@ public:
 
     void unlockDoor(Door); // Ouvre une porte necessite une clé et que le joueur en possède une
 
-    int getDoorsNb();
+    int getDoorsNb() const;
 
-    int getType();
+    roomType getType() const;
     void setType(roomType); // Prend le seed et retourne le type de la salle en fonction du nb de portes
 
     void placeDoor(int);
@@ -33,3 +35,5 @@ private:
     roomType type; // type de la salle
 
 };
+
+#endif
