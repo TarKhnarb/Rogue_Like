@@ -7,21 +7,13 @@ public:
     Door();
     ~Door();
 
-    void openIt();
-    void closeIt();
-
-    bool getExist();
-    void setExist(bool);
-
     bool getKey();
-    void setKey(bool);
 
     bool getOpen();
     void setOpen(bool);
 
 private:
 
-    bool exist;
     bool key;
     bool open;
 };

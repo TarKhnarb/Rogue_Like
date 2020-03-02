@@ -2,7 +2,6 @@
 
 #include <cstdlib>
 #include <ctime>
-#include <iostream>
 
       //------------//
      //Constructeur//
@@ -13,7 +12,7 @@ Donjon::Donjon(){
     {
         for(unsigned j = 0; j < maxSize; j++)
         {
-            RoomsMap[i][j] = new Room();
+            RoomsMap[i][j] = nullptr;
         }
     }
 	
@@ -33,9 +32,6 @@ Donjon::~Donjon(){
         }
         delete [] Donjon::RoomsMap;
     }
-
-    seed = nullptr;
-    random = nullptr;
 }
 
 void Donjon::generate(){
@@ -71,11 +67,11 @@ bool Donjon::getRandom(){
     return random;
 }
 
-void Donjon::countDoors(){
+void Donjon::placeDoors(){
 
     for(unsigned i = 0; i < maxSize; i++){
         for(unsigned j = 0; j < maxSize; j ++){
-            int var = RoomsMap[i][j]->getDoorsNb();
+
             switch (RoomsMap[i][j]->getType()){
 
                 case roomType::None:
@@ -86,8 +82,7 @@ void Donjon::countDoors(){
                         case roomType::None:
                             break;
                         default:
-                            RoomsMap[i][j]->setDoorsNb(var++);
-                            RoomsMap[i][j]->setDoorExist(1, true);
+                            RoomsMap[i][j]->placeDoor(1);
                             break;
                     }
 
@@ -95,24 +90,23 @@ void Donjon::countDoors(){
                         case roomType::None:
                             break;
                         default:
-                            RoomsMap[i][j]->setDoorsNb(var++);
-                            RoomsMap[i][j]->setDoorExist(3, true);
+                            RoomsMap[i][j]->placeDoor(3);
                     }
 
                     switch (RoomsMap[i][j+1]->getType()){ // Sud (2)
                         case roomType::None:
                             break;
                         default:
-                            RoomsMap[i][j]->setDoorsNb(var++);
-                            RoomsMap[i][j]->setDoorExist(2, true);
+                            RoomsMap[i][j]->placeDoor(2);
                     }
 
                     switch (RoomsMap[i][j-1]->getType()){ // Nord (0)
                         case roomType::None:
                             break;
                         default:
-                            RoomsMap[i][j]->setDoorsNb(var++);
-                            RoomsMap[i][j]->setDoorExist(0, true);
+                            RoomsMap[i][j]->placeDoor(0);
+
+
                     }
             }
         }
@@ -120,15 +114,6 @@ void Donjon::countDoors(){
 }
 
 // à coder:
-void Donjon::doorTypeAffect(int){
+void Donjon::roomTypeAffect(){
 
-}
-
-void Donjon::affiche_donjon(){
-    for(unsigned i = 0; i < maxSize; i++){
-        for(unsigned j = 0; j < maxSize; j++){
-            std::cout << RoomsMap[i][j] << "       ";
-        }
-        std::cout << std::endl;
-    }
 }

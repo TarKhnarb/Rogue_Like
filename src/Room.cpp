@@ -6,10 +6,8 @@ Room::Room(){
     doorsNb = 0;
 
     for(int i = 0; i < 4; i++){
-        Doors[i] = new Door();
+        Doors[i] = nullptr;
     }
-
-    type = roomType::None;
 }
 
 Room::~Room() {
@@ -21,14 +19,13 @@ Room::~Room() {
 
 void Room::openDoors(){
     for(int i = 0; i < 4; i++){
-        if(! Doors[i]->Door::getKey())
-        Doors[i]->openIt();
+        if((Doors[i] != nullptr) && !(Doors[i]->getKey())) Doors[i]->setOpen(true);
     }
 }
 
 void Room::closeDoors(){
     for(int i = 0; i < 4; i++){
-        Doors[i]->closeIt();
+        if(Doors[i] != nullptr) Doors[i]->setOpen(false);
     }
 }
 
@@ -36,12 +33,13 @@ void Room::closeDoors(){
 // void unlockDoor(Door); // Ouvre une porte qui necessite une clé et que le joueur en possède une
 
 
-void Room::setDoorsNb(int i){
-    doorsNb = i;
-}
-
 int Room::getDoorsNb(){
-    return doorsNb;
+    int i = 0;
+    for(int j = 0; j < 4; j++){
+        if(Doors[i] != nullptr) i++;
+    }
+
+    return i;
 }
 
 
@@ -53,6 +51,6 @@ void Room::setType(roomType i){
     type = i;
 }
 
-void Room::setDoorExist(int i, bool a){
-    Doors[i]->setExist(a);
+void Room::placeDoor(int i) {
+    Doors[i] = new Door();
 }

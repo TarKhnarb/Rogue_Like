@@ -20,12 +20,8 @@ public:
     void setRandom(bool);
     bool getRandom();
 
-    void setNbDoor(int);
-
-    void countDoors();
-    void doorTypeAffect(int); // Affecte a chaque salles un type en fonction de son nombre de portes (tableau)
-
-    void affiche_donjon();
+    void placeDoors();
+    void roomTypeAffect(); // Affecte a chaque salles un type en fonction de son nombre de portes (tableau)
      
 private:
     
