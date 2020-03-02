@@ -2,15 +2,16 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 
       //------------//
      //Constructeur//
     //------------//
 Donjon::Donjon(){
     
-    for(int unsigned i = 0; i < maxSize; i++)
+    for(unsigned i = 0; i < maxSize; i++)
     {
-        for(int unsigned j = 0; j < maxSize; j++)
+        for(unsigned j = 0; j < maxSize; j++)
         {
             RoomsMap[i][j] = new Room();
         }
@@ -24,14 +25,17 @@ Donjon::Donjon(){
      //Destructeur//
     //-----------//
 Donjon::~Donjon(){
-    for(int unsigned i = 0; i < maxSize; i++)
+    for(unsigned i = 0; i < maxSize; i++)
     {
-        for(int unsigned j = 0; j < maxSize; j++)
+        for(unsigned j = 0; j < maxSize; j++)
         {
             RoomsMap[i][j] = nullptr;
-            delete [] Donjon::RoomsMap;
         }
+        delete [] Donjon::RoomsMap;
     }
+
+    seed = nullptr;
+    random = nullptr;
 }
 
 void Donjon::generate(){
@@ -46,7 +50,7 @@ void Donjon::generate(){
     RoomsMap[mid][mid]->setType(Room::roomType::Start);
 
     // Maintenant c'est la merde
-
+    std::cout << "Généré !! " << seed << std::endl;
 }
 
   // Set la seed du donjon
@@ -67,34 +71,64 @@ bool Donjon::getRandom(){
     return random;
 }
 
-// à coder:
 void Donjon::countDoors(){
 
-    for(int unsigned i = 0; i < maxSize; i++){
-        for(int unsigned j = 0; j < maxSize; j ++){
+    for(unsigned i = 0; i < maxSize; i++){
+        for(unsigned j = 0; j < maxSize; j ++){
             int var = RoomsMap[i][j]->getDoorsNb();
-            if(RoomsMap[i][j]->getType() != Room::roomType::Common)
-            {
-                if(RoomsMap[i+1][j]->getType() != Room::roomType::Common){ // Est (1)
-                    RoomsMap[i][j]->setDoorsNb(var++);
-                    RoomsMap[i][j]->setDoorExist(1, true);
-                }
-                if(RoomsMap[i-1][j]->getType() != Room::roomType::Common){ // West (3)
-                    RoomsMap[i][j]->setDoorsNb(var++);
-                    RoomsMap[i][j]->setDoorExist(3, true);
-                }
-                if(RoomsMap[i][j+1]->getType() != Room::roomType::Common){ // Sud (2)
-                    RoomsMap[i][j]->setDoorsNb(var++);
-                    RoomsMap[i][j]->setDoorExist(2, true);
-                }
-                if(RoomsMap[i][j-1]->getType() != Room::roomType::Common) { // Nord (0)
-                    RoomsMap[i][j]->setDoorsNb(var++);
-                    RoomsMap[i][j]->setDoorExist(0, true);
-                }
+            switch (RoomsMap[i][j]->getType()){
+
+                case Room::Common:
+                    break;
+                default:
+
+                    switch (RoomsMap[i+1][j]->getType()){ // Est (1)
+                        case Room::Common:
+                            break;
+                        default:
+                            RoomsMap[i][j]->setDoorsNb(var++);
+                            RoomsMap[i][j]->setDoorExist(1, true);
+                            break;
+                    }
+
+                    switch (RoomsMap[i-1][j]->getType()){ // West (3)
+                        case Room::Common:
+                            break;
+                        default:
+                            RoomsMap[i][j]->setDoorsNb(var++);
+                            RoomsMap[i][j]->setDoorExist(3, true);
+                    }
+
+                    switch (RoomsMap[i][j+1]->getType()){ // Sud (2)
+                        case Room::Common:
+                            break;
+                        default:
+                            RoomsMap[i][j]->setDoorsNb(var++);
+                            RoomsMap[i][j]->setDoorExist(2, true);
+                    }
+
+                    switch (RoomsMap[i][j-1]->getType()){ // Nord (0)
+                        case Room::Common:
+                            break;
+                        default:
+                            RoomsMap[i][j]->setDoorsNb(var++);
+                            RoomsMap[i][j]->setDoorExist(0, true);
+                    }
             }
         }
-    }
+     }
 }
+
+// à coder:
 void Donjon::doorTypeAffect(int){
 
+}
+
+void Donjon::affiche_donjon(){
+    for(unsigned i = 0; i < maxSize; i++){
+        for(unsigned j = 0; j < maxSize; j++){
+            std::cout << RoomsMap[i][j] << "       ";
+        }
+        std::cout << std::endl;
+    }
 }

@@ -12,6 +12,13 @@ Room::Room(){
     type = Common;
 }
 
+Room::~Room() {
+    for(int i = 0; i < 4 ; i++){
+        Doors[i] = nullptr;
+    }
+    delete [] Room::Doors;
+}
+
 void Room::openDoors(){
     for(int i = 0; i < 4; i++){
         if(! Doors[i]->Door::getKey())
