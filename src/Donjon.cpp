@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 
       //------------//
      //Constructeur//
@@ -43,10 +44,10 @@ void Donjon::generate(){
 
 	// Initialise la premiere salle au centre du tableau
     unsigned mid = (maxSize - 1)/2;
+
     RoomsMap[mid][mid]->setType(roomType::Start);
 
-    // Maintenant c'est la merde
-    std::cout << "Généré !! " << seed << std::endl;
+
 }
 
   // Set la seed du donjon
