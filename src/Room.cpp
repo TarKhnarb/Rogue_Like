@@ -31,7 +31,7 @@ void Room::closeDoors(){
 // void unlockDoor(Door); // Ouvre une porte qui necessite une clé et que le joueur en possède une
 
 
-int Room::getDoorsNb(){
+int Room::getDoorsNb() const{
     int i = 0;
     for(int j = 0; j < 4; j++){
         if(Doors[i] != nullptr) i++;
@@ -41,7 +41,7 @@ int Room::getDoorsNb(){
 }
 
 
-int Room::getType(){
+roomType Room::getType() const{
     return type;
 };
 

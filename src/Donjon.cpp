@@ -35,7 +35,7 @@ Donjon::~Donjon(){
 }
 
 void Donjon::generate(){
-    
+	
     if(random) seed = time(0);
 	srand(seed);
 
@@ -55,7 +55,7 @@ void Donjon::setSeed(unsigned value){
 }
 
     //Récupère la seed du donjon
-unsigned Donjon::getSeed(){
+unsigned Donjon::getSeed() const{
 	return seed;
 }
 
@@ -63,8 +63,16 @@ void Donjon::setRandom(bool value){
     random = value;
 }
     //Récupère la seed du donjon
-bool Donjon::getRandom(){
+bool Donjon::getRandom() const{
     return random;
+}
+
+unsigned Donjon::getSize() const{
+    return maxSize;
+}
+
+Room* Donjon::getRoom(unsigned i, unsigned j) const{
+    return RoomsMap[i][j];
 }
 
 void Donjon::placeDoors(){
@@ -96,4 +104,39 @@ void Donjon::placeDoors(){
 // à coder:
 void Donjon::roomTypeAffect(){
 
+}
+
+std::ostream& operator<<(std::ostream& stream, const Donjon& d)
+{
+	for (unsigned i = 0; i < d.getSize(); i++)
+	{
+		for (unsigned j = 0; j < d.getSize(); j++)
+		{
+			if (d.getRoom(i, j) == nullptr)
+			{
+				stream << "-";
+			}
+			else
+			{
+				switch (d.getRoom(i, j)->getType())
+				{
+					case roomType::Common:
+						stream << "o";
+						break;
+					
+					case roomType::Start:
+						stream << "S";
+						break;
+					
+					case roomType::End:
+						stream << "X";
+						break;
+				}
+			}
+		}
+		
+		stream << std::endl;
+	}
+	
+	return stream;
 }

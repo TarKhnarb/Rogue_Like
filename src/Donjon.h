@@ -1,3 +1,8 @@
+#ifndef DONJON_H
+#define DONJON_H
+
+#include <iostream>
+
 #include "Room.h"
 
 const unsigned maxSize = 21; // doit être un nombre impair
@@ -15,10 +20,13 @@ public:
     void generate(); // Génère le donjon
     
     void setSeed(unsigned);
-    unsigned getSeed();
+    unsigned getSeed() const;
 
     void setRandom(bool);
-    bool getRandom();
+    bool getRandom() const;
+
+    unsigned getSize() const;
+    Room* getRoom(unsigned, unsigned) const;
 
     void placeDoors();
     void roomTypeAffect(); // Affecte a chaque salles un type en fonction de son nombre de portes (tableau)
@@ -32,3 +40,7 @@ private:
 
     bool random;
 };
+
+std::ostream& operator<<(std::ostream&, const Donjon&);
+
+#endif

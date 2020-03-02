@@ -1,21 +1,11 @@
-//#include "Donjon.h"
-#include "Room.h"
-#include <iostream>
+#include "Donjon.h"
 
 int main(){
-
-    Room test;
-
-    switch (test.getType()){
-        case roomType::Start: std::cout << "Common" << std::endl;
-            break;
-        default: std::cout << "autre" << std::endl;
-            break;
-    };
-
-
-     //test.getType();
-
-
-    return 0;
+	
+	Donjon d;
+	
+	//d.generate();
+	std::cout << d;
+	
+	return 0;
 }
