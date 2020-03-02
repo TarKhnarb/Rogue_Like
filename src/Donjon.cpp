@@ -47,7 +47,7 @@ void Donjon::generate(){
 
 	// Initialise la premiere salle au centre du tableau
     unsigned mid = (maxSize - 1)/2;
-    RoomsMap[mid][mid]->setType(Room::roomType::Start);
+    RoomsMap[mid][mid]->setType(roomType::Start);
 
     // Maintenant c'est la merde
     std::cout << "Généré !! " << seed << std::endl;
@@ -78,12 +78,12 @@ void Donjon::countDoors(){
             int var = RoomsMap[i][j]->getDoorsNb();
             switch (RoomsMap[i][j]->getType()){
 
-                case Room::Common:
+                case roomType::Common:
                     break;
                 default:
 
                     switch (RoomsMap[i+1][j]->getType()){ // Est (1)
-                        case Room::Common:
+                        case roomType::Common:
                             break;
                         default:
                             RoomsMap[i][j]->setDoorsNb(var++);
@@ -92,7 +92,7 @@ void Donjon::countDoors(){
                     }
 
                     switch (RoomsMap[i-1][j]->getType()){ // West (3)
-                        case Room::Common:
+                        case roomType::Common:
                             break;
                         default:
                             RoomsMap[i][j]->setDoorsNb(var++);
@@ -100,7 +100,7 @@ void Donjon::countDoors(){
                     }
 
                     switch (RoomsMap[i][j+1]->getType()){ // Sud (2)
-                        case Room::Common:
+                        case roomType::Common:
                             break;
                         default:
                             RoomsMap[i][j]->setDoorsNb(var++);
@@ -108,7 +108,7 @@ void Donjon::countDoors(){
                     }
 
                     switch (RoomsMap[i][j-1]->getType()){ // Nord (0)
-                        case Room::Common:
+                        case roomType::Common:
                             break;
                         default:
                             RoomsMap[i][j]->setDoorsNb(var++);

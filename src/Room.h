@@ -1,17 +1,17 @@
 #include "Door.h"
 
+enum roomType{
+    Common,
+    Start,
+    End,
+}; // Types de salles
+
 class Room{
 
 public:
 
     Room();
     ~Room();
-
-    enum roomType{
-        Common,
-        Start,
-        End,
-    }; // Types de salles
 
     void openDoors(); // Ouvre toutes les portes (sauf celles necessitant une clé)
     void closeDoors(); // Ferme toutes les portes (début d'une salle avec monstres)

@@ -9,7 +9,7 @@ Room::Room(){
         Doors[i] = new Door();
     }
 
-    type = Common;
+    type = roomType::Common;
 }
 
 Room::~Room() {

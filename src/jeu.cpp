@@ -7,7 +7,7 @@ int main(){
     Room test;
 
     switch (test.getType()){
-        case Room::Start: std::cout << "Common" << std::endl;
+        case roomType::Start: std::cout << "Common" << std::endl;
             break;
         default: std::cout << "autre" << std::endl;
             break;
