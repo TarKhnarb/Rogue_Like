@@ -71,43 +71,23 @@ void Donjon::placeDoors(){
 
     for(unsigned i = 0; i < maxSize; i++){
         for(unsigned j = 0; j < maxSize; j ++){
+            if (RoomsMap[i][j] != nullptr)
+            {
+                if (RoomsMap[i+1] != nullptr){ // Est (1)
+                    RoomsMap[i][j]->placeDoor(1);
+                }
 
-            switch (RoomsMap[i][j]->getType()){
+                if (RoomsMap[i-1][j] != nullptr){ // West (3)
+                    RoomsMap[i][j]->placeDoor(3);
+                }
 
-                case roomType::None:
-                    break;
-                default:
+                if (RoomsMap[i][j+1] != nullptr){ // Sud (2)
+                    RoomsMap[i][j]->placeDoor(2);
+                }
 
-                    switch (RoomsMap[i+1][j]->getType()){ // Est (1)
-                        case roomType::None:
-                            break;
-                        default:
-                            RoomsMap[i][j]->placeDoor(1);
-                            break;
-                    }
-
-                    switch (RoomsMap[i-1][j]->getType()){ // West (3)
-                        case roomType::None:
-                            break;
-                        default:
-                            RoomsMap[i][j]->placeDoor(3);
-                    }
-
-                    switch (RoomsMap[i][j+1]->getType()){ // Sud (2)
-                        case roomType::None:
-                            break;
-                        default:
-                            RoomsMap[i][j]->placeDoor(2);
-                    }
-
-                    switch (RoomsMap[i][j-1]->getType()){ // Nord (0)
-                        case roomType::None:
-                            break;
-                        default:
-                            RoomsMap[i][j]->placeDoor(0);
-
-
-                    }
+                if (RoomsMap[i][j-1] != nullptr){ // Nord (0)
+                    RoomsMap[i][j]->placeDoor(0);
+                }
             }
         }
      }
