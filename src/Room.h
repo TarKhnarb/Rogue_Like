@@ -1,6 +1,7 @@
 #include "Door.h"
 
 enum roomType{
+    None,
     Common,
     Start,
     End,
@@ -25,7 +26,6 @@ public:
     int getType();
     void setType(roomType); // Prend le seed et retourne le type de la salle en fonction du nb de portes
 
-    bool getDoorExist(int i);
     void setDoorExist(int, bool);
 
 private:

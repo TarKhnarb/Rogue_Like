@@ -9,26 +9,26 @@ Room::Room(){
         Doors[i] = new Door();
     }
 
-    type = roomType::Common;
+    type = roomType::None;
 }
 
 Room::~Room() {
     for(int i = 0; i < 4 ; i++){
         Doors[i] = nullptr;
     }
-    delete [] Room::Doors;
+    delete [] Doors;
 }
 
 void Room::openDoors(){
     for(int i = 0; i < 4; i++){
         if(! Doors[i]->Door::getKey())
-        Doors[i]->Door::openIt();
+        Doors[i]->openIt();
     }
 }
 
 void Room::closeDoors(){
     for(int i = 0; i < 4; i++){
-        Doors[i]->Door::closeIt();
+        Doors[i]->closeIt();
     }
 }
 
@@ -53,10 +53,6 @@ void Room::setType(roomType i){
     type = i;
 }
 
-bool Room::getDoorExist(int i){
-    assert(i > 3 && i < 0);
-    return  Doors[i]->getExist();
-}
 void Room::setDoorExist(int i, bool a){
     Doors[i]->setExist(a);
 }

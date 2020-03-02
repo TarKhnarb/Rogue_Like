@@ -78,12 +78,12 @@ void Donjon::countDoors(){
             int var = RoomsMap[i][j]->getDoorsNb();
             switch (RoomsMap[i][j]->getType()){
 
-                case roomType::Common:
+                case roomType::None:
                     break;
                 default:
 
                     switch (RoomsMap[i+1][j]->getType()){ // Est (1)
-                        case roomType::Common:
+                        case roomType::None:
                             break;
                         default:
                             RoomsMap[i][j]->setDoorsNb(var++);
@@ -92,7 +92,7 @@ void Donjon::countDoors(){
                     }
 
                     switch (RoomsMap[i-1][j]->getType()){ // West (3)
-                        case roomType::Common:
+                        case roomType::None:
                             break;
                         default:
                             RoomsMap[i][j]->setDoorsNb(var++);
@@ -100,7 +100,7 @@ void Donjon::countDoors(){
                     }
 
                     switch (RoomsMap[i][j+1]->getType()){ // Sud (2)
-                        case roomType::Common:
+                        case roomType::None:
                             break;
                         default:
                             RoomsMap[i][j]->setDoorsNb(var++);
@@ -108,7 +108,7 @@ void Donjon::countDoors(){
                     }
 
                     switch (RoomsMap[i][j-1]->getType()){ // Nord (0)
-                        case roomType::Common:
+                        case roomType::None:
                             break;
                         default:
                             RoomsMap[i][j]->setDoorsNb(var++);
