@@ -49,5 +49,5 @@ void Room::setType(roomType i){
 }
 
 void Room::placeDoor(int i) {
-    Doors[i] = new Door();
+    Doors[i] = new Door(false, false);
 }

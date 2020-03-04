@@ -6,9 +6,10 @@ class Door{
 public:
 
     Door();
-    ~Door();
+    Door(bool, bool);
 
     bool getKey();
+    void setKey(bool);
 
     bool getOpen();
     void setOpen(bool);
