@@ -26,14 +26,12 @@ Donjon::Donjon(){
     //-----------//
 Donjon::~Donjon(){
 
-    for(unsigned i = 0; i < maxSize; i++)
-    {
-        for(unsigned j = 0; j < maxSize; j++)
-        {
+    for(unsigned i = 0; i < maxSize; i++) {
+        for (unsigned j = 0; j < maxSize; j++) {
+            delete RoomsMap[i][j];
             RoomsMap[i][j] = nullptr;
         }
     }
-    delete Donjon::RoomsMap;
 }
 
 void Donjon::generate(){
@@ -81,21 +79,21 @@ void Donjon::placeDoors(){
 
     for(unsigned i = 0; i < maxSize; i++){
         for(unsigned j = 0; j < maxSize; j ++){
-            if (RoomsMap[i][j] != nullptr)
+            if (RoomsMap[i][j])
             {
-                if (RoomsMap[i+1] != nullptr){ // Est (1)
+                if (RoomsMap[i+1]){ // Est (1)
                     RoomsMap[i][j]->placeDoor(1);
                 }
 
-                if (RoomsMap[i-1][j] != nullptr){ // West (3)
+                if (RoomsMap[i-1][j]){ // West (3)
                     RoomsMap[i][j]->placeDoor(3);
                 }
 
-                if (RoomsMap[i][j+1] != nullptr){ // Sud (2)
+                if (RoomsMap[i][j+1]){ // Sud (2)
                     RoomsMap[i][j]->placeDoor(2);
                 }
 
-                if (RoomsMap[i][j-1] != nullptr){ // Nord (0)
+                if (RoomsMap[i][j-1]){ // Nord (0)
                     RoomsMap[i][j]->placeDoor(0);
                 }
             }

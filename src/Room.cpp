@@ -8,10 +8,10 @@ Room::Room(){
 }
 
 Room::~Room() {
-    for(int i = 0; i < 4 ; i++){
+    for(int i = 0; i < 4 ; i++) {
+        delete Doors[i];
         Doors[i] = nullptr;
     }
-    delete [] Doors;
 }
 
 void Room::openDoors(){
@@ -49,5 +49,6 @@ void Room::setType(roomType i){
 }
 
 void Room::placeDoor(int i) {
-    Doors[i] = new Door(false, false);
+    delete Doors[i];
+    Doors[i] = new Door();
 }
