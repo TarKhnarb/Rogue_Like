@@ -23,6 +23,6 @@ $(O):
 $(B):
 	mkdir $(B)
 
-clean:
-	rm -rf $(O)*
-	rm -rf $(B)*
+clean: $(O) $(B)
+	rm -rf $(O)
+	rm -rf $(B)
