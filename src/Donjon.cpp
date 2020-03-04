@@ -44,8 +44,7 @@ void Donjon::generate(){
 	// Initialise la premiere salle au centre du tableau
     unsigned mid = (maxSize - 1)/2;
 
-    if(RoomsMap[mid][mid]->getType() )
-    RoomsMap[mid][mid]->setType(roomType::Start);  // Cette ligne pose problème
+    RoomsMap[mid][mid] = new Room(Start);
 
 }
 

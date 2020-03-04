@@ -3,13 +3,13 @@
 
 int main(){
 
-/*    Donjon test;
+    Donjon test;
 
     test.generate();
 
-    std::cout << test;*/
+    std::cout << test;
 
-    Room test;
+    /*Room test;
 
     std::cout << "créer une piece" << std::endl;
 
@@ -19,7 +19,7 @@ int main(){
 
     std::cout << test.getType() << std::endl;
 
-    std::cout << "test ?" << std::endl;
+    std::cout << "test ?" << std::endl;*/
 
     return 0;
 }

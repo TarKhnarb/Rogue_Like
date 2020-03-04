@@ -5,6 +5,16 @@ Room::Room(){
     for(int i = 0; i < 4; i++){
         Doors[i] = nullptr;
     }
+
+    type = roomType::Common;
+}
+
+Room::Room(roomType t) {
+    for(int i = 0; i < 4; i++){
+        Doors[i] = nullptr;
+    }
+
+    type = t;
 }
 
 Room::~Room() {
