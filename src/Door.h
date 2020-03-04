@@ -8,11 +8,10 @@ class Door{
 public:
 
     Door();
-    ~Door();
 
-    bool getKey();
+    bool getKey() const;
 
-    bool getOpen();
+    bool getOpen() const;
     void setOpen(bool);
 
 private:

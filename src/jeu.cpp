@@ -4,7 +4,7 @@ int main(){
 	
 	Donjon d;
 	
-	//d.generate();
+	d.generate();
 	std::cout << d;
 	
 	return 0;

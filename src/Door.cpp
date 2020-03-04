@@ -5,13 +5,14 @@ Door::Door(){
     open = false;
 }
 
-bool Door::getKey(){
+bool Door::getKey() const{
     return key;
 }
 
-bool Door::getOpen(){
+bool Door::getOpen() const{
     return open;
 }
+
 void Door::setOpen(bool a){
     open = a;
 }
