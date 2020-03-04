@@ -25,14 +25,15 @@ Donjon::Donjon(){
      //Destructeur//
     //-----------//
 Donjon::~Donjon(){
+
     for(unsigned i = 0; i < maxSize; i++)
     {
         for(unsigned j = 0; j < maxSize; j++)
         {
             RoomsMap[i][j] = nullptr;
         }
-        delete [] Donjon::RoomsMap;
     }
+    delete Donjon::RoomsMap;
 }
 
 void Donjon::generate(){
@@ -45,8 +46,8 @@ void Donjon::generate(){
 	// Initialise la premiere salle au centre du tableau
     unsigned mid = (maxSize - 1)/2;
 
-    RoomsMap[mid][mid]->setType(roomType::Start);
-
+    if(RoomsMap[mid][mid]->getType() )
+    RoomsMap[mid][mid]->setType(roomType::Start);  // Cette ligne pose problème
 
 }
 
@@ -102,10 +103,10 @@ void Donjon::placeDoors(){
      }
 }
 
-// à coder:
+/* à coder:
 void Donjon::roomTypeAffect(){
 
-}
+}*/
 
 std::ostream& operator<<(std::ostream& stream, const Donjon& d)
 {

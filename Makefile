@@ -5,16 +5,16 @@ FLAGS = -c -Wall
 
 all: $(O) $(B) $(B)/jeu
 
-$(B)/jeu: $(S)/jeu.cpp $(O)/Donjon.o $(O)/Room.o $(O)/Door.o
+$(B)/jeu: $(O)/Donjon.o
 	g++ $(S)/jeu.cpp -o $(B)/jeu $(O)/Donjon.o $(O)/Room.o $(O)/Door.o
 
-$(O)/Donjon.o: $(S)/Donjon.cpp $(S)/Donjon.h $(S)/Room.h $(S)/Door.h
+$(O)/Donjon.o: $(O)/Room.o
 	g++ $(FLAGS) $(S)/Donjon.cpp -o $(O)/Donjon.o
 
-$(O)/Room.o: $(S)/Room.cpp $(S)/Room.h $(S)/Door.h
+$(O)/Room.o: $(O)/Door.o
 	g++ $(FLAGS) $(S)/Room.cpp -o $(O)/Room.o
 
-$(O)/Door.o: $(S)/Door.cpp $(S)/Door.h
+$(O)/Door.o:
 	g++ $(FLAGS) $(S)/Door.cpp -o $(O)/Door.o
 
 $(O):
