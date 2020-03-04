@@ -5,8 +5,17 @@ Door::Door(){
     open = false;
 }
 
+Door::Door(bool k, bool o) {
+    key = k;
+    open = o;
+}
+
 bool Door::getKey() const{
     return key;
+}
+
+void Door::setKey(bool k) {
+    key = k;
 }
 
 bool Door::getOpen() const{

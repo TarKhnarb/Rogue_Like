@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 
       //------------//
      //Constructeur//
@@ -24,11 +25,9 @@ Donjon::Donjon(){
      //Destructeur//
     //-----------//
 Donjon::~Donjon(){
-    for(unsigned i = 0; i < maxSize; i++)
-    {
-        for(unsigned j = 0; j < maxSize; j++)
-        {
-			delete RoomsMap[i][j];
+    for(unsigned i = 0; i < maxSize; i++) {
+        for (unsigned j = 0; j < maxSize; j++) {
+            delete RoomsMap[i][j];
             RoomsMap[i][j] = nullptr;
         }
     }
@@ -43,10 +42,9 @@ void Donjon::generate(){
 
 	// Initialise la premiere salle au centre du tableau
     unsigned mid = (maxSize - 1)/2;
-    RoomsMap[mid][mid] = new Room(roomType::Start);
 
-    // Maintenant c'est la merde
-    std::cout << "Généré !! " << seed << std::endl;
+    RoomsMap[mid][mid] = new Room(Start);
+
 }
 
   // Set la seed du donjon
@@ -101,10 +99,10 @@ void Donjon::placeDoors(){
      }
 }
 
-// à coder:
+/* à coder:
 void Donjon::roomTypeAffect(){
 
-}
+}*/
 
 std::ostream& operator<<(std::ostream& stream, const Donjon& d)
 {

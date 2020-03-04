@@ -14,6 +14,7 @@ class Room{
 public:
 
     Room();
+    Room(roomType);
     ~Room();
 
     void openDoors(); // Ouvre toutes les portes (sauf celles necessitant une clé)
