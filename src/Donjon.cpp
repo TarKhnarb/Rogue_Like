@@ -45,7 +45,7 @@ void Donjon::generate(){
     RoomsMap[mid][mid] = new Room(Start);
 	
 	unsigned roomsCnt = 0;
-	unsigned density = 8; // >= 2, traduit la densité des cases (plus elle est élévée, plus on s'assure de poser assez de salles)
+	unsigned density = 4; // >= 2, traduit la densité des cases (plus elle est élévée, plus on s'assure de poser assez de salles)
 	
 	for (unsigned k = 1; k <= mid; k++) // chaque 'cercle' autour du point central
 	{
@@ -56,6 +56,18 @@ void Donjon::generate(){
 				if (roomsCnt < roomsNb && rand()%density)
 				{
 					RoomsMap[i][mid-k] = new Room();
+					roomsCnt ++;
+				}
+			}
+		}
+		
+		for (unsigned j = mid-k+1; j <= mid+k-1; j++) // troisième ligne, à gauche à la verticale
+		{
+			if ((j > 0 && RoomsMap[mid-k][j-1]) || RoomsMap[mid-k+1][j]) // test sur les cases au dessus et à droite
+			{
+				if (roomsCnt < roomsNb && rand()%density)
+				{
+					RoomsMap[mid-k][j] = new Room();
 					roomsCnt ++;
 				}
 			}
@@ -77,18 +89,6 @@ void Donjon::generate(){
 				if (roomsCnt < roomsNb && rand()%density)
 				{
 					RoomsMap[mid+k][j] = new Room();
-					roomsCnt ++;
-				}
-			}
-		}
-		
-		for (unsigned j = mid-k+1; j <= mid+k-1; j++) // troisième ligne, à gauche à la verticale
-		{
-			if ((j > 0 && RoomsMap[mid-k][j-1]) || RoomsMap[mid-k+1][j]) // test sur les cases au dessus et à droite
-			{
-				if (roomsCnt < roomsNb && rand()%density)
-				{
-					RoomsMap[mid-k][j] = new Room();
 					roomsCnt ++;
 				}
 			}

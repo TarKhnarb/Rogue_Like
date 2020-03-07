@@ -7,8 +7,8 @@
 
 const unsigned maxSize = 21; // doit être un nombre impair
 
-const unsigned minRooms = 50; // Nombre max et min de salles
-const unsigned maxRooms = 60;
+const unsigned minRooms = 10; // Nombre max et min de salles
+const unsigned maxRooms = 20;
 
 class Donjon{
     
