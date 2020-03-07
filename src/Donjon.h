@@ -7,15 +7,15 @@
 
 const unsigned maxSize = 21; // doit être un nombre impair
 
-const unsigned minRooms = 5; // Nombre max et min de salles
-const unsigned maxRooms = 15;
+const unsigned minRooms = 50; // Nombre max et min de salles
+const unsigned maxRooms = 60;
 
 class Donjon{
     
 public:
     
     Donjon();
-    ~Donjon();
+    ~Donjon();	
     
     void generate(); // Génère le donjon
     
@@ -36,7 +36,7 @@ private:
     Room* RoomsMap[maxSize][maxSize];
 
     unsigned seed;
-    int roomsNb;
+    unsigned roomsNb;
 
     bool random;
 };
