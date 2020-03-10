@@ -19,6 +19,7 @@ Donjon::Donjon(){
 	
 	seed = 1;
     random = true;
+    stage = 0;
 }
 
       //-----------//
@@ -31,6 +32,7 @@ Donjon::~Donjon(){
             RoomsMap[i][j] = nullptr;
         }
     }
+    stage = 0;
 }
 
 void Donjon::generate(){
@@ -43,19 +45,21 @@ void Donjon::generate(){
     unsigned mid = (maxSize - 1)/2;
 	
 	unsigned roomsCnt = 0; // Compteur de salles posées
-	unsigned density = 4; // >= 2, traduit la densité des cases (plus elle est élévée, plus on s'assure de poser assez de salles)
+	unsigned density = 4; // >= 2, Traduit la densité des cases (plus elle est élévée, plus on s'assure de poser assez de salles)
 	
-	while (roomsNb != roomsCnt) {
+	while ((roomsNb != roomsCnt) && (stage <= stageNb)) { // Génère les salles autour de la salle de départ (centre)
 
 	    reset(); // Reset (nettoie le tableau et genere le depart au milieu du tableau)
+        roomsCnt = 0; // Au cas où on recommence
 
-        for (unsigned k = 1; k <= mid; k++) // chaque 'cercle' autour du point central
+            // Génère les salles du donjon
+        for (unsigned k = 1; k <= mid; k++) // Chaque 'cercles' autour du point central
         {
-            for (unsigned i = mid-k+1; i <= mid+k; i++) // première ligne, en haut à l'horizontal, sauf case tout en haut à gauche
+            for (unsigned i = mid-k+1; i <= mid+k; i++) // Première ligne, en haut à l'horizontal, sauf case tout en haut à gauche (car rien encore à côté)
             {
-                if ((i > 0 && RoomsMap[i-1][mid-k]) || RoomsMap[i][mid-k+1]) // test sur les cases à gauche et en dessous
+                if ((i > 0 && RoomsMap[i-1][mid-k]) || RoomsMap[i][mid-k+1]) // Test sur les cases à gauche et en dessous
                 {
-                    if (roomsCnt < roomsNb && rand()%density) // place une salle seulement si le mod est différent de 0
+                    if (roomsCnt < roomsNb && rand()%density) // Place une salle seulement si le mod est différent de 0
                     {
                         RoomsMap[i][mid-k] = new Room();
                         roomsCnt ++;
@@ -63,8 +67,8 @@ void Donjon::generate(){
                 }
             }
 
-            if (RoomsMap[mid-k+1][mid-k]) // case tout en haut à gauche
-            {
+            if (RoomsMap[mid-k+1][mid-k]){ // Traitement de la case tout en haut à gauche
+
                 if(roomsCnt < roomsNb && rand()%density)
                 {
                     RoomsMap[mid-k][mid-k] = new Room();
@@ -72,9 +76,9 @@ void Donjon::generate(){
                 }
             }
 
-            for (unsigned j = mid-k+1; j <= mid+k-1; j++) // deuxième ligne, à droite à la verticale
+            for (unsigned j = mid-k+1; j <= mid+k-1; j++) // Deuxième ligne, à droite à la verticale
             {
-                if ((j > 0 && RoomsMap[mid+k][j-1]) || RoomsMap[mid+k-1][j]) // test sur les cases au dessus et à gauche
+                if ((j > 0 && RoomsMap[mid+k][j-1]) || RoomsMap[mid+k-1][j]) // Test sur les cases au dessus et à gauche
                 {
                     if (roomsCnt < roomsNb && rand()%density)
                     {
@@ -84,7 +88,7 @@ void Donjon::generate(){
                 }
             }
 
-            for (unsigned j = mid-k+1; j <= mid+k-1; j++) // troisième ligne, à gauche à la verticale
+            for (unsigned j = mid-k+1; j <= mid+k-1; j++) // Troisième ligne, à gauche à la verticale
             {
                 if ((j > 0 && RoomsMap[mid-k][j-1]) || RoomsMap[mid-k+1][j]) // test sur les cases au dessus et à droite
                 {
@@ -96,9 +100,9 @@ void Donjon::generate(){
                 }
             }
 
-            for (unsigned i = mid-k; i <= mid+k; i++) // dernière ligne, en bas à l'horizontal
+            for (unsigned i = mid-k; i <= mid+k; i++) // Dernière ligne, en bas à l'horizontal
             {
-                if ((i+1 < maxSize && RoomsMap[i+1][mid+k]) || RoomsMap[i][mid+k-1]) // test de la case à gauche et au dessus
+                if ((i+1 < maxSize && RoomsMap[i+1][mid+k]) || RoomsMap[i][mid+k-1]) // Test de la case à gauche et au dessus
                 {
                     if (roomsCnt < roomsNb && rand()%density)
                     {
@@ -109,6 +113,23 @@ void Donjon::generate(){
             }
         }
 	}
+
+	unsigned bossRommCnt = 0;
+	    // Place la salle du Boss (implique qu'elle à une unique entrée)
+	for(unsigned k = mid; k > 0; k++){
+
+	    for(unsigned i = mid-k+1; i <= mid+k; i++){
+            if ((i > 0 && ! RoomsMap[i-1][mid-k]) || ! RoomsMap[i][mid-k+1]){
+                if (bossRommCnt < 1 && rand()%density){
+                    RoomsMap[i][mid-k] = new Room();
+                    RoomsMap[i][mid-k]->setType(Boss);
+                    bossRommCnt++;
+                }
+            }
+	    }
+	}
+
+	stage++; // On incrémente le nombre d'étages
 
     std::cout << "roomsNb = " << roomsNb << std::endl;
     std::cout << "roomsCnt = " << roomsCnt << std::endl;
@@ -138,6 +159,10 @@ unsigned Donjon::getSize() const{
 
 Room* Donjon::getRoom(unsigned i, unsigned j) const{
     return RoomsMap[i][j];
+}
+
+unsigned Donjon::getStage() const {
+    return stage;
 }
 
 void Donjon::placeDoors(){
@@ -172,6 +197,7 @@ void Donjon::roomTypeAffect(){
 }*/
 
 void Donjon::reset() {
+
     for(unsigned i = 0; i < maxSize; i++) {
         for (unsigned j = 0; j < maxSize; j++) {
             delete RoomsMap[i][j];
@@ -180,11 +206,14 @@ void Donjon::reset() {
     }
 
     unsigned mid = (maxSize - 1)/2;
-    RoomsMap[mid][mid] = new Room(Start);
+    if(stage == 0){
+        RoomsMap[mid][mid] = new Room(Start);
+    }
+    else RoomsMap[mid][mid] = new Room(CommonStart);
 }
 
-std::ostream& operator<<(std::ostream& stream, const Donjon& d)
-{
+std::ostream& operator<<(std::ostream& stream, const Donjon& d){
+
 	for (unsigned i = 0; i < d.getSize(); i++)
 	{
 		for (unsigned j = 0; j < d.getSize(); j++)
@@ -205,9 +234,13 @@ std::ostream& operator<<(std::ostream& stream, const Donjon& d)
 						stream << "S";
 						break;
 					
-					case roomType::End:
+					case roomType::Boss:
 						stream << "X";
 						break;
+
+				    case roomType::CommonStart:
+				        stream << "s";
+                        break;
 				}
 			}
 		}

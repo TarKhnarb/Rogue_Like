@@ -4,10 +4,15 @@
 #include "Door.h"
 
 enum roomType{
-    Common,
-    Start,
-    End,
+    Common, // Salles vides
+    Start, // Start avec dessins
+    CommonStart, // Start sans dessins
+    Boss, // Salle de boss
 }; // Types de salles
+
+struct Rocher{
+    bool etat;
+}; // Voir comment on defini un rocher
 
 class Room{
 
@@ -20,7 +25,7 @@ public:
     void openDoors(); // Ouvre toutes les portes (sauf celles necessitant une clé)
     void closeDoors(); // Ferme toutes les portes (début d'une salle avec monstres)
 
-    void unlockDoor(Door); // Ouvre une porte necessite une clé et que le joueur en possède une
+    void unlockDoor(int); // Ouvre une porte necessite une clé et que le joueur en possède une
 
     int getDoorsNb() const;
 

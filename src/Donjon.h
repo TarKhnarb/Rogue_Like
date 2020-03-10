@@ -7,16 +7,18 @@
 
 const unsigned maxSize = 21; // doit être un nombre impair
 
-const unsigned minRooms = 1; // Nombre max et min de salles
+const unsigned minRooms = 10; // Nombre max et min de salles
 const unsigned maxRooms = 20;
+
+const unsigned stageNb = 6;
 
 class Donjon{
     
 public:
     
     Donjon();
-    ~Donjon();	
-    
+    ~Donjon();
+
     void generate(); // Génère le donjon
     
     void setSeed(unsigned);
@@ -26,6 +28,9 @@ public:
     bool getRandom() const;
 
     unsigned getSize() const;
+
+    unsigned getStage() const;
+
     Room* getRoom(unsigned, unsigned) const;
 
     void placeDoors();
@@ -41,6 +46,8 @@ private:
     unsigned roomsNb;
 
     bool random;
+
+    unsigned stage;
 };
 
 std::ostream& operator<<(std::ostream&, const Donjon&);

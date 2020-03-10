@@ -7,6 +7,8 @@ int main(){
 	
 	d.generate();
 	std::cout << d;
-	
+
+	std::cout << d.getStage() << std::endl;
+
 	return 0;
 }
