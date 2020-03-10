@@ -43,7 +43,7 @@ void Donjon::generate(){
     unsigned mid = (maxSize - 1)/2;
 	
 	unsigned roomsCnt = 0; // Compteur de salles posées
-	unsigned density = 4; // >= 2, traduit la densité des cases (plus elle est élévée, plus on s'assure de poser assez de salles)
+	unsigned density = 2; // >= 2, traduit la densité des cases (plus elle est élévée, plus on s'assure de poser assez de salles)
 	
 	while (roomsNb != roomsCnt) {
 
