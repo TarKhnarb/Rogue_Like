@@ -6,7 +6,7 @@ FLAGS = -c -Wall
 all: $(O) $(B) $(B)/jeu
 
 $(B)/jeu: $(O)/Donjon.o
-	g++ $(S)/jeu.cpp -o $(B)/jeu $(O)/Donjon.o $(O)/Room.o $(O)/Door.o
+	g++ -ggdb $(S)/jeu.cpp -o $(B)/jeu $(O)/Donjon.o $(O)/Room.o $(O)/Door.o
 
 $(O)/Donjon.o: $(O)/Room.o
 	g++ $(FLAGS) $(S)/Donjon.cpp -o $(O)/Donjon.o

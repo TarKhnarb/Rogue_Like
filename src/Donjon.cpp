@@ -45,9 +45,9 @@ void Donjon::generate(){
     unsigned mid = (maxSize - 1)/2;
 	
 	unsigned roomsCnt = 0; // Compteur de salles posées
-	unsigned density = 4; // >= 2, Traduit la densité des cases (plus elle est élévée, plus on s'assure de poser assez de salles)
+	unsigned density = 2; // >= 2, Traduit la densité des cases (plus elle est élévée, plus on s'assure de poser assez de salles)
 	
-	while ((roomsNb != roomsCnt) && (stage <= stageNb)) { // Génère les salles autour de la salle de départ (centre)
+	while (roomsNb != roomsCnt) { // Génère les salles autour de la salle de départ (centre)
 
 	    reset(); // Reset (nettoie le tableau et genere le depart au milieu du tableau)
         roomsCnt = 0; // Au cas où on recommence
@@ -111,23 +111,71 @@ void Donjon::generate(){
                     }
                 }
             }
+
+            if(roomsCnt == roomsNb-1){
+
+                for (unsigned i = mid-k+1; i <= mid+k; i++) // Première ligne, en haut à l'horizontal, sauf case tout en haut à gauche (car rien encore à côté)
+                {
+                    if ((i > 0 && RoomsMap[i-1][mid-k]) || !RoomsMap[i][mid-k+1]) // Test sur les cases à gauche et en dessous
+                    {
+                        if (rand()%density) // Place une salle seulement si le mod est différent de 0
+                        {
+                            RoomsMap[i][mid-k] = new Room(Boss);
+                            roomsCnt ++;
+                        }
+                    }
+                }
+
+                if (RoomsMap[mid-k+1][mid-k]){ // Traitement de la case tout en haut à gauche
+
+                    if(rand()%density)
+                    {
+                        RoomsMap[mid-k][mid-k] = new Room(Boss);
+                        roomsCnt ++;
+                    }
+                }
+
+                for (unsigned j = mid-k+1; j <= mid+k-1; j++) // Deuxième ligne, à droite à la verticale
+                {
+                    if ((j > 0 && RoomsMap[mid+k][j-1]) || !RoomsMap[mid+k-1][j]) // Test sur les cases au dessus et à gauche
+                    {
+                        if (rand()%density)
+                        {
+                            RoomsMap[mid+k][j] = new Room(Boss);
+                            roomsCnt ++;
+                        }
+                    }
+                }
+
+                for (unsigned j = mid-k+1; j <= mid+k-1; j++) // Troisième ligne, à gauche à la verticale
+                {
+                    if ((j > 0 && RoomsMap[mid-k][j-1]) || !RoomsMap[mid-k+1][j]) // test sur les cases au dessus et à droite
+                    {
+                        if (rand()%density)
+                        {
+                            RoomsMap[mid-k][j] = new Room(Boss);
+                            roomsCnt ++;
+                        }
+                    }
+                }
+
+                for (unsigned i = mid-k; i <= mid+k; i++) // Dernière ligne, en bas à l'horizontal
+                {
+                    if ((i+1 < maxSize && RoomsMap[i+1][mid+k]) || !RoomsMap[i][mid+k-1]) // Test de la case à gauche et au dessus
+                    {
+                        if (rand()%density)
+                        {
+                            RoomsMap[i][mid+k] = new Room(Boss);
+                            roomsCnt ++;
+                        }
+                    }
+                }
+
+            }
         }
 	}
 
-	unsigned bossRommCnt = 0;
-	    // Place la salle du Boss (implique qu'elle à une unique entrée)
-	for(unsigned k = mid; k > 0; k++){
 
-	    for(unsigned i = mid-k+1; i <= mid+k; i++){
-            if ((i > 0 && ! RoomsMap[i-1][mid-k]) || ! RoomsMap[i][mid-k+1]){
-                if (bossRommCnt < 1 && rand()%density){
-                    RoomsMap[i][mid-k] = new Room();
-                    RoomsMap[i][mid-k]->setType(Boss);
-                    bossRommCnt++;
-                }
-            }
-	    }
-	}
 
 	stage++; // On incrémente le nombre d'étages
 
