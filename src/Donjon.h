@@ -7,8 +7,8 @@
 
 const unsigned maxSize = 21; // doit être un nombre impair
 
-const unsigned minRooms = 10; // Nombre max et min de salles
-const unsigned maxRooms = 20;
+const unsigned minRooms = 20; // Nombre max et min de salles
+const unsigned maxRooms = 30;
 
 class Donjon{
     
@@ -30,6 +30,8 @@ public:
 
     void placeDoors();
     void roomTypeAffect(); // Affecte a chaque salles un type en fonction de son nombre de portes (tableau)
+
+    void reset();
      
 private:
     

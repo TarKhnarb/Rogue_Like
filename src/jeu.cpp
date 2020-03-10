@@ -7,6 +7,7 @@ int main(){
 	
 	d.generate();
 	std::cout << d;
+	std::cout << "seed: " << d.getSeed() << std::endl;
 	
 	return 0;
 }
