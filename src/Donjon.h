@@ -37,6 +37,8 @@ public:
     void roomTypeAffect(); // Affecte a chaque salles un type en fonction de son nombre de portes (tableau)
 
     void reset();
+
+    bool countRoomsAround(unsigned, unsigned);
      
 private:
     
