@@ -124,8 +124,8 @@ void Donjon::generate(){
             if(roomsCnt == roomsNb-1){
 
                 for (unsigned i = mid-k+1; i <= mid+k; i++) // Première ligne, en haut à l'horizontal, sauf case tout en haut à gauche
-                {
-                    if (!RoomsMap[i][mid-k] && (i > 0 && bool(RoomsMap[i-1][mid-k])) xor (i+1 < maxSize && bool(RoomsMap[i+1][mid-k])) xor bool(RoomsMap[i][mid-k+1])) // Test sur les cases à gauche, à droite et en dessous
+                {       // Test si la case même n'est pas deja une salle, compte si elle peut se raccrocher au donjon et ve
+                    if (!RoomsMap[i][mid-k] && countRoomsAround(i, mid-k) == 1)
                     {
                         if (roomsCnt == roomsNb-1 && rand()%density) // Place une salle seulement si le mod est différent de 0
                         {
@@ -135,8 +135,7 @@ void Donjon::generate(){
                     }
                 }
 
-                if (!RoomsMap[mid-k][mid-k] && bool(RoomsMap[mid-k+1][mid-k]) xor bool(RoomsMap[mid-k][mid-k+1])){ // Traitement de la case tout en haut à gauche
-
+                if (!RoomsMap[mid-k][mid-k] && countRoomsAround(mid-k, mid-k)){ // Traitement de la case tout en haut à gauche
                     if(roomsCnt == roomsNb-1 && rand()%density)
                     {
                         RoomsMap[mid-k][mid-k] = new Room(Boss);
@@ -146,7 +145,7 @@ void Donjon::generate(){
 
                 for (unsigned j = mid-k+1; j <= mid+k-1; j++) // Deuxième ligne, à droite à la verticale
                 {
-                    if (!RoomsMap[mid+k][j] && (j > 0 && bool(RoomsMap[mid+k][j-1])) xor (j+1 < maxSize && bool(RoomsMap[mid+k][j+1])) xor bool(RoomsMap[mid+k-1][j])) // Test sur les cases au dessus, en dessous et à gauche
+                    if (!RoomsMap[mid+k][j] && countRoomsAround(mid+k, j))
                     {
                         if (roomsCnt == roomsNb-1 && rand()%density)
                         {
@@ -158,7 +157,7 @@ void Donjon::generate(){
 
                 for (unsigned j = mid-k+1; j <= mid+k-1; j++) // Troisième ligne, à gauche à la verticale
                 {
-                    if (!RoomsMap[mid-k][j] && (j > 0 && bool(RoomsMap[mid-k][j-1])) xor (j+1 < maxSize && bool(RoomsMap[mid-k][j+1])) xor bool(RoomsMap[mid-k+1][j])) // test sur les cases au dessus, en dessous et à droite
+                    if (!RoomsMap[mid-k][j] && countRoomsAround(mid-k, j))
                     {
                         if (roomsCnt == roomsNb-1 && rand()%density)
                         {
@@ -170,7 +169,7 @@ void Donjon::generate(){
 
                 for (unsigned i = mid-k; i <= mid+k; i++) // Dernière ligne, en bas à l'horizontal
                 {
-                    if (!RoomsMap[i][mid+k] && (i > 0 && bool(RoomsMap[i-1][mid+k])) xor (i+1 < maxSize && bool(RoomsMap[i+1][mid+k])) xor bool(RoomsMap[i][mid+k-1])) // Test de la case à gauche, à droite et au dessus
+                    if (!RoomsMap[i][mid+k] && countRoomsAround(i, mid+k))
                     {
                         if (roomsCnt == roomsNb-1 && rand()%density)
                         {
@@ -182,6 +181,11 @@ void Donjon::generate(){
             }
         }
 	}
+	
+    stage++;
+    std::cout << "roomsNb = " << roomsNb << std::endl;
+    std::cout << "roomsCnt = " << roomsCnt << std::endl;
+    std::cout << "seed = " << seed << std::endl;
 }
 
 // Set la seed du donjon
@@ -207,12 +211,12 @@ unsigned Donjon::getSize() const{
     return maxSize;
 }
 
-Room* Donjon::getRoom(unsigned i, unsigned j) const{
-    return RoomsMap[i][j];
-}
-
 unsigned Donjon::getStage() const {
     return stage;
+}
+
+Room* Donjon::getRoom(unsigned i, unsigned j) const{
+    return RoomsMap[i][j];
 }
 
 void Donjon::placeDoors(){
@@ -256,10 +260,41 @@ void Donjon::reset() {
     }
 
     unsigned mid = (maxSize - 1)/2;
-    if(stage == 0){
+    if (stage == 0) {
         RoomsMap[mid][mid] = new Room(Start);
     }
     else RoomsMap[mid][mid] = new Room(CommonStart);
+}
+
+bool Donjon::countRoomsAround(unsigned i, unsigned j) { // prend les coords d'une case et retourne le nb de salles EXISTANTES autour
+    
+    unsigned count = 0;
+
+    if(i > 0){
+        if (RoomsMap[i-1][j]) { // Case au dessus
+            count++;
+        }
+    }
+
+    if(j > 0){
+        if (RoomsMap[i][j-1]) { // Case à gauche
+            count++;
+        }
+    }
+
+    if(i+1 < maxSize){
+       if(RoomsMap[i+1][j]){ // Case en dessous
+           count++;
+       }
+    }
+
+    if(j+1 < maxSize){
+        if(RoomsMap[i][j+1]){ // Case à droite
+            count++;
+        }
+    }
+
+    return (count == 1);
 }
 
 std::ostream& operator<<(std::ostream& stream, const Donjon& d){
