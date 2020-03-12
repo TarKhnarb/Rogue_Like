@@ -39,6 +39,12 @@ void Room::closeDoors(){
 //          A faire
 // void unlockDoor(Door); // Ouvre une porte qui necessite une clé et que le joueur en possède une
 
+void Room::unlockDoor(int i) {
+    if(Doors[i]->getKey() && ! Doors[i]->getOpen()){
+        Doors[i]->setKey(false);
+        Doors[i]->setOpen(true);
+    }
+}
  
 int Room::getDoorsNb() const{
     int i = 0;
