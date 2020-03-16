@@ -1,6 +1,9 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include <string>
+#include "Position.h"
+
 
 class Etity {
 public:
@@ -10,8 +13,8 @@ public:
     unsigned getStatistics(unsigned) const;
 
 private:
-    Position position;
-    Inventory inventory;
+   // Position position;
+    //Inventory inventory;
     unsigned money;
     bool jump;
     std::string name;

@@ -4,7 +4,7 @@
 
 Inventory::Inventory() {
     unsigned defaultObject=1;
-    Objects o(defaultObject);
+    Object o(defaultObject);
     inventory.push_back(o);
     calculateStatistics();
 }
@@ -14,7 +14,7 @@ void Inventory::addObject(const unsigned & id) {
     for(unsigned i=0;i<inventory.size();++i){
         assert(id != inventory[i].getId());
     }
-    Objects add(id);
+    Object add(id);
     inventory.push_back(add);
     calculateStatistics();
 }

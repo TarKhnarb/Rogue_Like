@@ -1,9 +1,9 @@
 #ifndef PNJ_H
 #define PNJ_H
 
-#include "Entity.cpp.h"
+#include "Entity.h"
 
-struct position
+struct PositionMap
 {
     unsigned x, y;
 };
@@ -12,10 +12,10 @@ class Npc{
 
 public:
 
-    Npc(const string& nameOfNpc);
+    Npc(const std::string& nameOfNpc);
     ~Npc();
 
-    void ActionNpc(int idObject);
+    void ActionNpc(int &idObject);
     void sellObject(int idObject);
     void buyObject(int idObject);
     void upgradeObject(int idObject);
@@ -23,11 +23,11 @@ public:
 
 private:
 
-    string nameNpc;
-    Inventory* inventoryNpc;
-    string nameFileInventory;
-    string* dialogue;
-    Position posNpc;
+    std::string nameNpc;
+  //  Inventory* inventoryNpc;
+    std::string nameFileInventory;
+    std::string* dialogue;
+    PositionMap posNpc;
 };
 
 #endif

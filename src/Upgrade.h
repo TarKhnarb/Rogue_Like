@@ -7,8 +7,9 @@ public:
     unsigned getPrice(unsigned) const;
 
 private:
-    unsigned idObject;
+    unsigned idUpgrade;
     unsigned price;
+
 };
 
 #endif

@@ -4,7 +4,7 @@
 int main(){
 
 	
-	Donjon d;
+	Stage d;
 	
 	d.generate();
 	std::cout << d.getSeed() << std::endl;

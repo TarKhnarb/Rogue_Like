@@ -11,7 +11,7 @@ Object::Object(unsigned id){
 
     sqlite3* Object;
     sqlite3_stmt* requete = 0;
-    const unsigned statment = 4;
+    const unsigned statment = 5;
 
     const char *pSQL[statment];
 
@@ -22,6 +22,7 @@ Object::Object(unsigned id){
     pSQL[1] = "SELECT price FROM Object WHERE idObject = ?";
     pSQL[2] = "SELECT resalePrice FROM Object WHERE idObject = ?";
     pSQL[3] = "SELECT jump FROM Object WHERE idObject = ?";
+    pSQL[4] = "SELECT idStat FROM Object WHERE idObject = ?";
 
     for(unsigned i = 0; i < statment; i++){
 
@@ -41,19 +42,19 @@ Object::Object(unsigned id){
             case SQLITE_ROW: // Enregistrement trouvé
                 switch(i) {
                     case 0:
-                        name = reinterpret_cast<const char*> (sqlite3_column_text(requete, 0));
+                        name = reinterpret_cast<const char*> (base);
                         break;
 
                     case 1:
-                        price = int(reinterpret_cast<const char*> (sqlite3_column_text(requete, 0)));
+                        price = base;
                         break;
 
                     case 2:
-                        resalePrice = int(reinterpret_cast<const char*> (sqlite3_column_text(requete, 0)));
+                        resalePrice =  base;
                         break;
 
                     case 3:
-                        jump = reinterpret_cast<const char*> (sqlite3_column_text(requete, 0));
+                        jump = reinterpret_cast<const char*> (base);
                         break;
                 }
                 break;
@@ -143,10 +144,10 @@ bool Object::getJump() const{
 std::string Object::getName() const{
     return name;
 }
-
+/*
 std::vector<unsigned> Object::getStats() const{
     return stats;
-}
+}*/
 
 //utile pour le debug
 void Object::display(){

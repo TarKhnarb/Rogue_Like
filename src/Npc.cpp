@@ -1,6 +1,6 @@
 #include "Npc.h"
-
-Npc::Npc(const string& nameOfNpc){
+/*
+Npc::Npc(const std::string& nameOfNpc){
     switch(nameOfNpc) {
         case 1 :    //Npc : forgeron
         {
@@ -30,7 +30,7 @@ Npc::Npc(const string& nameOfNpc){
 
 
 
-void Npc::ActionNpc(int idObject){
+void Npc::ActionNpc(int &idObject){
     switch(){
         case 1 :    //Perso veut acheter un objet au marchand
         {
@@ -60,7 +60,7 @@ void Npc::ActionNpc(int idObject){
     }
 }
 
-void Npc::sellObject(int idObject, character& perso)
+void Npc::sellObject(int &idObject, character& perso)
 {
     //il faut chercher l'objet
     if((!fullOrNot)||(perso.argent >= ))
@@ -70,7 +70,7 @@ void Npc::sellObject(int idObject, character& perso)
 
 }
 
-void Npc::buyObject(int idObject, unsigned nbCopy)
+void Npc::buyObject(int &idObject, unsigned nbCopy)
 {
     unsigned price;
     //trouver l'objet dans l'inventaire pour savoir le prix
@@ -94,3 +94,4 @@ void Npc::makeObject(int idObject)
 
 }
 
+*/

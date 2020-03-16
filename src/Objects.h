@@ -16,8 +16,13 @@ public :
     unsigned getPrice() const;
     unsigned getResalePrice() const;
     bool getJump() const;
+
+    unsigned getAttack(); // a traiter dans le constructeur voir si on n'y rajoute pas à la base directement vu qu'on a un base de données
+    unsigned getDefence();
+    unsigned getSpeed();
+
     std::string getName() const;
-    std::vector<unsigned > getStats() const; //
+    //std::vector<unsigned > getStats() const; //
 
     void display();
 
@@ -27,7 +32,12 @@ protected :
     unsigned price;
     unsigned resalePrice;
     bool jump;
-    std::vector<unsigned> stats; //attack, defense, speed
+
+    unsigned attack; // Anciennement vector
+    unsigned defence;
+    unsigned speed;
+
+    //std::vector<unsigned> stats; //attack, defense, speed
 };
 
 

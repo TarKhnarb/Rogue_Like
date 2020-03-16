@@ -42,7 +42,7 @@ public:
     void calculateStatistics();
 
 private :
-    std::vector<Objects> inventory;
+    std::vector<Object> inventory;
     unsigned inventorySize=5;//array size limit inventory
 
     //inventory statistics
