@@ -249,15 +249,6 @@ Room* Stage::getRoom(unsigned i, unsigned j) const{
     return RoomsMap[i][j];
 }
 
-void Stage::getType() const {
-    for(unsigned i = 0; i < maxSize; i++){
-        for(unsigned j = 0; j < maxSize; j++){
-            std::cout << RoomsMap[i][j]->getType() << "  ";
-        }
-        std::cout << std::endl;
-    }
-}
-
 /***************
  * Place Doors *
  **************/
@@ -294,7 +285,7 @@ void Stage::roomTypeMonsterObjectAffect(){
     for(unsigned i = 0; i < maxSize; i++){
         for(unsigned j = 0; j < maxSize; j++){
             if(RoomsMap[i][j] && RoomsMap[i][j]->getType() == roomType::Common){
-
+                
                 switch (RoomsMap[i][j]->getDoorsNb()){
                     case 1:
                         if(RoomsMap[i][j]->getDoor(0)){ // Doors at North
@@ -463,10 +454,6 @@ std::ostream& operator<<(std::ostream& stream, const Stage& d){
 
 				    case roomType::CommonStart:
 				        stream << "s";
-                        break;
-
-                    default:
-                        stream << "x";
                         break;
 				}
 			}

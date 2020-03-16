@@ -1,0 +1,6 @@
+//il faut absolument respecter ce format  d'ecriture des caracteristiques des objets
+id name   price resale jump attack defense speed
+
+1  yoloyu 100   50     0     90    70       80
+2  ahmoud 2     1      0     9     7        9
+3  oupyty 2     4      1     1     6        99 

@@ -33,8 +33,6 @@ public:
 
     Room* getRoom(unsigned, unsigned) const;
 
-    void getType() const;
-
     void placeDoors();
     void roomTypeMonsterObjectAffect(); // Affecte a chaque salles un type en fonction de son nombre de portes (tableau)
 
