@@ -1,17 +1,15 @@
 #include "Objects.h"
 
-#include <vector>
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <string>
 #include <assert.h>
 
 Object::Object(unsigned id){
 
     sqlite3* Object;
     sqlite3_stmt* requete = 0;
-    const unsigned statment = 5;
+    const unsigned statment = 9;
 
     const char *pSQL[statment];
 
@@ -21,8 +19,13 @@ Object::Object(unsigned id){
     pSQL[0] = "SELECT name FROM Object WHERE idObject = ?"; // requête de selection d'objet
     pSQL[1] = "SELECT price FROM Object WHERE idObject = ?";
     pSQL[2] = "SELECT resalePrice FROM Object WHERE idObject = ?";
-    pSQL[3] = "SELECT jump FROM Object WHERE idObject = ?";
-    pSQL[4] = "SELECT idStat FROM Object WHERE idObject = ?";
+    pSQL[3] = "SELECT fly FROM Object WHERE idObject = ?";
+    pSQL[4] = "SELECT attack FROM Object WHERE idObject = ?";
+    pSQL[5] = "SELECT attackSpeed FROM Object WHERE idObject = ?";
+    pSQL[6] = "SELECT hp FROM Object WHERE idObject = ?";
+    pSQL[7] = "SELECT defence FROM Object WHERE idObject = ?";
+    pSQL[8] = "SELECT speed FROM Object WHERE idObject = ?";
+
 
     for(unsigned i = 0; i < statment; i++){
 
@@ -42,7 +45,7 @@ Object::Object(unsigned id){
             case SQLITE_ROW: // Enregistrement trouvé
                 switch(i) {
                     case 0:
-                        name = reinterpret_cast<const char*> (base);
+                        name = base;
                         break;
 
                     case 1:
@@ -54,7 +57,26 @@ Object::Object(unsigned id){
                         break;
 
                     case 3:
-                        jump = reinterpret_cast<const char*> (base);
+                        fly = base;
+                        break;
+
+                    case 4:
+                        stats.push_back(base); // attack
+                        break;
+
+                    case 5:
+                        stats.push_back(base); // attackSpeed
+                        break;
+                    case 6:
+                        stats.push_back(base); // hp
+                        break;
+
+                    case 7:
+                        stats.push_back(base); // defence
+                        break;
+
+                    case 8:
+                        stats.push_back(base); // speed
                         break;
                 }
                 break;
@@ -71,7 +93,14 @@ Object::Object(unsigned id){
     }
 
     sqlite3_close(Object); //Ferme la base
+
 }
+
+Object::~Object() {
+    name.clear();
+    stats.clear();
+}
+
 /*
 Object::Objects(unsigned id) {
     assert(id>0);
@@ -94,7 +123,7 @@ Object::Objects(unsigned id) {
             iss >> name;
             iss >> price;
             iss >> resalePrice;
-            iss >> jump;
+            iss >> fly;
 
             while (iss >> variable) {
                 stats.push_back(stoi(variable));
@@ -104,7 +133,7 @@ Object::Objects(unsigned id) {
             std::cout<<"The id : "<<id <<" of the object you are searching for is too big"<<std::endl;
             unsigned defaultValue=0;
             std::string defaultName = "no name";
-            idObject = price = resalePrice = jump = defaultValue;
+            idObject = price = resalePrice = fly = defaultValue;
             name = defaultName;
             stats.push_back(defaultValue);
         }
@@ -113,17 +142,17 @@ Object::Objects(unsigned id) {
     }
     file.close();
 }
-*/
+
 Object::~Object() {
     //verifier si utile de faire les id=0...etc car de toute façon object est destroy
     idObject=0;
     price=0;
     resalePrice=0;
 
-    jump=false;
+    fly=false;
     name.clear();
     stats.clear();
-}
+}*/
 
 unsigned Object::getId() const{
     return idObject;
@@ -137,24 +166,44 @@ unsigned Object::getResalePrice() const{
     return resalePrice;
 }
 
-bool Object::getJump() const{
-    return jump;
+bool Object::getFly(){
+    return fly;
+}
+
+unsigned Object::getAttack() const {
+    return stats[0];
+}
+
+unsigned Object::getAttackSpeed() const {
+    return stats[1];
+}
+
+unsigned Object::getHp() const {
+    return stats[2];
+}
+
+unsigned Object::getDefence() const {
+    return stats[3];
+}
+
+unsigned Object::getSpeed() const {
+    return stats[4];
 }
 
 std::string Object::getName() const{
     return name;
 }
-/*
+
 std::vector<unsigned> Object::getStats() const{
     return stats;
-}*/
-
+}
+/*
 //utile pour le debug
 void Object::display(){
     std::cout<<idObject<< " " << name << std::endl;
-    std::cout<< price << " " << resalePrice << " " << jump<<std::endl;
+    std::cout<< price << " " << resalePrice << " " << fly<<std::endl;
     for(auto i=stats.begin();i<stats.end();i++){
        std::cout<<*i<< " ";
     }
     std::cout<<std::endl;
-}
+}*/

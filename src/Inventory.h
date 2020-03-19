@@ -41,13 +41,25 @@ public:
     */
     void calculateStatistics();
 
+    bool getFly() const;
+    unsigned getAttack() const;
+    unsigned getAttackSpeed() const;
+    unsigned getHp() const;
+    unsigned getDefence() const;
+    unsigned getSpeed() const;
+
+    unsigned getResalePrice(const unsigned) const;
+    unsigned getPrice(const unsigned) const;
+
 private :
     std::vector<Object> inventory;
     unsigned inventorySize=5;//array size limit inventory
 
     //inventory statistics
-    bool jump;
+    bool fly;
+    unsigned hp;
     unsigned attack;
+    unsigned attackSpeed;
     unsigned defence;
     unsigned speed;
 };

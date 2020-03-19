@@ -455,6 +455,67 @@ std::ostream& operator<<(std::ostream& stream, const Stage& d){
 				    case roomType::CommonStart:
 				        stream << "s";
                         break;
+
+				    case roomType::Room2WE1 :
+                        stream << "x";
+                        break;
+
+
+				    case roomType::Room2WE2 :
+                        stream << "x";
+                        break;
+
+
+				    case roomType::Room2NS1 :
+                        stream << "x";
+                        break;
+
+
+				    case roomType::Room2NS2 :
+                        stream << "x";
+                        break;
+
+
+                    case roomType::Room4NESW:
+                        stream << "x";
+                        break;
+
+
+				    case roomType::Room1N:
+                        stream << "x";
+                        break;
+
+
+                    case roomType::Room1E:
+                        stream << "x";
+                        break;
+
+
+                    case roomType::Room1S:
+                        stream << "x";
+                        break;
+
+
+				    case roomType::Room1W :
+                        stream << "x";
+                        break;
+
+
+                    case roomType::Room3NEW:
+                        stream << "x";
+                        break;
+
+                    case roomType::Room3NSW:
+                        stream << "x";
+                        break;
+
+				    case roomType::Room3ESW:
+                        stream << "x";
+                        break;
+
+                    case roomType::Room3NES:
+                        stream << "x";
+                        break;
 				}
 			}
 		}

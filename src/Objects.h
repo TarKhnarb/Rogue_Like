@@ -4,7 +4,9 @@
 
 #include <vector>
 #include <string>
-#include <sqlite3.h>
+#include "sqlite3.h"
+
+const unsigned statSize = 5;
 
 class Object {
 public :
@@ -13,16 +15,18 @@ public :
     ~Object();
 
     unsigned getId() const;
+    std::string getName() const;
     unsigned getPrice() const;
     unsigned getResalePrice() const;
-    bool getJump() const;
+    bool getFly();
 
-    unsigned getAttack(); // a traiter dans le constructeur voir si on n'y rajoute pas à la base directement vu qu'on a un base de données
-    unsigned getDefence();
-    unsigned getSpeed();
+    unsigned getAttack() const;
+    unsigned getAttackSpeed() const;
+    unsigned getHp() const;
+    unsigned getDefence() const;
+    unsigned getSpeed() const ;
 
-    std::string getName() const;
-    //std::vector<unsigned > getStats() const; //
+    std::vector<unsigned > getStats() const;
 
     void display();
 
@@ -31,13 +35,10 @@ protected :
     std::string name;
     unsigned price;
     unsigned resalePrice;
-    bool jump;
+    bool fly;
 
-    unsigned attack; // Anciennement vector
-    unsigned defence;
-    unsigned speed;
+    std::vector<unsigned> stats; //attack, attackSpeed, hp, defense, speed
 
-    //std::vector<unsigned> stats; //attack, defense, speed
 };
 
 
