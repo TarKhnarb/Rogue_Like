@@ -1,12 +1,15 @@
 #ifndef GAME_POSITION_H
 #define GAME_POSITION_H
 
+#include <cmath>
+
 #include "Random.h"
 
-template <class POS>
+template <typename POS>
 
 class Position{
 public :
+	Position() = default;
     Position(const POS &, const POS &);
 
     Position(const POS &,

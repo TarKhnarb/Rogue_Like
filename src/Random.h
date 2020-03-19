@@ -1,6 +1,10 @@
 #ifndef GAME_RANDOM_H
 #define GAME_RANDOM_H
 
+#include <cstdlib>
+#include <ctime>
+#include <cassert>
+
 template <class RAND>
 
 class Random{

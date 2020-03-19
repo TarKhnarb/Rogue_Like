@@ -1,10 +1,5 @@
 #include "Position.h"
 
-#include <cassert>
-#include <cstdlib>
-#include <cmath>
-#include <iostream>
-
 // verifier pk je doit include random.cpp et pas seulement random.h
 //et aussi operator < car (faire en fonction de x ou y >> faire 4 cas ou seulement 2)
 
@@ -35,7 +30,6 @@ Position<POS>::~Position() {
 template <class POS>
 Position<POS> Position<POS>::operator = (const Position & a){
     x=a.x;
-    std::cout<<a.x;
     y=a.y;
 }
 
@@ -57,6 +51,8 @@ template <class POS>
 Position<POS> Position<POS>::move(const POS & a, const POS & b){
     x+=a;
     y+=b;
+	
+	return Position<POS> (x, y);
 }
 
 template <class POS>

@@ -1,8 +1,5 @@
 #include "Entity.h"
 
-#include <string>
-#include <iostream>
-
 
 Entity::Entity(const unsigned & x, const unsigned & y,std::string n){
     name = n;

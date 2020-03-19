@@ -1,12 +1,12 @@
 B = bin
 O = obj
 S = src
-FLAGS = -c -Wall
+FLAGS = -c -Wall -std=c++11
 
 all: $(O) $(B) $(B)/Aspen
 
-$(B)/Aspen: $(S)/Aspen.cpp $(O)/Donjon.o $(O)/Inventory.o $(O)/Position.o $(O)/Random.o $(O)/Npc.o $(O)/Entity.o
-	g++ -ggdb $(S)/Aspen.cpp -o $(B)/Aspen $(O)/Donjon.o $(O)/Stage.o $(O)/Room.o $(O)/Door.o $(O)/Inventory.o $(O)/Objects.o $(O)/Position.o $(O)/Random.o $(O)/Npc.o $(O)/Entity.o -lsqlite3
+$(B)/Aspen: $(O)/Donjon.o $(O)/Npc.o
+	g++ -ggdb $(S)/Aspen.cpp -o $(B)/Aspen $(O)/*.o -lsqlite3 -std=c++11
 
 $(O)/Donjon.o: $(O)/Stage.o
 	g++ $(FLAGS) $(S)/Donjon.cpp -o $(O)/Donjon.o

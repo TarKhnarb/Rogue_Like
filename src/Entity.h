@@ -1,9 +1,12 @@
 #ifndef GAME_ENTITY_H
 #define GAME_ENTITY_H
+
 #include <vector>
 #include <string>
+#include <iostream>
 
 #include "Position.h"
+#include "Position.cpp"
 #include "Inventory.h"
 
 class Entity {

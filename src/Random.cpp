@@ -1,9 +1,5 @@
 #include "Random.h"
 
-#include <cstdlib>
-#include <ctime>
-#include <cassert>
-
 template <class RAND>
 Random<RAND>::Random(){
 	srand(time(0));
