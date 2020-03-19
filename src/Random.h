@@ -5,7 +5,8 @@ template <class RAND>
 
 class Random{
 public :
-   static RAND random(const RAND &, const RAND &);
+	Random();
+	static RAND random(const RAND &, const RAND &);
 };
 
 #endif //GAME_RANDOM_H

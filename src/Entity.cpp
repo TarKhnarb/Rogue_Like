@@ -3,10 +3,7 @@
 #include <string>
 #include <iostream>
 
-#include "Position.h"
-#include "Position.cpp"
 #include "Random.h"
-#include "Random.cpp"
 
 Entity::Entity(const unsigned & x, const unsigned & y,std::string n){
     name = n;

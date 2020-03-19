@@ -516,6 +516,9 @@ std::ostream& operator<<(std::ostream& stream, const Stage& d){
                     case roomType::Room3NES:
                         stream << "x";
                         break;
+					
+					default:
+						break;
 				}
 			}
 		}

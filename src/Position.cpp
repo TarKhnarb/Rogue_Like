@@ -1,8 +1,8 @@
 #include "Position.h"
 
-#include <assert.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cassert>
+#include <cstdlib>
+#include <cmath>
 #include <iostream>
 
 // verifier pk je doit include random.cpp et pas seulement random.h

@@ -1,8 +1,13 @@
 #include "Random.h"
 
 #include <cstdlib>
-#include <time.h>
-#include <assert.h>
+#include <ctime>
+#include <cassert>
+
+template <class RAND>
+Random<RAND>::Random(){
+	srand(time(0));
+}
 
 template <class RAND>
 RAND Random<RAND>::random(const RAND & min, const RAND & max){
