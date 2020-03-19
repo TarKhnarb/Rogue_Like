@@ -1,9 +1,8 @@
 #include "Entity.h"
-#include <assert.h>
+
 #include <string>
 #include <iostream>
 
-#include "Random.h"
 
 Entity::Entity(const unsigned & x, const unsigned & y,std::string n){
     name = n;

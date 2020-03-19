@@ -2,8 +2,8 @@
 #define GAME_ENTITY_H
 #include <vector>
 #include <string>
+
 #include "Position.h"
-#include "Random.h"
 #include "Inventory.h"
 
 class Entity {
