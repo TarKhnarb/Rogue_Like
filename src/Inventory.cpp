@@ -43,6 +43,8 @@ bool Inventory::testFullObjectInventory() {
     return test;
 }
 
+
+
 void Inventory::addObjectId(const unsigned & id) {
 
     assert(!testFullObjectInventory());

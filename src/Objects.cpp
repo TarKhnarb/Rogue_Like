@@ -151,7 +151,7 @@ unsigned Object::getResalePrice() const{
     return resalePrice;
 }
 
-Type Object::getObjectType() const {
+Object::Type Object::getObjectType() const {
     return type;
 }
 
@@ -163,12 +163,10 @@ const unsigned Object::getMaxStack() const {
 
     switch (type){
         case Type::monsterLoot:
-            maxStack = 16u;
-            break;
+            return 16u;
 
         default:
-            maxStack = 1u;
-            break;
+            return 1u;
     }
 }
 
