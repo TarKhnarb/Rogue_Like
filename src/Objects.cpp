@@ -6,7 +6,7 @@ Object::Object(unsigned id){
 
     sqlite3* Object;
     sqlite3_stmt* requete = 0;
-    const unsigned statment = 9;
+    const unsigned statment = 10;
 
     const char *pSQL[statment];
 
@@ -22,6 +22,7 @@ Object::Object(unsigned id){
     pSQL[6] = "SELECT hp FROM Object WHERE idObject = ?";
     pSQL[7] = "SELECT defence FROM Object WHERE idObject = ?";
     pSQL[8] = "SELECT speed FROM Object WHERE idObject = ?";
+    pSQL[9] = "SELECT type FROM Object WHERE idObject = ?";
 
 
     for(unsigned i = 0; i < statment; i++){
@@ -75,6 +76,30 @@ Object::Object(unsigned id){
                     case 8:
                         stats.push_back(base); // speed
                         break;
+
+                    case 9:
+                        switch (base){
+                            case 0:
+                                type = objectType::basicStat;
+                                break;
+
+                            case 1:
+                                type = objectType::projectile;
+                                break;
+
+                            case 2:
+                                type = objectType::armor;
+                                break;
+
+                            case 3:
+                                type = objectType::amulet;
+                                break;
+
+                            case 4:
+                                type = objectType::monsterLoot;
+                                break;
+                        }
+                        break;
                 }
                 break;
 
@@ -116,6 +141,10 @@ unsigned Object::getPrice() const{
 
 unsigned Object::getResalePrice() const{
     return resalePrice;
+}
+
+objectType Object::getObjectType() const {
+    return type;
 }
 
 /*

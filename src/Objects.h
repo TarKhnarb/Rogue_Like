@@ -7,6 +7,14 @@
 #include <assert.h>
 #include "sqlite3.h"
 
+enum objectType{
+    basicStat, // 0
+    projectile, // 1
+    armor, // 2
+    amulet, // 3
+    monsterLoot // 4
+};
+
 const unsigned statSize = 6;
 
 class Object {
@@ -21,6 +29,7 @@ public :
     std::string getName() const;
     unsigned getPrice() const;
     unsigned getResalePrice() const;
+    objectType getObjectType() const;
 
     void display();
 
@@ -30,6 +39,7 @@ private:
     std::string name;
     unsigned price;
     unsigned resalePrice;
+    objectType type;
 
     std::vector<int> stats; // fly, attack, attackSpeed, hp, defense, speed
 
