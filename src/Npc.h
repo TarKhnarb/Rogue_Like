@@ -1,5 +1,5 @@
-#ifndef PNJ_H
-#define PNJ_H
+#ifndef NPC_H
+#define NPC_H
 
 #include "Entity.h"
 

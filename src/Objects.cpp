@@ -1,9 +1,6 @@
 #include "Objects.h"
 
-#include <fstream>
-#include <sstream>
 #include <iostream>
-#include <assert.h>
 
 Object::Object(unsigned id){
 
@@ -37,7 +34,7 @@ Object::Object(unsigned id){
 
         assert(base == SQLITE_OK || requete != 0);
 
-        sqlite3_bind_int(requete, 1, id); // On remplace ? (1er de la requête) par id
+        sqlite3_bind_int(requete, 1, id); // On remplace ? (1 : 1er de la requête (max 4)) par id
 
         base = sqlite3_step(requete);
 
@@ -57,7 +54,7 @@ Object::Object(unsigned id){
                         break;
 
                     case 3:
-                        fly = base;
+                        stats.push_back(base); //fly
                         break;
 
                     case 4:
@@ -89,7 +86,7 @@ Object::Object(unsigned id){
                 std::cout << "Problème lors de l'exécution de la requête" << std::endl;
 
         }
-        sqlite3_finalize(requete);
+        sqlite3_finalize(requete); // Termine la requête
     }
 
     sqlite3_close(Object); //Ferme la base
@@ -101,61 +98,16 @@ Object::~Object() {
     stats.clear();
 }
 
-/*
-Object::Objects(unsigned id) {
-    assert(id>0);
-    std::ifstream file;
-    file.open("objects.txt"); //fichier contenant sur chaque ligne les stats d'un object
-
-    if(file.is_open()){
-        std::string variable;
-
-        //saute des lignes si id > 1 >> recup d'object autre que le premier
-        unsigned i=0;
-        do{
-            getline(file,variable);
-            ++i;
-        }while(!file.eof() && i < id+2); //2= nb_ligne-1 qu'il faut pas lire
-        if(!file.eof()) {
-            std::istringstream iss(variable);
-            //recuperation des données
-            iss >> idObject;
-            iss >> name;
-            iss >> price;
-            iss >> resalePrice;
-            iss >> fly;
-
-            while (iss >> variable) {
-                stats.push_back(stoi(variable));
-            }
-        }
-        else{ //revoir peut etre inutile >> meilleur solution >> eviter l'init du cons en renvoyant code erreur
-            std::cout<<"The id : "<<id <<" of the object you are searching for is too big"<<std::endl;
-            unsigned defaultValue=0;
-            std::string defaultName = "no name";
-            idObject = price = resalePrice = fly = defaultValue;
-            name = defaultName;
-            stats.push_back(defaultValue);
-        }
-    }else{
-        std::cout<<"Unable to open file for some reason"<<std::endl;
-    }
-    file.close();
+std::vector<int> Object::getStats() const{
+    return stats;
 }
-
-Object::~Object() {
-    //verifier si utile de faire les id=0...etc car de toute façon object est destroy
-    idObject=0;
-    price=0;
-    resalePrice=0;
-
-    fly=false;
-    name.clear();
-    stats.clear();
-}*/
 
 unsigned Object::getId() const{
     return idObject;
+}
+
+std::string Object::getName() const{
+    return name;
 }
 
 unsigned Object::getPrice() const{
@@ -166,37 +118,6 @@ unsigned Object::getResalePrice() const{
     return resalePrice;
 }
 
-bool Object::getFly(){
-    return fly;
-}
-
-unsigned Object::getAttack() const {
-    return stats[0];
-}
-
-unsigned Object::getAttackSpeed() const {
-    return stats[1];
-}
-
-unsigned Object::getHp() const {
-    return stats[2];
-}
-
-unsigned Object::getDefence() const {
-    return stats[3];
-}
-
-unsigned Object::getSpeed() const {
-    return stats[4];
-}
-
-std::string Object::getName() const{
-    return name;
-}
-
-std::vector<unsigned> Object::getStats() const{
-    return stats;
-}
 /*
 //utile pour le debug
 void Object::display(){

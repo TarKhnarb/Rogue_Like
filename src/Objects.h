@@ -4,40 +4,34 @@
 
 #include <vector>
 #include <string>
+#include <assert.h>
 #include "sqlite3.h"
 
-const unsigned statSize = 5;
+const unsigned statSize = 6;
 
 class Object {
+
 public :
-    Object();
     Object(unsigned);
     ~Object();
+
+    std::vector<int> getStats() const;
 
     unsigned getId() const;
     std::string getName() const;
     unsigned getPrice() const;
     unsigned getResalePrice() const;
-    bool getFly();
-
-    unsigned getAttack() const;
-    unsigned getAttackSpeed() const;
-    unsigned getHp() const;
-    unsigned getDefence() const;
-    unsigned getSpeed() const ;
-
-    std::vector<unsigned > getStats() const;
 
     void display();
 
-protected :
+private:
+
     unsigned idObject;
     std::string name;
     unsigned price;
     unsigned resalePrice;
-    bool fly;
 
-    std::vector<unsigned> stats; //attack, attackSpeed, hp, defense, speed
+    std::vector<int> stats; // fly, attack, attackSpeed, hp, defense, speed
 
 };
 

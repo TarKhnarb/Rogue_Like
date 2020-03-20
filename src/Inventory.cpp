@@ -2,54 +2,97 @@
 #include <iostream>
 #include <assert.h>
 
-Inventory::Inventory() {
-    unsigned defaultObject=1;
-    Object o(defaultObject);
-    inventory.push_back(o);
-    calculateStatistics();
+Inventory::Inventory(const unsigned index, const unsigned size) : inventory(size, nullptr){
+
+
+        // Ici l'object représente les différentes stats de bases d'Aspen ou des monstres
+    Object basicStats(index); // On récupère les stats de base dans la table
+    inventory.at(0) = basicStats; // On ajoute les stats à l'inventaire
+
 }
 
 void Inventory::addObject(const unsigned & id) {
-    assert(inventory.size()<inventorySize);
-    for(unsigned i=0;i<inventory.size();++i){
+
+    if(!inventory.empty){
+        for(int& x : inventory){
+
+        }
+    }
+
+
+    assert(inventory.size() < inventorySize);
+    for(unsigned i = inventoryEquipmentSize; i < inventory.size(); ++i){
         assert(id != inventory[i].getId());
     }
-    Object add(id);
-    inventory.push_back(add);
-    calculateStatistics();
+    Object objectToAdd(id);
+    inventory.push_back(objectToAdd);
 }
 
 void Inventory::removeObjectIndex(const unsigned & index) {
-    assert(index < inventory.size()); //if index > inventory.size() >> impossible
-    inventory.erase(inventory.begin()+index);
-    calculateStatistics();
+    assert(index < inventory.size() && index > inventoryEquipmentSize); //if index > inventory.size() >> impossible and if index < inventoryEquipmentSize it's an equipment not an Object
+    inventory.erase(inventory.begin() + index);
 }
 
 void Inventory::removeObjectId(const unsigned & id) {
-   bool found=false;
-   for(unsigned i=0;i<inventory.size();++i){
-       if(inventory[i].getId()==id){
+    
+   bool found = false;
+   for(unsigned i = 0; i < inventory.size(); ++i){
+       if(inventory[i].getId() == id){
            found = true;
-           inventory.erase(inventory.begin()+i);
+           inventory.erase(inventory.begin() + i);
        }
    }
-   assert(found==true);//if found == false >> object not found so "id" incorrect
-   calculateStatistics();
+   assert(found == true);//if found == false >> object not found so "id" incorrect
 }
 
-void Inventory::calculateStatistics(){
-  attack=0, attackSpeed=0, hp=100, defence=0, speed=0, fly=false;
+std::vector<int> Inventory::getAllStats() const{
 
-  for(unsigned i=0;i<inventory.size();++i){
-      if(inventory[i].getFly() == true)
-          fly = true;
+    std::vector<int> stats;
+    std::vector<int> entityStats (6, 0);
 
-      attack += inventory[i].getAttack();
-      attackSpeed += inventory[i].getAttackSpeed();
-      hp += inventory[i].getHp();
-      defence += inventory[i].getDefence();
-      speed += inventory[i].getSpeed();
+  for(unsigned i=1;i<inventory.size();++i){
+
+      stats = inventory[i].getStats();
+
+      for(int j = 0; j < statSize; j++){
+          if(stats[j] >= 0) {
+              switch (j) {
+                  case 0:
+                      if (stats[j] == 1)
+                          entityStats[j] = 1;
+                      break;
+
+                  case 1:
+                      entityStats[j] += stats[j];
+                      break;
+
+                  case 2:
+                      entityStats[j] += stats[j];
+                      break;
+
+                  case 3:
+                      entityStats[j] += stats[j];
+                      break;
+
+                  case 4:
+                      entityStats[j] += stats[j];
+                      break;
+
+                  case 5:
+                      entityStats[j] += stats[j];
+                      break;
+              }
+          }
+      }
   }
+}
+
+std::vector<unsigned int> Inventory::getEntityStats() const {
+    return entityStats;
+}
+
+std::vector<unsigned int> Inventory::getObjectStats(const unsigned index) const {
+    return inventory[index].getStats();
 }
 
 /*void Inventory::displayInventory() {
@@ -60,31 +103,3 @@ void Inventory::calculateStatistics(){
     std::cout<<"fly : " << fly << " attack : " << attack <<std::endl;
     std::cout<<"defense : " << defence << " speed : " << speed << std::endl;
 }*/
-
-bool Inventory::getFly() const {
-    return fly;
-}
-
-unsigned Inventory::getAttack() const {
-    return attack;
-}
-
-unsigned Inventory::getAttackSpeed() const {
-    return attackSpeed;
-}
-
-unsigned Inventory::getHp() const {
-    return hp;
-}
-
-unsigned Inventory::getDefence() const {
-    return defence;
-}
-
-unsigned Inventory::getSpeed() const {
-    return speed;
-}
-
-unsigned Inventory::getResalePrice(const unsigned index) const {
-    return inventory[index].getResalePrice();
-}

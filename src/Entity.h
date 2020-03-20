@@ -6,7 +6,6 @@
 #include <iostream>
 
 #include "Position.h"
-#include "Position.cpp"
 #include "Inventory.h"
 
 class Entity {
@@ -61,7 +60,7 @@ public :
 
 
 private:
-    Inventory * inventory = new Inventory;
+    Inventory inventory;
     Position<int> * pos;
 
     std::string name;

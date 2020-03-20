@@ -26,16 +26,13 @@ $(O)/Inventory.o: $(O)/Objects.o
 $(O)/Objects.o:
 	g++ $(FLAGS) $(S)/Objects.cpp -o $(O)/Objects.o
 
-$(O)/Position.o: $(O)/Random.o
-	g++ $(FLAGS) $(S)/Position.cpp -o $(O)/Position.o
-
 $(O)/Random.o:
 	g++ $(FLAGS) $(S)/Random.cpp -o $(O)/Random.o
 
 $(O)/Npc.o: $(O)/Entity.o
 	g++ $(FLAGS) $(S)/Npc.cpp -o $(O)/Npc.o
 
-$(O)/Entity.o: $(O)/Inventory.o $(O)/Position.o
+$(O)/Entity.o: $(O)/Inventory.o $(S)/Position.h
 	g++ $(FLAGS) $(S)/Entity.cpp -o $(O)/Entity.o
 
 $(O):
