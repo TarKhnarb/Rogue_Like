@@ -1,19 +1,10 @@
 #ifndef GAME_OBJECTS_H
 #define GAME_OBJECTS_H
 
-
 #include <vector>
 #include <string>
 #include <assert.h>
 #include "sqlite3.h"
-
-enum objectType{
-    basicStat, // 0
-    projectile, // 1
-    armor, // 2
-    amulet, // 3
-    monsterLoot // 4
-};
 
 const unsigned statSize = 6;
 
@@ -30,8 +21,18 @@ public :
     unsigned getPrice() const;
     unsigned getResalePrice() const;
     objectType getObjectType() const;
+    unsigned getObjectNumber() const;
+    const unsigned getMaxStack() const;
 
     void display();
+
+    enum Type{
+        basicStat, // 0
+        projectile, // 1
+        armor, // 2
+        amulet, // 3
+        monsterLoot // 4
+    };
 
 private:
 
@@ -40,6 +41,7 @@ private:
     unsigned price;
     unsigned resalePrice;
     objectType type;
+    unsigned objectNumber;
 
     std::vector<int> stats; // fly, attack, attackSpeed, hp, defense, speed
 

@@ -2,26 +2,26 @@
 #include <iostream>
 #include <assert.h>
 
-
+// jouer avec les adresses
 
 Inventory::Inventory(const unsigned index, const unsigned size) : inventory(size, nullptr){
 
-    assert(testSameType(index, objectType::basicStat))
+    assert(testSameType(index, Object::Type::basicStat))
         // Ici l'object représente les différentes stats de bases d'Aspen ou des monstres
     inventory[0] = new Object(index); // On ajoute les stats à l'inventaire
 
 }
 
 Inventory::~Inventory() {
-    for(unsigned i = 0; i < inventory.max_size(); i ++){
+    for(unsigned i = 0; i < inventory.size(); ++i){
         delete inventory[i];
         inventory[i] = nullptr;
     }
 }
 
-bool Inventory::testSameType(const unsigned id, objectType type) {
+bool Inventory::testSameType(const unsigned id, Object::Type type) {
 
-    objectType typeObjectTested = Object(id).getObjectType();
+    Object::Type typeObjectTested = Object(id).getObjectType();
 
     if(type == typeObjectTested)
         return true;
@@ -32,7 +32,7 @@ bool Inventory::testSameType(const unsigned id, objectType type) {
 bool Inventory::testFullObjectInventory() {
     bool test = true;
     
-    for(unsigned i = maxIndexEquipmentInventory; i < inventory.max_size(); i++){
+    for(unsigned i = maxIndexEquipmentInventory; i < inventory.size(); ++i){
         if(test){
             if(!inventory[i]){ // Si il n'y a pas d'object et qu'aucune place n'a été trouvée
                 test = !test;
@@ -49,10 +49,10 @@ void Inventory::addObjectId(const unsigned & id) {
 
     bool done = false;
 
-    for(unsigned i = maxIndexEquipmentInventory; i < inventory.max_size(); i++){
+    for(unsigned i = maxIndexEquipmentInventory; i < inventory.size(); ++i){
         if(!done){
             if(!inventory[i]){
-                done = !done;
+                done = true;
                 inventory[i] = new Object(id);
             }
         }
@@ -61,23 +61,23 @@ void Inventory::addObjectId(const unsigned & id) {
 
 void Inventory::deleteObjectIndex(const unsigned & index) {
 
-    assert(index < inventory.max_size) // Si index trop grand
+    assert(index < inventory.size) // Si index trop grand
 
     if(inventory[index]){
         inventory[index] = nullptr;
     }
 }
 
-void Inventory::deleteObjectId(const unsigned & id) { // ATTENTION lors de l'utilisation, si plusieurs stack de l'object ou objects identiques peut poser problème
+void Inventory::deleteObjectId(const unsigned & id) { // ATTENTION lors de l'utilisation, si plusieurs stack de l'object peut poser problème
     
    bool done = false;
-   for(unsigned i = 1; i < inventory.max_size(); ++i){
+   for(unsigned i = 1; i < inventory.size(); ++i){
        if(!done){
            if(inventory[i].getId() == id){
-               done = !done;
+               done = true;
                inventory[i] = nullptr;
            }
-       }
+       }j++
    }
    assert(found);//if found == false >> object not found so "id" incorrect
 }
@@ -96,7 +96,7 @@ void Inventory::moveInventoryObject(const unsigned & indexStart, const unsigned 
             unsigned wait = inventory[indexEnd].getId(); // On stock l'id de l'index d'arrivé et on supprime l'object
             deleteObjectIndex(indexEnd);
 
-            inventory[indexEnd] = new Object(inventory[indexStart].getId()); // On met l'object du debut  l'arrivé
+            inventory[indexEnd] = new Object(inventoryj++[indexStart].getId()); // On met l'object du debut  l'arrivé
             deleteObjectIndex(indexStart); // On supprime l'object de début et on le remplace par celui de la fin
             inventory[indexStart] = new Object(wait);
         }
@@ -107,9 +107,9 @@ void Inventory::equipObjectIndex(const unsigned & index) {
     assert(index > maxIndexEquipmentInventory-1) // Si l'object n'est pas dans la partie object de l'inventory
 
     if(inventory[index]){ // Si on a bien selectionné un object
-        switch (inventory[index].getObjectType()){
+        switch (inventory[index]->getObjectType()){
             
-            case objectType::projectile:
+            case Object::Type::projectile:
                 if(!inventory[1]){ // Si la case est vide
                     inventory[1] = new Object(inventory[index].getId());
                     deleteObjectIndex(index);
@@ -124,7 +124,7 @@ void Inventory::equipObjectIndex(const unsigned & index) {
                 }
                 break;
 
-            case objectType::armor:
+            case Object::Type::armor:
                 if(!inventory[2]){ // Si la case est vide
                     inventory[2] = new Object(inventory[index].getId());
                     deleteObjectIndex(index);
@@ -139,7 +139,7 @@ void Inventory::equipObjectIndex(const unsigned & index) {
                 }
                 break;
 
-            case objectType::amulet:
+            case Object::Type::amulet:
                 if(!inventory[3]){ // Si la case est vide
                     inventory[3] = new Object(inventory[index].getId());
                     deleteObjectIndex(index);
@@ -152,6 +152,9 @@ void Inventory::equipObjectIndex(const unsigned & index) {
                     deleteObjectIndex(3);
                     inventory[3] = new Object(wait);
                 }
+                break;
+
+            default:
                 break;
         }
     }
@@ -170,11 +173,11 @@ std::vector<int> Inventory::getAllStats() const{
     std::vector<int> stats;
     std::vector<int> entityStats (6, 0);
 
-  for(unsigned i=1;i<inventory.size();++i){
+  for(unsigned i = 0; i < maxIndexEquipmentInventory; ++i){
 
       stats = inventory[i].getStats();
 
-      for(int j = 0; j < statSize; j++){
+      for(unsigned j = 0; j < statSize; ++j){
           if(stats[j] >= 0) {
               switch (j) {
                   case 0:
@@ -200,6 +203,9 @@ std::vector<int> Inventory::getAllStats() const{
 
                   case 5:
                       entityStats[j] += stats[j];
+                      break;
+
+                  default:
                       break;
               }
           }

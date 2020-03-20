@@ -3,7 +3,6 @@
 
 #include "Objects.h"
 #include <vector>
-#include <array>
 
 const unsigned maxIndexBasicStatInventory = 1; // => [0] = basic stat
 const unsigned maxIndexEquipmentInventory = 4; // => [1 -> 4] = equipment
@@ -24,7 +23,7 @@ public:
      */
     ~Inventory();
 
-    bool testSameType(const unsigned, objectType); // Test si l'id de l'object selectionné est du même type
+    bool testSameType(const unsigned, Object::Type); // Test si l'id de l'object selectionné est du même type
     bool testFullObjectInventory();
     
     /**
@@ -69,7 +68,7 @@ public:
 
 
 private :
-    std::array<Object *> inventory; // 0 : Stats de base | 1 -> 5 : equipement | 6 -> size : inventaire
+    std::vector<Object *> inventory; // 0 : Stats de base | 1 -> 4 : equipement | 4 -> inventory.size() : inventaire
 
 };
 

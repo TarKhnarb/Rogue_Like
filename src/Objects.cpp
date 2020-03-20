@@ -25,7 +25,7 @@ Object::Object(unsigned id){
     pSQL[9] = "SELECT type FROM Object WHERE idObject = ?";
 
 
-    for(unsigned i = 0; i < statment; i++){
+    for(unsigned i = 0; i < statment; ++i){
 
         base = sqlite3_prepare(Object, pSQL[i], -1, &requete, 0);
         /*
@@ -80,25 +80,31 @@ Object::Object(unsigned id){
                     case 9:
                         switch (base){
                             case 0:
-                                type = objectType::basicStat;
+                                type = Type::basicStat;
                                 break;
 
                             case 1:
-                                type = objectType::projectile;
+                                type = Type::projectile;
                                 break;
 
                             case 2:
-                                type = objectType::armor;
+                                type = Type::armor;
                                 break;
 
                             case 3:
-                                type = objectType::amulet;
+                                type = Type::amulet;
                                 break;
 
                             case 4:
-                                type = objectType::monsterLoot;
+                                type = Type::monsterLoot;
+                                break;
+
+                            default:
                                 break;
                         }
+                        break;
+
+                    default:
                         break;
                 }
                 break;
@@ -115,6 +121,8 @@ Object::Object(unsigned id){
     }
 
     sqlite3_close(Object); //Ferme la base
+
+    objectNumber = 1;
 
 }
 
@@ -143,8 +151,25 @@ unsigned Object::getResalePrice() const{
     return resalePrice;
 }
 
-objectType Object::getObjectType() const {
+Type Object::getObjectType() const {
     return type;
+}
+
+unsigned Object::getObjectNumber() const {
+    return objectNumber;
+}
+
+const unsigned Object::getMaxStack() const {
+
+    switch (type){
+        case Type::monsterLoot:
+            maxStack = 16u;
+            break;
+
+        default:
+            maxStack = 1u;
+            break;
+    }
 }
 
 /*
@@ -152,7 +177,7 @@ objectType Object::getObjectType() const {
 void Object::display(){
     std::cout<<idObject<< " " << name << std::endl;
     std::cout<< price << " " << resalePrice << " " << fly<<std::endl;
-    for(auto i=stats.begin();i<stats.end();i++){
+    for(auto i=stats.begin();i<stats.end();++i){
        std::cout<<*i<< " ";
     }
     std::cout<<std::endl;
