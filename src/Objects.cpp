@@ -159,6 +159,10 @@ unsigned Object::getObjectNumber() const {
     return objectNumber;
 }
 
+void Object::setObjectNumber(unsigned i) {
+    objectNumber = i;
+}
+
 const unsigned Object::getMaxStack() const {
 
     switch (type){
@@ -169,14 +173,32 @@ const unsigned Object::getMaxStack() const {
             return 1u;
     }
 }
-
 /*
+ * unsigned idObject;
+    std::string name;
+    unsigned price;
+    unsigned resalePrice;
+    Type type;
+    unsigned objectNumber;
+ */
+
+// fly, attack, attackSpeed, hp, defense, speed
+
 //utile pour le debug
 void Object::display(){
-    std::cout<<idObject<< " " << name << std::endl;
-    std::cout<< price << " " << resalePrice << " " << fly<<std::endl;
-    for(auto i=stats.begin();i<stats.end();++i){
-       std::cout<<*i<< " ";
-    }
-    std::cout<<std::endl;
-}*/
+
+    std::cout << "      idObject : " << idObject << std::endl;
+    std::cout << "      name : " << name << std::endl;
+    std::cout << "      price : " << price << std::endl;
+    std::cout << "      resalePrice : " << resalePrice << std::endl;
+    std::cout << "      type : " << type << std::endl;
+    std::cout << "      objectNumber : " << objectNumber << std::endl;
+    std::cout << "      fly : " << stats[0] << std::endl;
+    std::cout << "      attack : " << stats[1] << std::endl;
+    std::cout << "      attackSpeed : " << stats[2] << std::endl;
+    std::cout << "      hp : " << stats[3] << std::endl;
+    std::cout << "      defence : " << stats[4] << std::endl;
+    std::cout << "      fly : " << stats[5] << std::endl;
+
+    std::cout << std::endl;
+}

@@ -30,6 +30,7 @@ public :
     unsigned getPrice() const;
     unsigned getResalePrice() const;
     Type getObjectType() const;
+    void setObjectNumber(unsigned);
     unsigned getObjectNumber() const;
     const unsigned getMaxStack() const;
 

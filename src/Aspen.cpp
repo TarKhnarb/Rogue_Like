@@ -4,8 +4,10 @@
 
 int main(){
 
-    Inventory o(2);
-    o.
+    Inventory test = Inventory(0, 10);
+    test.displayBasicStat();
+
+     // Tenu d'infirmière
 
 	
 /*	Stage d;

@@ -1,5 +1,5 @@
 #include "Entity.h"
-
+/*
 
 Entity::Entity(const unsigned & x, const unsigned & y,std::string n){
     name = n;
@@ -66,3 +66,4 @@ void Entity::displayEntity() {
     std::cout << "X :" << pos->getPosition(true) << " Y : " << pos->getPosition(false) << std::endl;
     //inventory->displayInventory();
 }
+*/

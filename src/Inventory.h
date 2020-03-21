@@ -16,60 +16,67 @@ public:
     /**
      * @brief adds an object by default id = 1 to array inventory
      */
-    Inventory(const unsigned);
+    Inventory(unsigned, unsigned);
 
     /**
      * @brief destructor for Inventory
      */
     ~Inventory();
 
-    bool testSameType(const unsigned, Object::Type); // Test si l'id de l'object selectionné est du même type
+    bool testSameType(unsigned, Object::Type); // Test si l'id de l'object selectionné est du même type
     bool testFullObjectInventory();
-    
-    /**
-     * @brief displays inventory Objects statistics and a resume of all combined statistics
-     */
-    void displayInventory();
+    bool testFullStack(unsigned); // Test si l'object a atteint son stack max
+    int numberAddStack(unsigned, unsigned); // Test si l'idObject existe et return le nombre d'object encore ajoutable
 
-    void displayEquipment();
+    void addRecursiveObjectId(unsigned, unsigned, unsigned, bool &, unsigned &); // id, objNum, startIndex, done, objAdd
 
      /**
       * @brief add an Object into Inventory according to it's id
       * @param[in] an unsigned variable that corresponds to the Object id to add
       */
-    void addObjectId(const unsigned &);
+     void addObjectId(unsigned, unsigned, unsigned &);
+
+     void addObjectIndex(unsigned, unsigned, unsigned, unsigned &);
 
     /**
      * @brief delete object according to array index
      * @param[in] the index of the Object in array inventory which has to be removed
      */
-    void deleteObjectIndex(const unsigned &);
+    void deleteObjectIndex(unsigned);
 
     /**
     * @brief delete object according to it's id
     * @param[in] the id of the Object in array inventory which has to be removed
     */
-    void deleteObjectId(const unsigned &);
+    void deleteObjectId(unsigned );
 
-    void moveInventoryObject(const unsigned &, const unsigned &); // deplace un object entre deux cases avec leurs index si la case est occupé echange les deux objects
+    void moveInventoryObject(unsigned, unsigned); // deplace un object entre deux cases avec leurs index si la case est occupé echange les deux objects
 
-    void equipObjectIndex(const unsigned &); // equip l'équipement en fonction de son type si un equipé le remplace
-    void unequipObjectIndex(const unsigned &); // unequip
+    void equipObjectIndex(unsigned); // equip l'équipement en fonction de son type si un equipé le remplace
+    void unequipObjectIndex(unsigned, unsigned &); // unequip
 
     /**
     * @brief calculates the sum of all objects statistics
     */
 
-    std::vector<int> getAllStats() const; // entityFly, entityAttack, entityAttackSpeed, entityHp, entityDefense, entitySpeed
+    std::vector<int> getAllEntityStats() const; // entityFly, entityAttack, entityAttackSpeed, entityHp, entityDefense, entitySpeed
 
 
-    std::vector<unsigned> getObjectStats(const unsigned) const;
+    std::vector<int> getObjectStats(unsigned) const;
 
+    /**
+     * @brief displays inventory Objects statistics and a resume of all combined statistics
+     */
 
+    void displayBasicStat();
+
+    void displayInventory();
+
+    void displayEquipment();
 
 private :
-    std::vector<Object *> inventory; // 0 : Stats de base | 1 -> 4 : equipement | 4 -> inventory.size() : inventaire
-
+    std::vector<Object*> inventory; // 0 : Stats de base | 1 -> 4 : equipement | 4 -> inventory.size() : inventaire
+    bool full;
 };
 
 
