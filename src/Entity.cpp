@@ -1,50 +1,96 @@
 #include "Entity.h"
-/*
 
-Entity::Entity(const unsigned & x, const unsigned & y,std::string n){
-    name = n;
-    money=100;
-    life=100;
+Entity::Entity(unsigned &x, unsigned &y){
+    inventory = Inventory(1, playerInventorySize); // 1: Aspen,
+    std::cout << "Inventory created" << std::endl;
+    inventory.displayBasicStat();
+    money = 100;
     pos = new Position<int>(x,y);
+    std::cout << "Position set" << std::endl;
     getStatistics();
+    std::cout << "Stats set" << std::endl;
 }
 
-Entity::Entity(const unsigned &x, const unsigned & y, const unsigned & l, std::string n){
-    name = n;
+Entity::Entity(unsigned &x, unsigned &y, unsigned l, unsigned id){
+    inventory = Inventory(id, monsterInventorySize);
+    name = inventory.getObjectName(0);
     life = l;
     pos = new Position<int>(x,y);
 }
 
 Entity::~Entity() {
-    //nothing yet
+    delete pos;
+    pos = nullptr;
 }
 
 void Entity::getStatistics() {
-    attack = inventory->getAttack();
-    attackSpeed = inventory->getAttackSpeed();
-    life += inventory->getHp();
-    defence = inventory->getDefence();
-    speed = inventory->getSpeed();
-    fly = inventory->getFly();
+
+    std::cout << "1" << std::endl;
+    std::vector<int>entityStats;
+    std::cout << "2" << std::endl;
+    entityStats = inventory.getAllEntityStats();
+    std::cout << "3" << std::endl;
+
+    for(unsigned i = 0; i < entityStats.size(); ++i){
+        switch (i){
+            case 0:
+                fly = entityStats[i];
+                break;
+
+            case 1:
+                attack = entityStats.at(i);
+                break;
+
+            case 2:
+                attackSpeed = entityStats.at(i);
+                break;
+
+            case 3:
+                life = entityStats.at(i);
+                break;
+
+            case 4:
+                defence = entityStats.at(i);
+                break;
+
+            case 5:
+                speed = entityStats.at(i);
+                break;
+
+            default:
+                break;
+        }
+    }
 }
 
 //have to be redone
-void Entity::buyObject(const unsigned & id) {
-    //unsigned thePrice = getPrice(inventory->getUsedSpace()-1);
-    //if(thePrice <= money){
-        inventory->addObject(id);
-        //money-=thePrice;
-        getStatistics();
-    //}else{
-        std::cout<<"You do not have enough money to buy this object" <<std::endl;
-    //}
+void Entity::buyObject(unsigned id) {
+
+    unsigned thePrice = Object(id).getPrice();
+    unsigned objAdd;
+    if(thePrice <= money){
+        money -= thePrice;
+        inventory.addObjectId(id, 1, objAdd);
+        assert(objAdd == 1); // si objAdd != 1 alors object non ajouté
+    }
+    else{
+        std::cout << "You do not have enough money to buy this object" << std::endl;
+    }
 }
 
-void Entity::sellObjectByIndex(const unsigned & index) {
-    unsigned resalePrice = inventory->getResalePrice(index);
-    inventory->removeObjectIndex(index);
-    money += resalePrice;
-    getStatistics();
+void Entity::sellObjectByIndex(unsigned index, unsigned number) {
+
+    if(inventory.testObjectExist(index) && inventory.getObjectNumber(index) <= number){ // Si l'object selectionné existe et a le bon nombre pour être vendu
+        unsigned resalePrice = inventory.getObjectResalePrice(index);
+        inventory.removeObjectIndex(index, number);
+
+        if(!inventory.testObjectExist(index)){ // Seulement si l'object à été supprimé
+            money += number*resalePrice;
+        }
+    }
+    else{
+        std::cout << "Vous n'avez pas assez d'exemplaires sur vous" << std::endl;
+    }
 }
 
 bool Entity::entityCanFly()const{
@@ -64,6 +110,7 @@ void Entity::displayEntity() {
     std::cout << "Speed : " << speed << std::endl;
     std::cout << "fly : " << fly << std::endl;
     std::cout << "X :" << pos->getPosition(true) << " Y : " << pos->getPosition(false) << std::endl;
-    //inventory->displayInventory();
+
+    inventory.displayEquipment();
+    inventory.displayInventory();
 }
-*/

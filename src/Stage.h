@@ -19,7 +19,7 @@ public:
     Stage();
     ~Stage();
 
-    void generate(); // Génère le Stage
+    void generate(unsigned &); // Génère le Stage
     
     void setSeed(unsigned);
     unsigned getSeed() const;
@@ -29,14 +29,12 @@ public:
 
     unsigned getSize() const;
 
-    unsigned getStage() const;
-
     Room* getRoom(unsigned, unsigned) const;
 
     void placeDoors();
     void roomTypeMonsterObjectAffect(); // Affecte a chaque salles un type en fonction de son nombre de portes (tableau)
 
-    void reset();
+    void reset(unsigned);
 
     bool countRoomsAround(unsigned, unsigned);
      
@@ -46,7 +44,6 @@ private:
 
     unsigned seed;
     unsigned roomsNb;
-    unsigned stage;
 
     bool random;
 };

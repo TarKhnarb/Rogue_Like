@@ -5,10 +5,9 @@ class Donjon{
 public:
 
     Donjon();
-    Donjon(unsigned); // Pour commencer avec un seed précis
+  //  Donjon(unsigned); // Pour commencer avec un seed précis
 
     unsigned getStage() const;
-    void setStage(unsigned);
 
     void DonjonGame();
 
@@ -18,5 +17,4 @@ private:
     unsigned seed;
 
     Stage* currentStage;
-
 };

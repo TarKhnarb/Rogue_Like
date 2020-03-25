@@ -3,31 +3,60 @@
 
 #include "Entity.h"
 
-struct PositionMap
-{
-    unsigned x, y;
-};
+const unsigned idBlacksmith = 1;
+const unsigned xBlacksmith = 10;
+const unsigned yBlacksmith = 10;
+
+const unsigned idWitch = 2;
+const unsigned xWitch = 20;
+const unsigned yWitch = 20;
+
+const unsigned idTrader = 3;
+const unsigned xTrader = 30;
+const unsigned yTrader = 30;
+
+const unsigned idCrafter = 4;
+const unsigned xCrafter = 40;
+const unsigned yCrafter = 40;
 
 class Npc{
 
 public:
 
-    Npc(const std::string& nameOfNpc);
-    ~Npc();
+    /**
+     * @brief contructs a npc ....
+     * @param[in/out] string : nameOfFile ????
+     **/
+    Npc();
 
-    void ActionNpc(int &idObject);
-    void sellObject(int idObject);
+    /**
+     * @brief function executate npc's actions
+     * @param[in] id :  the id of the object, [in/out] entity : aspen
+     **/
+    void ActionBlacksmith(Entity &hero);
+
+    /**
+     * @brief Aspen buy an object  veut acheter un objet au marchand//à la sorcière
+     * @param[in] id :  the id of the object, [in/out] entity : aspen
+     **/
+    void sellObject(Entity&);
+
     void buyObject(int idObject);
     void upgradeObject(int idObject);
     void makeObject(int idObject);
 
 private:
 
+    /*
     std::string nameNpc;
-  //  Inventory* inventoryNpc;
+    Inventory inventoryNpc;
     std::string nameFileInventory;
-    std::string* dialogue;
+
     PositionMap posNpc;
+     */
+
+    std::string* dialogue;
+    //std::vector<Upgrade*> blacksmithInventory;
 };
 
 #endif

@@ -17,7 +17,6 @@ public :
              const POS &,
              const POS &);
 
-     ~Position();
     Position operator = (const Position &);
     bool operator == (const Position &);
     bool operator < (const Position &);
@@ -54,13 +53,6 @@ Position<POS>::Position(const POS & minX,
 
     x=Random<POS>::random(minX,maxX);
     y=Random<POS>::random(minY,maxY);
-}
-
-
-template <class POS>
-Position<POS>::~Position() {
-    x=0;
-    y=0;
 }
 
 template <class POS>

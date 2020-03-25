@@ -1,97 +1,69 @@
 #include "Npc.h"
 /*
-Npc::Npc(const std::string& nameOfNpc){
-    switch(nameOfNpc) {
-        case 1 :    //Npc : forgeron
-        {
-            nameNpc = nameOfNpc;
-            nameFileInventory = "..obj/inventory/blacksmith.txt";
-            inventory.inventory(50, 7, nameFileInventory);
+Npc::Npc(){
 
-        }
-        case 2 :    //Npc : sorciere
-        {
-            nameNpc = nameOfNpc;
-            nameFileInventory = "..obj/inventory/witch.txt";
-            inventoryNpc.inventory(50, 7, nameFileInventory);
-        }
-        case 3 :    //Npc : marchand
-        {
-            nameNpc = nameOfNpc;
-            nameFileInventory = "..obj/inventory/crafter.txt";
-            inventoryNpc.inventory(50, 7, nameFileInventory);
-        }
-    }
+    unsigned l = 1;
+    //récupérer dans le fichier (id, x, y)
+    blacksmith = Entity(xBlacksmith, yBlacksmith, 0, idBlacksmith);
+
+    // A modif
+    Entity witch = Entity(&x, &yW, &l, idW);
+    Entity crafter = Entity(&xC, &yC, &l, idC);
 }
 
 
 
-
-
-
-
-void Npc::ActionNpc(int &idObject){
-    switch(){
-        case 1 :    //Perso veut acheter un objet au marchand
-        {
-            ...;
-        }
-        case 2 :    //Perso veut vendre un objet au marchand
-        {
-            ...;
-        }
-        case 3 :    //Perso peut fabriquer un objet chez le forgeron
-        {
-            ...;
-        }
-        case 4 :    //Perso veut ameliorer un objet chez le forgeron
-        {
-            ...;
-        }
-        case 5 :    //Perso veut acheter une potion chez la sorcière
-        {
-
-        }
-        case 6 :    //Perso veut fabriquer une potion chez la sorcière
-        {
-
-        }
-
+void Npc::ActionBlacksmithFabriquer(Entity &hero){ // Crafter du stuff ou l'améliorer
+   */ /*
+     * Blacksmith a :
+     *      un inventaire d'Upgrades n°1 (vector de la classe Upgrade pour stocker les crafts)
+     *      un inventaire d'Upgrades n°2 (vector de la classe Upgrade pour stocker les crafts)
+     *      un inventaire d'Object (variable d'entity)
+     *
+     * Lorsque le joueur accèdes au blacksmith, la première fenêtre sera les crafts, du coup on charge dans
+     * l'inventaire d'Upgrade n°1 tous les craft (<=> id des plus bas niveaux de chaque stuff)
+     *
+     * Si le joueur accède aux améliorations, on parcourt l'inventaire du joueur a la recherche d'object de Type
+     * qui peuvent être améliorés et on récupère leur id pour mettre les upgrades correspondantes dans l'inventaire
+     * d'Upgrade n°2 du blacksmith
+     *
+     * On ne vide l'inventaire n°2 seulement lorque le joueur part du blacksmith
+     *
+     * pour crafter/Ameliorer, le joueur selectionne un case de l'inventaire affiché
+     */
+/*
+    for(unsigned i = 0; i < maxUpgrades; i++){
+        blacksmith.
     }
 }
 
-void Npc::sellObject(int &idObject, character& perso)
+void Npc::sellObject(int & idObject, Entity & perso)
 {
-    //il faut chercher l'objet
-    if((!fullOrNot)||(perso.argent >= ))
+    assert(inventory(testObjectExist(id));
+    Object * NewObject = Object(idObject);
+    if((!inventory. testFull())||(perso->money >= NewObject->getPrice())) //check if perso's inventory is full and perso has enough money
     {
-
+        perso->inventoryaddRecursiveObjectId(id,1,?,?,?);   //paramètres!!!!!!!!!!
     }
-
+    delete NewObject;
 }
 
-void Npc::buyObject(int &idObject, unsigned nbCopy)
+void Npc::buyObject(int &idObject, unsigned nbCopy, Entity& perso)
 {
-    unsigned price;
-    //trouver l'objet dans l'inventaire pour savoir le prix
-    for(int i = 0; i < inventory.size; i++)
-    {
-        if(inventory->table[i][0] == idObject)
-        {
-            price = inventory->table[i][???]; //mettre la colonne qui contient le prix
-        }
+    for(i = 0; i < nbCopy; i++) {
+        assert(perso->inventory(testObjetExist(id)));
+        perso->money += NewObject->getResalePrice();
+        perso->inventory.deleteObjectId()
     }
-    //enleve les objets de l'inventaire du perso
 }
 
 void Npc::upgradeObject(int idObject)
 {
-
+    //find the object's Upgrade
 }
 
 void Npc::makeObject(int idObject)
 {
-
+    // pas besoin de faire
 }
-
 */

@@ -20,7 +20,6 @@ Stage::Stage(){
 	
 	seed = 1;
     random = true;
-    stage = 0;
 }
 
 /**************
@@ -42,7 +41,7 @@ Stage::~Stage(){
  * Generate *
  ***********/
 
-void Stage::generate(){
+void Stage::generate(unsigned &stage){
 	
     if(random) seed = time(0);
 	srand(seed);
@@ -56,7 +55,7 @@ void Stage::generate(){
 	
 	while (roomsNb != roomsCnt){ // Génère les salles autour de la salle de départ (centre)
 
-	    reset(); // Reset (nettoie le tableau et genere le depart au milieu du tableau)
+	    reset(stage); // Reset (nettoie le tableau et genere le depart au milieu du tableau)
         roomsCnt = 0; // Au cas où on recommence
 
 		// Génère les salles du Stage
@@ -233,14 +232,6 @@ unsigned Stage::getSize() const{
     return maxSize;
 }
 
-/*************
- * Get Stage *
- ************/
-
-unsigned Stage::getStage() const {
-    return stage;
-}
-
 /************
  * Get Room *
  ***********/
@@ -371,7 +362,7 @@ void Stage::roomTypeMonsterObjectAffect(){
  * Reset *
  ********/
 
-void Stage::reset() {
+void Stage::reset(unsigned stage) {
 
     for(unsigned i = 0; i < maxSize; i++) {
         for (unsigned j = 0; j < maxSize; j++) {
@@ -381,7 +372,7 @@ void Stage::reset() {
     }
 
     unsigned mid = (maxSize - 1)/2;
-    if (stage == 0) {
+    if (stage == 1) {
         RoomsMap[mid][mid] = new Room(Start);
     }
     else RoomsMap[mid][mid] = new Room(CommonStart);

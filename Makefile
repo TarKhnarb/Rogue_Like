@@ -1,12 +1,12 @@
 B = bin
 O = obj
 S = src
-FLAGS = -c -Wall -std=c++11
+FLAGS = -c -Wall
 
 all: $(O) $(B) $(B)/Aspen
 
-$(B)/Aspen: $(O)/Donjon.o $(O)/Npc.o
-	g++ -ggdb $(S)/Aspen.cpp -o $(B)/Aspen $(O)/*.o -lsqlite3 -std=c++11
+$(B)/Aspen: $(O)/Donjon.o $(O)/Npc.o $(O)/Inventory.o $(O)/Object.o
+	g++ -ggdb $(S)/Aspen.cpp -o $(B)/Aspen $(O)/*.o
 
 $(O)/Donjon.o: $(O)/Stage.o
 	g++ $(FLAGS) $(S)/Donjon.cpp -o $(O)/Donjon.o
@@ -20,11 +20,11 @@ $(O)/Room.o: $(O)/Door.o
 $(O)/Door.o:
 	g++ $(FLAGS) $(S)/Door.cpp -o $(O)/Door.o
 
-$(O)/Inventory.o: $(O)/Objects.o
+$(O)/Inventory.o: $(O)/Object.o
 	g++ $(FLAGS) $(S)/Inventory.cpp -o $(O)/Inventory.o
 
-$(O)/Objects.o:
-	g++ $(FLAGS) $(S)/Objects.cpp -o $(O)/Objects.o
+$(O)/Object.o:
+	g++ $(FLAGS) $(S)/Object.cpp -o $(O)/Object.o
 
 $(O)/Random.o:
 	g++ $(FLAGS) $(S)/Random.cpp -o $(O)/Random.o
@@ -34,6 +34,9 @@ $(O)/Npc.o: $(O)/Entity.o
 
 $(O)/Entity.o: $(O)/Inventory.o $(S)/Position.h
 	g++ $(FLAGS) $(S)/Entity.cpp -o $(O)/Entity.o
+
+$(O)/Projectile.o: $(S)/Position.h
+	g++ $(FLAGS) $(S)/Projectile.cpp -o $(O)/Projectile.o
 
 $(O):
 	mkdir $(O)

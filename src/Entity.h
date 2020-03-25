@@ -8,23 +8,27 @@
 #include "Position.h"
 #include "Inventory.h"
 
+const unsigned monsterInventorySize = 3;
+const unsigned playerInventorySize = 20;
+
 class Entity {
 public :
+    Entity() = default;
     /**
      * @brief construct a player
      * @parma[in] x : position of the entity on x axis
      * @parma[in] y : position of the entity on y axis
-     * @param n : the name of the entity (player)
-     */
-    Entity(const unsigned &, const unsigned &, std::string);
+     **/
+    Entity(unsigned&, unsigned&);
 
     /**
      * @brief construct a monster
      * @parma[in] x : position of the entity on x axis
      * @parma[in] y : position of the entity on y axis
-     * @param n : the name of the monster
+     * @parma[in] l : life of the monster
+     * @param id : the id of the monster
      */
-    Entity(const unsigned &, const unsigned &, unsigned const &, std::string);
+    Entity(unsigned&, unsigned&, unsigned , unsigned);
 
     ~Entity();
 
@@ -33,12 +37,12 @@ public :
      * @brief delete an object in inventory array according to it's position in the array
      * @param[in] the index position of the object to be sold
      */
-    void sellObjectByIndex(const unsigned &);
+    void sellObjectByIndex(unsigned, unsigned);
     /**
      * @brief adds an object into inventory array according to it's id
-     * @param[in] the id of the object to be bought
+     * @param[in] id : id of the object to be bought
      */
-    void buyObject(const unsigned &);
+    void buyObject(unsigned);
 
     /**
     * @brief check if player can fly
@@ -51,7 +55,7 @@ public :
      * @param[in] x : value which represent the number to move the entity on the x axis
      * @param[in] y : value which represent the number to move the entity on the y axis
      */
-    void moveEntity(const unsigned &, const unsigned &);
+    void moveEntity(const unsigned&, const unsigned&);
 
     /**
      * @brief displays the statistics of the entity
