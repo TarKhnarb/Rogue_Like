@@ -25,16 +25,12 @@ Entity::~Entity() {
 
 void Entity::getStatistics() {
 
-    std::cout << "1" << std::endl;
-    std::vector<int>entityStats;
-    std::cout << "2" << std::endl;
-    entityStats = inventory.getAllEntityStats();
-    std::cout << "3" << std::endl;
+    std::vector<int>entityStats = inventory.getAllEntityStats();
 
     for(unsigned i = 0; i < entityStats.size(); ++i){
         switch (i){
             case 0:
-                fly = entityStats[i];
+                fly = entityStats.at(i);
                 break;
 
             case 1:

@@ -39,7 +39,7 @@ void AfficheEntityStats(std::vector<int> stats){
 
 int main(){
 
-/*    unsigned addObj = 0;
+    /*unsigned addObj = 0;
     Inventory test = Inventory(1, 10);
     AfficheEntityStats(test.getAllEntityStats());
 
@@ -49,8 +49,8 @@ int main(){
     test.equipObjectIndex(4);
     test.displayInventory();
     test.displayEquipment();
-    AfficheEntityStats(test.getAllEntityStats());*/
-
+    AfficheEntityStats(test.getAllEntityStats());
+*/
     unsigned pos = 10;
     Entity aspen = Entity(pos, pos);
 

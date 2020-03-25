@@ -1,368 +1,168 @@
 #include "Inventory.h"
-#include <iostream>
-#include <assert.h>
 
-// jouer avec les adresses
+Inventory::Inventory(unsigned idBasicStat, unsigned stuffSize, unsigned bagSize) // stuffSize = 0 ou 3
+: basicStat {idBasicStat}
+, stuff {stuffSize, nullptr}
+, bag {bagSize, nullptr}
+{ }
 
-Inventory::Inventory(unsigned id, unsigned size) : inventory(size, nullptr){
-
-    assert(testSameType(id, Object::Type::basicStat));
-        // Ici l'object représente les différentes stats de bases d'Aspen ou des monstres
-    inventory[0] = new Object(id); // On ajoute les stats à l'inventaire
-    full = false;
+Inventory::~Inventory()
+{
+	for(Object *p : stuff)
+	{
+		delete p;
+		p = nullptr;
+	}
+	
+	for(Object *p : bag)
+	{
+		delete p;
+		p = nullptr;
+	}
 }
 
-Inventory::~Inventory() {
-
-    for(unsigned i = 0; i < inventory.size(); ++i){
-        delete inventory[i];
-        inventory[i] = nullptr;
-    }
+void Inventory::equip(unsigned bagIndex)
+{
+	assert(bagIndex < bag.size() && bag[bagIndex]);
+	
+	unsigned stuffIndex;
+	switch(bag[bagIndex]->getType())
+	{
+		case Object::projectile:
+			stuffIndex = 0;
+			break;
+			
+		case Object::armor:
+			stuffIndex = 1;
+			break;
+			
+		case Object::amulet:
+			stuffIndex = 2;
+			break;
+			
+		default:
+			throw std::runtime_error {"Inventory::equip(" + std::to_string(bagIndex) + ") - Unequipable object"};
+			break;
+	}
+	
+	swapStuffBag(stuffIndex, bagIndex);
 }
 
-bool Inventory::testSameType(unsigned id, Object::Type type) {
-
-    Object::Type typeObjectTested = Object(id).getObjectType();
-
-    if(type == typeObjectTested)
-        return true;
-    else
-        return false;
+void Inventory::unequip(unsigned stuffIndex)
+{
+	assert(stuffIndex < stuff.size());
+	
+	auto found = std::find(bag.begin(), bag.end(), nullptr);
+	if (found == bag.end())
+		throw std::runtime_error {"Inventory::unequip(" + std::to_string(stuffIndex) + ") - Bag is full"};
+	
+	*found = stuff[stuffIndex];
+	stuff[stuffIndex] = nullptr;
 }
 
-bool Inventory::testFullObjectInventory() {
-
-    bool full = true;
-    
-    for(unsigned i = maxIndexEquipmentInventory; i < inventory.size(); ++i){
-        if(full){
-            if(!inventory[i]){ // Si il y a un object quelque soit sa place
-                full = false;
-            }
-        }
-    }
-
-    return full;
+void Inventory::addObject(unsigned id, unsigned objectNb)
+{
+	while (objectNb > 0)
+	{
+		auto pred = [id] (Object* obj) -> bool { return obj && obj->getId() == id && obj->getObjectNumber() < obj->getMaxStack(); };
+		auto found = std::find_if(bag.begin(), bag.end(), pred);
+		
+		if (found != bag.end())
+		{
+			objectNb = (*found)->addObjectNumber(objectNb);
+		}
+		else
+		{
+			found = std::find(bag.begin(), bag.end(), nullptr);
+			if (found == bag.end())
+				throw std::runtime_error {"Inventory::addobject(" + std::to_string(id) + ") - Bag is full"};
+			
+			*found = new Object {id};
+			objectNb -= 1;
+			objectNb = (*found)->addObjectNumber(objectNb);
+		}
+	}
 }
 
-bool Inventory::testFullStack(unsigned index) {
-
-    if(inventory[index]){
-        if(inventory[index]->getObjectNumber() < inventory[index]->getMaxStack())
-            return false;
-        else
-            return true;
-    }
-    else
-        return false;
+unsigned Inventory::removeObject(unsigned bagIndex)
+{
+	assert(bagIndex < bag.size() && bag[bagIndex]);
+	
+	unsigned result = bag[bagIndex]->getId();
+	delete bag[bagIndex];
+	bag[bagIndex] = nullptr;
+	
+	return result;
 }
 
-bool Inventory::testObjectExist(unsigned index) {
-    if(inventory[index])
-        return true;
-    else
-        return false;
+void Inventory::swapBagBag(unsigned bagIndex1, unsigned bagIndex2)
+{
+	assert(bagIndex1 < bag.size() && bagIndex2 < bag.size());
+	
+	Object *temp {bag[bagIndex1]};
+	bag[bagIndex1] = bag[bagIndex2];
+	bag[bagIndex2] = temp;
 }
 
-int Inventory::numberAddStack(unsigned id, unsigned index) {
-
-    if(inventory[index] && inventory[index]->getId() == id){
-        if(testFullStack(index)){
-            return 0;
-        }
-        else{
-            return inventory[index]->getMaxStack() - inventory[index]->getObjectNumber();
-        }
-    }
-    else
-        return -1;
+std::vector<int> Inventory::getAllStats() const
+{
+	std::vector<int> stats (6, 0);
+	
+	for (Object* p : stuff)
+	{
+		if (p)
+		{
+			std::vector<int> stuffStats = p->getStats();
+			
+			for (unsigned i = 0; i < 6; ++i)
+			{
+				stats[i] += stuffStats[i];
+			}
+		}
+	}
+	
+	return stats;
 }
 
-void Inventory::addRecursiveObjectId(unsigned id, unsigned objNumb, unsigned startIndex, bool &done, unsigned &objAdd){
-    assert(!testFullObjectInventory());
-    for(unsigned i = startIndex; i < inventory.size(); ++i){
-        if(!done){
-            if(!inventory[i]){
-                inventory[i] = new Object(id);
-
-                if(objNumb <= inventory[i]->getMaxStack()){
-                    inventory[i]->setObjectNumber(objNumb); // L'object n'existe pas donc si on le créer, objectNumber = 1 donc on n'en veut que objNum
-                    done = true; // on passe a true
-                    objAdd += objNumb;
-                }
-                else{ // Si plus grand que le max id
-                    inventory[i]->setObjectNumber(inventory[i]->getMaxStack()); // on set l'obectNumber a son max
-                    objAdd += inventory[i]->getMaxStack();
-                    addRecursiveObjectId(id, objNumb - inventory[i]->getMaxStack(), i+1, done, objAdd); // On recommence à essayer de le placer
-                }
-            }
-            else{
-                if(inventory[i]->getId() == id){ // l'object nous interesse seulement si il a le bon id
-
-                    if(objNumb + inventory[i]->getObjectNumber() <= inventory[i]->getMaxStack()){ // Si l'objectNumber + objNum peut être ajouter l'ajoute
-                        inventory[i]->setObjectNumber(objNumb + inventory[i]->getObjectNumber()); // Car object deja existant et n'est pas plein
-                        objAdd += objNumb;
-                        done = true;
-                    }
-                    else{ //Du coup si objNum + max stack > Max stack
-                        if(inventory[i]->getObjectNumber() < inventory[i]->getMaxStack()){ // L'object's stack peut encore acceuillir de la place
-                            inventory[i]->setObjectNumber(inventory[i]->getMaxStack()); // on rempli le stack
-                            objAdd += inventory[i]->getMaxStack() - inventory[i]->getObjectNumber();
-                            addRecursiveObjectId(id, objNumb - (inventory[i]->getMaxStack() - inventory[i]->getObjectNumber()), i+1, done, objAdd); // et on recommence
-                        }
-                        else // l'object a atteint son stack
-                            addRecursiveObjectId(id, objNumb, i+1, done, objAdd); // on essaye donc de le placer ailleur
-                    }
-                }
-            }
-        }
-    }
+const Object* Inventory::getStuff(unsigned stuffIndex) const
+{
+	assert(stuffIndex < stuff.size());
+	
+	return static_cast<const Object*>(stuff[stuffIndex]);
 }
 
-void Inventory::addObjectId(unsigned id, unsigned objNumb, unsigned &objAdd) {
-
-    assert(!testFullObjectInventory());
-
-    objAdd = 0; // Pour être sûr
-
-    bool done = false;
-    addRecursiveObjectId(id,objNumb, maxIndexEquipmentInventory, done, objAdd);
+const Object* Inventory::getObject(unsigned bagIndex) const
+{
+	assert(bagIndex < bag.size());
+	
+	return static_cast<const Object*>(bag[bagIndex]);
 }
 
-void Inventory::addObjectIndex(unsigned id, unsigned index, unsigned objNumb, unsigned &objAdd) { // ATTENTION lors de l'utilisation
-    assert(!testFullObjectInventory());
-    assert(objNumb <= Object(id).getMaxStack());
-
-    bool done = false;
-    if(!done){
-        if(!inventory[index]){
-            inventory[index] = new Object(id);
-            inventory[index]->setObjectNumber(objNumb);
-            objAdd += objNumb;
-        }
-    }
-
+void Inventory::display()
+{
+	std::cout << "INVENTAIRE !!!" << std::endl;
+	std::cout << basicStat.getId() << std::endl;
+	std::cout << "STUFF:" << std::endl;
+	for (auto p : stuff)
+	{
+		if (p)
+		std::cout << p->getId() << std::endl;
+		else
+		std::cout << "onono" << std::endl;
+	}
+	std::cout << "BAG:" << std::endl;
+	for (auto p : bag)
+	{
+		if (p)
+		std::cout << p->getId() << std::endl;
+		else
+		std::cout << "onono" << std::endl;
+	}
 }
 
-void Inventory::removeObjectIndex(unsigned index, unsigned number) {
-    assert(index < inventory.size()); // Si index trop grand
-
-    if(inventory[index]){
-        unsigned objNum = inventory[index]->getObjectNumber();
-        if( objNum <= number){
-            if(objNum - number == 0){
-                inventory[index] = nullptr;
-            }
-            else{
-                inventory[index]->setObjectNumber(objNum - number);
-            }
-        }
-        else{
-            std::cout << "Impossible pas assez d'objects dans l'inventaire" << std::endl;
-        }
-    }
-}
-
-void Inventory::deleteObjectIndex(unsigned index) {
-
-    assert(index < inventory.size()); // Si index trop grand
-
-    if(inventory[index]){
-        inventory[index] = nullptr;
-    }
-}
-
-void Inventory::deleteObjectId(unsigned id) { //
-    
-   bool done = false;
-   for(unsigned i = 1; i < inventory.size(); ++i){
-       if(!done){
-           if(inventory[i]->getId() == id){
-               done = true;
-               inventory[i] = nullptr;
-           }
-       }
-   }
-   assert(done);//if found == false >> object not found so "id" incorrect
-}
-
-void Inventory::moveInventoryObject(unsigned indexStart, unsigned indexEnd) {
-
-    assert(indexStart > maxIndexEquipmentInventory-1 || indexEnd > maxIndexEquipmentInventory-1);
-
-    if(inventory[indexStart]){ // Si on a bien un object selectionné
-        if(!inventory[indexEnd]){ // Si il n'y a pas d'object a l'arrivé
-            inventory[indexEnd] = new Object(inventory[indexStart]->getId());
-            deleteObjectIndex(indexStart);
-        }
-        else{
-            unsigned wait = inventory[indexEnd]->getId(); // On stock l'id de l'index d'arrivé et on supprime l'object
-            deleteObjectIndex(indexEnd);
-
-            inventory[indexEnd] = new Object(inventory[indexStart]->getId()); // On met l'object du debut  l'arrivé
-            deleteObjectIndex(indexStart); // On supprime l'object de début et on le remplace par celui de la fin
-            inventory[indexStart] = new Object(wait);
-        }
-    }
-}
-
-void Inventory::equipObjectIndex(unsigned index) {
-    assert(index > maxIndexEquipmentInventory-1); // Si l'object n'est pas dans la partie object de l'inventory
-
-    if(inventory[index]){ // Si on a bien selectionné un object
-        switch (inventory[index]->getObjectType()){
-            
-            case Object::Type::projectile:
-                if(!inventory[1]){ // Si la case est vide
-                    inventory[1] = new Object(inventory[index]->getId());
-                    deleteObjectIndex(index);
-                }
-                else{
-                    unsigned wait = inventory[index]->getId();
-                    deleteObjectIndex(index);
-
-                    inventory[index] = new Object(inventory[1]->getId());
-                    deleteObjectIndex(1);
-                    inventory[1] = new Object(wait);
-                }
-                break;
-
-            case Object::Type::armor:
-                if(!inventory[2]){ // Si la case est vide
-                    inventory[2] = new Object(inventory[index]->getId());
-                    deleteObjectIndex(index);
-                }
-                else{
-                    unsigned wait = inventory[index]->getId();
-                    deleteObjectIndex(index);
-
-                    inventory[index] = new Object(inventory[2]->getId());
-                    deleteObjectIndex(2);
-                    inventory[2] = new Object(wait);
-                }
-                break;
-
-            case Object::Type::amulet:
-                if(!inventory[3]){ // Si la case est vide
-                    inventory[3] = new Object(inventory[index]->getId());
-                    deleteObjectIndex(index);
-                }
-                else{
-                    unsigned wait = inventory[index]->getId();
-                    deleteObjectIndex(index);
-
-                    inventory[index] = new Object(inventory[3]->getId());
-                    deleteObjectIndex(3);
-                    inventory[3] = new Object(wait);
-                }
-                break;
-
-            default:
-                break;
-        }
-    }
-}
-
-void Inventory::unequipObjectIndex(unsigned index, unsigned &objAdd) {
-    assert(index < maxIndexEquipmentInventory && index > maxIndexBasicStatInventory-1);
-    assert(!testFullObjectInventory());
-
-    objAdd = 0;
-
-    addObjectId(inventory[index]->getId(), 1, objAdd); // On rajoute l'object à l'inventaire
-    assert(objAdd > 0);
-    deleteObjectIndex(index); // On le supprime de l'equipement
-}
-
-std::vector<int> Inventory::getAllEntityStats() const{
-
-    std::vector<int> stats;
-    std::vector<int> entityStats (6, 0);
-
-  for(unsigned i = 0; i < maxIndexEquipmentInventory; ++i){
-
-      if(inventory[i]){
-          stats = inventory[i]->getStats();
-
-          for(unsigned j = 0; j < statSize; ++j){
-              if(stats[j] >= 0) {
-                  switch (j) {
-                      case 0:
-                          if (stats[j] == 1)
-                              entityStats[j] = 1;
-                          break;
-
-                      case 1:
-                          entityStats[j] += stats[j];
-                          break;
-
-                      case 2:
-                          entityStats[j] += stats[j];
-                          break;
-
-                      case 3:
-                          entityStats[j] += stats[j];
-                          break;
-
-                      case 4:
-                          entityStats[j] += stats[j];
-                          break;
-
-                      case 5:
-                          entityStats[j] += stats[j];
-                          break;
-
-                      default:
-                          break;
-                  }
-              }
-          }
-          stats.clear();
-      }
-  }
-    return entityStats;
-}
-
-std::vector<int> Inventory::getObjectStats(unsigned index) const {
-    return inventory[index]->getStats();
-}
-
-std::string Inventory::getObjectName(unsigned index) const {
-    return inventory[index]->getName();
-}
-
-unsigned Inventory::getObjectResalePrice(unsigned index) const {
-    return inventory[index]->getResalePrice();
-}
-
-unsigned Inventory::getObjectNumber(unsigned index) const {
-    return inventory[index]->getObjectNumber();
-}
-
-
-
-void Inventory::displayBasicStat(){
-    std::cout << "Basic stats : " << std::endl;
-    std::cout << "  N° 0 :" << std::endl;
-    inventory.at(0)->display();
-}
-
-void Inventory::displayInventory() {
-    std::cout << "Inventory : " << std::endl;
-    for(unsigned i = maxIndexEquipmentInventory; i < inventory.size(); i++){
-        if(inventory[i]){
-            std::cout << "  N° " << i - maxIndexEquipmentInventory << " : " << std::endl;
-            inventory[i]->display();
-        }
-    }
-}
-
-void Inventory::displayEquipment() {
-    std::cout << "Equipment : " << std::endl;
-    for(unsigned i = maxIndexBasicStatInventory; i < maxIndexEquipmentInventory; i++){
-        if(inventory[i]){
-            std::cout << "  N° " << i - maxIndexBasicStatInventory << " : " << std::endl;
-            inventory[i]->display();
-        }
-    }
+void Inventory::swapStuffBag(unsigned stuffIndex, unsigned bagIndex)
+{
+	Object *temp {stuff[stuffIndex]};
+	stuff[stuffIndex] = bag[bagIndex];
+	bag[bagIndex] = temp;
 }

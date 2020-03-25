@@ -22,11 +22,6 @@ public :
      * @param[in] id :  the id of the object
      **/
     Object(unsigned);
-    
-    /**
-     * @brief destructor
-     **/
-    ~Object();
 
     std::vector<int> getStats() const;
     /**
@@ -57,14 +52,16 @@ public :
      * @brief return the object type
      * @return ...........
      **/
-    Type getObjectType() const;
-    
+    Type getType() const;
+	
     /**
      * @brief sets the object according to the parameter
      * @param[in] i : the object number to be set
      **/
     void setObjectNumber(unsigned);
     
+	unsigned addObjectNumber(unsigned);
+	
     /**
      * @brief get the object number
      * @return an unsigned variable that is the object number

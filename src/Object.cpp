@@ -1,12 +1,10 @@
 #include "Object.h"
 #include <iostream>
-#include <assert.h>
 #include <string>
 #include <fstream>
 #include <sstream>
 
 Object::Object(unsigned id){
-    assert(id >= 0);
 
     std::ifstream file;
     file.open("data/Objects.csv");
@@ -15,7 +13,7 @@ Object::Object(unsigned id){
         std::string csvItem;
 
         unsigned i=0;
-        while(i != id){
+        while (i != id){
             if(file.eof()){
                 std::cout << "The object id you are searching for is too big" << std::endl;
             }
@@ -77,11 +75,6 @@ std::string Object::returnCsvItem(std::istringstream & ss){
     return res;
 }
 
-Object::~Object() {
-    name.clear();
-    stats.clear();
-}
-
 std::vector<int> Object::getStats() const{
     return stats;
 }
@@ -102,12 +95,27 @@ unsigned Object::getResalePrice() const{
     return resalePrice;
 }
 
-Object::Type Object::getObjectType() const {
+Object::Type Object::getType() const {
     return type;
 }
 
 unsigned Object::getObjectNumber() const {
     return objectNumber;
+}
+
+unsigned Object::addObjectNumber(unsigned nb) {
+	unsigned place = getMaxStack() - objectNumber;
+	
+	if (nb > place)
+	{
+		objectNumber = getMaxStack();
+		return nb - place;
+	}
+	else
+	{
+		objectNumber += nb;
+		return 0;
+	}
 }
 
 void Object::setObjectNumber(unsigned i) {
