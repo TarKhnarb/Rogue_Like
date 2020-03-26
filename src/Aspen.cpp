@@ -8,15 +8,15 @@ void AfficheEntityStats(std::vector<int> stats){
     for(unsigned i = 0; i < stats.size(); ++i){
         switch (i){
             case 0:
-                std::cout << "      fly          : " << stats.at(i) << std::endl;
+                std::cout << "      fly          : " << stats[i] << std::endl;
                 break;
 
             case 1:
-                std::cout << "      attack       : " << stats.at(i) << std::endl;
+                std::cout << "      attack       : " << stats[i] << std::endl;
                 break;
 
             case 2:
-                std::cout << "      attackSpeed  : " << stats.at(i) << std::endl;
+                std::cout << "      attackSpeed  : " << stats[i] << std::endl;
                 break;
 
             case 3:
@@ -52,7 +52,7 @@ int main(){
     AfficheEntityStats(test.getAllEntityStats());
 */
     unsigned pos = 10;
-    Entity aspen = Entity(pos, pos);
+    Entity aspen = Entity(pos, pos, 1);
 
     aspen.displayEntity();
 

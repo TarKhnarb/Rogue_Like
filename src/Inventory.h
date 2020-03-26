@@ -16,6 +16,7 @@ class Inventory
 		
 		Inventory() = default;
 		Inventory(unsigned idBasicStat, unsigned stuffSize, unsigned bagSize);
+
 		~Inventory();
 		
 		void equip(unsigned bagIndex);
@@ -28,6 +29,7 @@ class Inventory
 		std::vector<int> getAllStats() const;
 		const Object* getStuff(unsigned stuffIndex) const;
 		const Object* getObject(unsigned bagIndex) const;
+		std::string getBasicStatName() const;
 		
 		void display();
 		
