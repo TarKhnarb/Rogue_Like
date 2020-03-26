@@ -1,21 +1,21 @@
 #include "Entity.h"
 
 Entity::Entity(unsigned &x, unsigned &y){
-    inventory = Inventory(1, playerInventorySize); // 1: Aspen,
-    std::cout << "Inventory created" << std::endl;
-    inventory.displayBasicStat();
+
+    inventory = Inventory(1, playerStuffSize, playerBagSize); // 1: Aspen,
+    name = inventory.getBasicStatName();
+
     money = 100;
     pos = new Position<int>(x,y);
-    std::cout << "Position set" << std::endl;
     getStatistics();
-    std::cout << "Stats set" << std::endl;
 }
 
-Entity::Entity(unsigned &x, unsigned &y, unsigned l, unsigned id){
-    inventory = Inventory(id, monsterInventorySize);
-    name = inventory.getObjectName(0);
-    life = l;
+Entity::Entity(unsigned &x, unsigned &y, unsigned id){
+    inventory = Inventory(id, 0, monsterBagSize);
+    name = inventory.getBasicStatName();
+    money = 5;
     pos = new Position<int>(x,y);
+    getStatistics();
 }
 
 Entity::~Entity() {
@@ -25,7 +25,7 @@ Entity::~Entity() {
 
 void Entity::getStatistics() {
 
-    std::vector<int>entityStats = inventory.getAllEntityStats();
+    std::vector<int>entityStats = inventory.getAllStats();
 
     for(unsigned i = 0; i < entityStats.size(); ++i){
         switch (i){
@@ -59,22 +59,21 @@ void Entity::getStatistics() {
     }
 }
 
-//have to be redone
-void Entity::buyObject(unsigned id) {
+void Entity::buyObject(unsigned id, unsigned objectNum) {
 
-    unsigned thePrice = Object(id).getPrice();
-    unsigned objAdd;
+    unsigned thePrice = objectNum * Object(id).getPrice();
+
     if(thePrice <= money){
+        inventory.addObject(id, objectNum); // par defaut en achète un seul
         money -= thePrice;
-        inventory.addObjectId(id, 1, objAdd);
-        assert(objAdd == 1); // si objAdd != 1 alors object non ajouté
     }
-    else{
+    else
         std::cout << "You do not have enough money to buy this object" << std::endl;
-    }
 }
 
+/*
 void Entity::sellObjectByIndex(unsigned index, unsigned number) {
+
 
     if(inventory.testObjectExist(index) && inventory.getObjectNumber(index) <= number){ // Si l'object selectionné existe et a le bon nombre pour être vendu
         unsigned resalePrice = inventory.getObjectResalePrice(index);
@@ -87,7 +86,7 @@ void Entity::sellObjectByIndex(unsigned index, unsigned number) {
     else{
         std::cout << "Vous n'avez pas assez d'exemplaires sur vous" << std::endl;
     }
-}
+}*/
 
 bool Entity::entityCanFly()const{
     return fly;
@@ -107,6 +106,5 @@ void Entity::displayEntity() {
     std::cout << "fly : " << fly << std::endl;
     std::cout << "X :" << pos->getPosition(true) << " Y : " << pos->getPosition(false) << std::endl;
 
-    inventory.displayEquipment();
-    inventory.displayInventory();
+    inventory.display();
 }

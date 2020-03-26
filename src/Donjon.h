@@ -1,13 +1,15 @@
 #include "Stage.h"
 
+const unsigned stageNumber = 6;
+
 class Donjon{
 
 public:
 
-    Donjon();
+    Donjon(unsigned);
   //  Donjon(unsigned); // Pour commencer avec un seed précis
 
-    unsigned getStage() const;
+    unsigned getCurrentStage(unsigned) const;
 
     void DonjonGame();
 
@@ -15,6 +17,5 @@ private:
 
     unsigned stage;
     unsigned seed;
-
-    Stage* currentStage;
+    Stage *currentStage;
 };

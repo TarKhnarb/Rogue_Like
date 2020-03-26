@@ -1,9 +1,11 @@
 #include "Donjon.h"
 
-Donjon::Donjon() {
-    stage = 1;
+Donjon::Donjon(unsigned stageNumb){
+
+    stage = stageNumb;
+    currentStage = new Stage();
 }
 
 void Donjon::DonjonGame() {
-
+    currentStage->generate(stage);
 }

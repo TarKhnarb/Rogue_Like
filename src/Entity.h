@@ -8,8 +8,9 @@
 #include "Position.h"
 #include "Inventory.h"
 
-const unsigned monsterInventorySize = 3;
-const unsigned playerInventorySize = 20;
+const unsigned monsterBagSize = 3;
+const unsigned playerBagSize = 20;
+const unsigned playerStuffSize = 3;
 
 class Entity {
 public :
@@ -25,10 +26,9 @@ public :
      * @brief construct a monster
      * @parma[in] x : position of the entity on x axis
      * @parma[in] y : position of the entity on y axis
-     * @parma[in] l : life of the monster
      * @param id : the id of the monster
      */
-    Entity(unsigned&, unsigned&, unsigned , unsigned);
+    Entity(unsigned&, unsigned&, unsigned);
 
     ~Entity();
 
@@ -42,7 +42,7 @@ public :
      * @brief adds an object into inventory array according to it's id
      * @param[in] id : id of the object to be bought
      */
-    void buyObject(unsigned);
+    void buyObject(unsigned, unsigned objectNb = 1);
 
     /**
     * @brief check if player can fly
