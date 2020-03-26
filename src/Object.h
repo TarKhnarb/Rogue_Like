@@ -21,6 +21,7 @@ public :
      * @brief contructs an object according to the id 
      * @param[in] id :  the id of the object
      **/
+	Object() = default;
     Object(unsigned);
 
     std::vector<int> getStats() const;
