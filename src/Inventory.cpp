@@ -106,7 +106,7 @@ void Inventory::swapBagBag(unsigned bagIndex1, unsigned bagIndex2)
 
 std::vector<int> Inventory::getAllStats() const
 {
-	std::vector<int> stats (6, 0);
+	std::vector<int> stats = basicStat.getStats();
 	
 	for (Object* p : stuff)
 	{
