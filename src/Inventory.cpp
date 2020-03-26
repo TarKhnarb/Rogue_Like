@@ -88,11 +88,40 @@ unsigned Inventory::removeObject(unsigned bagIndex)
 {
 	assert(bagIndex < bag.size() && bag[bagIndex]);
 	
-	unsigned result = bag[bagIndex]->getId();
+	unsigned objectId = bag[bagIndex]->getId();
 	delete bag[bagIndex];
 	bag[bagIndex] = nullptr;
 	
-	return result;
+	return objectId;
+}
+
+unsigned Inventory::removeObject(unsigned id, unsigned objectNb)
+{
+	unsigned removedObjects = 0;
+	
+	for (auto p : bag)
+	{
+		if (p && p->getId() == id)
+		{
+			unsigned idObjectNb = p->getObjectNumber();
+			
+			if (objectNb >= idObjectNb)
+			{
+				delete p;
+				p = nullptr;
+				objectNb -= idObjectNb;
+				removedObjects += idObjectNb;
+			}
+			else
+			{
+				p->setObjectNumber(idObjectNb - objectNb);
+				objectNb = 0;
+				removedObjects += objectNb;
+			}
+		}
+	}
+	
+	return removedObjects;
 }
 
 void Inventory::swapBagBag(unsigned bagIndex1, unsigned bagIndex2)

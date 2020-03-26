@@ -23,7 +23,8 @@ class Inventory
 		
 		void addObject(unsigned id, unsigned objectNb = 1);
 		unsigned removeObject(unsigned bagIndex);
-		void swapBagBag(unsigned badIndex1, unsigned badIndex2);
+		unsigned removeObject(unsigned id, unsigned objectNb);
+		void swapBagBag(unsigned bagIndex1, unsigned bagIndex2);
 		
 		std::vector<int> getAllStats() const;
 		const Object* getStuff(unsigned stuffIndex) const;
