@@ -183,13 +183,7 @@ void Stage::generate(unsigned &stage){
             }
         }
 	}
-
-
-
-    stage++;
-    std::cout << "roomsNb = " << roomsNb << std::endl;
-    std::cout << "roomsCnt = " << roomsCnt << std::endl;
-    std::cout << "seed = " << seed << std::endl;
+	stage++;
 }
 
 /************
@@ -225,14 +219,6 @@ bool Stage::getRandom() const{
 }
 
 /************
- * Get Size *
- ***********/
-
-unsigned Stage::getSize() const{
-    return maxSize;
-}
-
-/************
  * Get Room *
  ***********/
 
@@ -249,21 +235,21 @@ void Stage::placeDoors(){
     for(unsigned i = 0; i < maxSize; i++){
         for(unsigned j = 0; j < maxSize; j ++){
             if(RoomsMap[i][j]){
-                if (i > 0 && RoomsMap[i-1][j]) { // Left Room
-                    RoomsMap[i][j]->placeDoor(3);
-                }
-
-
-                if (j > 0 && RoomsMap[i][j-1]) { // Room above
+                if (i > 0 && RoomsMap[i-1][j]) { // Room above
                     RoomsMap[i][j]->placeDoor(0);
                 }
 
-                if(i+1 < maxSize && RoomsMap[i+1][j]){ // Right Room
-                    RoomsMap[i][j]->placeDoor(1);
+
+                if (j > 0 && RoomsMap[i][j-1]) { // Left Room
+                    RoomsMap[i][j]->placeDoor(3);
                 }
 
-                if(j+1 < maxSize && RoomsMap[i][j+1]){ // Room below
+                if(i+1 < maxSize && RoomsMap[i+1][j]){ // Room below
                     RoomsMap[i][j]->placeDoor(2);
+                }
+
+                if(j+1 < maxSize && RoomsMap[i][j+1]){ // Right Room
+                    RoomsMap[i][j]->placeDoor(1);
                 }
             }
         }
@@ -271,7 +257,7 @@ void Stage::placeDoors(){
 }
 
 
-void Stage::roomTypeMonsterObjectAffect(){
+void Stage::affectRoomTypeMonsterObject(){
 
     for(unsigned i = 0; i < maxSize; i++){
         for(unsigned j = 0; j < maxSize; j++){
@@ -372,7 +358,7 @@ void Stage::reset(unsigned stage) {
     }
 
     unsigned mid = (maxSize - 1)/2;
-    if (stage == 1) {
+    if (stage == 0) {
         RoomsMap[mid][mid] = new Room(Start);
     }
     else RoomsMap[mid][mid] = new Room(CommonStart);
@@ -419,9 +405,9 @@ bool Stage::countRoomsAround(unsigned i, unsigned j) { // prend les coords d'une
 
 std::ostream& operator<<(std::ostream& stream, const Stage& d){
 
-	for (unsigned i = 0; i < d.getSize(); i++)
+	for (unsigned i = 0; i < maxSize; i++)
 	{
-		for (unsigned j = 0; j < d.getSize(); j++)
+		for (unsigned j = 0; j < maxSize; j++)
 		{
 			if (d.getRoom(i, j) == nullptr)
 			{

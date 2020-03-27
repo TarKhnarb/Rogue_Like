@@ -1,4 +1,4 @@
-#ifndef NPC_H
+/*#ifndef NPC_H
 #define NPC_H
 
 #include "Entity.h"
@@ -25,38 +25,57 @@ public:
 
     /**
      * @brief contructs a npc ....
-     * @param[in/out] string : nameOfFile ????
+     * @param
      **/
-    Npc();
+/*    Npc();
 
     /**
-     * @brief function executate npc's actions
-     * @param[in] id :  the id of the object, [in/out] entity : aspen
+     * @brief function executate Blacksmith's actions
+     * @param[in/out] entity : hero
      **/
-    void ActionBlacksmith(Entity &hero);
+  /*  void ActionsBlacksmith(Entity &hero);
+
+    /**
+     * @brief function executate Witch's actions
+     * @param[in/out] entity : hero
+     **/
+   /* void ActionsWitch(Entity &hero);
+
+    /**
+     * @brief function executate Crafter's actions
+     * @param[in/out] entity : hero
+     **/
+ /*   void ActionsCrafter(Entity &hero);
+
+    /**
+     * @brief function executate Trader's actions
+     * @param[in/out] entity : hero
+     **/
+ /*   void ActionsTrader(Entity &hero);
 
     /**
      * @brief Aspen buy an object  veut acheter un objet au marchand//à la sorcière
      * @param[in] id :  the id of the object, [in/out] entity : aspen
      **/
-    void sellObject(Entity&);
+ /*   void sellObject(Entity&);
 
     void buyObject(int idObject);
     void upgradeObject(int idObject);
     void makeObject(int idObject);
 
 private:
+    Entity blacksmith;
+    std::vector<Upgrade*> blacksmithInventory;
 
-    /*
-    std::string nameNpc;
-    Inventory inventoryNpc;
-    std::string nameFileInventory;
+    Entity witch;
 
-    PositionMap posNpc;
-     */
+    Entity crafter;
 
-    std::string* dialogue;
-    //std::vector<Upgrade*> blacksmithInventory;
+    Entity trader;
+
+    //std::string* dialogue;
+
 };
 
 #endif
+*/

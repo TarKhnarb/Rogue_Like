@@ -21,11 +21,12 @@ class Inventory
 		
 		void equip(unsigned bagIndex);
 		void unequip(unsigned stuffIndex);
-		
-		void addObject(unsigned id, unsigned objectNb = 1);
-		unsigned removeObject(unsigned bagIndex);
-		unsigned removeObject(unsigned id, unsigned objectNb);
-		void swapBagBag(unsigned bagIndex1, unsigned bagIndex2);
+
+        void addObject(unsigned id, unsigned objectNb = 1);
+        unsigned removeObject(unsigned bagIndex);
+        unsigned removeObject(unsigned id, unsigned objectNb);
+        unsigned getNumber(unsigned id) const;
+        void swapBagBag(unsigned bagIndex1, unsigned bagIndex2);
 		
 		std::vector<int> getAllStats() const;
 		const Object* getStuff(unsigned stuffIndex) const;

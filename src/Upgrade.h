@@ -1,30 +1,21 @@
-#ifndef UPGRADE_H
+/*#ifndef UPGRADE_H
 #define UPGRADE_H
 
-const unsigned maxUpgrades = 10;
+const unsigned resourcesSize = 9;
 
 class Upgrade {
 public:
-    Upgrade* getResource(unsigned) const;
+    std::vector<unsigned> getResource(unsigned) const;
     unsigned getPrice(unsigned) const;
 
 private:
-    unsigned idUpgrade; //idObject
+    std::vector<unsigned> resources;  //idUpgrade, idObjN1, numberObjN1, idObjN2, numberObjN2, idObjN3, numberObjN3, idObjN4,  numberObjN4
     unsigned price;
-    unsigned idObjN1;
-    unsigned numberObjN1;
-    unsigned idObjN2;
-    unsigned numberObjN2;
-    unsigned idObjN3;
-    unsigned numberObjN3;
-    unsigned idObjN4;
-    unsigned numberObjN4;
-
 };
 
-#endif
+#endif*/
 
 // Forme du fichier  ATTENTION pour que la lecture soit plus simple il faut que les ligne aient le même nombre
 // d'élements quitte a les mettres a 0 comme ca simple condition a faire pour verifier si on garde idObjN°_
 
-// idObject, price, idObjN°1, numberObjN°1, idObjN°2, numberObjN°2, idObjN°3, numberObjN°3, idObjN°4, numberObjN°4
+// idObject, idResourceNb1, nbCopyNb1, idResourceNb2, nbCopyNb2, idResourceNb3, nbCopyNb3, idResourceNb4, nbCopyNb4

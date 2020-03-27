@@ -1,10 +1,11 @@
 #include "Entity.h"
+#include <math.h>
 
 Entity::Entity(unsigned &x, unsigned &y){
 
     inventory = Inventory(1, playerStuffSize, playerBagSize); // 1: Aspen,
     name = inventory.getBasicStatName();
-
+    orientation = static_cast<Orientation>(0);
     money = 100;
     pos = new Position<int>(x,y);
     getStatistics();
@@ -13,6 +14,7 @@ Entity::Entity(unsigned &x, unsigned &y){
 Entity::Entity(unsigned &x, unsigned &y, unsigned id){
     inventory = Inventory(id, 0, monsterBagSize);
     name = inventory.getBasicStatName();
+    orientation = static_cast<Orientation>(2);
     money = 5;
     pos = new Position<int>(x,y);
     getStatistics();
@@ -68,32 +70,44 @@ void Entity::buyObject(unsigned id, unsigned objectNum) {
         money -= thePrice;
     }
     else
-        std::cout << "You do not have enough money to buy this object" << std::endl;
+        throw std::runtime_error {"Entity::buyObject(" + std::to_string(money) + ") - You do not have enough money to buy this object"};
+
 }
 
-/*
-void Entity::sellObjectByIndex(unsigned index, unsigned number) {
+void Entity::sellObject(unsigned id, unsigned number) {
 
-
-    if(inventory.testObjectExist(index) && inventory.getObjectNumber(index) <= number){ // Si l'object selectionné existe et a le bon nombre pour être vendu
-        unsigned resalePrice = inventory.getObjectResalePrice(index);
-        inventory.removeObjectIndex(index, number);
-
-        if(!inventory.testObjectExist(index)){ // Seulement si l'object à été supprimé
-            money += number*resalePrice;
-        }
+    if(inventory.getNumber(id) == number){
+        inventory.removeObject(id, number);
+        money += number*
     }
-    else{
-        std::cout << "Vous n'avez pas assez d'exemplaires sur vous" << std::endl;
-    }
-}*/
+    else
+        throw std::runtime_error {"Entity::sellObject(" + std::to_string(id) + ") - Not enough item in inventory"}; // Erreur a afficher plus tard pour le joueur
+}
 
 bool Entity::entityCanFly()const{
     return fly;
 }
 
+unsigned Entity::getOrientation() const{
+    return orientation;
+}
+
 void Entity::moveEntity(const unsigned & x, const unsigned & y) {
-    pos->move(x*(speed/10),y*(speed/10));
+    //change orientation of entity
+    if(abs(x) > abs(y)){ //the entity moves on x axis 
+        if(x > 0){ //the entity goes positive on x axis >> going down
+            orientation = static_cast<Orientation>(1);
+        }else{
+            orientation = static_cast<Orientation>(0);
+        }
+    }else{ //the entity moves on y axis 
+        if(y > 0){
+             orientation = static_cast<Orientation>(3);
+        }else{
+             orientation = static_cast<Orientation>(4);
+        }
+    }
+    pos->move(x*(speed/10),y*(speed/10)); //move player
 }
 
 void Entity::displayEntity() {

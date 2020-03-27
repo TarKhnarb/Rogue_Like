@@ -1,45 +1,11 @@
 #include "Entity.h"
 #include <iostream>
 #include <vector>
-
-void AfficheEntityStats(std::vector<int> stats){
-
-    std::cout << "Entity Stats :" << std::endl;
-    for(unsigned i = 0; i < stats.size(); ++i){
-        switch (i){
-            case 0:
-                std::cout << "      fly          : " << stats[i] << std::endl;
-                break;
-
-            case 1:
-                std::cout << "      attack       : " << stats[i] << std::endl;
-                break;
-
-            case 2:
-                std::cout << "      attackSpeed  : " << stats[i] << std::endl;
-                break;
-
-            case 3:
-                std::cout << "      hp           : " << stats.at(i) << std::endl;
-                break;
-
-            case 4:
-                std::cout << "      defence      : " << stats.at(i) << std::endl;
-                break;
-
-            case 5:
-                std::cout << "      speed        : " << stats.at(i) << std::endl;
-                break;
-
-            default:
-                break;
-        }
-    }
-}
+#include "Stage.h"
 
 int main(){
 
-    /*unsigned addObj = 0;
+/*    unsigned addObj = 0;
     Inventory test = Inventory(1, 10);
     AfficheEntityStats(test.getAllEntityStats());
 
@@ -49,17 +15,18 @@ int main(){
     test.equipObjectIndex(4);
     test.displayInventory();
     test.displayEquipment();
-    AfficheEntityStats(test.getAllEntityStats());
-*/
+    AfficheEntityStats(test.getAllEntityStats());*/
+/*
     unsigned pos = 10;
-    Entity aspen = Entity(pos, pos, 1);
+    Entity aspen = Entity(pos, pos);
 
     aspen.displayEntity();
 
-	
-/*	Stage d;
-	
-	d.generate();
+	*/
+	Stage d;
+	unsigned stage = 0;
+	d.generate(stage);
+	d.roomTypeMonsterObjectAffect();
 	std::cout << d.getSeed() << std::endl;
 	std::cout << d;
 

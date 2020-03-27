@@ -1,18 +1,37 @@
 #include "Npc.h"
 /*
+
 Npc::Npc(){
 
-    unsigned l = 1;
-    //récupérer dans le fichier (id, x, y)
     blacksmith = Entity(xBlacksmith, yBlacksmith, 0, idBlacksmith);
-
-    // A modif
-    Entity witch = Entity(&x, &yW, &l, idW);
-    Entity crafter = Entity(&xC, &yC, &l, idC);
+    witch = Entity(xWitch, yWitch, 0, idWitch);
+    crafter = Entity(xCrafter, yCrafter, 0, idCrafter);
+    trader = Entity(xTrader, yTrader, 0, idTrader);
+    std::vector<Upgrade*> blacksmithInventory;
 }
 
 
+void ActionsBlacksmith(Entity &hero)
+{
 
+}
+
+void ActionsWitch(Entity &hero)
+{
+
+}
+
+void ActionsCrafter(Entity &hero)
+{
+
+}
+
+void ActionsTrader(Entity &hero)
+{
+
+}
+
+/*
 void Npc::ActionBlacksmithFabriquer(Entity &hero){ // Crafter du stuff ou l'améliorer
    */ /*
      * Blacksmith a :
@@ -20,7 +39,7 @@ void Npc::ActionBlacksmithFabriquer(Entity &hero){ // Crafter du stuff ou l'amé
      *      un inventaire d'Upgrades n°2 (vector de la classe Upgrade pour stocker les crafts)
      *      un inventaire d'Object (variable d'entity)
      *
-     * Lorsque le joueur accèdes au blacksmith, la première fenêtre sera les crafts, du coup on charge dans
+     * Lorsque le joueur accède au blacksmith, la première fenêtre sera les crafts, du coup on charge dans
      * l'inventaire d'Upgrade n°1 tous les craft (<=> id des plus bas niveaux de chaque stuff)
      *
      * Si le joueur accède aux améliorations, on parcourt l'inventaire du joueur a la recherche d'object de Type

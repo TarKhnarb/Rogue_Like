@@ -39,7 +39,6 @@ void Inventory::equip(unsigned bagIndex){
 			
 		default:
 			throw std::runtime_error {"Inventory::equip(" + std::to_string(bagIndex) + ") - Unequipable object"}; // penser a fair ele catch
-			break;
 	}
 	
 	swapStuffBag(stuffIndex, bagIndex);
@@ -59,23 +58,23 @@ void Inventory::unequip(unsigned stuffIndex)
 
 void Inventory::addObject(unsigned id, unsigned objectNb){
 
-	while (objectNb > 0){
-		auto pred = [id] (Object* obj) -> bool { return obj && obj->getId() == id && obj->getObjectNumber() < obj->getMaxStack(); };
-		auto found = std::find_if(bag.begin(), bag.end(), pred);
-		
-		if (found != bag.end()){
-			objectNb = (*found)->addObjectNumber(objectNb);
-		}
-		else{
-			found = std::find(bag.begin(), bag.end(), nullptr);
-			if (found == bag.end())
-				throw std::runtime_error {"Inventory::addobject(" + std::to_string(id) + ") - Bag is full"};
-			
-			*found = new Object {id};
-			objectNb -= 1;
-			objectNb = (*found)->addObjectNumber(objectNb);
-		}
-	}
+    while (objectNb > 0){
+        auto pred = [id] (Object* obj) -> bool { return obj && obj->getId() == id && obj->getObjectNumber() < obj->getMaxStack(); }; // Si l'id est bien un object, que l'id correspond et que son laxStack n'est pas atteint
+        auto found = std::find_if(bag.begin(), bag.end(), pred); // Recherche si pred entre le début et la fin du bag
+
+        if (found != bag.end()){ // Si on trouve une case avec pred
+            objectNb = (*found)->addObjectNumber(objectNb); // On ajoute a cet object existant le nombre d'object
+        }
+        else{ // Si ce n'est pas un object ou si l'id est différent ou que le nb a ajouter est superieur au stack max
+            found = std::find(bag.begin(), bag.end(), nullptr); // On cherche les cases vides
+            if (found == bag.end()) // Si aucune case n'est vide
+                throw std::runtime_error {"Inventory::addobject(" + std::to_string(id) + ") - Bag is full"}; // Erreur a afficher plus tard pour le joueur
+
+            *found = new Object {id}; // On créer un nouvel object a la case trouvée
+            objectNb -= 1; // On désincrémente car quand on créer un object, on l'init a 1 car sinon il ne peut exister (trivial quand on le sait)
+            objectNb = (*found)->addObjectNumber(objectNb); // On ajoute a cet object existant le nombre d'object
+        }
+    }
 }
 
 unsigned Inventory::removeObject(unsigned bagIndex){
@@ -116,6 +115,21 @@ unsigned Inventory::removeObject(unsigned id, unsigned objectNb)
 	}
 	
 	return removedObjects;
+}
+
+unsigned getNumber(unsigned id) const
+{
+    unsigned count = 0;
+
+    for (auto p : bag)
+    {
+        if (p && p->getId() == id)
+        {
+            count += p->getobjectNumber();
+        }
+    }
+
+    return count;
 }
 
 void Inventory::swapBagBag(unsigned bagIndex1, unsigned bagIndex2){

@@ -10,8 +10,6 @@ const unsigned maxSize = 21; // doit être un nombre impair
 const unsigned minRooms = 10; // Nombre max et min de salles
 const unsigned maxRooms = 20;
 
-const unsigned stageNb = 6;
-
 class Stage{
     
 public:
@@ -27,12 +25,10 @@ public:
     void setRandom(bool);
     bool getRandom() const;
 
-    unsigned getSize() const;
-
     Room* getRoom(unsigned, unsigned) const;
 
     void placeDoors();
-    void roomTypeMonsterObjectAffect(); // Affecte a chaque salles un type en fonction de son nombre de portes (tableau)
+    void affectRoomTypeMonsterObject(); // Affecte a chaque salles un type en fonction de son nombre de portes (tableau)
 
     void reset(unsigned);
 
