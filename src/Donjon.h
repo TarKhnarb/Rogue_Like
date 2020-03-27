@@ -1,5 +1,7 @@
 #include "Stage.h"
+
 #include <array>
+#include <stdexcept>
 
 const unsigned stageNumber = 6;
 
@@ -7,7 +9,6 @@ class Donjon{
 
 public:
 
-    void placeCharInArray(char room[27][27], std::array< std::array<char, 27>, 27>);
     Donjon(unsigned);
   //  Donjon(unsigned); // Pour commencer avec un seed précis
 
@@ -19,11 +20,10 @@ public:
 
 private:
 
-    std::array< std::array<char, 27>, 27> placeRoomDoors(Room curRoom, char curRoom[27][27]);
+    std::array< std::array<char, 27>, 27> placeRoomDoors(Room*, std::array< std::array<char, 27>, 27>);
 
     unsigned stageNb;
     unsigned stage;
     unsigned seed;
     Stage *currentStage;
-     currentRoom;
 };
