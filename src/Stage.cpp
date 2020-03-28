@@ -185,8 +185,6 @@ void Stage::generate(unsigned &stage){
 	}
 
 	placeDoors();
-
-	stage++;
 }
 
 /************
@@ -333,7 +331,7 @@ void Stage::affectRoomTypeMonsterObject(){
                             RoomsMap[i][j]->setType(Room3NSW);
                         }
 
-                        if(RoomsMap[i][j]->getDoor(2)){ // Doors at North, East, West
+                        if(!RoomsMap[i][j]->getDoor(2)){ // Doors at North, East, West
                             RoomsMap[i][j]->setType(Room3NEW);
                         }
                         break;
@@ -405,19 +403,19 @@ bool Stage::countRoomsAround(unsigned i, unsigned j) { // prend les coords d'une
  * Graphic View *
  ***************/
 
-std::ostream& operator<<(std::ostream& stream, const Stage& d){
+std::ostream& operator<<(std::ostream& stream, const Stage *s){
 
 	for (unsigned i = 0; i < maxSize; i++)
 	{
 		for (unsigned j = 0; j < maxSize; j++)
 		{
-			if (d.getRoom(i, j) == nullptr)
+			if (s->getRoom(i, j) == nullptr)
 			{
 				stream << ".";
 			}
 			else
 			{
-				switch (d.getRoom(i, j)->getType())
+				switch (s->getRoom(i, j)->getType())
 				{
 					case roomType::Common:
 						stream << "c";
@@ -428,7 +426,7 @@ std::ostream& operator<<(std::ostream& stream, const Stage& d){
 						break;
 					
 					case roomType::Boss:
-						stream << "B";
+						stream << "Z";
 						break;
 
 				    case roomType::CommonStart:
@@ -436,55 +434,55 @@ std::ostream& operator<<(std::ostream& stream, const Stage& d){
                         break;
 
 				    case roomType::Room2WE1 :
-                        stream << "2";
+                        stream << "A";
                         break;
 
 				    case roomType::Room2WE2 :
-                        stream << "2";
+                        stream << "B";
                         break;
 
 				    case roomType::Room2NS1 :
-                        stream << "2";
+                        stream << "C";
                         break;
 
 				    case roomType::Room2NS2 :
-                        stream << "2";
+                        stream << "D";
                         break;
 
                     case roomType::Room4NESW:
-                        stream << "4";
+                        stream << "E";
                         break;
 
 				    case roomType::Room1N:
-                        stream << "1";
+                        stream << "F";
                         break;
 
                     case roomType::Room1E:
-                        stream << "1";
+                        stream << "G";
                         break;
 
                     case roomType::Room1S:
-                        stream << "1";
+                        stream << "H";
                         break;
 
 				    case roomType::Room1W :
-                        stream << "1";
+                        stream << "I";
                         break;
 
                     case roomType::Room3NEW:
-                        stream << "3";
+                        stream << "J";
                         break;
 
                     case roomType::Room3NSW:
-                        stream << "3";
+                        stream << "K";
                         break;
 
 				    case roomType::Room3ESW:
-                        stream << "3";
+                        stream << "L";
                         break;
 
                     case roomType::Room3NES:
-                        stream << "3";
+                        stream << "M";
                         break;
 					
 					default:

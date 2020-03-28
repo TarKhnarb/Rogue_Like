@@ -92,7 +92,7 @@ unsigned Entity::getOrientation() const{
     return orientation;
 }
 
-void Entity::moveEntity(int & x, int & y) {
+void Entity::moveEntity(const int & x, const int & y) {
     //change orientation of entity
     if(std::abs(x) > std::abs(y)){ //the entity moves on x axis
         if(x > 0){ //the entity goes positive on x axis >> going down

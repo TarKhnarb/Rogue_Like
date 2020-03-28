@@ -2,6 +2,7 @@
 
 #include <array>
 #include <stdexcept>
+#include <iostream>
 
 const unsigned stageNumber = 6;
 
@@ -12,10 +13,11 @@ public:
     Donjon(unsigned);
   //  Donjon(unsigned); // Pour commencer avec un seed précis
 
-    Stage* getCurrentStage(unsigned) const;
+    Stage* getCurrentStage() const;
     std::array< std::array<char, 27>, 27> RoomCoordToChar(unsigned, unsigned);
 
     void nextStage(); // Gère la création et l'incrémentation de l'étage suivant
+
 
 
 private:
@@ -27,3 +29,5 @@ private:
     unsigned seed;
     Stage *currentStage;
 };
+
+std::ostream& operator<<(std::ostream&, const std::array< std::array<char, 27>, 27>&);

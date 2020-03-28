@@ -1,9 +1,14 @@
 #include "Entity.h"
 #include <iostream>
 #include <vector>
-#include "Stage.h"
+#include "Donjon.h"
 
 int main(){
+
+    Donjon test = Donjon(4);
+    std::cout << std::endl;
+    std::cout << test.RoomCoordToChar(10, 10);
+
 
 /*    unsigned addObj = 0;
     Inventory test = Inventory(1, 10);
@@ -22,14 +27,14 @@ int main(){
 
     aspen.displayEntity();
 
-	*/
+
 	Stage d;
 	unsigned stage = 0;
 	d.generate(stage);
 	d.affectRoomTypeMonsterObject();
 	std::cout << d.getSeed() << std::endl;
 	std::cout << d;
-
+*/
 	//std::cout << d.getStage() << std::endl;*/
 
 	return 0;

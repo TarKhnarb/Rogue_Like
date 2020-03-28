@@ -44,6 +44,6 @@ private:
     bool random;
 };
 
-std::ostream& operator<<(std::ostream&, const Stage&);
+std::ostream& operator<<(std::ostream&, const Stage*);
 
 #endif

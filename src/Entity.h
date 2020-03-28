@@ -70,7 +70,7 @@ public :
      * @param[in] x : value which represent the number to move the entity on the x axis
      * @param[in] y : value which represent the number to move the entity on the y axis
      */
-    void moveEntity(int&, int&);
+    void moveEntity(const int&, const int&);
 
     /**
      * @brief displays the statistics of the entity

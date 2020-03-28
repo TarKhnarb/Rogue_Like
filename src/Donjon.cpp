@@ -9,9 +9,11 @@ Donjon::Donjon(unsigned stageNumb){
 
     currentStage->generate(stage);
     currentStage->affectRoomTypeMonsterObject();
+
+    std::cout << currentStage;
 }
 
-Stage* Donjon::getCurrentStage(unsigned) const {
+Stage* Donjon::getCurrentStage() const {
     return currentStage;
 }
 
@@ -22,6 +24,7 @@ std::array< std::array<char, 27>, 27> Donjon::RoomCoordToChar(unsigned i, unsign
     switch (room->getType()){
 
         case roomType::Start: case roomType::CommonStart:
+            std::cout << "passé par là" << std::endl;
             return placeRoomDoors(room, start);
 
         case roomType::Boss:
@@ -73,38 +76,49 @@ std::array< std::array<char, 27>, 27> Donjon::RoomCoordToChar(unsigned i, unsign
 
 }
 
+void Donjon::nextStage() {
+    if(stage < stageNumber){
+        stage++;
+        currentStage->generate(stage);
+        currentStage->affectRoomTypeMonsterObject();
+    }
+    else
+        throw std::runtime_error {"Donjon::nextStage(" + std::to_string(stage) + ") - Bravo ! Vous êtes arrivé à bout de ce donjon !"};
+
+}
+
 std::array< std::array<char, 27>, 27> Donjon::placeRoomDoors(Room *curRoom, std::array< std::array<char, 27>, 27> room) {
 
-    for(unsigned i = 0 ; i < 4; ++i){
+    for(unsigned i = 0 ; i < 4; i++){
         switch (i){
-            case 0:
+            case 0: // North
                 if(curRoom->getDoor(i)){
-                    for(unsigned i = 12; i < 15; ++i){
-                        room[i][1] = '8';
+                    for(unsigned a = 12; a < 15; a++){
+                        room[a][1] = '8';
                     }
                 }
                 break;
 
-            case 1:
+            case 1: // East
                 if(curRoom->getDoor(i)){
-                    for(unsigned j = 12; j < 15; ++j){
-                        room[25][j] = '8';
+                    for(unsigned b = 12; b < 15; b++){
+                        room[25][b] = '8';
                     }
                 }
                 break;
 
-            case 2:
+            case 2: // South
                 if(curRoom->getDoor(i)){
-                    for(unsigned i = 12; i < 15; ++i){
-                        room[i][25] = '8';
+                    for(unsigned a = 12; a < 15; a++){
+                        room[a][25] = '8';
                     }
                 }
                 break;
 
-            case 3:
+            case 3: // West
                 if(curRoom->getDoor(i)){
-                    for(unsigned j = 12; j < 15; ++j){
-                        room[1][j] = '8';
+                    for(unsigned b = 12; b < 15; b++){
+                        room[1][b] = '8';
                     }
                 }
                 break;
@@ -114,4 +128,16 @@ std::array< std::array<char, 27>, 27> Donjon::placeRoomDoors(Room *curRoom, std:
         }
     }
     return room;
+}
+
+std::ostream& operator<<(std::ostream& stream, const std::array< std::array<char, 27>, 27>& d){
+
+    for(unsigned i = 0; i < 27; ++i){
+        for(unsigned j = 0; j < 27; ++j){
+            stream << d[i][j];
+        }
+        stream << std::endl;
+    }
+
+    return stream;
 }
