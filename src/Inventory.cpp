@@ -117,7 +117,7 @@ unsigned Inventory::removeObject(unsigned id, unsigned objectNb)
 	return removedObjects;
 }
 
-unsigned getNumber(unsigned id) const
+unsigned Inventory::getNumber(unsigned id) const
 {
     unsigned count = 0;
 
@@ -125,7 +125,7 @@ unsigned getNumber(unsigned id) const
     {
         if (p && p->getId() == id)
         {
-            count += p->getobjectNumber();
+            count += p->getObjectNumber();
         }
     }
 

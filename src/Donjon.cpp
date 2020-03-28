@@ -113,5 +113,5 @@ std::array< std::array<char, 27>, 27> Donjon::placeRoomDoors(Room *curRoom, std:
                 throw std::runtime_error {"Donjon::placeRoomDoors - Impossible de placer des portes"};
         }
     }
-    return curRoom;
+    return room;
 }
