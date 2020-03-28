@@ -78,7 +78,7 @@ void Entity::sellObject(unsigned id, unsigned number) {
 
     if(inventory.getNumber(id) == number){
         inventory.removeObject(id, number);
-        money += number*
+        money += number*Object(id).getResalePrice();
     }
     else
         throw std::runtime_error {"Entity::sellObject(" + std::to_string(id) + ") - Not enough item in inventory"}; // Erreur a afficher plus tard pour le joueur
@@ -92,9 +92,9 @@ unsigned Entity::getOrientation() const{
     return orientation;
 }
 
-void Entity::moveEntity(const unsigned & x, const unsigned & y) {
+void Entity::moveEntity(int & x, int & y) {
     //change orientation of entity
-    if(abs(x) > abs(y)){ //the entity moves on x axis 
+    if(std::abs(x) > std::abs(y)){ //the entity moves on x axis
         if(x > 0){ //the entity goes positive on x axis >> going down
             orientation = static_cast<Orientation>(1);
         }else{

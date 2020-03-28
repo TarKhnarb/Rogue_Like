@@ -26,7 +26,7 @@ int main(){
 	Stage d;
 	unsigned stage = 0;
 	d.generate(stage);
-	d.roomTypeMonsterObjectAffect();
+	d.affectRoomTypeMonsterObject();
 	std::cout << d.getSeed() << std::endl;
 	std::cout << d;
 

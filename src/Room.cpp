@@ -77,7 +77,7 @@ void Room::unlockDoor(int i) {
 int Room::getDoorsNb() const{
     int i = 0;
     for(int j = 0; j < 4; j++){
-        if(Doors[i]) i++;
+        if(Doors[j]) i++;
     }
 
     return i;

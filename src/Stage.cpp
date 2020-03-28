@@ -183,6 +183,9 @@ void Stage::generate(unsigned &stage){
             }
         }
 	}
+
+	placeDoors();
+
 	stage++;
 }
 
@@ -239,7 +242,6 @@ void Stage::placeDoors(){
                     RoomsMap[i][j]->placeDoor(0);
                 }
 
-
                 if (j > 0 && RoomsMap[i][j-1]) { // Left Room
                     RoomsMap[i][j]->placeDoor(3);
                 }
@@ -292,7 +294,7 @@ void Stage::affectRoomTypeMonsterObject(){
                             }
                         }
 
-                        if(RoomsMap[i][j]->getDoor(0) && RoomsMap[i][j]->getDoor(2)){ // Doors at West East 1
+                        if(RoomsMap[i][j]->getDoor(1) && RoomsMap[i][j]->getDoor(3)){ // Doors at West East 1
                             if(seed % 2){
                                 RoomsMap[i][j]->setType(Room2WE1);
                             }
@@ -319,19 +321,19 @@ void Stage::affectRoomTypeMonsterObject(){
                         break;
 
                     case 3:
-                        if(RoomsMap[i][j]->getDoor(0) && RoomsMap[i][j]->getDoor(1) && RoomsMap[i][j]->getDoor(2)){ // Doors at North, East, South
+                        if(!RoomsMap[i][j]->getDoor(3)){ // Doors at North, East, South
                             RoomsMap[i][j]->setType(Room3NES);
                         }
 
-                        if(RoomsMap[i][j]->getDoor(1) && RoomsMap[i][j]->getDoor(2) && RoomsMap[i][j]->getDoor(3)){ // Doors at East, South, West
+                        if(!RoomsMap[i][j]->getDoor(0)){ // Doors at East, South, West
                             RoomsMap[i][j]->setType(Room3ESW);
                         }
 
-                        if(RoomsMap[i][j]->getDoor(0) && RoomsMap[i][j]->getDoor(2) && RoomsMap[i][j]->getDoor(3)){ // Doors at North, South, West
+                        if(!RoomsMap[i][j]->getDoor(1)){ // Doors at North, South, West
                             RoomsMap[i][j]->setType(Room3NSW);
                         }
 
-                        if(RoomsMap[i][j]->getDoor(0) && RoomsMap[i][j]->getDoor(1) && RoomsMap[i][j]->getDoor(3)){ // Doors at North, East, West
+                        if(RoomsMap[i][j]->getDoor(2)){ // Doors at North, East, West
                             RoomsMap[i][j]->setType(Room3NEW);
                         }
                         break;
@@ -434,64 +436,55 @@ std::ostream& operator<<(std::ostream& stream, const Stage& d){
                         break;
 
 				    case roomType::Room2WE1 :
-                        stream << "x";
+                        stream << "2";
                         break;
-
 
 				    case roomType::Room2WE2 :
-                        stream << "x";
+                        stream << "2";
                         break;
-
 
 				    case roomType::Room2NS1 :
-                        stream << "x";
+                        stream << "2";
                         break;
-
 
 				    case roomType::Room2NS2 :
-                        stream << "x";
+                        stream << "2";
                         break;
-
 
                     case roomType::Room4NESW:
-                        stream << "x";
+                        stream << "4";
                         break;
-
 
 				    case roomType::Room1N:
-                        stream << "x";
+                        stream << "1";
                         break;
-
 
                     case roomType::Room1E:
-                        stream << "x";
+                        stream << "1";
                         break;
-
 
                     case roomType::Room1S:
-                        stream << "x";
+                        stream << "1";
                         break;
-
 
 				    case roomType::Room1W :
-                        stream << "x";
+                        stream << "1";
                         break;
 
-
                     case roomType::Room3NEW:
-                        stream << "x";
+                        stream << "3";
                         break;
 
                     case roomType::Room3NSW:
-                        stream << "x";
+                        stream << "3";
                         break;
 
 				    case roomType::Room3ESW:
-                        stream << "x";
+                        stream << "3";
                         break;
 
                     case roomType::Room3NES:
-                        stream << "x";
+                        stream << "3";
                         break;
 					
 					default:
