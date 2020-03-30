@@ -188,16 +188,12 @@ void Inventory::display(){
 	for (auto p : stuff){
 		if (p)
 		std::cout << p->getId() << std::endl;
-		else
-		std::cout << "0" << std::endl;
 	}
 
 	std::cout << "BAG:" << std::endl;
 	for (auto p : bag){
 		if (p)
 		std::cout << p->getId() << std::endl;
-		else
-		std::cout << "0" << std::endl;
 	}
 }
 
@@ -206,4 +202,23 @@ void Inventory::swapStuffBag(unsigned stuffIndex, unsigned bagIndex){
 	Object *temp {stuff[stuffIndex]};
 	stuff[stuffIndex] = bag[bagIndex];
 	bag[bagIndex] = temp;
+}
+
+bool Inventory::isItInInventory(unsigned id, unsigned number) {
+    for(auto p : bag) {
+        if (p) {
+            if(p->getId() == id && p->getObjectNumber() == number){
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool Inventory::isEmpty() {
+    for(auto p : bag){
+        if(p)
+            return false;
+    }
+    return true;
 }

@@ -27,7 +27,7 @@ public:
      * @param[in] o : orientation of projectile which depends of orientation of entity when fired
      * @param[in] type : type of the person who launched the projectile (0 if player, 1 monster)
      * */
-    Projectile(const unsigned &, const unsigned &, const unsigned &,const unsigned &);
+    Projectile(const unsigned, const unsigned, const unsigned &,const unsigned &);
 
     /**
      *  @brief destructor

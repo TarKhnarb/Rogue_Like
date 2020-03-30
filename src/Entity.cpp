@@ -1,9 +1,9 @@
 #include "Entity.h"
-Entity::Entity(unsigned &x, unsigned &y):
+Entity::Entity(unsigned x, unsigned y):
         pos(Position<int>(x,y)),
         inventory (Inventory(1, playerStuffSize, playerBagSize)),
         name (inventory.getBasicStatName()),
-        money (100),
+        money (10000),
         orientation(static_cast<Orientation>(2)){
 
     getStatistics();
@@ -121,15 +121,34 @@ void Entity::moveEntity(const int & x, const int & y) {
     pos.move(x,y);
 }
 
+bool Entity::isItOnEntity(unsigned id, unsigned number) {
+    return inventory.isItInInventory(id, number);
+}
+
+bool Entity::testIndex(unsigned index) {
+    if(inventory.getObject(index))
+        return true;
+    else
+        return false;
+}
+
+bool Entity::inventoryEmpty() {
+    return inventory.isEmpty();
+}
+
 void Entity::displayEntity() {
-    std::cout << "Name : " << name << std::endl;
-    std::cout << "Money : " << money << std::endl;
-    std::cout << "life : " << life << std::endl;
-    std::cout << "Attack : " << attack << std::endl;
-    std::cout << "Defence : " << defence << std::endl;
-    std::cout << "Speed : " << speed << std::endl;
-    std::cout << "fly : " << fly << std::endl;
-    std::cout << "X :" << pos.getPosition(true) << ", Y : " << pos.getPosition(false) << std::endl;
+    std::cout << "  Name : " << name << std::endl;
+    std::cout << "  Money : " << money << std::endl;
+    std::cout << "  life : " << life << std::endl;
+    std::cout << "  Attack : " << attack << std::endl;
+    std::cout << "  Defence : " << defence << std::endl;
+    std::cout << "  Speed : " << speed << std::endl;
+    if(fly)
+        std::cout << "  fly : " << "Yes" << std::endl;
+    else
+        std::cout << "  fly : " << "No" << std::endl;
+
+    //std::cout << "  X :" << pos.getPosition(true) << ", Y : " << pos.getPosition(false) << std::endl;
 
     inventory.display();
 }

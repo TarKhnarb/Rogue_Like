@@ -54,6 +54,9 @@ class Inventory
 
 		const Object* getObject(unsigned bagIndex) const;
 
+        bool isItInInventory(unsigned, unsigned);
+        bool isEmpty();
+
 		std::string getBasicStatName() const;
 		/**
 		 * @brief display for debug purpose

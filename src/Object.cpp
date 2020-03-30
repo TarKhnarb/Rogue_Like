@@ -8,7 +8,7 @@ Object::Object(unsigned id){
     if (file.is_open()) {
         std::string csvItem;
 
-        unsigned i=0;
+        unsigned i = 0;
         while (i != id){
             if(file.eof()){
                 std::cout << "The object id you are searching for is too big" << std::endl;

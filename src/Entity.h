@@ -29,7 +29,7 @@ public :
      * @parma[in] x : position of the entity on x axis
      * @parma[in] y : position of the entity on y axis
      **/
-    Entity(unsigned&, unsigned&);
+    Entity(unsigned, unsigned);
 
     /**
      * @brief construct a monster
@@ -77,6 +77,11 @@ public :
 
     void setPosition(int, int);
     int getPosition(bool) const;
+
+    bool isItOnEntity(unsigned, unsigned);
+    bool canUpgrade(std::vector<unsigned>);
+    bool testIndex(unsigned);
+    bool inventoryEmpty();
 
     /**
      * @brief displays the statistics of the entity

@@ -30,6 +30,8 @@ public :
     void shoot(unsigned); // En fonction de l'orientation
     void updateProjectile();
 
+    bool getTestgame();
+
 private :
 
     char coordonateToChar(unsigned, unsigned);
@@ -43,14 +45,14 @@ private :
 
 private:
 
-    std::vector<Projectile> projectileVector;
+    unsigned posDonjonX;
+    unsigned posDonjonY;
+
+    std::vector<Projectile*> projectileVector;
 
     Donjon donjon;
     std::array< std::array<char, 27>, 27> donjonRoom;
     Stage *stage;
-
-    unsigned posDonjonX;
-    unsigned posDonjonY;
 
     Entity Aspen;
     bool testgame;

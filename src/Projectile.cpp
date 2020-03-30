@@ -1,6 +1,6 @@
 #include "Projectile.h"
 
-Projectile::Projectile(const unsigned & entityX, const unsigned & entityY, const unsigned & o, const unsigned & type) {
+Projectile::Projectile(unsigned entityX, unsigned entityY, const unsigned & o, const unsigned & type) {
     positionProjectile = new Position<unsigned>(entityX,entityY); //puts bullet at the entity position
     orientation = static_cast<Orientation>(o); //cast an unsigned int to enum
     entityType = static_cast<EntityType>(type);
@@ -15,16 +15,16 @@ Projectile::~Projectile() {
 void Projectile::update() { //updates the position according to the orientation
     switch(orientation){
         case 0:
-            positionProjectile->move(0,-speedProjectile);
+            positionProjectile->move(-speedProjectile, 0);
             break;
         case 1:
-            positionProjectile->move(-speedProjectile,0);
+            positionProjectile->move(0, speedProjectile);
             break;
         case 2:
-            positionProjectile->move(0,speedProjectile);
+            positionProjectile->move(speedProjectile, 0);
             break;
         case 3:
-            positionProjectile->move(speedProjectile,0);
+            positionProjectile->move(0, -speedProjectile);
             break;
     }
 }

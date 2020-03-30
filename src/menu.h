@@ -9,12 +9,15 @@
 #include <thread>
 #include <chrono>
 
-#include "game.h"
 #include "Entity.h"
+#include "game.h"
+
 #include "winTxt.h"
 
 class menu {
 public :
+
+    menu();
 
     /**
      * @brief controls the whole menu, all functions are included inside that procedure
@@ -40,7 +43,7 @@ public :
     /**
      * @brief show the player stats, the player is init here with all his parameters 
      */ 
-    void showPlayer(Entity*); //(waiting for entity to be finsihed,can't display stats if not)
+    void showPlayer(); //(waiting for entity to be finsihed,can't display stats if not)
     
     /**
      * @brief show the object from csv file thta the player can buy from
@@ -70,12 +73,12 @@ public :
     /**
      * @brief allows a player to buy an object according to his inventory and what is available in csv file
      */
-    void buyObject(Entity *); 
+    void buyObjectMenu();
     
     /**
      * @brief allows a player to sell an object from his inventory 
      */
-    void sellObject(Entity *);
+    void sellObjectMenu();
     
     /**
      * @brief 
@@ -83,9 +86,12 @@ public :
      */
 
 private :
+    Entity Aspen;
+
+    WinTXT gameWindow;
+
     unsigned choice;
     unsigned console_size;
-    unsigned nb_object;
 };
 
 

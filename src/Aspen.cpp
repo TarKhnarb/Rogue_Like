@@ -1,11 +1,14 @@
-#include "Entity.h"
+#include "menu.h"
 #include <iostream>
 #include <istream>
-#include <vector>
-#include "Donjon.h"
 
 int main(){
-/*
+
+    menu jeu = menu();
+
+    jeu.logic();
+
+    /*
     Donjon test = Donjon(4);
     std::cout << std::endl;
     std::cout << test.RoomCoordToChar(10, 10); // centre

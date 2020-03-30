@@ -103,4 +103,15 @@ if(proj.getSpeedProjectile()== 1  &&
 
 delete proj;
 
+/*  Entity regression test */
+
+Entity entity (Entity(0,0));
+entity.displayEntity();
+entity.setPosition(10,20);
+entity.moveEntity(10,0);
+if(entity.getPosition(true) != 20  && entity.getPosition(false) != 20)
+    std::cout<<"There is a problem with move entity" << std::endl;
+if(entity.getOrientation() != 2)
+    std::cout<<"problem with the orientation of entity" <<std::endl;
+
 
