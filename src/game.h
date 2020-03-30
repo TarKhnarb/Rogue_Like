@@ -41,6 +41,8 @@ private :
 
     void placeCharInRoom(unsigned, unsigned, char);
 
+private:
+
     std::vector<Projectile> projectileVector;
 
     Donjon *donjon;

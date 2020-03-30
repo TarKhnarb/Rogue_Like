@@ -1,14 +1,14 @@
 #include "game.h"
 
-game::game(Entity &aspen) {
+game::game(Entity &aspen):
+        donjon (new Donjon(maxStageDonjon)),
+        donjonRoom (donjon->RoomCoordToChar(posDonjonX, posDonjonY)), // joueur placé dans la salle de start
+        stage (donjon->getCurrentStage()),
+        posDonjonX (10),
+        posDonjonY (10),
+        Aspen (aspen),
+        testgame (true){
 
-    posDonjonX = posDonjonY = 10;
-    testgame = true;
-
-    donjon = new Donjon(maxStageDonjon);
-    donjonRoom = donjon->RoomCoordToChar(posDonjonX, posDonjonY); // joueur placé dans la salle de start
-    stage = donjon->getCurrentStage(); // peut être display en faisant std::cout << stage;
-    Aspen = aspen;
     Aspen.setPosition(13, 13);
 }
 
