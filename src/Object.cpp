@@ -1,8 +1,4 @@
 #include "Object.h"
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <sstream>
 
 Object::Object(unsigned id){
 
@@ -105,7 +101,7 @@ unsigned Object::getObjectNumber() const {
 
 unsigned Object::addObjectNumber(unsigned nb) {
 	unsigned place = getMaxStack() - objectNumber;
-	
+
 	if (nb > place)
 	{
 		objectNumber = getMaxStack();

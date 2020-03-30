@@ -1,7 +1,7 @@
 #include "Entity.h"
 Entity::Entity(unsigned &x, unsigned &y):
         pos(Position<int>(x,y)),
-        inventory (1, playerStuffSize, playerBagSize),
+        inventory (Inventory(1, playerStuffSize, playerBagSize)),
         name (inventory.getBasicStatName()),
         money (100),
         orientation(static_cast<Orientation>(2)){
@@ -11,7 +11,7 @@ Entity::Entity(unsigned &x, unsigned &y):
 
 Entity::Entity(unsigned &x, unsigned &y, unsigned id):
         pos(Position<int>(x,y)),
-        inventory (id, 0, monsterBagSize),
+        inventory (Inventory(id, 0, monsterBagSize)),
         name (inventory.getBasicStatName()),
         money (5),
         orientation(static_cast<Orientation>(2)){

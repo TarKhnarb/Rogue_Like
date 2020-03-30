@@ -1,9 +1,9 @@
 #include "game.h"
 
-game::game(Entity &aspen):
-        donjon (new Donjon(maxStageDonjon)),
-        donjonRoom (donjon->RoomCoordToChar(posDonjonX, posDonjonY)), // joueur placé dans la salle de start
-        stage (donjon->getCurrentStage()),
+game::game(const Entity &aspen):
+        donjon (Donjon(maxStageDonjon)),
+        donjonRoom (donjon.RoomCoordToChar(posDonjonX, posDonjonY)), // joueur placé dans la salle de start
+        stage (donjon.getCurrentStage()),
         posDonjonX (10),
         posDonjonY (10),
         Aspen (aspen),
@@ -92,12 +92,12 @@ void game::move(unsigned orient) {
             }
             if(testCharDoor(posx-1, posy)){
                 placeCharInRoom(posx, posy, ' ');
-                donjonRoom = donjon->RoomCoordToChar(posDonjonX-1, posDonjonY);
+                donjonRoom = donjon.RoomCoordToChar(posDonjonX-1, posDonjonY);
                 Aspen.setPosition(13, 24); // devant la porte du bas
             }
             if(testCharTrape(posx-1, posy)){
-                if(donjon->getStage() < maxStageDonjon){
-                    donjon->nextStage();
+                if(donjon.getStage() < maxStageDonjon){
+                    donjon.nextStage();
                     Aspen.setPosition(13, 13);
                 }
                 else{
@@ -115,12 +115,12 @@ void game::move(unsigned orient) {
             }
             if(testCharDoor(posx, posy+1)){
                 placeCharInRoom(posx, posy, ' ');
-                donjonRoom = donjon->RoomCoordToChar(posDonjonX, posDonjonY+1);
+                donjonRoom = donjon.RoomCoordToChar(posDonjonX, posDonjonY+1);
                 Aspen.setPosition(2, 13); // Porte de gauche
             }
             if(testCharTrape(posx, posy+1)){
-                if(donjon->getStage() < maxStageDonjon){
-                    donjon->nextStage();
+                if(donjon.getStage() < maxStageDonjon){
+                    donjon.nextStage();
                     Aspen.setPosition(13, 13);
                 }
                 else{
@@ -137,12 +137,12 @@ void game::move(unsigned orient) {
             }
             if(testCharDoor(posx+1, posy)){
                 placeCharInRoom(posx, posy, ' ');
-                donjonRoom = donjon->RoomCoordToChar(posDonjonX+1, posDonjonY);
+                donjonRoom = donjon.RoomCoordToChar(posDonjonX+1, posDonjonY);
                 Aspen.setPosition(13, 2); // Porte du haut
             }
             if(testCharTrape(posx+1, posy)){
-                if(donjon->getStage() < maxStageDonjon){
-                    donjon->nextStage();
+                if(donjon.getStage() < maxStageDonjon){
+                    donjon.nextStage();
                     Aspen.setPosition(13, 13);
                 }
                 else{
@@ -158,12 +158,12 @@ void game::move(unsigned orient) {
             }
             if(testCharDoor(posx, posy-1)){
                 placeCharInRoom(posx, posy, ' ');
-                donjonRoom = donjon->RoomCoordToChar(posDonjonX, posDonjonY-1);
+                donjonRoom = donjon.RoomCoordToChar(posDonjonX, posDonjonY-1);
                 Aspen.setPosition(24, 13); // porte de droite
             }
             if(testCharTrape(posx, posy-1)){
-                if(donjon->getStage() < maxStageDonjon){
-                    donjon->nextStage();
+                if(donjon.getStage() < maxStageDonjon){
+                    donjon.nextStage();
                     Aspen.setPosition(13, 13);
                 }
                 else{

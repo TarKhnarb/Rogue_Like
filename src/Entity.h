@@ -1,13 +1,13 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include "Position.h"
+#include "Inventory.h"
+
 #include <vector>
 #include <string>
 #include <iostream>
 #include <math.h>
-
-#include "Position.h"
-#include "Inventory.h"
 
 const unsigned monsterBagSize = 3;
 const unsigned playerBagSize = 20;
@@ -18,8 +18,8 @@ public :
 
     enum Orientation{
         north, //0
-        south, //1
-        east , //2
+        east , //1
+        south, //2
         west , //3
     };
     
@@ -38,7 +38,6 @@ public :
      * @param id : the id of the monster
      */
     Entity(unsigned&, unsigned&, unsigned);
-
 
     void getStatistics();
     /**

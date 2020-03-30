@@ -1,9 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "Entity.h"
 #include "Projectile.h"
 #include "Donjon.h"
-#include "Entity.h"
 
 #include <iostream>
 #include <vector>
@@ -15,7 +15,7 @@ class game {
 public :
 
     game() = default;
-    game(Entity&);
+    game(const Entity&);
 
     Entity getAspen() const;
 
@@ -45,7 +45,7 @@ private:
 
     std::vector<Projectile> projectileVector;
 
-    Donjon *donjon;
+    Donjon donjon;
     std::array< std::array<char, 27>, 27> donjonRoom;
     Stage *stage;
 
