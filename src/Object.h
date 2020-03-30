@@ -9,6 +9,12 @@ const unsigned statSize = 6;
 class Object {
 
 public :
+    /**
+     * @brief contructs an object according to the id 
+     * @param[in] id :  the id of the object
+     **/
+	Object() = default;
+    Object(unsigned);
 
     enum Type{
         basicStat, // 0
@@ -17,12 +23,6 @@ public :
         amulet, // 3
         monsterLoot // 4
     };
-    /**
-     * @brief contructs an object according to the id 
-     * @param[in] id :  the id of the object
-     **/
-	Object() = default;
-    Object(unsigned);
 
     std::vector<int> getStats() const;
     /**
@@ -107,4 +107,4 @@ private:
 };
 
 
-#endif //GAME_OBJECTS_H
+#endif //OBJECTS_H

@@ -1,5 +1,4 @@
 #include "Entity.h"
-#include <math.h>
 
 Entity::Entity(unsigned &x, unsigned &y){
 
@@ -7,7 +6,7 @@ Entity::Entity(unsigned &x, unsigned &y){
     name = inventory.getBasicStatName();
     orientation = static_cast<Orientation>(0);
     money = 100;
-    pos = new Position<int>(x,y);
+    pos = Position<int>(x,y);
     getStatistics();
 }
 
@@ -16,13 +15,8 @@ Entity::Entity(unsigned &x, unsigned &y, unsigned id){
     name = inventory.getBasicStatName();
     orientation = static_cast<Orientation>(2);
     money = 5;
-    pos = new Position<int>(x,y);
+    pos = Position<int>(x,y);
     getStatistics();
-}
-
-Entity::~Entity() {
-    delete pos;
-    pos = nullptr;
 }
 
 void Entity::getStatistics() {
@@ -84,6 +78,14 @@ void Entity::sellObject(unsigned id, unsigned number) {
         throw std::runtime_error {"Entity::sellObject(" + std::to_string(id) + ") - Not enough item in inventory"}; // Erreur a afficher plus tard pour le joueur
 }
 
+void Entity::equipObject(unsigned inventoryIndex) {
+    inventory.equip(inventoryIndex);
+}
+
+void Entity::unequipObject(unsigned inventoryIndex) {
+    inventory.unequip(inventoryIndex);
+}
+
 bool Entity::entityCanFly()const{
     return fly;
 }
@@ -92,22 +94,31 @@ unsigned Entity::getOrientation() const{
     return orientation;
 }
 
+void Entity::setPosition(int x, int y) {
+    pos.setPosition(x, y);
+}
+
+int Entity::getPosition(bool xORy) const {
+    return pos.getPosition(xORy);
+}
+
 void Entity::moveEntity(const int & x, const int & y) {
     //change orientation of entity
     if(std::abs(x) > std::abs(y)){ //the entity moves on x axis
         if(x > 0){ //the entity goes positive on x axis >> going down
             orientation = static_cast<Orientation>(1);
         }else{
-            orientation = static_cast<Orientation>(0);
+            orientation = static_cast<Orientation>(3);
         }
     }else{ //the entity moves on y axis 
         if(y > 0){
-             orientation = static_cast<Orientation>(3);
+             orientation = static_cast<Orientation>(2);
         }else{
-             orientation = static_cast<Orientation>(4);
+             orientation = static_cast<Orientation>(0);
         }
     }
-    pos->move(x*(speed/10),y*(speed/10)); //move player
+    //pos->move(x*(speed/10),y*(speed/10)); //move player
+    pos.move(x,y);
 }
 
 void Entity::displayEntity() {
@@ -118,7 +129,7 @@ void Entity::displayEntity() {
     std::cout << "Defence : " << defence << std::endl;
     std::cout << "Speed : " << speed << std::endl;
     std::cout << "fly : " << fly << std::endl;
-    std::cout << "X :" << pos->getPosition(true) << " Y : " << pos->getPosition(false) << std::endl;
+    std::cout << "X :" << pos.getPosition(true) << ", Y : " << pos.getPosition(false) << std::endl;
 
     inventory.display();
 }

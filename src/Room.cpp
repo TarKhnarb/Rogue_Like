@@ -105,6 +105,7 @@ void Room::setType(roomType i){
 
 void Room::placeDoor(unsigned i) {
 	delete Doors[i];
+	Doors[i] = nullptr;
 	Doors[i] = new Door();
 }
 

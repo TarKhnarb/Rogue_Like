@@ -1,11 +1,10 @@
 #include "Projectile.h"
-#include <iostream>
 
 Projectile::Projectile(const unsigned & entityX, const unsigned & entityY, const unsigned & o, const unsigned & type) {
     positionProjectile = new Position<unsigned>(entityX,entityY); //puts bullet at the entity position
     orientation = static_cast<Orientation>(o); //cast an unsigned int to enum
     entityType = static_cast<EntityType>(type);
-    speedProjectile = 10;
+    speedProjectile = 1;
     setCollisionNb(2);
 }
 
@@ -19,10 +18,10 @@ void Projectile::update() { //updates the position according to the orientation
             positionProjectile->move(0,-speedProjectile);
             break;
         case 1:
-            positionProjectile->move(0,speedProjectile);
+            positionProjectile->move(-speedProjectile,0);
             break;
         case 2:
-            positionProjectile->move(-speedProjectile,0);
+            positionProjectile->move(0,speedProjectile);
             break;
         case 3:
             positionProjectile->move(speedProjectile,0);

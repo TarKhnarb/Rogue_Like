@@ -1,6 +1,17 @@
-#ifndef SRC_MENU_H
-#define SRC_MENU_H
+#ifndef MENU_H
+#define MENU_H
+
 #include <string>
+#include <iostream>
+#include <limits>
+#include <fstream>
+#include <sstream>
+#include <thread>
+#include <chrono>
+
+#include "game.h"
+#include "Entity.h"
+#include "winTxt.h"
 
 class menu {
 public :
@@ -17,7 +28,7 @@ public :
     void displayBounds();
     
     /**
-     * @brief displays the rules fothe menu, what the player can and not do
+     * @brief displays the rules on the menu, what the player can and not do
     */ 
     void rules();
     
@@ -29,11 +40,11 @@ public :
     /**
      * @brief show the player stats, the player is init here with all his parameters 
      */ 
-    void showPlayer(); //(waiting for entity to be finsihed,can't display stats if not)
+    void showPlayer(Entity*); //(waiting for entity to be finsihed,can't display stats if not)
     
     /**
      * @brief show the object from csv file thta the player can buy from
-     * /
+     */
     void showDB();
     
     /**
@@ -53,24 +64,29 @@ public :
     /**
      * @brief gets input from keyboard, checks if valid
      * @return the chosen input from player
-     * /
+     */
     unsigned logicPlayer(const unsigned &); //return choice unsigned
 
     /**
      * @brief allows a player to buy an object according to his inventory and what is available in csv file
-     * / 
-    void buyObject(); //recuperation entity(inventory) //can't work if entity is not complete
+     */
+    void buyObject(Entity *); 
     
     /**
      * @brief allows a player to sell an object from his inventory 
-     * /
-    void sellObject();  //recuperation entity(inventory) //can't work if entity is not complete
+     */
+    void sellObject(Entity *);
+    
+    /**
+     * @brief 
+     * @return entity player initialize inside menu
+     */
 
 private :
     unsigned choice;
-    unsigned console_size = 100;
-    unsigned nb_object = 8;
+    unsigned console_size;
+    unsigned nb_object;
 };
 
 
-#endif //SRC_MENU_H
+#endif //MENU_H

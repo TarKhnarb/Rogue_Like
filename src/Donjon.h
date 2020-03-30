@@ -1,3 +1,6 @@
+#ifndef DONJON_H
+#define DONJON_H
+
 #include "Stage.h"
 
 #include <array>
@@ -15,6 +18,7 @@ public:
 
     Stage* getCurrentStage() const;
     std::array< std::array<char, 27>, 27> RoomCoordToChar(unsigned, unsigned);
+    unsigned getStage();
 
     void nextStage(); // Gère la création et l'incrémentation de l'étage suivant
 
@@ -31,3 +35,5 @@ private:
 };
 
 std::ostream& operator<<(std::ostream&, const std::array< std::array<char, 27>, 27>&);
+
+#endif

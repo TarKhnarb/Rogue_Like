@@ -1,14 +1,18 @@
 #include "Entity.h"
 #include <iostream>
+#include <istream>
 #include <vector>
 #include "Donjon.h"
 
 int main(){
-
+/*
     Donjon test = Donjon(4);
     std::cout << std::endl;
-    std::cout << test.RoomCoordToChar(10, 10);
-
+    std::cout << test.RoomCoordToChar(10, 10); // centre
+    std::cout << test.RoomCoordToChar(11, 10); // south
+    std::cout << test.RoomCoordToChar(10, 11); // east
+    std::cout << test.RoomCoordToChar(10, 9); // Weast
+    std::cout << test.RoomCoordToChar(9, 10); // north*/
 
 /*    unsigned addObj = 0;
     Inventory test = Inventory(1, 10);

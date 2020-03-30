@@ -1,9 +1,10 @@
-#ifndef GAME_ENTITY_H
-#define GAME_ENTITY_H
+#ifndef ENTITY_H
+#define ENTITY_H
 
 #include <vector>
 #include <string>
 #include <iostream>
+#include <math.h>
 
 #include "Position.h"
 #include "Inventory.h"
@@ -38,7 +39,6 @@ public :
      */
     Entity(unsigned&, unsigned&, unsigned);
 
-    ~Entity();
 
     void getStatistics();
     /**
@@ -52,6 +52,10 @@ public :
      * @param[in] id : id of the object to be bought
      */
     void buyObject(unsigned, unsigned objectNb = 1);
+
+    void equipObject(unsigned);
+
+    void unequipObject(unsigned);
 
     /**
     * @brief check if player can fly
@@ -72,15 +76,19 @@ public :
      */
     void moveEntity(const int&, const int&);
 
+    void setPosition(int, int);
+    int getPosition(bool) const;
+
     /**
      * @brief displays the statistics of the entity
      */
     void displayEntity();
 
-
 private:
+
+    Position<int> pos;
+
     Inventory inventory;
-    Position<int> * pos;
 
     std::string name;
     unsigned money;
@@ -90,7 +98,7 @@ private:
     unsigned defence;
     unsigned speed;
     bool fly;
-    Orientation orientation; //0 = North, 1 = South, 2 = East, 3 = West
+    Orientation orientation; //0 = North, 1 = East, 2 = South, 3 = West
 
 };
 

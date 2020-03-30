@@ -1,5 +1,7 @@
-#ifndef SRC_PROJECTILE_H
-#define SRC_PROJECTILE_H
+#ifndef PROJECTILE_H
+#define PROJECTILE_H
+
+#include <iostream>
 
 #include "Position.h"
 
@@ -81,7 +83,7 @@ public:
     * @return an unsigned int related to the enum
     */
     unsigned getProjectileOrientation() const;
-
+    
     /**
      * @brief display stats of projectile //good for debug
      */
@@ -92,9 +94,9 @@ private:
     unsigned nbCollision;
     unsigned speedProjectile;
     EntityType entityType; // O : player, 1 : monster
-    Orientation orientation; //0 = North, 1 = South, 2 = East, 3 = West
+    Orientation orientation; //0 = North, 1 = East, 2 = South, 3 = West
     unsigned collisionNb;
 };
 
 
-#endif //SRC_PROJECTILE_H
+#endif //PROJECTILE_H

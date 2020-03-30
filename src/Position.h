@@ -1,5 +1,5 @@
-#ifndef GAME_POSITION_H
-#define GAME_POSITION_H
+#ifndef POSITION_H
+#define POSITION_H
 
 #include <cmath>
 
@@ -8,26 +8,88 @@
 template <typename POS>
 
 class Position{
+
 public :
+    /**
+     * @brief constructor by default
+     */
 	Position() = default;
+    
+    /**
+     * @brief constructor which inits what has to be init at value x and y on x and y axis respectively
+     * @param[in] x: position on x axis
+     * @param[in] y: position on y axis
+     */
     Position(const POS &, const POS &);
 
+    /**
+     * @brief inits what has be be init at a random position between minX && maxX and minY && maxY
+     * @param[in] minX : minimum value for x axis
+     * @param[in] minY : minimum value for y axis
+     * @param[in] maxX : maximum value for x axis
+     * @param[in] maxY : maximum value for y axis
+     */
     Position(const POS &,
              const POS &,
              const POS &,
              const POS &);
 
+    /**
+      * @brief affects x and y value to another Position
+      * @param[in] a : a position
+      * @return a new position with x and y value from the parameter position
+      */
     Position operator = (const Position &);
+    
+    /**
+     * @brief check if both position are equal on both x and y axis
+     * @param[in] a : position
+     * @return a bool at true if yes, and no if not
+     */
     bool operator == (const Position &);
+    
+    /**
+     * @brief checks if one position is lower than another on in parameter
+     * @param[in] a : a position
+     * @return a bool at true if lower, false if not
+     */
     bool operator < (const Position &);
+    
+    /**
+     * @brief changes x and y value of the position
+     * @param[in] a : the value of what had to be added to the x axis
+     * @param[in] b : the value of what had to be added to the y axis
+     * @return the new position
+     */
     Position move (const POS &, const POS &);
 
+    /**
+     * @brief gets the position on x OR y axis
+     * @param[in] xORy : true >> gets x axis value, false >> gets y axis value
+     * @return the value
+     */
     POS getPosition(bool) const;
+    
+    /**
+     * @brief sets the new position
+     * @param[in] a : x axis value
+     * @param[in] b : y axis value
+     */
     void setPosition(const POS &, const POS &);
 
-    //distance selon x OU y
+    /**
+     * @brief gets the absolute distance between two positions on x OR y axis
+     * @param[in] a : a position
+     * @param[in] xORy : true >> gets the x axis distance between 2 positions >> y if false
+     * @return the absolute distance
+     */
     POS dist(const Position &, bool) const;
-    //distance selon x ET y
+    
+     /**
+     * @brief returns the absolute distance according to x AND y axis
+     * @param[in] a : a position
+     * @return an absolute distance
+     */
     POS distance(const Position &) const;
 
 
@@ -35,8 +97,6 @@ public :
 private :
     POS x,y;
 };
-
-#endif //GAME_POSITION_H
 
 template <class POS>
 Position<POS>::Position(const POS & a, const POS & b) {
@@ -59,6 +119,7 @@ template <class POS>
 Position<POS> Position<POS>::operator = (const Position & a){
     x=a.x;
     y=a.y;
+    return Position<POS> (x, y);
 }
 
 template <class POS>
@@ -112,3 +173,5 @@ POS Position<POS>::distance(const Position & a) const {
     POS X = a.x-x;
     return sqrt((Y*Y)+(X*X));
 }
+
+#endif //POSITION_H

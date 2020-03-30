@@ -24,56 +24,59 @@ std::array< std::array<char, 27>, 27> Donjon::RoomCoordToChar(unsigned i, unsign
     switch (room->getType()){
 
         case roomType::Start: case roomType::CommonStart:
-            std::cout << "passé par là" << std::endl;
             return placeRoomDoors(room, start);
 
         case roomType::Boss:
             return placeRoomDoors(room, boss);
 
         case roomType::Room2WE1:
-            return placeRoomDoors(room, room2WE1);
+            return room2WE1;
 
         case roomType::Room2WE2:
-            return placeRoomDoors(room, room2WE2);
+            return room2WE2;
 
         case roomType::Room2NS1:
-            return placeRoomDoors(room, room2NS1);
+            return room2NS1;
 
         case roomType::Room2NS2:
-            return placeRoomDoors(room, room2NS2);
+            return room2NS2;
 
         case roomType::Room4NESW:
             return placeRoomDoors(room, room4NESW);
 
         case roomType::Room1N:
-            return placeRoomDoors(room, room1N);
+            return room1N;
 
         case roomType::Room1E:
-            return placeRoomDoors(room, room1E);
+            return room1E;
 
         case roomType::Room1S:
-            return placeRoomDoors(room, room1S);
+            return room1S;
 
         case roomType::Room1W:
-            return placeRoomDoors(room, room1W);
+            return room1W;
 
         case roomType::Room3NEW:
-            return placeRoomDoors(room, room3NEW);
+            return room3NEW;
 
         case roomType::Room3NSW:
-            return placeRoomDoors(room,  room3NSW);
+            return room3NSW;
 
         case roomType::Room3ESW:
-            return placeRoomDoors(room, room3ESW);
+            return room3ESW;
 
         case roomType::Room3NES:
-            return placeRoomDoors(room, room3NES);
+            return room3NES;
 
         default:
             throw std::runtime_error {"Donjon::RoomCoordToChar - Impossible de trouver la salle"};
     }
 
 
+}
+
+unsigned Donjon::getStage() {
+    return stage;
 }
 
 void Donjon::nextStage() {
@@ -83,7 +86,8 @@ void Donjon::nextStage() {
         currentStage->affectRoomTypeMonsterObject();
     }
     else
-        throw std::runtime_error {"Donjon::nextStage(" + std::to_string(stage) + ") - Bravo ! Vous êtes arrivé à bout de ce donjon !"};
+        std::cout << "Fin du Donjon" << std::endl;
+        //throw std::runtime_error {"Donjon::nextStage(" + std::to_string(stage) + ") - Bravo ! Vous êtes arrivé à bout de ce donjon !"};
 
 }
 
@@ -93,32 +97,36 @@ std::array< std::array<char, 27>, 27> Donjon::placeRoomDoors(Room *curRoom, std:
         switch (i){
             case 0: // North
                 if(curRoom->getDoor(i)){
-                    for(unsigned a = 12; a < 15; a++){
-                        room[a][1] = '8';
+                    std::cout << "0" << std::endl;
+                    for(unsigned b = 12; b < 15; b++){
+                        room[1][b] = '8';
                     }
                 }
                 break;
 
             case 1: // East
                 if(curRoom->getDoor(i)){
-                    for(unsigned b = 12; b < 15; b++){
-                        room[25][b] = '8';
-                    }
-                }
-                break;
-
-            case 2: // South
-                if(curRoom->getDoor(i)){
+                    std::cout << "1" << std::endl;
                     for(unsigned a = 12; a < 15; a++){
                         room[a][25] = '8';
                     }
                 }
                 break;
 
+            case 2: // South
+                if(curRoom->getDoor(i)){
+                    std::cout << "2" << std::endl;
+                    for(unsigned b = 12; b < 15; b++){
+                        room[25][b] = '8';
+                    }
+                }
+                break;
+
             case 3: // West
                 if(curRoom->getDoor(i)){
-                    for(unsigned b = 12; b < 15; b++){
-                        room[1][b] = '8';
+                    std::cout << "3" << std::endl;
+                    for(unsigned a = 12; a < 15; a++){
+                        room[a][1] = '8';
                     }
                 }
                 break;

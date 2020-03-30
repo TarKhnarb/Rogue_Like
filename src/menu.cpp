@@ -1,35 +1,32 @@
 #include "menu.h"
-#include <iostream>
-#include <string>
-#include <limits>
-#include <fstream>
-#include <sstream>
 
 
 std::string spacingV1(100/2, ' ');
 std::string spacingV2(40, ' ');
 std::string spacingV3(50/4, ' ');
+std::string spacingV4 = "    ,    ";
 
 void menu::logic(){
-    while(choice != 4){//until 4 is not chosen keap in menu
+    Entity * Aspen(0,0);
+    while(choice != 4){//until 4 is not chosen keep in menu
         system("clear");
         rules();
         choice = logicPlayer(1);
         switch(choice){
             case 1 :
-                buyObject();
+                buyObject(Aspen);
                 break;
             case 2 :
-                sellObject();
+                sellObject(Aspen);
                 break;
             case 3 :
-                showPlayer();
+                showPlayer(Aspen);
                 break;
             default :
                 break;
         }
     }
-    //game(); //go to game >> probably in another file
+    game::game();
 }
 
 void menu::displayBounds() {
@@ -60,20 +57,17 @@ void menu::sub_rules(){
     std::cout<< spacingV3 << "- Other inputs will not be taken into account" << std::endl;
     std::cout << spacingV3 <<"- You can now make your choice in the console " <<std::endl;
     std::cout<<std::endl;
-
 }
 
-void menu::showPlayer() {
+void menu::showPlayer(Entity * Aspen) {
     system("clear");
     std::cout << spacingV3 << "This is your player with his current inventory and statistics" << std::endl;
-    //init player basic
-    //display player stats
+    Aspen->displayEntity();
     std::cout<<std::endl;
     std::cout << spacingV3 << "If you think you have enough, you might go to war"<< std::endl;
     std::cout << spacingV3 << "If not buy and sell some inventory stuff to get MORE POWERFUl and RICHER" <<std::endl;
     std::cout << std::endl;
-
-    //sub_rules();
+    sub_rules();
 }
 
 void menu::showDB() {
@@ -125,7 +119,7 @@ std::string menu::returnCsvItem(std::istringstream & ss){
 }
 
 unsigned menu::logicPlayer(const unsigned & menu_choice) {
-    std::cout << spacingV2 << "What is your choice ? " << std::endl;
+    std::cout << spacingV3 << "What is your choice ? " << std::endl;
 
     unsigned input;
     bool correct=false;
@@ -157,26 +151,41 @@ unsigned menu::logicPlayer(const unsigned & menu_choice) {
     return input;
 }
 
-void menu::buyObject(){
+void menu::buyObject(Entity * Aspen){
     system("clear");
     showDB();
     unsigned objectID;
-    std::cout<< spacingV3 << "Tell me what you wanna buy by writing down it's id" << std::endl;
+    std::cout<< spacingV3 << "Tell me what you wanna buy by writing down it's id (a number)" << std::endl;
     objectID = logicPlayer(2);
-    //do something with objectID >> buy object >>add it in inventory >> recalculateStats
-    std::cout<< spacingV3 << "Your choice has been taken into account" << std::endl;
+
+    Aspen->buyObject(objectID,1);
+
+    system("clear");
+    std::cout<< spacingV3 << "Your choice has been taken into account. Thank you" << std::endl;
+    std::cout << spacingV3 << "Please wait " << std::endl;
+    std::this_thread::sleep_for (std::chrono::seconds(3));
+
     std::cout << std::endl;
     system("clear");
 }
 
 
-void menu::sellObject(){
+void menu::sellObject(Entity * Aspen){
     system("clear");
-    showPlayer();
+    showPlayer(Aspen);
     unsigned objectID;
-    std::cout<< spacingV3 << "Tell me what you wanna sell by writing down it's id" << std::endl;
+    std::cout<< spacingV3 << "Tell me what you wanna sell by writing down it's id (a number)" << std::endl;
     objectID = logicPlayer(2);
-    //do something with objectID >> sell object >>remove it from inventory >> recalculateStats >> give money back
-    std::cout<< spacingV3 << "Your choice has been taken into account" << std::endl;
+
+    Aspen->sellObject(objectID,1);
+
+    system("clear");
+    std::cout<< spacingV3 << "Your choice has been taken into account. Thank you" << std::endl;
+    std::cout << spacingV3 << "Please wait " << std::endl;
+    std::this_thread::sleep_for (std::chrono::seconds(3));
+
     system("clear");
 }
+
+Entity* menu::returnEntity(){
+    return Aspen;
