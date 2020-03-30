@@ -7,7 +7,7 @@ std::string spacingV3(50/4, ' ');
 std::string spacingV4 = "    ,    ";
 
 void menu::logic(){
-    Entity * Aspen(0,0);
+    //Entity Aspen = Entity(0,0);
     while(choice != 4){//until 4 is not chosen keep in menu
         system("clear");
         rules();

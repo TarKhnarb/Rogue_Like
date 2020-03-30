@@ -92,13 +92,14 @@ private:
 
     std::string name;
     unsigned money;
+    Orientation orientation; //0 = North, 1 = East, 2 = South, 3 = West
+
     unsigned life;
     unsigned attack;
     unsigned attackSpeed;
     unsigned defence;
     unsigned speed;
     bool fly;
-    Orientation orientation; //0 = North, 1 = East, 2 = South, 3 = West
 
 };
 
