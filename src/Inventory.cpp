@@ -181,19 +181,23 @@ std::string Inventory::getBasicStatName() const {
 
 void Inventory::display(){
 
-	std::cout << "INVENTAIRE " << basicStat.getId() << " :" << std::endl;
+	std::cout << "Inventaire d'" << basicStat.getName() << " :" << std::endl;
+    std::cout << std::endl;
 
-	std::cout << "STUFF :" << std::endl;
+	std::cout << "      Equipement :" << std::endl;
+    std::cout << std::endl;
 
 	for (auto p : stuff){
 		if (p)
-		std::cout << p->getId() << std::endl;
+		std::cout << "          "  << p->getId() << std::endl;
 	}
 
-	std::cout << "BAG:" << std::endl;
+    std::cout << std::endl;
+	std::cout << "      Sacoche:" << std::endl;
+    std::cout << std::endl;
 	for (auto p : bag){
 		if (p)
-		std::cout << p->getId() << std::endl;
+		std::cout << "          " << p->getId() << std::endl;
 	}
 }
 

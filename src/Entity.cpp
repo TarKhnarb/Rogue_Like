@@ -137,16 +137,16 @@ bool Entity::inventoryEmpty() {
 }
 
 void Entity::displayEntity() {
-    std::cout << "  Name : " << name << std::endl;
-    std::cout << "  Money : " << money << std::endl;
-    std::cout << "  life : " << life << std::endl;
-    std::cout << "  Attack : " << attack << std::endl;
-    std::cout << "  Defence : " << defence << std::endl;
-    std::cout << "  Speed : " << speed << std::endl;
+    std::cout << "      Aspen " << std::endl;
+    std::cout << "          Money : " << money << std::endl;
+    std::cout << "          life : " << life << std::endl;
+    std::cout << "          Attack : " << attack << std::endl;
+    std::cout << "          Defence : " << defence << std::endl;
+    std::cout << "          Speed : " << speed << std::endl;
     if(fly)
-        std::cout << "  fly : " << "Yes" << std::endl;
+        std::cout << "          fly : " << "Yes" << std::endl;
     else
-        std::cout << "  fly : " << "No" << std::endl;
+        std::cout << "          fly : " << "No" << std::endl;
 
     //std::cout << "  X :" << pos.getPosition(true) << ", Y : " << pos.getPosition(false) << std::endl;
 

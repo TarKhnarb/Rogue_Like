@@ -91,7 +91,7 @@ private :
     WinTXT gameWindow;
 
     unsigned choice;
-    unsigned console_size;
+    unsigned console_size=100;
 };
 
 
