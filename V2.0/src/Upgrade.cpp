@@ -3,42 +3,51 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <cassert>
 
-
-Upgrade::Upgrade(unsigned id) {
-
+Upgrade::Upgrade(unsigned id, unsigned choice) {
+    assert((choice==1)||(choice==2));
+    bool trouve = false;
     std::ifstream file;
-    file.open("data/Upgrades.csv");
+    std::cout << "11" << std::endl;
+    if(choice==1)  {
+        file.open("data/Upgrades.csv");
+    }
+    if(choice==2)   {
+        file.open("data/Make.csv");
+    }
+    std::cout << "22" << std::endl;
+       if (file.is_open()) {
+           std::string csvItem;
 
-   if (file.is_open()) {
-       std::string csvItem;
-
-       unsigned i = 0;
-       while (i != id) {
-           if (file.eof()) {
-               std::cout << "The object id you are searching for is too big" << std::endl;
+           unsigned i = 0;
+           while (i != id){
+               if(file.eof()){
+                   std::cout << "The object id you are searching for is too big" << std::endl;
+               }
+               getline(file,csvItem);
+               i++;
            }
-           getline(file, csvItem);
-           i++;
-       }
-       std::istringstream iss(csvItem);
-
-       for (unsigned i = 0; i < resourcesSize; ++i) {
+           trouve = true;
+           std::cout << "i = " << i << std::endl;
+           std::cout << "33" << std::endl;
+       if (trouve) {
+           std::istringstream iss(csvItem);
+           for (unsigned i = 0; i < resourcesSize; ++i) {
+               std::string res;
+               std::getline(iss, res, ',');
+               unsigned t = std::stoi(res);
+               resources.push_back(t);
+           }
            std::string res;
-           std::getline(iss,res,',');
-           unsigned t =  std::stoi(res);
-           resources.push_back(t);
+           std::getline(iss, res, ',');
+           price = std::stoi(res);
        }
-       std::string res;
-       std::getline(iss,res,',');
-       price = std::stoi(res);
-   }
-
-   else{
-       std::cerr <<" something went wrong "<< std::endl;
+       else {
+            std::cerr << " something went wrong " << std::endl;
+       }
    }
     file.close();
-
 }
 
 
@@ -51,23 +60,28 @@ unsigned Upgrade::getPrice() const {
     return price;
 }
 
+
+
+
 void Upgrade::display() const {
     std::cout << "Pour améliorer l'object d'identifiant " << resources[0] << std::endl;
-    for(int i = 1; i < 9; i++)
+    for(int i = 1; i < 10; i++)
     {
         if(i%2 != 0)
         {
             std::cout << "On aura besoin de l'object n°" << resources[i];
         }
-        else std::cout << " au nombre de " << resources[i] << std::endl;
+        else std::cout << "au nombre de " << resources[i] << std::endl;
     }
     std::cout << "Son prix est de " << price << std::endl;
 }
 
+
+
 void Upgrade::Test() {
-    Upgrade up(1);
+    Upgrade up(1,1);
     up.display();
-    Upgrade upg(2);
+    Upgrade upg(2,1);
     upg.display();
 
     std::cout << "Utilisation des fonctions accesseurs : " << std::endl;

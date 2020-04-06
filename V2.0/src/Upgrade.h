@@ -4,10 +4,12 @@
 #include <vector>
 
 const unsigned resourcesSize = 9;
+const unsigned maxId = 10;
+const unsigned maxLigne = 4;
 
 class Upgrade {
 public:
-    Upgrade(unsigned);
+    Upgrade(unsigned, unsigned);
     std::vector<unsigned> getResource() const;
     unsigned getPrice() const;
     void display() const;

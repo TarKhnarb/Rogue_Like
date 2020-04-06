@@ -12,7 +12,7 @@
 
 const unsigned monsterBagSize = 3;
 const unsigned playerBagSize = 20;
-const unsigned playerStuffSize = 3;
+const unsigned playerStuffSize = 6;
 
 class Entity {
 public :

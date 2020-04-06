@@ -5,6 +5,7 @@
 #include "Inventory.h"
 
 #include <vector>
+#include <string>
 
 const unsigned chestSize = 30;
 
@@ -28,13 +29,18 @@ public:
 
     //bool chestIsEmpty(); // A voir si utile ou non
 
+    void loadChest(std::string);
+    void saveChest(std::string);
+
     void display();
 
 private:
 
+    unsigned returnCsvItemSTOI(std::istringstream &);
+
     orientation orient;
     Inventory chest;
-    Entity hero;
+    Entity &hero;
 };
 
 

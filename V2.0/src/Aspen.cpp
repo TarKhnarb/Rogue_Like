@@ -6,12 +6,23 @@
 
 int main(){
 
+    std::cout << "0" << std::endl;
+
     Entity Aspen;
+    std::cout << "1" << std::endl;
     Aspen = Entity(0, 0); // Aspen en 0,0
+    std::cout << "2" << std::endl;
     Aspen.addInventoryObject(4);
-    Base test;
-    test = Base(Aspen, 2); // Base de lvl 1 (il faut penser à mettre des chest != nullptr dans le constructeur, en fonction du level
-    test.storeInChest(0, 0); // WARNING l'erreur de segmentation était ici
+    std::cout << "3" << std::endl;
+    Base test(Aspen, 2); // Base de lvl 1
+    std::cout << "4" << std::endl;
+    test.storeInChest(0, 0);
+
+    std::cout << "5" << std::endl;
+
     test.display();
+
+    std::cout << "6" << std::endl;
+
 	return 0;
 }
