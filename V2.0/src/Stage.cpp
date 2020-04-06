@@ -261,9 +261,9 @@ void Stage::affectRoomTypeMonsterObject(){
 
     for(unsigned i = 0; i < maxSize; i++){
         for(unsigned j = 0; j < maxSize; j++){
-            if(RoomsMap[i][j] && RoomsMap[i][j]->getType() == roomType::Common){
 
-                    // Affectation des types de salles
+                // Affectation des types de salles
+            if(RoomsMap[i][j] && RoomsMap[i][j]->getType() == roomType::Common){
                 switch (RoomsMap[i][j]->getDoorsNb()){
                     case 1:
                         if(RoomsMap[i][j]->getDoor(0)){ // Doors at North
@@ -340,8 +340,11 @@ void Stage::affectRoomTypeMonsterObject(){
                         RoomsMap[i][j]->setType(Room4NESW);
                         break;
                 }
+            }
 
-                    // Affectation des objects dans les coffres
+                // Affectation des Coffres
+            if(true){
+
             }
         }
     }
