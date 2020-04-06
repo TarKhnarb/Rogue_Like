@@ -12,7 +12,12 @@ void Base::upgradeBase(){
 }
 
 void Base::storeInChest(unsigned chestId, unsigned indexI) {
-    chests[chestId]->placeInChest(indexI);
+	if(chests[chestId]){
+		chests[chestId]->placeInChest(indexI);
+	}
+	else{
+		std::cout << "Base::storeInChest : " << chestId << " n'est pas un id convenable" << std::endl;
+	}
 }
 
 void Base::removeFromChest(unsigned chestId, unsigned indexC) { // gère automatiquement en fonction de la place disponible dans l'inventaire du joueur le nb d'objects retirés
