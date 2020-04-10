@@ -32,15 +32,8 @@ Room::~Room() {
         monster = nullptr;
     }
 
-    for(auto rock : rocks){
-        delete rock;
-        rock = nullptr;
-    }
-
-    for(auto ches : chest){
-        delete ches;
-        ches = nullptr;
-    }
+    delete chest;
+    chest = nullptr;
 }
 
 /**************
@@ -118,7 +111,7 @@ void Room::fillRocks(roomType t) {
     switch (t){
         case roomType::Room2WE1 :
             for(unsigned i = 0; i < 24; ++i){
-                rocks->pos(Rocks2WE1[i][0], Rocks2WE1[i][1]);
+                rocks.push_back(Rock(Rocks2WE1[i][0], Rocks2WE1[i][1]));
             }
             break;
         default:
@@ -127,7 +120,8 @@ void Room::fillRocks(roomType t) {
 }
 
 void Room::fillChest(std::vector<unsigned int> Ids) {
+    chest = new Chest(hero, Chest::orientation::South);
     for(auto id : Ids){
-        chest = new Chest().addInChest(id);
+        chest->addInChest(id);
     }
 }

@@ -1,10 +1,10 @@
 #include "Donjon.h"
 
-Donjon::Donjon(unsigned stageNumb){
-
-    stageNb = stageNumb;
-    stage = 0;
-    currentStage = new Stage();
+Donjon::Donjon(unsigned stageNumb, Entity& aspen):
+        hero(aspen),
+        stageNb(stageNumb),
+        stage(0),
+        currentStage(new Stage(hero)){
 
     currentStage->generate(stage);
     currentStage->affectRoomTypeMonsterObject();

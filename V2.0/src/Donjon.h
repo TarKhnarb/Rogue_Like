@@ -2,6 +2,7 @@
 #define GAME_DONJON_H
 
 #include "Stage.h"
+#include "Entity.h"
 
 #include <array>
 #include <stdexcept>
@@ -13,7 +14,7 @@ class Donjon{
 
 public:
 
-    Donjon(unsigned);
+    Donjon(unsigned, Entity&);
 
     Stage* getCurrentStage() const;
     std::array< std::array<char, 27>, 27> RoomCoordToChar(unsigned, unsigned);
@@ -25,12 +26,16 @@ public:
 
 private:
 
+
+
     std::array< std::array<char, 27>, 27> placeRoomDoors(Room*, std::array< std::array<char, 27>, 27>);
 
+    Entity hero;
     unsigned stageNb;
     unsigned stage;
-    unsigned seed;
     Stage *currentStage;
+    unsigned seed;
+
 };
 
 std::ostream& operator<<(std::ostream&, const std::array< std::array<char, 27>, 27>&);

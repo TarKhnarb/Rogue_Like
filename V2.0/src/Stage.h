@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "Room.h"
+#include "Entity.h"
 
 const unsigned maxSize = 21; // doit être un nombre impair
 
@@ -16,7 +17,7 @@ class Stage{
     
 public:
     
-    Stage();
+    Stage(Entity &);
     ~Stage();
 
     void generate(unsigned &); // Génère le Stage
@@ -38,7 +39,7 @@ public:
      
 private:
 
-
+    Entity hero;
     
     Room* RoomsMap[maxSize][maxSize];
 

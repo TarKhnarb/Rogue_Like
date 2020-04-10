@@ -4,7 +4,7 @@
  * Constructeur *
  ***************/
 
-Stage::Stage(){
+Stage::Stage(Entity & aspen): hero(aspen){
     
     for(unsigned i = 0; i < maxSize; i++)
     {
@@ -127,7 +127,7 @@ void Stage::generate(unsigned &stage){
                     {
                         if (roomsCnt == roomsNb-1 && rand()%density) // Place une salle seulement si le mod est différent de 0
                         {
-                            RoomsMap[i][mid-k] = new Room(Boss);
+                            RoomsMap[i][mid-k] = new Room(Boss, hero);
                             roomsCnt ++;
                         }
                     }
@@ -136,7 +136,7 @@ void Stage::generate(unsigned &stage){
                 if (!RoomsMap[mid-k][mid-k] && countRoomsAround(mid-k, mid-k)){ // Traitement de la case tout en haut à gauche
                     if(roomsCnt == roomsNb-1 && rand()%density)
                     {
-                        RoomsMap[mid-k][mid-k] = new Room(Boss);
+                        RoomsMap[mid-k][mid-k] = new Room(Boss, hero);
                         roomsCnt ++;
                     }
                 }
@@ -147,7 +147,7 @@ void Stage::generate(unsigned &stage){
                     {
                         if (roomsCnt == roomsNb-1 && rand()%density)
                         {
-                            RoomsMap[mid+k][j] = new Room(Boss);
+                            RoomsMap[mid+k][j] = new Room(Boss, hero);
                             roomsCnt ++;
                         }
                     }
@@ -159,7 +159,7 @@ void Stage::generate(unsigned &stage){
                     {
                         if (roomsCnt == roomsNb-1 && rand()%density)
                         {
-                            RoomsMap[mid-k][j] = new Room(Boss);
+                            RoomsMap[mid-k][j] = new Room(Boss, hero);
                             roomsCnt ++;
                         }
                     }
@@ -171,7 +171,7 @@ void Stage::generate(unsigned &stage){
                     {
                         if (roomsCnt == roomsNb-1 && rand()%density)
                         {
-                            RoomsMap[i][mid+k] = new Room(Boss);
+                            RoomsMap[i][mid+k] = new Room(Boss, hero);
                             roomsCnt ++;
                         }
                     }
@@ -364,9 +364,9 @@ void Stage::reset(unsigned stage) {
 
     unsigned mid = (maxSize - 1)/2;
     if (stage == 0) {
-        RoomsMap[mid][mid] = new Room(Start);
+        RoomsMap[mid][mid] = new Room(Start, hero);
     }
-    else RoomsMap[mid][mid] = new Room(CommonStart);
+    else RoomsMap[mid][mid] = new Room(CommonStart, hero);
 }
 
 /************************

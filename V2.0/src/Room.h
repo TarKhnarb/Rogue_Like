@@ -29,9 +29,12 @@ enum roomType{
 }; // Types of Rooms
 
 struct Rock{
-    bool state; // True = entier, false = cassé
+
+    Rock(float posx, float posy): life (10), form (rand()%3), pos(posx, posy) {}
+
+    bool getState() const { return life ? true : false; } // True = entier, false = cassé
     unsigned life; // Nombre de projectile avant de le detruire
-    unsigned form; // forme du rocher 3 disponibles pour l'affichage sfml
+    unsigned form; // forme du rocher, 3 disponibles pour l'affichage sfml
     Position<float> pos; // Position dans la salle
 }; // Voir comment on defini un rocher
 
@@ -70,8 +73,8 @@ private:
 
     std::vector<Door*> Doors; // Index: (0: north, 1: east, 2: south, 3: west),return table of Door according their orientation
     std::vector<Entity*> monsters; // Monstres de la salle
-    std::vector<Rock*> rocks; // Rochers de la salle
-    std::vector<Chest*> chest; // Coffre de la salle
+    std::vector<Rock> rocks; // Rochers de la salle
+    Chest* chest; // Coffre de la salle
 
 };
 
