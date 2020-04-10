@@ -1,6 +1,8 @@
 #ifndef GAME_STAGE_H
 #define GAME_STAGE_H
 
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
 
 #include "Room.h"
@@ -35,6 +37,8 @@ public:
     bool countRoomsAround(unsigned, unsigned);
      
 private:
+
+
     
     Room* RoomsMap[maxSize][maxSize];
 

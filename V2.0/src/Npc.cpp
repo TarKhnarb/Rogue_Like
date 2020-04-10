@@ -1,21 +1,39 @@
 #include "Npc.h"
+#include "Entity.h"
 /*
+Npc::Npc():
+    nameB("blacksmith"){
 
-Npc::Npc(){
+    //nameW = witch ;
+    //std::vector<Craft*> witchInventory
 
-    blacksmith = Entity(xBlacksmith, yBlacksmith, 0, idBlacksmith);
-    witch = Entity(xWitch, yWitch, 0, idWitch);
-    crafter = Entity(xCrafter, yCrafter, 0, idCrafter);
-    trader = Entity(xTrader, yTrader, 0, idTrader);
-    std::vector<Upgrade*> blacksmithInventory;
+    //nameC = crafter;
+    //std::vector<Craft*> crafterInventory
+
+    //nameT = trader;
+    //std::vector<????*> crafterInventory
+    //dialogue
 }
 
 
-void ActionsBlacksmith(Entity &hero)
-{
+void Npc::ActionsBlacksmith(Entity& hero){
 
-}
+    for(unsigned i = minIdEquipment; i < maxIdEquipement; i++){
+        std::cout<<i<<std::endl;
+       // Upgrade up1(i);
+        Upgrade* up(i);
+        blacksmithInventoryMake.push_back(up);
+    }
+    display("blacksmith");
 
+    for(unsigned i = 0; i < playerBagSize; ++i){
+        if(hero.getInventoryObject(i)->getId() > minIdEquipment && hero.getInventoryObject(i)->getId() < maxIdEquipement){
+
+        }
+    }
+}*/
+
+/*
 void ActionsWitch(Entity &hero)
 {
 
@@ -84,5 +102,29 @@ void Npc::upgradeObject(int idObject)
 void Npc::makeObject(int idObject)
 {
     // pas besoin de faire
+}
+
+void Npc::display(const std::string name){
+    if(name=="blacksmith")
+    {
+        unsigned i = 0;
+        while(i < blacksmithInventoryMake.size())
+        {
+            std::cout<< i << std::endl;
+            blacksmithInventoryMake[i]->display();
+            i++;
+        }
+    }
+    if(name=="blacksmith")
+    {
+        unsigned i = 12;
+        while(i < blacksmithInventoryUpgrade.size())
+        {
+            std::cout<< i << std::endl;
+            blacksmithInventoryUpgrade[i]->display();
+            i++;
+        }
+    }
+
 }
 */

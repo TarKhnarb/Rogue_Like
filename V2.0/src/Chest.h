@@ -24,6 +24,7 @@ public:
     Chest(Entity &, orientation); // Entity pour stoker les objects
 
     void placeInChest(unsigned); // Index de l'inventaire du joueur
+    void addInChest(unsigned); // add un object avec son id
 
     void removeFromChest(unsigned); // Index de l'inventaire du coffre
 

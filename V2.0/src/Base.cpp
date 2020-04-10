@@ -1,14 +1,13 @@
 #include "Base.h"
 
-Base::Base(Entity & aspen, unsigned lvl):
+Base::Base(Entity & aspen, unsigned level):
         hero(aspen),
-        chests (lvl, nullptr){
+        chests (level, nullptr),
+        lvl(level){
 
-    std::cout << "je suis passé" << std::endl;
-    for (unsigned i = 0; i < lvl; i++){
+    for (unsigned i = 0; i < lvl; ++i){
         chests[i] = new Chest(hero, Chest::orientation::South);
     }
-    std::cout << "Là aussi !" << std::endl;
 }
 
 Base::~Base() {
@@ -47,7 +46,7 @@ void Base::removeFromChest(unsigned chestId, unsigned indexC) { // gère automat
 }
 
 void Base::saveChests() {
-    for(unsigned i = 0; i < maxBaseLvl; i++){
+    for(unsigned i = 0; i < lvl; ++i){
         if(chests[i]){ // Si le coffre existe on ecrit dans un fichier les id des objets et leur nb (Si on a rien on saute une ligne)
             chests[i]->saveChest("data/Base_Save/chest"+std::to_string(i)+".csv");
         }

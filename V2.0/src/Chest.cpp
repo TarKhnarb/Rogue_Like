@@ -19,6 +19,10 @@ void Chest::placeInChest(unsigned indexI) { // Prend l'index du Bag du joueur, P
     }
 }
 
+void Chest::addInChest(unsigned id) {
+    chest.addObject(id);
+}
+
 void Chest::removeFromChest(unsigned indexC) { // Prend l'index du coffre, PEUT ETRE UN PEU LEGER, A TESTER SI SUFFISANT
 
     unsigned objId = chest.getObject(indexC)->getId();
@@ -76,11 +80,12 @@ void Chest::saveChest(std::string fileName) {
 
     for(unsigned i = 0; i < chestSize; ++i){
         if(chest.getObject(i))
-            file << chest.getStuff(i)->getId() << ", " << chest.getStuff(i)->getObjectNumber() << '\n';
+            file << chest.getObject(i)->getId() << ", " << chest.getObject(i)->getObjectNumber() << '\n';
 
         else
             file << " " << "," << '\n';
     }
+    file.close();
 }
 
 void Chest::display() {

@@ -55,6 +55,8 @@ class Inventory
 
 		const Object* getObject(unsigned bagIndex) const;
 
+		bool isItInInventory(unsigned, unsigned);
+
         bool isEmpty();
         bool isFull();
 

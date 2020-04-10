@@ -1,9 +1,5 @@
 #include "Stage.h"
 
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
-
 /****************
  * Constructeur *
  ***************/
@@ -122,7 +118,7 @@ void Stage::generate(unsigned &stage){
 			/*
 			 * La salle du boss
 			 */
-			
+
             if(roomsCnt == roomsNb-1){
 
                 for (unsigned i = mid-k+1; i <= mid+k; i++) // Première ligne, en haut à l'horizontal, sauf case tout en haut à gauche
@@ -338,6 +334,9 @@ void Stage::affectRoomTypeMonsterObject(){
                         break;
                     case 4:
                         RoomsMap[i][j]->setType(Room4NESW);
+                        break;
+
+                    default:
                         break;
                 }
             }

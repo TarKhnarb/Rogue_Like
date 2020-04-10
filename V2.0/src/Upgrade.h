@@ -1,21 +1,29 @@
 #ifndef _UPGRADE_H
 #define _UPGRADE_H
 
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <cassert>
 #include <vector>
 
 const unsigned resourcesSize = 9;
-const unsigned maxId = 10;
-const unsigned maxLigne = 4;
+const unsigned minIdEquipment = 11;
+const unsigned maxIdEquipement = 47;
 
 class Upgrade {
+
 public:
-    Upgrade(unsigned, unsigned);
+    Upgrade(unsigned);
+
     std::vector<unsigned> getResource() const;
-    unsigned getPrice() const;
+
     void display() const;
     void Test();
 
 private:
+    unsigned returnCsvItemSTOI(std::istringstream &);
+
     std::vector<unsigned> resources;  //idUpgrade, idObjN1, numberObjN1, idObjN2, numberObjN2, idObjN3, numberObjN3, idObjN4,  numberObjN4
     unsigned price;
 };

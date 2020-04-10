@@ -1,35 +1,21 @@
 #include "Room.h"
+#include "Archetype.h"
 
 /***************
  * Constructor *
  **************/
 
-Room::Room(){
-
-    for(int i = 0; i < 4; i++){
-        Doors[i] = nullptr;
-    }
-
-    type = roomType::Common;
-}
+Room::Room():
+        type(roomType::Common),
+        Doors(4, nullptr){}
 
 /********************************
  * Constructor With Room's Type *
  *******************************/
 
-Room::Room(roomType t, unsigned rockNb) {
-    for(int i = 0; i < 4; ++i){
-        Doors[i] = nullptr;
-    }
-
-    if(rockNb != 0){
-        for(unsigned i = 0; i < rockNb; ++i){
-            rocks.push_back(nullptr);
-        }
-    }
-
-    type = t;
-}
+Room::Room(roomType t, Entity &apsen):
+        type(t),
+        hero(apsen){}
 
 /**************
  * Destructor *
@@ -40,6 +26,21 @@ Room::~Room() {
 		delete Doors[i];
         Doors[i] = nullptr;
     }
+
+    for(auto monster : monsters){
+        delete monster;
+        monster = nullptr;
+    }
+
+    for(auto rock : rocks){
+        delete rock;
+        rock = nullptr;
+    }
+
+    for(auto ches : chest){
+        delete ches;
+        ches = nullptr;
+    }
 }
 
 /**************
@@ -47,8 +48,9 @@ Room::~Room() {
  *************/
 
 void Room::openDoors(){
-    for(int i = 0; i < 4; i++){
-        if((Doors[i]) && !(Doors[i]->getKey())) Doors[i]->setOpen(true);
+    for(int i = 0; i < 4; ++i){
+        if((Doors[i]))
+            Doors[i]->setOpen(true);
     }
 }
 
@@ -57,22 +59,8 @@ void Room::openDoors(){
  **************/
 
 void Room::closeDoors(){
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < 4; ++i){
         if(Doors[i]) Doors[i]->setOpen(false);
-    }
-}
-
-//          A faire
-// void unlockDoor(Door); // Ouvre une porte qui necessite une clé et que le joueur en possède une
-
-/***************
- * Unlock Door *
- **************/
-
-void Room::unlockDoor(int i) {
-    if(Doors[i]->getKey() && ! Doors[i]->getOpen()){
-        Doors[i]->setKey(false);
-        Doors[i]->setOpen(true);
     }
 }
 
@@ -82,8 +70,9 @@ void Room::unlockDoor(int i) {
  
 int Room::getDoorsNb() const{
     int i = 0;
-    for(int j = 0; j < 4; j++){
-        if(Doors[j]) i++;
+    for(int j = 0; j < 4; ++j){
+        if(Doors[j])
+            i++;
     }
 
     return i;
@@ -117,4 +106,28 @@ void Room::placeDoor(unsigned i) {
 
 Door* Room::getDoor(unsigned i) {
     return Doors[i];
+}
+
+void Room::fillMonsters(std::vector<unsigned int> idMonst) {
+/*    for(auto id : idMonst){
+        monsters.push_back(Entity(id))
+    }*/
+}
+
+void Room::fillRocks(roomType t) {
+    switch (t){
+        case roomType::Room2WE1 :
+            for(unsigned i = 0; i < 24; ++i){
+                rocks->pos(Rocks2WE1[i][0], Rocks2WE1[i][1]);
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+void Room::fillChest(std::vector<unsigned int> Ids) {
+    for(auto id : Ids){
+        chest = new Chest().addInChest(id);
+    }
 }

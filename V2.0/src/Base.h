@@ -7,14 +7,14 @@
 #include <vector>
 #include <fstream>
 
-const  unsigned maxBaseLvl = 3;
+const unsigned maxBaseLvl = 3;
 
 class Base{
 
 public:
 
     Base() = default;
-    Base(Entity &, unsigned lvl);
+    Base(Entity &, unsigned level);
     ~Base();
 
     void upgradeBase();

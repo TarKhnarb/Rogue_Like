@@ -239,7 +239,7 @@ void Inventory::swapStuffBag(unsigned stuffIndex, unsigned bagIndex){
 	stuff[stuffIndex] = bag[bagIndex];
 	bag[bagIndex] = temp;
 }
-/*
+
 bool Inventory::isItInInventory(unsigned id, unsigned number) {
     for(auto p : bag) {
         if (p) {
@@ -249,7 +249,7 @@ bool Inventory::isItInInventory(unsigned id, unsigned number) {
         }
     }
     return false;
-}*/
+}
 
 bool Inventory::isEmpty() {
     for(auto p : bag){
