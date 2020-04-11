@@ -258,24 +258,32 @@ void Stage::affectRoomTypeMonsterObject(){
     for(unsigned i = 0; i < maxSize; i++){
         for(unsigned j = 0; j < maxSize; j++){
 
-                // Affectation des types de salles
+                // Affectation des types de salles, rochers, monstres et coffres
             if(RoomsMap[i][j] && RoomsMap[i][j]->getType() == roomType::Common){
                 switch (RoomsMap[i][j]->getDoorsNb()){
                     case 1:
                         if(RoomsMap[i][j]->getDoor(0)){ // Doors at North
                             RoomsMap[i][j]->setType(Room1N);
+                            RoomsMap[i][j]->fillRocks(Room1N);
+                                        //RoomsMap[i][j]->fillMonsters(randomMonsters(rand()%5), Room1N);
+                            RoomsMap[i][j]->fillChest(randomObjects(randomObjectWithProbability()));
                         }
 
                         if(RoomsMap[i][j]->getDoor(1)){ // Doors at East
                             RoomsMap[i][j]->setType(Room1E);
+                            RoomsMap[i][j]->fillChest(randomObjects(randomObjectWithProbability()));
                         }
 
                         if(RoomsMap[i][j]->getDoor(2)){ // Doors at South
                             RoomsMap[i][j]->setType(Room1S);
+                            RoomsMap[i][j]->fillRocks(Room1S);
+                            RoomsMap[i][j]->fillChest(randomObjects(randomObjectWithProbability()));
                         }
 
                         if(RoomsMap[i][j]->getDoor(3)){ // Doors at West
                             RoomsMap[i][j]->setType(Room1W);
+                            RoomsMap[i][j]->fillRocks(Room1W);
+                            RoomsMap[i][j]->fillChest(randomObjects(randomObjectWithProbability()));
                         }
                         break;
 
@@ -292,6 +300,7 @@ void Stage::affectRoomTypeMonsterObject(){
                         if(RoomsMap[i][j]->getDoor(1) && RoomsMap[i][j]->getDoor(3)){ // Doors at West East 1
                             if(seed % 2){
                                 RoomsMap[i][j]->setType(Room2WE1);
+                                RoomsMap[i][j]->fillRocks(Room2WE1);
                             }
                             else{
                                 RoomsMap[i][j]->setType(Room2WE2);
@@ -322,6 +331,8 @@ void Stage::affectRoomTypeMonsterObject(){
 
                         if(!RoomsMap[i][j]->getDoor(0)){ // Doors at East, South, West
                             RoomsMap[i][j]->setType(Room3ESW);
+                            RoomsMap[i][j]->fillRocks(Room3ESW);
+                            RoomsMap[i][j]->fillChest(randomObjects(randomObjectWithProbability()));
                         }
 
                         if(!RoomsMap[i][j]->getDoor(1)){ // Doors at North, South, West
@@ -330,6 +341,7 @@ void Stage::affectRoomTypeMonsterObject(){
 
                         if(!RoomsMap[i][j]->getDoor(2)){ // Doors at North, East, West
                             RoomsMap[i][j]->setType(Room3NEW);
+                            RoomsMap[i][j]->fillRocks(Room3NEW);
                         }
                         break;
                     case 4:
@@ -339,11 +351,6 @@ void Stage::affectRoomTypeMonsterObject(){
                     default:
                         break;
                 }
-            }
-
-                // Affectation des Coffres
-            if(true){
-
             }
         }
     }
@@ -402,6 +409,35 @@ bool Stage::countRoomsAround(unsigned i, unsigned j) { // prend les coords d'une
     }
 
     return (count == 1);
+}
+
+std::vector<unsigned int> Stage::randomObjects(unsigned nb) {
+
+    std::vector<unsigned> obj;
+    for(unsigned i = 0; i < nb; ++i){
+        obj.push_back((rand()%15)+50); // permet de tirer l'id d'un object entre 50 et 64
+    }
+
+    return obj;
+}
+
+std::vector<unsigned int> Stage::randomMonsters(unsigned nb) {
+
+    std::vector<unsigned> monst;
+    for(unsigned i = 0; i < nb; ++i){
+        monst.push_back((rand()%5)+2); // permet de tirer un id de monstre entre 2 et 6
+    }
+
+    return monst;
+}
+
+unsigned Stage::randomObjectWithProbability() {
+    unsigned random = rand()%3+1; // valeur entre 1 et 3
+
+    if(random == 1)
+        return 2;
+    else
+        return 1;
 }
 
 /****************

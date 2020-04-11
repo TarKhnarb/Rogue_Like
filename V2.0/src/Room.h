@@ -58,10 +58,7 @@ public:
 
     Door* getDoor(unsigned);
 
-
-private:
-
-    void fillMonsters(std::vector<unsigned>);
+    void fillMonsters(std::vector<unsigned>, roomType);
     void fillRocks(roomType);
     void fillChest(std::vector<unsigned>);
 
