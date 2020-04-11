@@ -1,6 +1,6 @@
 #include "Entity.h"
-Entity::Entity(unsigned x, unsigned y):
-        pos(Position<int>(x,y)),
+Entity::Entity(float &x, float &y):
+        pos(Position<float>(x,y)),
         inventory (Inventory(1, playerStuffSize, playerBagSize)),
         name (inventory.getBasicStatName()),
         money (10000),
@@ -9,8 +9,8 @@ Entity::Entity(unsigned x, unsigned y):
     getStatistics();
 }
 
-Entity::Entity(unsigned &x, unsigned &y, unsigned id):
-        pos(Position<int>(x,y)),
+Entity::Entity(float &x, float &y, unsigned id):
+        pos(Position<float >(x,y)),
         inventory (Inventory(id, 0, monsterBagSize)),
         name (inventory.getBasicStatName()),
         money (5),
@@ -113,7 +113,7 @@ unsigned Entity::getOrientation() const{
     return orientation;
 }
 
-void Entity::setPosition(int x, int y) {
+void Entity::setPosition(float x, float y) {
     pos.setPosition(x, y);
 }
 
@@ -121,7 +121,7 @@ int Entity::getPosition(bool xORy) const {
     return pos.getPosition(xORy);
 }
 
-void Entity::moveEntity(const int & x, const int & y) {
+void Entity::moveEntity(const float & x, const float & y) {
     //change orientation of entity
     if(std::abs(x) > std::abs(y)){ //the entity moves on x axis
         if(x > 0){ //the entity goes positive on x axis >> going down
@@ -136,8 +136,7 @@ void Entity::moveEntity(const int & x, const int & y) {
              orientation = static_cast<Orientation>(0);
         }
     }
-    //pos->move(x*(speed/10),y*(speed/10)); //move player
-    pos.move(x,y);
+    pos.move(x*(speed/10.0),y*(speed/10.0)); //move player
 }
 
 bool Entity::isItOnEntity(unsigned id, unsigned number) {

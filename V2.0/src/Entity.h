@@ -30,7 +30,7 @@ public :
      * @parma[in] x : position of the entity on x axis
      * @parma[in] y : position of the entity on y axis
      **/
-    Entity(unsigned, unsigned);
+    Entity(float&, float&);
 
     /**
      * @brief construct a monster
@@ -38,7 +38,7 @@ public :
      * @parma[in] y : position of the entity on y axis
      * @param id : the id of the monster
      */
-    Entity(unsigned&, unsigned&, unsigned);
+    Entity(float&, float&, unsigned);
 
     void getStatistics();
 
@@ -86,9 +86,9 @@ public :
      * @param[in] x : value which represent the number to move the entity on the x axis
      * @param[in] y : value which represent the number to move the entity on the y axis
      */
-    void moveEntity(const int&, const int&);
+    void moveEntity(const float&, const float&);
 
-    void setPosition(int, int);
+    void setPosition(float, float);
     int getPosition(bool) const;
 
     bool isItOnEntity(unsigned, unsigned);
@@ -103,7 +103,7 @@ public :
 
 private:
 
-    Position<int> pos;
+    Position<float> pos;
 
     Inventory inventory;
 

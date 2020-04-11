@@ -265,23 +265,26 @@ void Stage::affectRoomTypeMonsterObject(){
                         if(RoomsMap[i][j]->getDoor(0)){ // Doors at North
                             RoomsMap[i][j]->setType(Room1N);
                             RoomsMap[i][j]->fillRocks(Room1N);
-                                        //RoomsMap[i][j]->fillMonsters(randomMonsters(rand()%5), Room1N);
+                            RoomsMap[i][j]->fillMonsters(randomMonsters(), Room1N);
                             RoomsMap[i][j]->fillChest(randomObjects(randomObjectWithProbability()));
                         }
 
                         if(RoomsMap[i][j]->getDoor(1)){ // Doors at East
                             RoomsMap[i][j]->setType(Room1E);
+                            RoomsMap[i][j]->fillMonsters(randomMonsters(), Room1E);
                             RoomsMap[i][j]->fillChest(randomObjects(randomObjectWithProbability()));
                         }
 
                         if(RoomsMap[i][j]->getDoor(2)){ // Doors at South
                             RoomsMap[i][j]->setType(Room1S);
+                            RoomsMap[i][j]->fillMonsters(randomMonsters(), Room1S);
                             RoomsMap[i][j]->fillRocks(Room1S);
                             RoomsMap[i][j]->fillChest(randomObjects(randomObjectWithProbability()));
                         }
 
                         if(RoomsMap[i][j]->getDoor(3)){ // Doors at West
                             RoomsMap[i][j]->setType(Room1W);
+                            RoomsMap[i][j]->fillMonsters(randomMonsters(), Room1W);
                             RoomsMap[i][j]->fillRocks(Room1W);
                             RoomsMap[i][j]->fillChest(randomObjects(randomObjectWithProbability()));
                         }
@@ -291,62 +294,79 @@ void Stage::affectRoomTypeMonsterObject(){
                         if(RoomsMap[i][j]->getDoor(0) && RoomsMap[i][j]->getDoor(2)){ // Doors at North South
                             if(seed % 2){
                                 RoomsMap[i][j]->setType(Room2NS1);
+                                RoomsMap[i][j]->fillMonsters(randomMonsters(), Room2NS1);
                             }
                             else{
                                 RoomsMap[i][j]->setType(Room2NS2);
+                                RoomsMap[i][j]->fillMonsters(randomMonsters(), Room2NS2);
                             }
                         }
 
                         if(RoomsMap[i][j]->getDoor(1) && RoomsMap[i][j]->getDoor(3)){ // Doors at West East 1
                             if(seed % 2){
                                 RoomsMap[i][j]->setType(Room2WE1);
+                                RoomsMap[i][j]->fillMonsters(randomMonsters(), Room2WE1);
                                 RoomsMap[i][j]->fillRocks(Room2WE1);
                             }
                             else{
                                 RoomsMap[i][j]->setType(Room2WE2);
+                                RoomsMap[i][j]->fillMonsters(randomMonsters(), Room2WE2);
                             }
                         }
 
                         if(RoomsMap[i][j]->getDoor(0) && RoomsMap[i][j]->getDoor(1)){ // Doors at North East
-                            RoomsMap[i][j]->setType(Room4NESW);
+                            RoomsMap[i][j]->setType(Room4NESW2);
+                            RoomsMap[i][j]->fillMonsters(randomMonsters(), Room4NESW2);
+                            RoomsMap[i][j]->fillRocks(Room4NESW2);
                         }
 
                         if(RoomsMap[i][j]->getDoor(0) && RoomsMap[i][j]->getDoor(3)){ // Doors at North West
-                            RoomsMap[i][j]->setType(Room4NESW);
+                            RoomsMap[i][j]->setType(Room4NESW2);
+                            RoomsMap[i][j]->fillMonsters(randomMonsters(), Room4NESW2);
+                            RoomsMap[i][j]->fillRocks(Room4NESW2);
                         }
 
                         if(RoomsMap[i][j]->getDoor(1) && RoomsMap[i][j]->getDoor(2)){ // Doors at South East
-                            RoomsMap[i][j]->setType(Room4NESW);
+                            RoomsMap[i][j]->setType(Room4NESW2);
+                            RoomsMap[i][j]->fillMonsters(randomMonsters(), Room4NESW2);
+                            RoomsMap[i][j]->fillRocks(Room4NESW2);
                         }
 
                         if(RoomsMap[i][j]->getDoor(2) && RoomsMap[i][j]->getDoor(3)){ // Doors at South West
-                            RoomsMap[i][j]->setType(Room4NESW);
+                            RoomsMap[i][j]->setType(Room4NESW2);
+                            RoomsMap[i][j]->fillMonsters(randomMonsters(), Room4NESW2);
+                            RoomsMap[i][j]->fillRocks(Room4NESW2);
                         }
                         break;
 
                     case 3:
                         if(seed % 4) { // 1 chance sur 4
-
                             RoomsMap[i][j]->setType(Room4NESW2);
+                            RoomsMap[i][j]->fillMonsters(randomMonsters(), Room4NESW2);
+                            RoomsMap[i][j]->fillRocks(Room4NESW2);
                         }
                         else{
 
                             if(!RoomsMap[i][j]->getDoor(3)){ // Doors at North, East, South
                                 RoomsMap[i][j]->setType(Room3NES);
+                                RoomsMap[i][j]->fillMonsters(randomMonsters(), Room3NES);
                             }
 
                             if(!RoomsMap[i][j]->getDoor(0)){ // Doors at East, South, West
                                 RoomsMap[i][j]->setType(Room3ESW);
-                                RoomsMap[i][j]->fillRocks(Room3ESW);
+                                RoomsMap[i][j]->fillMonsters(randomMonsters(), Room3ESW);
                                 RoomsMap[i][j]->fillChest(randomObjects(randomObjectWithProbability()));
                             }
 
                             if(!RoomsMap[i][j]->getDoor(1)){ // Doors at North, South, West
                                 RoomsMap[i][j]->setType(Room3NSW);
+                                RoomsMap[i][j]->fillMonsters(randomMonsters(), Room3NSW);
+                                RoomsMap[i][j]->fillRocks(Room3NSW);
                             }
 
                             if(!RoomsMap[i][j]->getDoor(2)){ // Doors at North, East, West
                                 RoomsMap[i][j]->setType(Room3NEW);
+                                RoomsMap[i][j]->fillMonsters(randomMonsters(), Room3NEW);
                                 RoomsMap[i][j]->fillRocks(Room3NEW);
                             }
                         }
@@ -355,10 +375,17 @@ void Stage::affectRoomTypeMonsterObject(){
                         break;
                     case 4:
 
-                        if(rand()%2 == 0)
+                        if(rand()%2 == 0) {
                             RoomsMap[i][j]->setType(Room4NESW1);
-                        else
+                            RoomsMap[i][j]->fillMonsters(randomMonsters(), Room4NESW1);
+
+                        }
+                        else{
                             RoomsMap[i][j]->setType(Room4NESW2);
+                            RoomsMap[i][j]->fillMonsters(randomMonsters(), Room4NESW2);
+                            RoomsMap[i][j]->fillRocks(Room4NESW2);
+                        }
+
                         break;
 
                     default:
@@ -434,9 +461,10 @@ std::vector<unsigned int> Stage::randomObjects(unsigned nb) {
     return obj;
 }
 
-std::vector<unsigned int> Stage::randomMonsters(unsigned nb) {
+std::vector<unsigned int> Stage::randomMonsters() {
 
     std::vector<unsigned> monst;
+    unsigned nb = (rand()%5) + 2; // On tire entre 2 et 6 monstres
     for(unsigned i = 0; i < nb; ++i){
         monst.push_back((rand()%5)+2); // permet de tirer un id de monstre entre 2 et 6
     }
@@ -504,40 +532,44 @@ std::ostream& operator<<(std::ostream& stream, const Stage *s){
                         stream << "D";
                         break;
 
-                    case roomType::Room4NESW:
+                    case roomType::Room4NESW1:
                         stream << "E";
                         break;
 
-				    case roomType::Room1N:
-                        stream << "F";
+				    case roomType::Room4NESW2:
+				        stream << "F";
                         break;
 
-                    case roomType::Room1E:
+				    case roomType::Room1N:
                         stream << "G";
                         break;
 
-                    case roomType::Room1S:
+                    case roomType::Room1E:
                         stream << "H";
                         break;
 
-				    case roomType::Room1W :
+                    case roomType::Room1S:
                         stream << "I";
                         break;
 
-                    case roomType::Room3NEW:
+				    case roomType::Room1W :
                         stream << "J";
                         break;
 
-                    case roomType::Room3NSW:
+                    case roomType::Room3NEW:
                         stream << "K";
                         break;
 
-				    case roomType::Room3ESW:
+                    case roomType::Room3NSW:
                         stream << "L";
                         break;
 
-                    case roomType::Room3NES:
+				    case roomType::Room3ESW:
                         stream << "M";
+                        break;
+
+                    case roomType::Room3NES:
+                        stream << "N";
                         break;
 					
 					default:

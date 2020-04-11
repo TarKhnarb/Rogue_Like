@@ -1,5 +1,4 @@
 #include "Room.h"
-#include "Archetype.h"
 
 /***************
  * Constructor *
@@ -127,6 +126,14 @@ void Room::fillMonsters(std::vector<unsigned int> idMonst, roomType t) {
                     monsters.push_back(new Entity(Monster2WE2[i][0], Monster2WE2[i][1], idMonst[i]));
                     break;
 
+                case Room4NESW1:
+                    monsters.push_back(new Entity(Monster4NESW1[i][0], Monster4NESW1[i][1], idMonst[i]));
+                    break;
+
+                case Room4NESW2:
+                    monsters.push_back(new Entity(Monster4NESW2[i][0], Monster4NESW2[i][1], idMonst[i]));
+                    break;
+
                 case Room1N:
                     monsters.push_back(new Entity(Monster1N[i][0], Monster1N[i][1], idMonst[i]));
                     break;
@@ -159,19 +166,11 @@ void Room::fillMonsters(std::vector<unsigned int> idMonst, roomType t) {
                     monsters.push_back(new Entity(Monster3NEW[i][0], Monster3NEW[i][1], idMonst[i]));
                     break;
 
-                case Room4NESW1:
-                    monsters.push_back(new Entity(Monster4NESW1[i][0], Monster4NESW1[i][1], idMonst[i]));
-                    break;
-
-                case Room4NESW2:
-                    monsters.push_back(new Entity(Monster4NESW2[i][0], Monster4NESW2[i][1], idMonst[i]));
-                    break;
-
                 default:
                     break;
             }
         }
-    }*/
+    }
 }
 
 void Room::fillRocks(roomType t) {
@@ -179,6 +178,12 @@ void Room::fillRocks(roomType t) {
         case roomType::Room2WE1 :
             for(unsigned i = 0; i < 24; ++i){
                 rocks.push_back(Rock(Rocks2WE1[i][0], Rocks2WE1[i][1]));
+            }
+            break;
+
+        case roomType::Room4NESW2:
+            for(unsigned i = 0; i < 24; ++i){
+                rocks.push_back(Rock(Rocks4NESW2[i][0], Rocks4NESW2[i][1]));
             }
             break;
 
@@ -209,12 +214,6 @@ void Room::fillRocks(roomType t) {
         case roomType::Room3NEW:
             for(unsigned i = 0; i < 7; ++i){
                 rocks.push_back(Rock(Rocks3NEW[i][0], Rocks3NEW[i][1]));
-            }
-            break;
-
-        case roomType::Room4NESW2:
-            for(unsigned i = 0; i < 24; ++i){
-                rocks.push_back(Rock(Rocks4NESW2[i][0], Rocks4NESW2[i][1]));
             }
             break;
 

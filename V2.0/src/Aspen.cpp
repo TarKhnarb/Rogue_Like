@@ -8,7 +8,9 @@ int main(){
 
     unsigned stage = 2;
 
-    Entity Aspen(0,0);
+    float x = 0.0, y = 0.0;
+
+    Entity Aspen(x, y);
 
     Donjon test(stage, Aspen);
     std::cout << test.getStage();

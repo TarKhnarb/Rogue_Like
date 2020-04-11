@@ -39,7 +39,7 @@ private:
 
     bool countRoomsAround(unsigned, unsigned);
 
-    std::vector<unsigned> randomMonsters(unsigned); // return a vector of X ids to fill monsters in the room
+    std::vector<unsigned> randomMonsters(); // return a vector of X ids to fill monsters in the room
     std::vector<unsigned> randomObjects(unsigned); // return a vector of X ids to fill chest of the room
     unsigned randomObjectWithProbability(); // return (1) or (2) with the probability of 1/3 for (2)
 
