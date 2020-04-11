@@ -1,11 +1,12 @@
 #ifndef GAME_ROOM_H
 #define GAME_ROOM_H
 
-#include "Archetype.h"
+
 #include "Door.h"
-#include "Position.h"
 #include "Entity.h"
 #include "Chest.h"
+#include "Position.h"
+
 
 #include <vector>
 

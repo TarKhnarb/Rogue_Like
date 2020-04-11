@@ -14,7 +14,7 @@ $(O)/Donjon.o: $(O)/Stage.o
 $(O)/Stage.o: $(O)/Room.o
 	g++ $(FLAGS) $(S)/Stage.cpp -o $(O)/Stage.o
 
-$(O)/Room.o: $(O)/Door.o $(O)/Entity.o $(O)/Chest.o $(S)/Position.h $(S)/Archetype.h
+$(O)/Room.o: $(O)/Door.o $(O)/Entity.o $(O)/Chest.o
 	g++ $(FLAGS) $(S)/Room.cpp -o $(O)/Room.o
 
 $(O)/Door.o:
@@ -26,10 +26,10 @@ $(O)/Base.o: $(O)/Chest.o $(O)/Entity.o
 $(O)/Chest.o: $(O)/Inventory.o $(O)/Entity.o
 	g++ $(FLAGS) $(S)/Chest.cpp -o $(O)/Chest.o
 
-$(O)/Projectile.o: $(S)/Position.h
+$(O)/Projectile.o:
 	g++ $(FLAGS) $(S)/Projectile.cpp -o $(O)/Projectile.o
 
-$(O)/Entity.o: $(O)/Inventory.o $(S)/Position.h
+$(O)/Entity.o: $(O)/Inventory.o
 	g++ $(FLAGS) $(S)/Entity.cpp -o $(O)/Entity.o
 
 $(O)/Inventory.o: $(O)/Object.o

@@ -1,3 +1,5 @@
+#ifndef GAME_ARCHETYPE_H
+#define GAME_ARCHETYPE_H
 // Rocher 40x40
 // Portes : N/S : 80x60 / EW : 60x80
 // Encadrement Portes : N/S : 120x80
@@ -153,3 +155,4 @@ float Monster3NEW[6][2] =
 float Rocks3NEW [7][2] = 
     	{{540, 420}, {580, 420}, {620, 420}, {660, 420}, {700, 420}, 
 	    {600, 380}, {640, 380}};
+#endif
