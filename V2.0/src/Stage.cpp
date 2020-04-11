@@ -325,27 +325,40 @@ void Stage::affectRoomTypeMonsterObject(){
                         break;
 
                     case 3:
-                        if(!RoomsMap[i][j]->getDoor(3)){ // Doors at North, East, South
-                            RoomsMap[i][j]->setType(Room3NES);
+                        if(seed % 4) { // 1 chance sur 4
+
+                            RoomsMap[i][j]->setType(Room4NESW2);
+                        }
+                        else{
+
+                            if(!RoomsMap[i][j]->getDoor(3)){ // Doors at North, East, South
+                                RoomsMap[i][j]->setType(Room3NES);
+                            }
+
+                            if(!RoomsMap[i][j]->getDoor(0)){ // Doors at East, South, West
+                                RoomsMap[i][j]->setType(Room3ESW);
+                                RoomsMap[i][j]->fillRocks(Room3ESW);
+                                RoomsMap[i][j]->fillChest(randomObjects(randomObjectWithProbability()));
+                            }
+
+                            if(!RoomsMap[i][j]->getDoor(1)){ // Doors at North, South, West
+                                RoomsMap[i][j]->setType(Room3NSW);
+                            }
+
+                            if(!RoomsMap[i][j]->getDoor(2)){ // Doors at North, East, West
+                                RoomsMap[i][j]->setType(Room3NEW);
+                                RoomsMap[i][j]->fillRocks(Room3NEW);
+                            }
                         }
 
-                        if(!RoomsMap[i][j]->getDoor(0)){ // Doors at East, South, West
-                            RoomsMap[i][j]->setType(Room3ESW);
-                            RoomsMap[i][j]->fillRocks(Room3ESW);
-                            RoomsMap[i][j]->fillChest(randomObjects(randomObjectWithProbability()));
-                        }
 
-                        if(!RoomsMap[i][j]->getDoor(1)){ // Doors at North, South, West
-                            RoomsMap[i][j]->setType(Room3NSW);
-                        }
-
-                        if(!RoomsMap[i][j]->getDoor(2)){ // Doors at North, East, West
-                            RoomsMap[i][j]->setType(Room3NEW);
-                            RoomsMap[i][j]->fillRocks(Room3NEW);
-                        }
                         break;
                     case 4:
-                        RoomsMap[i][j]->setType(Room4NESW);
+
+                        if(rand()%2 == 0)
+                            RoomsMap[i][j]->setType(Room4NESW1);
+                        else
+                            RoomsMap[i][j]->setType(Room4NESW2);
                         break;
 
                     default:
@@ -432,7 +445,8 @@ std::vector<unsigned int> Stage::randomMonsters(unsigned nb) {
 }
 
 unsigned Stage::randomObjectWithProbability() {
-    unsigned random = rand()%3+1; // valeur entre 1 et 3
+
+    unsigned random = (rand()%3) + 1; // valeur entre 1 et 3
 
     if(random == 1)
         return 2;

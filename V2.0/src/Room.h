@@ -17,7 +17,8 @@ enum roomType{
     Room2NS2, // Room 2 Doors vertical 2 (5)   / Aucun rocher / Aucun coffre
     Room2WE1, // Room 2 Doors horizontal 1 (6) / 24 rochers   / Aucun coffre
     Room2WE2, // Room 2 Doors horizontal 2 (7) / Aucun rocher / Aucun coffre
-    Room4NESW, // Room 4 Doors (8) / Aucun rocher / Aucun coffre
+    Room4NESW1, // Room 4 Doors (8) / Aucun rocher / Aucun coffre
+    Room4NESW2, //  Room 4 Doors (8) / Aucun rocher / Aucun coffre
     Room1N, // Room 1 Door at North (9)  / 8 rochers    / 1 coffre
     Room1E, // Room 1 Door at East (10)  / Aucun rocher / 1 coffre
     Room1S, // Room 1 Door at South (11) / 16 rochers   / 1 coffre
