@@ -6,7 +6,7 @@
 #include "Npc.h"
 
 int main(){
-/*
+
     unsigned stage = 2;
 
     float x = 0.0, y = 0.0;
@@ -21,16 +21,17 @@ int main(){
     std::cin >> i >> j;
     test.displayDoors(i, j);
 
-    std::cout << "Entrer les coords de la salle" << std::endl;
-    std::cin >> i >> j;
-    std::cout << test.getStage();
     test.displayMonsters(i, j);
 
+    test.displayRocks(i, j);
+
+    test.displayChest(i, j);
+/*
     unsigned st = 1;
     Stage test(Aspen);
     test.generate(st);
     test.randomObjects(5);
-*/
+
     std::cout << "1" << std::endl;
     unsigned t;
     unsigned choice;
@@ -38,7 +39,7 @@ int main(){
     std::cout << "2" << std::endl;
     Entity Aspen(x, y);
     std::cout << "3" << std::endl;
-    Aspen.addInventoryObject(58, 11); // id: 58, nb: 11
+    Aspen.addInventoryObject(58, 6); // id: 58, nb: 11
     Aspen.displayEntity();
     std::cout << "On a ajouté l'obj 58 au nombre de 11"<< std::endl;
     std::cin >> t;
@@ -63,7 +64,7 @@ int main(){
     npc.upgradeBlacksmith(Aspen, choice); //fabrique l'object 11
     Aspen.displayEntity();
     std::cout << "On fabrique l'obj 11 (a besoin de 1 fois l'obj 58)" << std::endl;
-    std::cin >> t;
+    std::cin >> t;*/
 
     return 0;
 }

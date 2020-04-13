@@ -33,7 +33,6 @@ Npc::~Npc() {
     // Blacksmith
 void Npc::ActionsBlacksmith(Entity hero){ // A appeler à chaque fois que l'on parle au NPC
 
-    std::cout << "passe 1" << std::endl;
     if(blacksmithInventoryUpgrade.size() != 0){
         for(unsigned i = 0; i < blacksmithInventoryUpgrade.size(); ++i){ // On nettoie les upgrades possible -> permet de prendre en compte les objects present sur le joueur au moment où il interpel le joueur
 
@@ -43,10 +42,8 @@ void Npc::ActionsBlacksmith(Entity hero){ // A appeler à chaque fois que l'on p
             }
         }
     }
-    std::cout << "passe 2" << std::endl;
 
-
-    for(unsigned i = minIdEquipment; i < maxIdEquipement; i+=3){
+    for(unsigned i = minIdEquipment; i < maxIdPotion; i+=3){
         addMake(i);                             // tous les premier niveaux
         if(hero.isItOnEntity(i,1))
             addUpgrade(i+1);
@@ -57,7 +54,7 @@ void Npc::ActionsBlacksmith(Entity hero){ // A appeler à chaque fois que l'on p
 
 void Npc::makeBlacksmith(Entity &hero, unsigned index){
 
-    if(CanMake(hero,index)) {
+    if(CanMake(hero, blacksmithInventoryMake[index]->getId())) {
         std::vector<unsigned> requiredResources = blacksmithInventoryMake[index]->getResource();
 
         for(unsigned i = 1; i < 8; i+=2){
@@ -74,7 +71,7 @@ void Npc::makeBlacksmith(Entity &hero, unsigned index){
 
 void Npc::upgradeBlacksmith(Entity &hero,unsigned index){
 
-    if(CanUpgrade(hero,index)) {
+    if(CanUpgrade(hero, blacksmithInventoryUpgrade[index]->getId())) {
         std::vector<unsigned> requiredResources = blacksmithInventoryUpgrade[index]->getResource();
 
         for(unsigned i = 1; i < 8; i+=2){
@@ -101,7 +98,7 @@ void Npc::buyPotion(Entity &hero, unsigned index, unsigned Nb) {
 
 void Npc::makePotion(Entity &hero, unsigned index) {
 
-    if(CanMakePotion(hero,index)) {
+    if(CanMakePotion(hero, witchInventoryMake[index]->getId())) {
         std::vector<unsigned> requiredResources = witchInventoryMake[index]->getResource();
 
         for(unsigned i = 1; i < 8; i+=2){
@@ -164,7 +161,7 @@ bool Npc::CanUpgrade(Entity hero, unsigned index) const{
     bool Can = true;
     std::vector<unsigned> Need = blacksmithInventoryUpgrade[index]->getResource();
 
-    for(unsigned i = 1; i < 8; i+=2){
+    for(unsigned i = 1; i < resourcesSize; i+=2){
         if(Can && Need[i] != 0)
             if(!(hero.isItOnEntity(Need[i],Need[i+1])))
                 Can = false;
@@ -176,10 +173,13 @@ bool Npc::CanMake(Entity hero, unsigned index) const{
     bool Can = true;
     std::vector<unsigned> ressourceNeed = blacksmithInventoryMake[index]->getResource();
 
-    for(unsigned i = 1; i < 8; i+=2){
-        if(Can && ressourceNeed[i] != 0)
-            if(!(hero.isItOnEntity(ressourceNeed[i], ressourceNeed[i+1])))
+    for(unsigned i = 1; i < resourcesSize; i+=2){
+        if(Can && ressourceNeed[i] != 0) {
+            std::cout << ressourceNeed[i] << " / " << ressourceNeed[i+1] << std::endl;
+            if (!(hero.isItOnEntity(ressourceNeed[i], ressourceNeed[i + 1])))
                 Can = false;
+        }
+        std::cout << Can << std::endl;
     }
     return Can;
 }
@@ -188,7 +188,7 @@ bool Npc::CanMakePotion(Entity hero, unsigned index) const{
     bool Can = true;
     std::vector<unsigned> ressourceNeed = witchInventoryMake[index]->getResource();
 
-    for(unsigned i = 1; i < 8; i+=2){
+    for(unsigned i = 1; i < resourcesSize; i+=2){
         if(Can && ressourceNeed[i] != 0)
             if(!(hero.isItOnEntity(ressourceNeed[i],ressourceNeed[i+1])))
                 Can = false;
@@ -242,7 +242,8 @@ unsigned Npc::returnIndex(const unsigned id, Action action) const{
     switch (action){
         case Action::make:
             for(unsigned i = 0; i < blacksmithInventoryMake.size(); i++) {
-                if(blacksmithInventoryMake[i]->getId() == id)  index = i;
+                if(blacksmithInventoryMake[i]->getId() == id)
+                    index = i;
             }
             break;
 

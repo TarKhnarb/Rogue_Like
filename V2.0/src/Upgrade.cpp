@@ -48,13 +48,18 @@ unsigned Upgrade::getId() const {
 
 
 void Upgrade::display() const {
+
     std::cout << "Pour améliorer l'object d'identifiant " << resources[0] << std::endl;
+    std::cout << std::endl;
     for(int i = 1; i < 9; i++)
     {
-        if(i%2 != 0)
-        {
-            std::cout << "On aura besoin de l'object n°" << resources[i];
+        if(resources[i] != 0){
+            if(i%2 != 0){
+                std::cout << "On aura besoin de l'object n°" << resources[i];
+            }
+            else std::cout << "au nombre de " << resources[i] << std::endl;
+
+            std::cout << std::endl;
         }
-        else std::cout << "au nombre de " << resources[i] << std::endl;
     }
 }
