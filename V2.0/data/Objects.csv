@@ -20,9 +20,9 @@
 20,200,100,0,0,0,0,0,0,2,Tablier plombé I
 21,400,200,0,0,0,0,0,0,2,Tablier plombé II
 22,600,300,0,0,0,0,0,0,2,Tablier plombé III
-23,175,87,0,0,0,0,0,0,3,Exo-squelette I
-24,350,175,0,0,0,0,0,0,3,Exo-squelette II
-25,525,262,0,0,0,0,0,0,3,Exo-squelette III
+23,175,87,0,0,0,0,0,0,3,Exo squelette I
+24,350,175,0,0,0,0,0,0,3,Exo squelette II
+25,525,262,0,0,0,0,0,0,3,Exo squelette III
 26,175,87,0,0,0,0,0,0,3,Prothèse I
 27,350,175,0,0,0,0,0,0,3,Prothèse II
 28,525,262,0,0,0,0,0,0,3,Prothèse III
@@ -62,4 +62,3 @@
 62,0,0,0,0,0,0,0,0,8,Spores
 63,0,0,0,0,0,0,0,0,8,Cellulose
 64,0,0,0,0,0,0,0,0,8,Hydroxyde de sodium
-id,price,resalePrice,fly,attack,attackSpeed,hp,defence,speed,type,name

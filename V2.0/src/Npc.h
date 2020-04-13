@@ -56,12 +56,12 @@ public:
 
 
         // Witch
-    void ActionsWitch(Entity hero);
+    void ActionsWitch();
     void buyPotion(Entity&, unsigned, unsigned);
     void makePotion(Entity&, unsigned index);
 
         // Trader
-    void ActionsTrader(Entity hero);
+    void ActionsTrader();
     void buyLoot(Entity&, unsigned);
     void sellLoot(Entity&, unsigned);
 
@@ -70,9 +70,9 @@ public:
     //void makeCraft(Entity&, unsigned);
 
 private:
-    bool CanUpgrade(Entity, const unsigned) const;
-    bool CanMake(Entity, const unsigned) const;
-    bool CanMakePotion(Entity, const unsigned) const;
+    bool CanUpgrade(Entity, unsigned) const;
+    bool CanMake(Entity, unsigned) const;
+    bool CanMakePotion(Entity, unsigned) const;
 
 public:
     void display(Action);
@@ -83,15 +83,15 @@ public:
 private:
 
         // Add dans les inventaires des NPC
-    void addMake(const unsigned id);
+    void addMake(unsigned id);
 
-    void addUpgrade(const unsigned id);
+    void addUpgrade(unsigned id);
 
-    void addPotion(const unsigned id);
+    void addPotion(unsigned id);
 
-    void addPotionMake(const unsigned id);
+    void addPotionMake(unsigned id);
 
-    void addLoot(const unsigned id);
+    void addLoot(unsigned id);
 
     //void addCraft(const unsigned);
 

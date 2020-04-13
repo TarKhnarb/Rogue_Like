@@ -33,18 +33,25 @@ Npc::~Npc() {
     // Blacksmith
 void Npc::ActionsBlacksmith(Entity hero){ // A appeler à chaque fois que l'on parle au NPC
 
-    for(unsigned i = 0; i < blacksmithInventoryUpgrade.size(); ++i){ // On nettoie les upgrades possible -> permet de prendre en compte les objects present sur le joueur au moment où il interpel le joueur
+    std::cout << "passe 1" << std::endl;
+    if(blacksmithInventoryUpgrade.size() != 0){
+        for(unsigned i = 0; i < blacksmithInventoryUpgrade.size(); ++i){ // On nettoie les upgrades possible -> permet de prendre en compte les objects present sur le joueur au moment où il interpel le joueur
 
-        if(blacksmithInventoryUpgrade[i]){
-            delete blacksmithInventoryUpgrade[i];
-            blacksmithInventoryUpgrade[i] = nullptr;
+            if(blacksmithInventoryUpgrade[i]){
+                delete blacksmithInventoryUpgrade[i];
+                blacksmithInventoryUpgrade[i] = nullptr;
+            }
         }
     }
+    std::cout << "passe 2" << std::endl;
+
 
     for(unsigned i = minIdEquipment; i < maxIdEquipement; i+=3){
         addMake(i);                             // tous les premier niveaux
-        if(hero.isItOnEntity(i,1)) addUpgrade(i+1);
-        if(hero.isItOnEntity(i+1,1)) addUpgrade(i+2);
+        if(hero.isItOnEntity(i,1))
+            addUpgrade(i+1);
+        if(hero.isItOnEntity(i+1,1))
+            addUpgrade(i+2);
     }
 }
 
@@ -62,7 +69,7 @@ void Npc::makeBlacksmith(Entity &hero, unsigned index){
 
     }
     else
-        throw std::runtime_error {"Npc::makeBlacksmith(Entity&, unsigned index)(" + std::to_string(index) + ") - Cannot make this object, not enought items"};
+        throw std::runtime_error ("Npc::makeBlacksmith(Entity&, unsigned index)(" + std::to_string(index) + ") - Cannot make this object, not enought items");
 }
 
 void Npc::upgradeBlacksmith(Entity &hero,unsigned index){
@@ -81,7 +88,7 @@ void Npc::upgradeBlacksmith(Entity &hero,unsigned index){
 }
 
     // Witch
-void Npc::ActionsWitch(Entity hero){ // A appeler dans le constructeur de Map seulement
+void Npc::ActionsWitch(){ // A appeler dans le constructeur de Map seulement
     for(unsigned i = minIdPotion; i < maxIdPotion+1; i++){
         addPotion(i);
         addPotionMake(i);
@@ -105,11 +112,11 @@ void Npc::makePotion(Entity &hero, unsigned index) {
         hero.buyObject(witchInventoryMake[index]->getId(), 1);
     }
     else
-        throw std::runtime_error {"Npc::buyPotion(Entity&, unsigned index)(" + std::to_string(index) + ") - Cannot make this potion, not enought items"};
+        throw std::runtime_error("Npc::buyPotion(Entity&, unsigned index)(" + std::to_string(index) + ") - Cannot make this potion, not enought items");
 }
 
     // Trader
-void Npc::ActionsTrader(Entity hero){ // A appeler dans le constructeur de Map uniquement
+void Npc::ActionsTrader(){ // A appeler dans le constructeur de Map uniquement
     srand(time(nullptr));
     for(unsigned i = 0; i < 4; i++){
         addLoot((rand()%15) + 50); // item entre 50 et 64
@@ -131,28 +138,29 @@ void Npc::ActionsCrafter(Entity hero){}
 void Npc::makeCraft(Entity &hero, unsigned index){}
 */
 
-void Npc::addMake(const unsigned id){
-    assert(id > minIdEquipment-1 && id < maxIdEquipement);
+void Npc::addMake(unsigned id){
+    //assert(id > minIdEquipment-1 && id < maxIdEquipement);
+    std::cout << id << std::endl;
     blacksmithInventoryMake.push_back(new Upgrade(id));
 }
 
-void Npc::addUpgrade(const unsigned id){
+void Npc::addUpgrade(unsigned id){
     blacksmithInventoryUpgrade.push_back(new Upgrade(id));
 }
 
-void Npc::addPotion(const unsigned id){
+void Npc::addPotion(unsigned id){
     witchInventory.push_back(new Object(id));
 }
 
-void Npc::addPotionMake(const unsigned id){
+void Npc::addPotionMake(unsigned id){
     witchInventoryMake.push_back(new Upgrade(id));
 }
 
-void Npc::addLoot(const unsigned id){
+void Npc::addLoot(unsigned id){
     traderInventory.push_back(new Object(id));
 }
 
-bool Npc::CanUpgrade(Entity hero, const unsigned index) const{
+bool Npc::CanUpgrade(Entity hero, unsigned index) const{
     bool Can = true;
     std::vector<unsigned> Need = blacksmithInventoryUpgrade[index]->getResource();
 
@@ -164,7 +172,7 @@ bool Npc::CanUpgrade(Entity hero, const unsigned index) const{
     return Can;
 }
 
-bool Npc::CanMake(Entity hero, const unsigned index) const{
+bool Npc::CanMake(Entity hero, unsigned index) const{
     bool Can = true;
     std::vector<unsigned> ressourceNeed = blacksmithInventoryMake[index]->getResource();
 
@@ -176,7 +184,7 @@ bool Npc::CanMake(Entity hero, const unsigned index) const{
     return Can;
 }
 
-bool Npc::CanMakePotion(Entity hero, const unsigned index) const{
+bool Npc::CanMakePotion(Entity hero, unsigned index) const{
     bool Can = true;
     std::vector<unsigned> ressourceNeed = witchInventoryMake[index]->getResource();
 
