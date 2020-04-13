@@ -157,6 +157,10 @@ bool Entity::inventoryEmpty() {
     return inventory.isEmpty();
 }
 
+std::string Entity::getName() const {
+    return name;
+}
+
 void Entity::displayEntity() {
     std::cout << "      Aspen " << std::endl;
     std::cout << "          Money : " << money << std::endl;

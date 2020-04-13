@@ -1,8 +1,6 @@
 #include "Upgrade.h"
-/*
-Upgrade::Upgrade(unsigned id) {
 
-    //assert((id < 11) || (id > 49));
+Upgrade::Upgrade(unsigned id) {
 
     std::ifstream file;
 
@@ -44,6 +42,11 @@ std::vector<unsigned> Upgrade::getResource() const {
     return resources;
 }
 
+unsigned Upgrade::getId() const {
+    return resources[0];
+}
+
+
 void Upgrade::display() const {
     std::cout << "Pour améliorer l'object d'identifiant " << resources[0] << std::endl;
     for(int i = 1; i < 9; i++)
@@ -55,4 +58,3 @@ void Upgrade::display() const {
         else std::cout << "au nombre de " << resources[i] << std::endl;
     }
 }
-*/

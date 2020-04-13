@@ -340,12 +340,7 @@ void Stage::affectRoomTypeMonsterObject(){
                         break;
 
                     case 3:
-                        if(seed % 4) { // 1 chance sur 4
-                            RoomsMap[i][j]->setType(Room4NESW2);
-                            RoomsMap[i][j]->fillMonsters(randomMonsters(), Room4NESW2);
-                            RoomsMap[i][j]->fillRocks(Room4NESW2);
-                        }
-                        else{
+                        if(rand()%4) { // 3 chance sur 4
 
                             if(!RoomsMap[i][j]->getDoor(3)){ // Doors at North, East, South
                                 RoomsMap[i][j]->setType(Room3NES);
@@ -370,6 +365,11 @@ void Stage::affectRoomTypeMonsterObject(){
                                 RoomsMap[i][j]->fillRocks(Room3NEW);
                             }
                         }
+                        else{
+                            RoomsMap[i][j]->setType(Room4NESW2);
+                            RoomsMap[i][j]->fillMonsters(randomMonsters(), Room4NESW2);
+                            RoomsMap[i][j]->fillRocks(Room4NESW2);
+                        }
 
 
                         break;
@@ -391,6 +391,10 @@ void Stage::affectRoomTypeMonsterObject(){
                     default:
                         break;
                 }
+            }
+
+            if(RoomsMap[i][j] && RoomsMap[i][j]->getType() == roomType::Boss){
+                RoomsMap[i][j]->fillBoss((seed%4)+7); // Tire un id entre 7 et 10
             }
         }
     }
@@ -480,6 +484,22 @@ unsigned Stage::randomObjectWithProbability() {
         return 2;
     else
         return 1;
+}
+
+std::vector<Door *> Stage::getDoors(unsigned i, unsigned j) const {
+    return RoomsMap[i][j]->getDoors();
+}
+
+std::vector<Entity *> Stage::getMonsters(unsigned i, unsigned j) const {
+    return RoomsMap[i][j]->getMonsters();
+}
+
+std::vector<Rock> Stage::getRocks(unsigned i, unsigned j) const {
+    return RoomsMap[i][j]->getRocks();
+}
+
+Chest* Stage::getChest(unsigned i, unsigned j) const {
+    return RoomsMap[i][j]->getChest();
 }
 
 /****************

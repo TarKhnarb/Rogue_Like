@@ -35,10 +35,12 @@ struct Rock{
 
     Rock(float posx, float posy): life (10), form (rand()%3), pos(posx, posy) {}
 
-    bool getState() const { return life ? true : false; } // True = entier, false = cassé
+    bool getState() const { return life !=0; } // True = entier, false = cassé
     unsigned life; // Nombre de projectile avant de le detruire
     unsigned form; // forme du rocher, 3 disponibles pour l'affichage sfml
     Position<float> pos; // Position dans la salle
+
+    float getPosition(bool xORy)const { return pos.getPosition(xORy);};
 }; // Voir comment on defini un rocher
 
 class Room{
@@ -61,9 +63,15 @@ public:
 
     Door* getDoor(unsigned);
 
+    void fillBoss(unsigned);
     void fillMonsters(std::vector<unsigned>, roomType);
     void fillRocks(roomType);
     void fillChest(std::vector<unsigned>);
+
+    std::vector<Door*> getDoors() const;
+    std::vector<Entity*> getMonsters() const;
+    std::vector<Rock> getRocks() const;
+    Chest* getChest() const;
 
 private:
 

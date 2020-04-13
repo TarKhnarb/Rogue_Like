@@ -26,8 +26,8 @@ float DoorW[2][2] =
 
     //__________ Boss Room __________
         
-float MonsterBoss[1][2] = 
-	    {{640, 360}}; // centre de la salle à adapter en fonction des dimensions du boss tiré
+float MonsterBoss[2] =
+	    {640, 360}; // centre de la salle à adapter en fonction des dimensions du boss tiré
 	    
     //__________ Room2NS1 __________
 

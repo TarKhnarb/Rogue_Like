@@ -9,7 +9,7 @@
 
 const unsigned resourcesSize = 9;
 const unsigned minIdEquipment = 11;
-const unsigned maxIdEquipement = 47;
+const unsigned maxIdEquipement = 49;
 
 class Upgrade {
 
@@ -18,7 +18,10 @@ public:
 
     std::vector<unsigned> getResource() const;
 
+    unsigned getId() const;
+
     void display() const;
+
     void Test();
 
 private:

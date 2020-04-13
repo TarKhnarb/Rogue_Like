@@ -4,6 +4,7 @@
 #include "Stage.h"
 #include "Entity.h"
 
+#include <vector>
 #include <array>
 #include <stdexcept>
 #include <iostream>
@@ -22,7 +23,10 @@ public:
 
     void nextStage(); // Gère la création et l'incrémentation de l'étage suivant
 
-
+    void displayDoors(unsigned, unsigned);
+    void displayMonsters(unsigned, unsigned);
+    void displayRocks(unsigned, unsigned);
+    void displayChest(unsigned, unsigned);
 
 private:
 

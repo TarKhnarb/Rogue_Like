@@ -8,6 +8,7 @@
 #include <sstream>
 
 const unsigned statSize = 6;
+const unsigned maxIdObject = 65;
 
 class Object {
 

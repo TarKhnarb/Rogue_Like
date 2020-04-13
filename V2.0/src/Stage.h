@@ -43,6 +43,12 @@ private:
     std::vector<unsigned> randomObjects(unsigned); // return a vector of X ids to fill chest of the room
     unsigned randomObjectWithProbability(); // return (1) or (2) with the probability of 1/3 for (2)
 
+public:
+    std::vector<Door*> getDoors(unsigned, unsigned) const;
+    std::vector<Entity*> getMonsters(unsigned, unsigned) const;
+    std::vector<Rock> getRocks(unsigned, unsigned) const;
+    Chest* getChest(unsigned, unsigned) const;
+
 private:
 
     Entity hero;

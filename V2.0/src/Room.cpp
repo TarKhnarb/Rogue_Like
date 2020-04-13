@@ -107,6 +107,10 @@ Door* Room::getDoor(unsigned i) {
     return Doors[i];
 }
 
+void Room::fillBoss(unsigned idMonst) {
+    monsters.push_back(new Entity(MonsterBoss[0], MonsterBoss[1], idMonst));
+}
+
 void Room::fillMonsters(std::vector<unsigned int> idMonst, roomType t) {
     for(unsigned i = 0; i < idMonst.size(); ++i){
         if(idMonst[i]){
@@ -223,9 +227,25 @@ void Room::fillRocks(roomType t) {
     }
 }
 
-void Room::fillChest(std::vector<unsigned int> Ids) {
+void Room::fillChest(std::vector<unsigned> Ids) {
     chest = new Chest(hero, Chest::orientation::South);
-    for(auto id : Ids){
-        chest->addInChest(id);
+    for(unsigned i = 0; i < Ids.size(); ++i){
+        chest->addInChest(Ids[i]);
     }
+}
+
+std::vector<Door*> Room::getDoors() const {
+    return Doors;
+}
+
+std::vector<Entity*> Room::getMonsters() const {
+    return monsters;
+}
+
+std::vector<Rock> Room::getRocks() const {
+    return rocks;
+}
+
+Chest* Room::getChest() const {
+    return chest;
 }

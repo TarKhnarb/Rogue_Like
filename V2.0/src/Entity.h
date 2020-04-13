@@ -67,7 +67,7 @@ public :
     unsigned addInventoryObjectNb(unsigned id, unsigned objectNb = 1); // // Ajoute un object a l'inventaire en fonction de son id et du nb (par defaut à 1) ET retourne le nb d'object qui n'a pas pu être ajoutés
 
     void removeInventoryObject(unsigned); // Vide la case de l'inventaire de l'index passé en paramètre
-    unsigned removeInventoryObjectNb(unsigned id, unsigned objectNb); // Enlève un object del'inventaire avec un Id et un nombre d'éléments et retourne le nombre d'éléments manquants
+    unsigned removeInventoryObjectNb(unsigned id, unsigned objectNb = 1); // Enlève un object del'inventaire avec un Id et un nombre d'éléments et retourne le nombre d'éléments manquants
 
     /**
     * @brief check if player can fly
@@ -96,10 +96,13 @@ public :
     bool testIndex(unsigned);
     bool inventoryEmpty();
 
+    std::string getName() const;
+
     /**
      * @brief displays the statistics of the entity
      */
     void displayEntity();
+
 
 private:
 
