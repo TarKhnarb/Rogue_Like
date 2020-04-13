@@ -31,12 +31,14 @@ int main(){
     test.generate(st);
     test.randomObjects(5);
 */
+    std::cout << "1" << std::endl;
     unsigned t;
     unsigned choice;
     float x = 0.0, y = 0.0;
+    std::cout << "2" << std::endl;
     Entity Aspen(x, y);
-
-    Aspen.addInventoryObject(58, 11); // id: 58, nb: 11
+    std::cout << "3" << std::endl;
+    Aspen.addInventoryObjectNb(58, 8); // id: 58, nb: 11
     Aspen.displayEntity();
     std::cout << "On a ajouté l'obj 58 au nombre de 11"<< std::endl;
     std::cin >> t;

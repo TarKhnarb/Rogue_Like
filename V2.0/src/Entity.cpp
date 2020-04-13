@@ -7,6 +7,7 @@ Entity::Entity(float &x, float &y):
         orientation(static_cast<Orientation>(2)){
 
     getStatistics();
+    std::cout << "passé" << std::endl;
 }
 
 Entity::Entity(float &x, float &y, unsigned id):

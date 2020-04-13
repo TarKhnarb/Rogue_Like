@@ -153,12 +153,9 @@ unsigned Inventory::getNumber(unsigned id) const
 {
     unsigned count = 0;
 
-    for (auto p : bag)
-    {
+    for (auto p : bag){
         if (p && p->getId() == id)
-        {
             count += p->getObjectNumber();
-        }
     }
 
     return count;
@@ -177,14 +174,11 @@ std::vector<int> Inventory::getAllStats() const{
 
 	std::vector<int> stats = basicStat.getStats();
 
-	for (Object* p : stuff)
-	{
-		if (p)
-		{
+	for (Object* p : stuff){
+		if (p){
 			std::vector<int> stuffStats = p->getStats();
 
-			for (unsigned i = 0; i < 6; ++i)
-			{
+			for (unsigned i = 0; i < 6; ++i){
 				stats[i] += stuffStats[i];
 			}
 		}

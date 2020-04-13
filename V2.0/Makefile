@@ -5,7 +5,7 @@ FLAGS = -c -Wall
 
 all: $(O) $(B) $(B)/Aspen
 
-$(B)/Aspen: $(O)/Donjon.o $(O)/Base.o $(O)/Entity.o $(O)/Upgrade.o $(O)/Npc.o
+$(B)/Aspen: $(O)/Donjon.o $(O)/Base.o $(O)/Entity.o $(O)/Npc.o
 	g++ -ggdb $(S)/Aspen.cpp -o $(B)/Aspen $(O)/*.o
 
 $(O)/Donjon.o: $(O)/Stage.o
