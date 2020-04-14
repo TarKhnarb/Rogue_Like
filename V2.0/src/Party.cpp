@@ -12,13 +12,30 @@ Party::Party():
     mPlayer.setPosition(320.f, 240.f);
 }
 
-void Party::loadTexture(sf::Texture &texture, std::string fileName){
-
+Party::~Party() {
+    for(auto &t : textures){
+        delete t.second;
+        t.second = nullptr;
+    }
 }
 
-void Party::affectPositionTextureToSprite(sf::Sprite &sprite, sf::Texture texture, Position<float> pos) {
-    sprite.setTexture(texture);
-    sprite.setPosition(pos.getPosition(1), pos.getPosition(0));
+void Party::loadTextures(){ // load dans le constructeur
+    sf::Texture* texture(new sf::Texture ());
+    texture->loadFromFile("data/Textures/Aspen.png");
+    textures.emplace("Aspen", texture);
+
+    texture = new sf::Texture();
+    /*
+     * Là on charge toutes les textures et on les nommes (cf au dessus)
+     */
+}
+
+sf::Texture& Party::getTexture(const std::string& nameText){ // récupere un etexture quand on en a besoin
+    auto found = textures.find(nameText);
+    if(found == textures.end())
+        throw std::runtime_error ("Party::getTexture(const std::string&) - Aucune texture de ce nom " + nameText);
+
+    return *found->second; // ( si pas * on retourne un pointeur de texture)
 }
 
 void Party::run(){
