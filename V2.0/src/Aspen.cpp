@@ -1,10 +1,38 @@
 #include <iostream>
 #include <istream>
 
-#include "Entity.h"
-#include "Donjon.h"
-#include "Npc.h"
+#include "Party.h"
+//#include "Entity.h"
+//#include "Donjon.h"
+//#include "Npc.h"
 
+
+
+int main(){
+    Party game;
+    game.run();
+}
+/*int main()
+{
+    sf::RenderWindow window(sf::VideoMode(640, 480), "SFMLApplication");
+    sf::CircleShape shape;
+    shape.setRadius(40.f);
+    shape.setPosition(100.f, 100.f);
+    shape.setFillColor(sf::Color::Cyan);
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+        window.clear();
+        window.draw(shape);
+        window.display();
+    }
+}*/
+/*
 int main(){
 
     unsigned stage = 2;
@@ -26,7 +54,7 @@ int main(){
     test.displayRocks(i, j);
 
     test.displayChest(i, j);
-/*
+
     unsigned st = 1;
     Stage test(Aspen);
     test.generate(st);
@@ -64,7 +92,8 @@ int main(){
     npc.upgradeBlacksmith(Aspen, choice); //fabrique l'object 11
     Aspen.displayEntity();
     std::cout << "On fabrique l'obj 11 (a besoin de 1 fois l'obj 58)" << std::endl;
-    std::cin >> t;*/
+    std::cin >> t;
 
     return 0;
 }
+*/

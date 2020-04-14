@@ -5,8 +5,11 @@ FLAGS = -c -Wall
 
 all: $(O) $(B) $(B)/Aspen
 
-$(B)/Aspen: $(O)/Donjon.o $(O)/Base.o $(O)/Entity.o $(O)/Npc.o
-	g++ -ggdb $(S)/Aspen.cpp -o $(B)/Aspen $(O)/*.o
+$(B)/Aspen: $(O)/Party.o $(O)/Donjon.o $(O)/Base.o $(O)/Entity.o $(O)/Npc.o
+	g++ -ggdb $(S)/Aspen.cpp -o $(B)/Aspen $(O)/*.o -lsfml-graphics -lsfml-window -lsfml-system
+
+$(O)/Party.o:
+	g++ $(FLAGS) $(S)/Party.cpp -o $(O)/Party.o -lsfml-graphics -lsfml-window -lsfml-system
 
 $(O)/Donjon.o: $(O)/Stage.o
 	g++ $(FLAGS) $(S)/Donjon.cpp -o $(O)/Donjon.o

@@ -53,8 +53,6 @@ public:
     void makeBlacksmith(Entity&, unsigned);
     void upgradeBlacksmith(Entity&, unsigned);
 
-
-
         // Witch
     void ActionsWitch();
     void buyPotion(Entity&, unsigned, unsigned);
