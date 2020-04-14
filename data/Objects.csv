@@ -1,9 +1,0 @@
-1,0,0,0,10,0,100,0,0,0,Stats Aspen
-2,500,200,0,0,0,10,0,0,2,Habit 
-3,500,200,0,5,0,0,0,0,2,Tenue
-4,500,200,0,0,5,0,0,5,2,Blouse
-5,500,200,0,0,0,0,5,0,2,Armure
-6,500,200,0,20,0,0,0,0,1,Seringue
-7,10,2,0,0,0,0,5,0,3,Masque
-8,5,1,0,0,0,0,0,0,4,Flagelle
-id,price,resalePrice,fly,attack,attackSpeed,hp,defence,speed,type,name
