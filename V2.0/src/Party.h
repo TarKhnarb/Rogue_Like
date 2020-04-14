@@ -19,8 +19,8 @@ private:
     void update(sf::Time);
     void render();
 
-    void loadTexture(sf::Texture &, std::string)
-    void affectPositionTextureToSprite(sf::Sprite &, sf::Texture, Position);
+    void loadTexture(sf::Texture &, std::string);
+    void affectPositionTextureToSprite(sf::Sprite &, sf::Texture, Position<float>);
 
     bool mIsMovingUp;
     bool mIsMovingDown;
@@ -35,7 +35,7 @@ private:
     sf::Texture mTexture;
     sf::Sprite mPlayer;
 
-    Position posEntity;
+    Position<float> posEntity;
 };
 
 #endif

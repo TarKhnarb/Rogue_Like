@@ -16,7 +16,7 @@ void Party::loadTexture(sf::Texture &texture, std::string fileName){
 
 }
 
-void Party::affectPositionTextureToSprite(sf::Sprite &sprite, sf::Texture texture, Position pos) {
+void Party::affectPositionTextureToSprite(sf::Sprite &sprite, sf::Texture texture, Position<float> pos) {
     sprite.setTexture(texture);
     sprite.setPosition(pos.getPosition(1), pos.getPosition(0));
 }
