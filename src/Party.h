@@ -25,8 +25,6 @@ private:
     void loadSprites(std::string name);
     sf::Sprite getSprite(const std::string&); // On donne la categorie du sprite, et le nom de la texture
 
-    bool testCollision(sf::FloatRect, sf::FloatRect);
-
     void processEvents();
     void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
     void update(sf::Time);

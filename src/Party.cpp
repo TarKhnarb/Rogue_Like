@@ -281,12 +281,6 @@ sf::Texture& Party::getTexture(const std::string& nameText){ // récupere un ete
     return *found->second; // ( si pas * on retourne un pointeur de texture)
 }
 
-bool Party::testCollision(sf::FloatRect s1, sf::FloatRect s2){
-    if(s1.intersects(s2))
-        return false;
-    else
-        return true;
-}
 /*
 sf::Vector2 Party::setPositionCollision(sf::FloatRect s1, sf::FloatRect s2){
     if(s1.intersects(s2) && (s1.left > s2.left)){ // s1 a droite de s2
@@ -362,32 +356,30 @@ void Party::handlePlayerInput(sf::Keyboard::Key key, bool isPressed){
 
 void Party::update(sf::Time deltaTime){
 
+	float realSpeed = PlayerSpeed * deltaTime.asSeconds();
+	
     sf::FloatRect test = sPlayer.getGlobalBounds();
     if(mIsMovingUp)
-        test.top -= PlayerSpeed;
+        test.top -= realSpeed;
     if(mIsMovingDown)
-        test.top += PlayerSpeed;
+        test.top += realSpeed;
     if(mIsMovingLeft)
-        test.left -= PlayerSpeed;
+        test.left -= realSpeed;
     if(mIsMovingRight)
-        test.left += PlayerSpeed;
+        test.left += realSpeed;
 
     sf::Vector2f movement(0.f, 0.f);
-    if (mIsMovingUp && test.intersects(sRock.getGlobalBounds()))
+    if (mIsMovingUp && !test.intersects(sRock.getGlobalBounds()))
         movement.y -= PlayerSpeed;
 
-    if (mIsMovingDown && test.intersects(sRock.getGlobalBounds()))
+    if (mIsMovingDown && !test.intersects(sRock.getGlobalBounds()))
         movement.y += PlayerSpeed;
 
-    if (mIsMovingLeft && test.intersects(sRock.getGlobalBounds()))
+    if (mIsMovingLeft && !test.intersects(sRock.getGlobalBounds()))
         movement.x -= PlayerSpeed;
 
-    if (mIsMovingRight && test.intersects(sRock.getGlobalBounds()))
+    if (mIsMovingRight && !test.intersects(sRock.getGlobalBounds()))
         movement.x += PlayerSpeed;
-
-    if(!testCollision(sPlayer.getGlobalBounds(), sRock.getGlobalBounds())){
-
-    }
 
     sPlayer.move(movement * deltaTime.asSeconds());
 }
