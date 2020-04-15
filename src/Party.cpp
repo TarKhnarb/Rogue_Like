@@ -359,27 +359,44 @@ void Party::update(sf::Time deltaTime){
 	float realSpeed = PlayerSpeed * deltaTime.asSeconds();
 	
     sf::FloatRect test = sPlayer.getGlobalBounds();
+	test.top += test.height / 2;
+	test.height /= 2;
+	
+	sf::Vector2f movement(0.f, 0.f);
+	
     if(mIsMovingUp)
+	{
         test.top -= realSpeed;
+		test.height += realSpeed;
+		
+		if (!test.intersects(sRock.getGlobalBounds()))
+			movement.y -= PlayerSpeed;
+	}
+	
     if(mIsMovingDown)
-        test.top += realSpeed;
+	{
+		test.height += realSpeed;
+		
+		if (!test.intersects(sRock.getGlobalBounds()))
+			movement.y += PlayerSpeed;
+	}
+	
     if(mIsMovingLeft)
+	{
         test.left -= realSpeed;
+		test.width += realSpeed;
+		
+		if (!test.intersects(sRock.getGlobalBounds()))
+			movement.x -= PlayerSpeed;
+	}
+	
     if(mIsMovingRight)
-        test.left += realSpeed;
-
-    sf::Vector2f movement(0.f, 0.f);
-    if (mIsMovingUp && !test.intersects(sRock.getGlobalBounds()))
-        movement.y -= PlayerSpeed;
-
-    if (mIsMovingDown && !test.intersects(sRock.getGlobalBounds()))
-        movement.y += PlayerSpeed;
-
-    if (mIsMovingLeft && !test.intersects(sRock.getGlobalBounds()))
-        movement.x -= PlayerSpeed;
-
-    if (mIsMovingRight && !test.intersects(sRock.getGlobalBounds()))
-        movement.x += PlayerSpeed;
+	{
+        test.width += realSpeed;
+		
+		if (!test.intersects(sRock.getGlobalBounds()))
+			movement.x += PlayerSpeed;
+	}
 
     sPlayer.move(movement * deltaTime.asSeconds());
 }
@@ -387,7 +404,7 @@ void Party::update(sf::Time deltaTime){
 void Party::render(){
 
     mWindow.clear();
+	mWindow.draw(sRock);
     mWindow.draw(sPlayer);
-    mWindow.draw(sRock);
     mWindow.display();
 }
