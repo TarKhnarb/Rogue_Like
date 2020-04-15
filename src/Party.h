@@ -22,6 +22,11 @@ private:
     void loadTextures();
     sf::Texture& getTexture(const std::string&);
 
+    void loadSprites(std::string name);
+    sf::Sprite getSprite(const std::string&); // On donne la categorie du sprite, et le nom de la texture
+
+    bool testCollision(sf::FloatRect, sf::FloatRect);
+
     void processEvents();
     void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
     void update(sf::Time);
@@ -32,18 +37,19 @@ private:
     bool mIsMovingLeft = false;
     bool mIsMovingRight = false;
 
-    float PlayerSpeed = 25.f;
+    float PlayerSpeed = 50.f;
 
 private:
 
     std::map<std::string, sf::Texture*> textures;
+    std::map<std::string, sf::Sprite> sprites;
 
     //std::vector<sf::Sprite> // sprite.getGlobalBounds() renvoie un sf::FloatRect (rect.top rect.left rect.width rect.length) sera très utile pour les colisions !
 
     sf::RenderWindow mWindow;
 
-    sf::Texture mTexture;
-    sf::Sprite mPlayer;
+    sf::Sprite sPlayer;
+    sf::Sprite sRock;
 
     Position<float> posEntity;
 };
