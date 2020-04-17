@@ -10,12 +10,14 @@ Npc::Npc():
 
 Npc::~Npc() {
     for(unsigned i = 0; i < blacksmithInventoryMake.size(); ++i){
-        delete blacksmithInventoryMake[i];
+		if (blacksmithInventoryMake[i])
+			delete blacksmithInventoryMake[i];
         blacksmithInventoryMake[i] = nullptr;
     }
 
     for(unsigned i = 0; i < blacksmithInventoryUpgrade.size(); ++i){
-        delete blacksmithInventoryUpgrade[i];
+		if (blacksmithInventoryUpgrade[i])
+			delete blacksmithInventoryUpgrade[i];
         blacksmithInventoryUpgrade[i] = nullptr;
     }
 

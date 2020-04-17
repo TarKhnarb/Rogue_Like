@@ -13,39 +13,39 @@
     //__________ Doors __________
 
 struct Archetype{
-    static float DoorN[2][2] =
+    const float DoorN[2][2] =
             {{580, 80}, {600, 100}};
 
-    static float DoorE[2][2] =
+    const float DoorE[2][2] =
             {{1040, 300}, {1040, 320}};
 
-    static float DoorS[2][2] =
+    const float DoorS[2][2] =
             {{580, 560}, {600, 560}};
 
-    static float DoorW[2][2] =
+    const float DoorW[2][2] =
             {{180, 300}, {200, 320}};
 
     //__________ Boss Room __________
 
-    static float MonsterBoss[2] =
+    const float MonsterBoss[2] =
             {640, 360}; // centre de la salle à adapter en fonction des dimensions du boss tiré
 
     //__________ Room2NS1 __________
 
-    static float Monster2NS1[6][2] =
+    const float Monster2NS1[6][2] =
             {{640, 320}, {640, 400}, {450, 260}, {850, 460}, {450, 460}, {850, 260}};
 
     //__________ Room2NS2 __________
 
-    static float Monster2NS2[6][2] =
+    const float Monster2NS2[6][2] =
             {{640, 320}, {640, 400}, {450, 260}, {850, 460}, {450, 460}, {850, 260}};
 
     //__________ Room2WE1 __________
 
-    static float Monster2WE1[6][2] =
+    const float Monster2WE1[6][2] =
             {{570, 230}, {710, 510}, {490, 230}, {790, 510}, {530, 310}, {750, 430}};
 
-    static float Rocks2WE1[24][2] =
+    const float Rocks2WE1[24][2] =
             {{240, 160}, {240, 200}, {240, 240}, {240, 440}, {240, 480},
              {240, 520}, {280, 160}, {280, 200}, {280, 480}, {280, 520},
              {320, 160}, {320, 520},{1000, 160}, {1000, 200}, {1000, 240},
@@ -54,20 +54,20 @@ struct Archetype{
 
     //__________ Room2WE2 __________
 
-    static float Monster2WE2[6][2] =
+    const float Monster2WE2[6][2] =
             {{640, 320}, {640, 400}, {450, 260}, {850, 460}, {450, 460}, {850, 260}};
 
     //__________ Room4NESW1 __________
 
-    static float Monster4NESW1[6][2] =
+    const float Monster4NESW1[6][2] =
             {{640, 320}, {640, 400}, {450, 260}, {850, 460}, {450, 460}, {850, 260}};
 
     //__________ Room4NESW2 __________
 
-    static float Monster4NESW2[6][2] =
+    const float Monster4NESW2[6][2] =
             {{640, 320}, {640, 400}, {450, 260}, {850, 460}, {450, 460}, {850, 260}};
 
-    static float Rocks4NESW2[24][2] =
+    const float Rocks4NESW2[24][2] =
             {{240, 160}, {240, 200}, {240, 240}, {240, 440}, {240, 480},
              {240, 520}, {280, 160}, {280, 200}, {280, 480}, {280, 520},
              {320, 160}, {320, 520},{1000, 160}, {1000, 200}, {1000, 240},
@@ -76,44 +76,44 @@ struct Archetype{
 
     //__________ Room1N __________
 
-    static float Monster1N[6][2] =
+    const float Monster1N[6][2] =
             {{585, 500}, {695, 500}, {420, 360}, {860, 360}, {585, 250}, {695, 250}};
 
-    static float Rocks1N[8][2] =
+    const float Rocks1N[8][2] =
             {{620, 280}, {580, 300}, {560, 340}, {580, 380}, {620, 400},
              {660, 380}, {680, 340}, {660, 300}};
 
-    static float Chest1N[2] =
+    const float Chest1N[2] =
             {620, 340};
 
     //__________ Room1E __________
 
-    static float Monster1E[6][2] =
+    const float Monster1E[6][2] =
             {{300, 160}, {300, 460}, {640, 230}, {640, 400}, {850, 260}, {850, 460}};
 
-    static float Chest1E[2] =
+    const float Chest1E[2] =
             {240, 340};
 
     //__________ Room1S __________
 
-    static float Monster1S[6][2] =
+    const float Monster1S[6][2] =
             {{360, 200}, {920, 200}, {480, 200}, {800, 200}, {390, 435}, {890, 435}};
 
-    static float Rocks1S[16][2] =
+    const float Rocks1S[16][2] =
             {{240, 340}, {240, 360}, {280, 400}, {240, 440}, {280, 440},
              {240, 480}, {280, 480}, {240, 520}, {1000, 340}, {960, 360},
              {1000, 400}, {960, 440}, {1000, 440}, {960, 480}, {1000, 480},
              {1000, 520}};
 
-    static float Chest1S[2] =
+    const float Chest1S[2] =
             {620, 160};
 
     //__________ Room1W __________
 
-    static float Monster1W[6][2] =
+    const float Monster1W[6][2] =
             {{500, 220}, {500, 500}, {780, 220}, {780, 500}, {560, 360}, {720, 360}};
 
-    static float Rocks1W[31][2] =
+    const float Rocks1W[31][2] =
             {{600, 160}, {640, 160}, {560, 200}, {600, 200}, {640, 200},
              {680, 200}, {560, 240}, {600, 240}, {640, 240}, {680, 240},
              {600, 280}, {640, 280}, {600, 520}, {640, 520}, {560, 480},
@@ -122,38 +122,38 @@ struct Archetype{
              {960, 300}, {1000, 300}, {940, 340}, {960, 380}, {1000, 380},
              {1000, 420}};
 
-    static float Chest1W[2] =
+    const float Chest1W[2] =
             {1000, 340};
 
     //__________ Room3NES __________
 
-    static float Monster3NES[6][2] =
+    const float Monster3NES[6][2] =
             {{640, 320}, {640, 400}, {300, 260}, {300, 460}, {850, 260}, {850, 460}};
 
     //__________ Room3ESW __________
 
-    static float Monster3ESW[6][2] =
+    const float Monster3ESW[6][2] =
             {{320, 220}, {960, 220}, {320, 500}, {960, 500}, {550, 400}, {730, 400}};
 
-    static float Chest3ESW[2] =
+    const float Chest3ESW[2] =
             {620, 160};
 
     //__________ Room3NSW __________
 
-    static float Monster3NSW[6][2] =
+    const float Monster3NSW[6][2] =
             {{640, 320}, {640, 400}, {850, 260}, {850, 460}, {450, 260}, {450, 460}};
 
-    static float Rocks3NSW[11][2] =
+    const float Rocks3NSW[11][2] =
             {{1000, 260}, {960, 300}, {920, 340}, {1000, 340}, {880, 380},
              {960, 380}, {1000, 380}, {920, 420}, {1000, 420}, {960, 460},
              {1000, 500}};
 
     //__________ Room3NEW __________
 
-    static float Monster3NEW[6][2] =
+    const float Monster3NEW[6][2] =
             {{540, 520}, {740, 520}, {360, 240}, {920, 240}, {360, 520}, {920, 520}};
 
-    static float Rocks3NEW [7][2] =
+    const float Rocks3NEW [7][2] =
             {{540, 420}, {580, 420}, {620, 420}, {660, 420}, {700, 420},
              {600, 380}, {640, 380}};
 };

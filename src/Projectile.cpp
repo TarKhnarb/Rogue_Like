@@ -9,7 +9,8 @@ Projectile::Projectile(unsigned entityX, unsigned entityY, const unsigned & o, c
 }
 
 Projectile::~Projectile() {
-    delete positionProjectile;
+	if (positionProjectile)
+		delete positionProjectile;
 }
 
 void Projectile::update() { //updates the position according to the orientation
@@ -42,19 +43,22 @@ unsigned Projectile::getProjectilePosition(bool xORy) const{
 }
 
 void Projectile::collision() {
-    delete positionProjectile;
+	if (positionProjectile)
+		delete positionProjectile;
     //check ennemy position and delete ennemy because collision with him
 }
 
 void Projectile::runsIntoWall(){
-    unsigned temp = getCollisionNb();
-    if(temp > 1){
-        setCollisionNb(temp-1);
-    }
-    else{//projectile has reached maximum collision number possible
-        setCollisionNb(0);
-        delete positionProjectile;
-    }
+	if (positionProjectile){
+		unsigned temp = getCollisionNb();
+		if(temp > 1){
+			setCollisionNb(temp-1);
+		}
+		else{//projectile has reached maximum collision number possible
+			setCollisionNb(0);
+			delete positionProjectile;
+		}
+	}
 }
 
 unsigned Projectile::getSpeedProjectile() const{

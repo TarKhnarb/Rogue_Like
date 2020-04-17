@@ -12,6 +12,13 @@ Donjon::Donjon(unsigned stageNumb, Entity& aspen):
     std::cout << currentStage;
 }
 
+Donjon::~Donjon()
+{
+	if (currentStage)
+		delete currentStage;
+}
+
+
 Stage* Donjon::getCurrentStage() const {
     return currentStage;
 }

@@ -16,6 +16,7 @@ class Donjon{
 public:
 
     Donjon(unsigned, Entity&);
+	~Donjon();
 
     Stage* getCurrentStage() const;
     Room& getRoom(unsigned, unsigned);

@@ -9,12 +9,14 @@ Inventory::Inventory(unsigned idBasicStat, unsigned stuffSize, unsigned bagSize)
 Inventory::~Inventory(){
 
 	for(Object *p : stuff){
-		delete p;
+		if (p)
+			delete p;
 		p = nullptr;
 	}
 
 	for(Object *p : bag){
-		delete p;
+		if (p)
+			delete p;
 		p = nullptr;
 	}
 }

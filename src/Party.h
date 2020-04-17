@@ -72,7 +72,8 @@ private:
     std::vector<sf::Sprite> sFrames;
     std::vector<sf::Sprite> sDoors;
     std::vector<sf::Sprite> sChest;
-
+	
+	Archetype arch;
 };
 
 #endif

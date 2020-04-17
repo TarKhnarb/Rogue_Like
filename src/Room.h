@@ -86,6 +86,8 @@ private:
     std::vector<Entity*> monsters; // Monstres de la salle
     std::vector<Rock> rocks; // Rochers de la salle
     Chest* chest; // Coffre de la salle
+    
+    Archetype arch;
 
 };
 

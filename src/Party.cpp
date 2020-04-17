@@ -16,13 +16,14 @@ Party::Party():
     loadSprites("Door"); // On charge les portes ouvertes/fermées
     loadSprites("Rock");
 
-    sPlayer = getSprite("sAspenF");
+    sPlayer = getSprite("AspenF");
     sPlayer.setPosition(320.f, 240.f);
 }
 
 Party::~Party(){
     for(auto &t : textures){
-        delete t.second;
+		if (t.second)
+			delete t.second;
         t.second = nullptr;
     }
 }
@@ -294,7 +295,7 @@ void Party::loadSprites(std::string name){
                 break;
 
             default:
-                sprites.emplace("s" + t.first, getTexture(t.first));
+                sprites.emplace(t.first, getTexture(t.first));
                 break;
         }
     }
@@ -303,7 +304,7 @@ void Party::loadSprites(std::string name){
 sf::Sprite Party::getSprite(const std::string& name){
     auto found = sprites.find(name);
     if(found == sprites.end())
-        throw std::runtime_error ("Party::getSprite(const std::string&) - Aucune texture de ce nom " + name);
+        throw std::runtime_error ("Party::getSprite(const std::string&) - Aucun sprite de ce nom " + name);
 
     return found->second;
 }
@@ -321,22 +322,22 @@ void Party::setDoorOpenSprites(Room curRoom){ // /!\ Peut être a modifier a cau
             switch(i){
                 case 0:
                     door = getSprite("DoorOpenN");
-                    door.setPosition(Archetype::DoorN[1][0], Archetype::DoorN[1][1]);
+                    door.setPosition(arch.DoorN[1][0], arch.DoorN[1][1]);
                     break;
 
                 case 1:
                     door = getSprite("DoorOpenE");
-                    door.setPosition(Archetype::DoorE[1][0], Archetype::DoorE[1][1]);
+                    door.setPosition(arch.DoorE[1][0], arch.DoorE[1][1]);
                     break;
 
                 case 2:
                     door = getSprite("DoorOpenS");
-                    door.setPosition(Archetype::DoorS[1][0], Archetype::DoorS[1][1]);
+                    door.setPosition(arch.DoorS[1][0], arch.DoorS[1][1]);
                     break;
 
                 case 3:
                     door = getSprite("DoorOpenW");
-                    door.setPosition(Archetype::DoorW[1][0], Archetype::DoorW[1][1]);
+                    door.setPosition(arch.DoorW[1][0], arch.DoorW[1][1]);
                     break;
 
                 default:
@@ -360,22 +361,22 @@ void Party::setDoorCloseSprites(Room curRoom){ // /!\ Peut être a modifier a ca
             switch(i){
                 case 0:
                     door = getSprite("DoorCloseN");
-                    door.setPosition(Archetype::DoorN[1][0], Archetype::DoorN[1][1]);
+                    door.setPosition(arch.DoorN[1][0], arch.DoorN[1][1]);
                     break;
 
                 case 1:
                     door = getSprite("DoorCloseE");
-                    door.setPosition(Archetype::DoorE[1][0], Archetype::DoorE[1][1]);
+                    door.setPosition(arch.DoorE[1][0], arch.DoorE[1][1]);
                     break;
 
                 case 2:
                     door = getSprite("DoorCloseS");
-                    door.setPosition(Archetype::DoorS[1][0], Archetype::DoorS[1][1]);
+                    door.setPosition(arch.DoorS[1][0], arch.DoorS[1][1]);
                     break;
 
                 case 3:
                     door = getSprite("DoorCloseW");
-                    door.setPosition(Archetype::DoorW[1][0], Archetype::DoorW[1][1]);
+                    door.setPosition(arch.DoorW[1][0], arch.DoorW[1][1]);
                     break;
 
                 default:
@@ -399,22 +400,22 @@ void Party::setFrameSprites(Room curRoom){ // /!\ Peut être a modifier a cause 
             switch(i){
                 case 0:
                     frame = getSprite("FrameN");
-                    frame.setPosition(Archetype::DoorN[0][0], Archetype::DoorN[0][1]);
+                    frame.setPosition(arch.DoorN[0][0], arch.DoorN[0][1]);
                     break;
 
                 case 1:
                     frame = getSprite("FrameE");
-                    frame.setPosition(Archetype::DoorE[0][0], Archetype::DoorE[0][1]);
+                    frame.setPosition(arch.DoorE[0][0], arch.DoorE[0][1]);
                     break;
 
                 case 2:
                     frame = getSprite("FrameS");
-                    frame.setPosition(Archetype::DoorS[0][0], Archetype::DoorS[0][1]);
+                    frame.setPosition(arch.DoorS[0][0], arch.DoorS[0][1]);
                     break;
 
                 case 3:
                     frame = getSprite("FrameW");
-                    frame.setPosition(Archetype::DoorW[0][0], Archetype::DoorW[0][1]);
+                    frame.setPosition(arch.DoorW[0][0], arch.DoorW[0][1]);
                     break;
 
                 default:
@@ -457,27 +458,27 @@ void Party::setChestSprites(Room curRoom){  //sf::chest le mettre en vector
         switch(curRoom.getType()){
             case roomType::Room3ESW:
                 ches = getSprite("ChestCloseN");
-                ches.setPosition(Archetype::Chest3ESW[0], Archetype::Chest3ESW[1]);
+                ches.setPosition(arch.Chest3ESW[0], arch.Chest3ESW[1]);
                 break;
 
             case roomType::Room1N:
                 ches = getSprite("ChestCloseS");
-                ches.setPosition(Archetype::Chest1N[0], Archetype::Chest1N[1]);
+                ches.setPosition(arch.Chest1N[0], arch.Chest1N[1]);
                 break;
 
             case roomType::Room1E:
                 ches = getSprite("ChestCloseW");
-                ches.setPosition(Archetype::Chest1E[0], Archetype::Chest1E[1]);
+                ches.setPosition(arch.Chest1E[0], arch.Chest1E[1]);
                 break;
 
             case roomType::Room1S:
                 ches = getSprite("ChestCloseN");
-                ches.setPosition(Archetype::Chest1S[0], Archetype::Chest1S[1]);
+                ches.setPosition(arch.Chest1S[0], arch.Chest1S[1]);
                 break;
 
             case roomType::Room1W:
                 ches = getSprite("ChestCloseE");
-                ches.setPosition(Archetype::Chest1W[0], Archetype::Chest1W[1]);
+                ches.setPosition(arch.Chest1W[0], arch.Chest1W[1]);
                 break;
 
             default:
