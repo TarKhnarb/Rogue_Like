@@ -4,7 +4,8 @@
  * Constructeur *
  ***************/
 
-Stage::Stage(Entity & aspen): hero(aspen){
+Stage::Stage(Entity & aspen):
+        hero(aspen){
     
     for(unsigned i = 0; i < maxSize; i++)
     {
@@ -508,18 +509,13 @@ Chest* Stage::getChest(unsigned i, unsigned j) const {
 
 std::ostream& operator<<(std::ostream& stream, const Stage *s){
 
-	for (unsigned i = 0; i < maxSize; i++)
-	{
-		for (unsigned j = 0; j < maxSize; j++)
-		{
-			if (s->getRoom(i, j) == nullptr)
-			{
+	for (unsigned i = 0; i < maxSize; i++){
+		for (unsigned j = 0; j < maxSize; j++){
+			if (s->getRoom(i, j) == nullptr){
 				stream << ".";
 			}
-			else
-			{
-				switch (s->getRoom(i, j)->getType())
-				{
+			else{
+				switch (s->getRoom(i, j)->getType()){
 					case roomType::Common:
 						stream << "c";
 						break;

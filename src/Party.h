@@ -8,6 +8,12 @@
 #include <memory>
 
 #include "Position.h"
+#include "Entity.h"
+#include "Donjon.h"
+    // Utilisés pour récupérer les infos de leurs placements
+#include "Room.h"
+#include "Door.h"
+#include "Chest.h"
 
 class Party{
 
@@ -25,6 +31,15 @@ private:
     void loadSprites(std::string name);
     sf::Sprite getSprite(const std::string&); // On donne la categorie du sprite, et le nom de la texture
 
+    void setDoorOpenSprites(Room);
+    void setDoorCloseSprites(Room);
+    void setFrameSprite(Room);
+    void setRockSprites(Room);
+    //void setMonsterSprites(Room);
+    void setChestSprites(Room);
+
+    void setSpritesForCurrentRoom(unsigned, unsigned);
+
     void processEvents();
     void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
     void update(sf::Time);
@@ -39,17 +54,24 @@ private:
 
 private:
 
+    Position<unsigned> posDonjon;
+    Entity Aspen;
+    Donjon donjon;
+
     std::map<std::string, sf::Texture*> textures;
     std::map<std::string, sf::Sprite> sprites;
 
-    //std::vector<sf::Sprite> // sprite.getGlobalBounds() renvoie un sf::FloatRect (rect.top rect.left rect.width rect.length) sera très utile pour les colisions !
-
     sf::RenderWindow mWindow;
 
+        // Différents sprites pouvant être sur la map
     sf::Sprite sPlayer;
-    sf::Sprite sRock;
+    sf::Sprite sRoom;
+    std::vector<sf::Sprites> sMonsters;
+    std::vector<sf::Sprites> sRocks;
+    std::vector<sf::Sprites> sFrames;
+    std::vector<sf::Sprites> sDoors;
+    sf::Sprite sChest;
 
-    Position<float> posEntity;
 };
 
 #endif

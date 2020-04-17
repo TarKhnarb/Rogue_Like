@@ -1,17 +1,23 @@
 #include "Party.h"
+#include "Archetype.h"
 
 Party::Party():
+        posDonjon(10, 10),
+        Aspen (620, 320),
+        donjon(stageNumber, Aspen),
         mWindow(sf::VideoMode(640, 480), "Aspen's Adventure"){
 
-    loadTextures();
-    loadSprites("Aspen");
-    loadSprites("Rock");
+    donjon.generate(); // On génere le premier etage du donjon
+    loadTextures(); // On charge les textures
+
+    loadSprites("Aspen"); // On charge les images de Aspen
+    loadsprites("RoomStart"); // On charge la map de start
+    loadsprites("Frame"); // on charge les encadrements de porte
+    loadsprites("Door"); // On charge les portes ouvertes/fermées
+    loadsprites("Rock");
 
     sPlayer = getSprite("sAspenF");
     sPlayer.setPosition(320.f, 240.f);
-
-    sRock.setTexture(getTexture("Rock1"));
-    sRock.setPosition(100.f, 100.f);
 }
 
 Party::~Party(){
@@ -21,26 +27,23 @@ Party::~Party(){
     }
 }
 
-void Party::loadSprites(std::string name){
+void Party::run(){
 
-    for(auto &t : textures){
-        switch((t.first).find(name)){
-            case std::string::npos:
-                break;
+    sf::Clock clock;
+    sf::Time timeSinceLastUpdate = sf::Time::Zero;
+    sf::Time TimePerFrame = sf::seconds(1.f / 60.f);
 
-            default:
-                sprites.emplace("s" + t.first, getTexture(t.first));
-                break;
+    while (mWindow.isOpen()){
+        processEvents();
+        timeSinceLastUpdate += clock.restart();
+
+        while (timeSinceLastUpdate > TimePerFrame){
+            timeSinceLastUpdate -= TimePerFrame;
+            processEvents();
+            update(TimePerFrame);
         }
+        render();
     }
-}
-
-sf::Sprite Party::getSprite(const std::string& name){
-    auto found = sprites.find(name);
-    if(found == sprites.end())
-        throw std::runtime_error ("Party::getSprite(const std::string&) - Aucune texture de ce nom " + name);
-
-    return found->second;
 }
 
 void Party::loadTextures(){ // load dans le constructeur
@@ -281,39 +284,265 @@ sf::Texture& Party::getTexture(const std::string& nameText){ // récupere un ete
     return *found->second; // ( si pas * on retourne un pointeur de texture)
 }
 
-/*
-sf::Vector2 Party::setPositionCollision(sf::FloatRect s1, sf::FloatRect s2){
-    if(s1.intersects(s2) && (s1.left > s2.left)){ // s1 a droite de s2
-
-    }
-    if(s1.intersects(s2) && (s1.left < s2.left)){ // s1 a gauche de s2
-
-    }
-    if(s1.intersects(s2) && (s1.top > s2.top)){ // s1 au dessus de s2
-
-    }
-    if(s1.intersects(s2) && (s1.top < s2.top)){ // s1 en dessous de s2
-
-    }
-}*/
 // sf::Rect< T >::height/left/top/width
-void Party::run(){
 
-    sf::Clock clock;
-    sf::Time timeSinceLastUpdate = sf::Time::Zero;
-    sf::Time TimePerFrame = sf::seconds(1.f / 60.f);
+void Party::loadSprites(std::string name){
 
-    while (mWindow.isOpen()){
-        processEvents();
-        timeSinceLastUpdate += clock.restart();
+    for(auto &t : textures){
+        switch((t.first).find(name)){
+            case std::string::npos:
+                break;
 
-        while (timeSinceLastUpdate > TimePerFrame){
-            timeSinceLastUpdate -= TimePerFrame;
-            processEvents();
-            update(TimePerFrame);
+            default:
+                sprites.emplace("s" + t.first, getTexture(t.first));
+                break;
         }
-        render();
     }
+}
+
+sf::Sprite Party::getSprite(const std::string& name){
+    auto found = sprites.find(name);
+    if(found == sprites.end())
+        throw std::runtime_error ("Party::getSprite(const std::string&) - Aucune texture de ce nom " + name);
+
+    return found->second;
+}
+
+void Party::setDoorOpenSprites(Room curRoom){ // /!\ Peut être a modifier a cause des door[i]
+    std::vector<Door*> door = curRoom.getDoors();
+
+    for(unsigned i = 0; i < door.size(); ++i){
+        if(door[i]){
+            switch(i){
+                case 0:
+                    sDoors.push_back(getSprites("DoorOpenN"));
+                    sDoors[i].setPosition(DoorN[1][0], DoorN[1][1]);
+                    break;
+
+                case 1:
+                    sDoors.push_back(getSprites("DoorOpenE"));
+                    sDoors[i].setPosition(DoorE[1][0], DoorE[1][1]);
+                    break;
+
+                case 2:
+                    sDoors.push_back(getSprites("DoorOpenS"));
+                    sDoors[i].setPosition(DoorS[1][0], DoorS[1][1]);
+                    break;
+
+                case 3:
+                    sDoors.push_back(getSprites("DoorOpenW"));
+                    sDoors[i].setPosition(DoorW[1][0], DoorW[1][1]);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        else
+            sDoor.reverve(1);
+    }
+}
+
+void Party::setDoorCloseSprites(Room curRoom){ // /!\ Peut être a modifier a cause des door[i]
+    std::vector<Door*> door = curRoom.getDoors();
+
+    for(unsigned i = 0; i < door.size(); ++i){
+        if(door[i]){
+            switch(i){
+                case 0:
+                    sDoors.push_back(getSprites("DoorCloseN"));
+                    sDoors[i].setPosition(DoorN[1][0], DoorN[1][1]);
+                    break;
+
+                case 1:
+                    sDoors.push_back(getSprites("DoorCloseE"));
+                    sDoors[i].setPosition(DoorE[1][0], DoorE[1][1]);
+                    break;
+
+                case 2:
+                    sDoors.push_back(getSprites("DoorCloseS"));
+                    sDoors[i].setPosition(DoorS[1][0], DoorS[1][1]);
+                    break;
+
+                case 3:
+                    sDoors.push_back(getSprites("DoorCloseW"));
+                    sDoors[i].setPosition(DoorW[1][0], DoorW[1][1]);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        else
+            sDoor.reverve(1);
+    }
+}
+
+void Party::setFrameSprites(Room curRoom){ // /!\ Peut être a modifier a cause des door[i]
+    std::vector<Door*> door = curRoom.getDoors();
+
+    for(unsigned i = 0; i < door.size(); ++i){
+        if(door[i]){
+            switch(i){
+                case 0:
+                    sFrame.push_back(getSprites("FrameN"));
+                    sFrame[i].setPosition(DoorN[0][0], DoorN[0][1]);
+                    break;
+
+                case 1:
+                    sFrame.push_back(getSprites("FrameE"));
+                    sFrame[i].setPosition(DoorE[0][0], DoorE[0][1]);
+                    break;
+
+                case 2:
+                    sFrame.push_back(getSprites("FrameS"));
+                    sFrame[i].setPosition(DoorS[0][0], DoorS[0][1]);
+                    break;
+
+                case 3:
+                    sFrame.push_back(getSprites("FrameW"));
+                    sFrame[i].setPosition(DoorW[0][0], DoorW[0][1]);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        else
+            sDoor.reverve(1);
+    }
+}
+
+void Party::setRockSprites(Room curRoom){
+    std::vector<Rock> rocks = curRoom.getRocks();
+
+    if(rocks.size() > 0) {
+        for (unsigned k = 0; k < rocks.size(); ++k) {
+
+            sRocks.push_back(getSprite("Rock"+std::to_string((rand%30)%3+1))); // Permet de charher le sprite d'un des 3 rochers
+            sRocks.setPosition(rocks[k].getPosition(true), rocks[k].getPosition(false));
+        }
+    }
+}
+
+//void Party::setMonsterSprites(Room curRoom){std::vector<Entity*> monster = curRoom.getMonsters();}
+
+void Party::setChestCloseSprites(Room curRoom){
+    Chest* chest = curRoom.getChest();
+    if(chest){
+        switch(curRoom.getType()){
+            case roomType::Room3ESW:
+                sf::Chest = getSprite("ChestN");
+                sf::Chest.setPosition(Chest3ESW[0], Chest3ESW[1]);
+                break;
+
+            case roomType::Room1N:
+                sf::Chest = getSprite("ChestS");
+                sf::Chest.setPosition(Chest1N[0], Chest1N[1]);
+                break;
+
+            case roomType::Room1E:
+                sf::Chest = getSprite("ChestW");
+                sf::Chest.setPosition(Chest1E[0], Chest1E[1]);
+                break;
+
+            case roomType::Room1S:
+                sf::Chest = getSprite("ChestN");
+                sf::Chest.setPosition(Chest1S[0], Chest1S[1]);
+                break;
+
+            case roomType::Room1W:
+                sf::Chest = getSprite("ChestE");
+                sf::Chest.setPosition(Chest1W[0], Chest1W[1]);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+}
+
+void Party::setSpritesForCurrentRoom(unsigned i, unsigned j){
+    Room curRoom = donjon.getRoom(i, j);
+
+    sRoom = getSprite(std::to_string(curRoom.getType())); // on charge la map
+
+
+    switch (curRoom.getType()){
+
+        case roomType::Start:
+
+            break;
+
+        case roomType::Boss:
+            stream << "Z";
+            break;
+
+        case roomType::CommonStart:
+            stream << "s";
+            break;
+
+        case roomType::Room2WE1 :
+            stream << "A";
+            break;
+
+        case roomType::Room2WE2 :
+            stream << "B";
+            break;
+
+        case roomType::Room2NS1 :
+            stream << "C";
+            break;
+
+        case roomType::Room2NS2 :
+            stream << "D";
+            break;
+
+        case roomType::Room4NESW1:
+            stream << "E";
+            break;
+
+        case roomType::Room4NESW2:
+            stream << "F";
+            break;
+
+        case roomType::Room1N:
+            stream << "G";
+            break;
+
+        case roomType::Room1E:
+            stream << "H";
+            break;
+
+        case roomType::Room1S:
+            stream << "I";
+            break;
+
+        case roomType::Room1W :
+            stream << "J";
+            break;
+
+        case roomType::Room3NEW:
+            stream << "K";
+            break;
+
+        case roomType::Room3NSW:
+            stream << "L";
+            break;
+
+        case roomType::Room3ESW:
+            stream << "M";
+            break;
+
+        case roomType::Room3NES:
+            stream << "N";
+            break;
+
+        default:
+            break;
+    }
+
 }
 
 void Party::processEvents(){
@@ -359,8 +588,8 @@ void Party::update(sf::Time deltaTime){
 	float realSpeed = PlayerSpeed * deltaTime.asSeconds();
 	
     sf::FloatRect test = sPlayer.getGlobalBounds();
-	test.top += test.height / 2;
-	test.height /= 2;
+    test.height /= 3;
+    test.top += test.height * 2;
 	
 	sf::Vector2f movement(0.f, 0.f);
 	
@@ -404,7 +633,9 @@ void Party::update(sf::Time deltaTime){
 void Party::render(){
 
     mWindow.clear();
-	mWindow.draw(sRock);
+
+
+
     mWindow.draw(sPlayer);
     mWindow.display();
 }

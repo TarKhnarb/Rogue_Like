@@ -18,7 +18,8 @@ public:
     Donjon(unsigned, Entity&);
 
     Stage* getCurrentStage() const;
-    std::array< std::array<char, 27>, 27> RoomCoordToChar(unsigned, unsigned); // A ADAPTER POUR LA SFML
+    Room& getRoom(unsigned, unsigned);
+
     unsigned getStage();
 
     void nextStage(); // Gère la création et l'incrémentation de l'étage suivant
@@ -29,10 +30,6 @@ public:
     void displayChest(unsigned, unsigned);
 
 private:
-
-
-
-    std::array< std::array<char, 27>, 27> placeRoomDoors(Room*, std::array< std::array<char, 27>, 27>); // A ADAPTER POUR LA SFML
 
     Entity hero;
     unsigned stageNb;
