@@ -1,5 +1,5 @@
 #include "Entity.h"
-Entity::Entity(float &x, float &y):
+Entity::Entity(float x, float y):
         pos(Position<float>(x,y)),
         inventory (Inventory(1, playerStuffSize, playerBagSize)),
         name (inventory.getBasicStatName()),
@@ -10,7 +10,7 @@ Entity::Entity(float &x, float &y):
     std::cout << "passé" << std::endl;
 }
 
-Entity::Entity(float &x, float &y, unsigned id):
+Entity::Entity(float x, float y, unsigned id):
         pos(Position<float >(x,y)),
         inventory (Inventory(id, 0, monsterBagSize)),
         name (inventory.getBasicStatName()),

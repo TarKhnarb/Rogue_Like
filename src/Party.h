@@ -9,6 +9,7 @@
 #include "Position.h"
 #include "Entity.h"
 #include "Donjon.h"
+#include "Archetype.h"
     // Utilisés pour récupérer les infos de leurs placements
 #include "Room.h"
 #include "Door.h"
@@ -32,12 +33,12 @@ private:
 
     void setDoorOpenSprites(Room);
     void setDoorCloseSprites(Room);
-    void setFrameSprite(Room);
+    void setFrameSprites(Room);
     void setRockSprites(Room);
     //void setMonsterSprites(Room);
-    void setChestOpenSprites(Room);
+    void setChestSprites(Room);
 
-    void setSpritesForCurrentRoom(unsigned, unsigned);
+    void setSpritesForCurrentRoom();
 
     void processEvents();
     void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
@@ -54,6 +55,7 @@ private:
 private:
 
     Position<unsigned> posDonjon;
+    Position<float> posAspen;
     Entity Aspen;
     Donjon donjon;
 

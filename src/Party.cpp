@@ -1,20 +1,20 @@
 #include "Party.h"
-#include "Archetype.h"
 
 Party::Party():
         posDonjon(10, 10),
-        Aspen (620, 320),
+        posAspen(620, 320),
+        Aspen (posAspen.getPosition(true), posAspen.getPosition(false)),
         donjon(stageNumber, Aspen),
-        mWindow(sf::VideoMode(640, 480), "Aspen's Adventure"){
+        mWindow(sf::VideoMode(1280, 720), "Aspen's Adventure"){
 
-    donjon.generate(); // On génere le premier etage du donjon
+
     loadTextures(); // On charge les textures
 
     loadSprites("Aspen"); // On charge les images de Aspen
-    loadsprites("RoomStart"); // On charge la map de start
-    loadsprites("Frame"); // on charge les encadrements de porte
-    loadsprites("Door"); // On charge les portes ouvertes/fermées
-    loadsprites("Rock");
+    loadSprites("RoomStart"); // On charge la map de start
+    loadSprites("Frame"); // on charge les encadrements de porte
+    loadSprites("Door"); // On charge les portes ouvertes/fermées
+    loadSprites("Rock");
 
     sPlayer = getSprite("sAspenF");
     sPlayer.setPosition(320.f, 240.f);
@@ -321,22 +321,22 @@ void Party::setDoorOpenSprites(Room curRoom){ // /!\ Peut être a modifier a cau
             switch(i){
                 case 0:
                     door = getSprite("DoorOpenN");
-                    door.setPosition(DoorN[1][0], DoorN[1][1]);
+                    door.setPosition(Archetype::DoorN[1][0], Archetype::DoorN[1][1]);
                     break;
 
                 case 1:
                     door = getSprite("DoorOpenE");
-                    door.setPosition(DoorE[1][0], DoorE[1][1]);
+                    door.setPosition(Archetype::DoorE[1][0], Archetype::DoorE[1][1]);
                     break;
 
                 case 2:
-                    door = setSprite("DoorOpenS");
-                    door.setPosition(DoorS[1][0], DoorS[1][1]);
+                    door = getSprite("DoorOpenS");
+                    door.setPosition(Archetype::DoorS[1][0], Archetype::DoorS[1][1]);
                     break;
 
                 case 3:
                     door = getSprite("DoorOpenW");
-                    door.setPosition(DoorW[1][0], DoorW[1][1]);
+                    door.setPosition(Archetype::DoorW[1][0], Archetype::DoorW[1][1]);
                     break;
 
                 default:
@@ -360,22 +360,22 @@ void Party::setDoorCloseSprites(Room curRoom){ // /!\ Peut être a modifier a ca
             switch(i){
                 case 0:
                     door = getSprite("DoorCloseN");
-                    door.setPosition(DoorN[1][0], DoorN[1][1]);
+                    door.setPosition(Archetype::DoorN[1][0], Archetype::DoorN[1][1]);
                     break;
 
                 case 1:
                     door = getSprite("DoorCloseE");
-                    door.setPosition(DoorE[1][0], DoorE[1][1]);
+                    door.setPosition(Archetype::DoorE[1][0], Archetype::DoorE[1][1]);
                     break;
 
                 case 2:
-                    door = setSprite("DoorCloseS");
-                    door.setPosition(DoorS[1][0], DoorS[1][1]);
+                    door = getSprite("DoorCloseS");
+                    door.setPosition(Archetype::DoorS[1][0], Archetype::DoorS[1][1]);
                     break;
 
                 case 3:
                     door = getSprite("DoorCloseW");
-                    door.setPosition(DoorW[1][0], DoorW[1][1]);
+                    door.setPosition(Archetype::DoorW[1][0], Archetype::DoorW[1][1]);
                     break;
 
                 default:
@@ -392,29 +392,29 @@ void Party::setFrameSprites(Room curRoom){ // /!\ Peut être a modifier a cause 
 
     unsigned size = sFrames.size();
     for (unsigned i = 0 ; i < size ; ++i)
-        sFrame.pop_back();
+        sFrames.pop_back();
 
     for(unsigned i = 0; i < door.size(); ++i){
         if(door[i]){
             switch(i){
                 case 0:
                     frame = getSprite("FrameN");
-                    frame.setPosition(DoorN[0][0], DoorN[0][1]);
+                    frame.setPosition(Archetype::DoorN[0][0], Archetype::DoorN[0][1]);
                     break;
 
                 case 1:
-                    framne = getSprite("FrameE");
-                    frame.setPosition(DoorE[0][0], DoorE[0][1]);
+                    frame = getSprite("FrameE");
+                    frame.setPosition(Archetype::DoorE[0][0], Archetype::DoorE[0][1]);
                     break;
 
                 case 2:
                     frame = getSprite("FrameS");
-                    frame.setPosition(DoorS[0][0], DoorS[0][1]);
+                    frame.setPosition(Archetype::DoorS[0][0], Archetype::DoorS[0][1]);
                     break;
 
                 case 3:
                     frame = getSprite("FrameW");
-                    frame.setPosition(DoorW[0][0], DoorW[0][1]);
+                    frame.setPosition(Archetype::DoorW[0][0], Archetype::DoorW[0][1]);
                     break;
 
                 default:
@@ -435,7 +435,7 @@ void Party::setRockSprites(Room curRoom){
 
     if(! rocks.empty()) {
         for (unsigned k = 0; k < rocks.size(); ++k) {
-            rock = getSprite("Rock"+std::to_string((rand%30)%3+1));
+            rock = getSprite("Rock"+std::to_string((rand()%30)%3+1));
             rock.setPosition(rocks[k].getPosition(true), rocks[k].getPosition(false));
 
             sRocks.push_back(rock);
@@ -445,7 +445,7 @@ void Party::setRockSprites(Room curRoom){
 
 //void Party::setMonsterSprites(Room curRoom){std::vector<Entity*> monster = curRoom.getMonsters();}
 
-void Party::setChestCloseSprites(Room curRoom){  //sf::chest le mettre en vector
+void Party::setChestSprites(Room curRoom){  //sf::chest le mettre en vector
     Chest* chest = curRoom.getChest();
 
     sf::Sprite ches;
@@ -457,46 +457,48 @@ void Party::setChestCloseSprites(Room curRoom){  //sf::chest le mettre en vector
         switch(curRoom.getType()){
             case roomType::Room3ESW:
                 ches = getSprite("ChestCloseN");
-                ches.setPosition(Chest3ESW[0], Chest3ESW[1]);
+                ches.setPosition(Archetype::Chest3ESW[0], Archetype::Chest3ESW[1]);
                 break;
 
             case roomType::Room1N:
                 ches = getSprite("ChestCloseS");
-                ches.setPosition(Chest1N[0], Chest1N[1]);
+                ches.setPosition(Archetype::Chest1N[0], Archetype::Chest1N[1]);
                 break;
 
             case roomType::Room1E:
                 ches = getSprite("ChestCloseW");
-                ches.setPosition(Chest1E[0], Chest1E[1]);
+                ches.setPosition(Archetype::Chest1E[0], Archetype::Chest1E[1]);
                 break;
 
             case roomType::Room1S:
                 ches = getSprite("ChestCloseN");
-                ches.setPosition(Chest1S[0], Chest1S[1]);
+                ches.setPosition(Archetype::Chest1S[0], Archetype::Chest1S[1]);
                 break;
 
             case roomType::Room1W:
                 ches = getSprite("ChestCloseE");
-                ches.setPosition(Chest1W[0], Chest1W[1]);
+                ches.setPosition(Archetype::Chest1W[0], Archetype::Chest1W[1]);
                 break;
 
             default:
                 break;
         }
-        chest.push_back(ches)
+        sChest.push_back(ches);
     }
 
 }
 
-void Party::setSpritesForCurrentRoom(unsigned i, unsigned j){
-    Room curRoom = donjon.getRoom(i, j);
+void Party::setSpritesForCurrentRoom(){
+    Room curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
 
-    // faire un tableau de stdtostring avec les salle correspondantes
-    // getStringType dans Room.h
     sRoom = getSprite(curRoom.getStringType()); // on charge la map
     sRoom.setPosition(0.f, 0.f);
 
-
+        // On charge les différent éléments de la salle
+    setFrameSprites(curRoom);
+    setDoorOpenSprites(curRoom);
+    setRockSprites(curRoom);
+    setChestSprites(curRoom);
 }
 
 void Party::processEvents(){
@@ -552,7 +554,7 @@ void Party::update(sf::Time deltaTime){
         test.top -= realSpeed;
 		test.height += realSpeed;
 		
-		if (!test.intersects(sRock.getGlobalBounds()))
+		//if (!test.intersects(sRock.getGlobalBounds()))
 			movement.y -= realSpeed;
 	}
 	
@@ -560,7 +562,7 @@ void Party::update(sf::Time deltaTime){
 	{
 		test.height += realSpeed;
 		
-		if (!test.intersects(sRock.getGlobalBounds()))
+	//	if (!test.intersects(sRock.getGlobalBounds()))
 			movement.y += realSpeed;
 	}
 	
@@ -569,7 +571,7 @@ void Party::update(sf::Time deltaTime){
         test.left -= realSpeed;
 		test.width += realSpeed;
 		
-		if (!test.intersects(sRock.getGlobalBounds()))
+		//if (!test.intersects(sRock.getGlobalBounds()))
 			movement.x -= realSpeed;
 	}
 	
@@ -577,7 +579,7 @@ void Party::update(sf::Time deltaTime){
 	{
         test.width += realSpeed;
 		
-		if (!test.intersects(sRock.getGlobalBounds()))
+		//if (!test.intersects(sRock.getGlobalBounds()))
 			movement.x += realSpeed;
 	}
 
@@ -586,9 +588,22 @@ void Party::update(sf::Time deltaTime){
 
 void Party::render(){
 
+    setSpritesForCurrentRoom();
+
     mWindow.clear();
+    mWindow.draw(sRoom);
 
+    for(const auto &r : sRocks)
+        mWindow.draw(r);
 
+    for(const auto &f : sFrames)
+        mWindow.draw(f);
+
+    for(const auto &d : sDoors)
+        mWindow.draw(d);
+
+    for(const auto &c : sChest)
+        mWindow.draw(c);
 
     mWindow.draw(sPlayer);
     mWindow.display();

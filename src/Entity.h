@@ -30,7 +30,7 @@ public :
      * @parma[in] x : position of the entity on x axis
      * @parma[in] y : position of the entity on y axis
      **/
-    Entity(float&, float&);
+    Entity(float, float);
 
     /**
      * @brief construct a monster
@@ -38,7 +38,7 @@ public :
      * @parma[in] y : position of the entity on y axis
      * @param id : the id of the monster
      */
-    Entity(float&, float&, unsigned);
+    Entity(float, float, unsigned);
 
     void getStatistics();
 

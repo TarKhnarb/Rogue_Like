@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "Chest.h"
 #include "Position.h"
+#include "Archetype.h"
 
 
 #include <vector>

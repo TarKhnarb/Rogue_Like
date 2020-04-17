@@ -1,5 +1,4 @@
 #include "Room.h"
-#include "Archetype.h"
 
 /***************
  * Constructor *
@@ -108,7 +107,7 @@ Door* Room::getDoor(unsigned i) {
 }
 
 void Room::fillBoss(unsigned idMonst) {
-    monsters.push_back(new Entity(MonsterBoss[0], MonsterBoss[1], idMonst));
+    monsters.push_back(new Entity(Archetype::MonsterBoss[0], Archetype::MonsterBoss[1], idMonst));
 }
 
 void Room::fillMonsters(std::vector<unsigned int> idMonst, roomType t) {
@@ -116,59 +115,59 @@ void Room::fillMonsters(std::vector<unsigned int> idMonst, roomType t) {
         if(idMonst[i]){
             switch (t){
                 case Room2NS1:
-                    monsters.push_back(new Entity(Monster2NS1[i][0], Monster2NS1[i][1], idMonst[i]));
+                    monsters.push_back(new Entity(Archetype::Monster2NS1[i][0], Archetype::Monster2NS1[i][1], idMonst[i]));
                     break;
 
                 case Room2NS2:
-                    monsters.push_back(new Entity(Monster2NS2[i][0], Monster2NS2[i][1], idMonst[i]));
+                    monsters.push_back(new Entity(Archetype::Monster2NS2[i][0], Archetype::Monster2NS2[i][1], idMonst[i]));
                     break;
 
                 case Room2WE1:
-                    monsters.push_back(new Entity(Monster2WE1[i][0], Monster2WE1[i][1], idMonst[i]));
+                    monsters.push_back(new Entity(Archetype::Monster2WE1[i][0], Archetype::Monster2WE1[i][1], idMonst[i]));
                     break;
 
                 case Room2WE2:
-                    monsters.push_back(new Entity(Monster2WE2[i][0], Monster2WE2[i][1], idMonst[i]));
+                    monsters.push_back(new Entity(Archetype::Monster2WE2[i][0], Archetype::Monster2WE2[i][1], idMonst[i]));
                     break;
 
                 case Room4NESW1:
-                    monsters.push_back(new Entity(Monster4NESW1[i][0], Monster4NESW1[i][1], idMonst[i]));
+                    monsters.push_back(new Entity(Archetype::Monster4NESW1[i][0], Archetype::Monster4NESW1[i][1], idMonst[i]));
                     break;
 
                 case Room4NESW2:
-                    monsters.push_back(new Entity(Monster4NESW2[i][0], Monster4NESW2[i][1], idMonst[i]));
+                    monsters.push_back(new Entity(Archetype::Monster4NESW2[i][0], Archetype::Monster4NESW2[i][1], idMonst[i]));
                     break;
 
                 case Room1N:
-                    monsters.push_back(new Entity(Monster1N[i][0], Monster1N[i][1], idMonst[i]));
+                    monsters.push_back(new Entity(Archetype::Monster1N[i][0], Archetype::Monster1N[i][1], idMonst[i]));
                     break;
 
                 case Room1E:
-                    monsters.push_back(new Entity(Monster1E[i][0], Monster1E[i][1], idMonst[i]));
+                    monsters.push_back(new Entity(Archetype::Monster1E[i][0], Archetype::Monster1E[i][1], idMonst[i]));
                     break;
 
                 case Room1S:
-                    monsters.push_back(new Entity(Monster1S[i][0], Monster1S[i][1], idMonst[i]));
+                    monsters.push_back(new Entity(Archetype::Monster1S[i][0], Archetype::Monster1S[i][1], idMonst[i]));
                     break;
 
                 case Room1W:
-                    monsters.push_back(new Entity(Monster1W[i][0], Monster1W[i][1], idMonst[i]));
+                    monsters.push_back(new Entity(Archetype::Monster1W[i][0], Archetype::Monster1W[i][1], idMonst[i]));
                     break;
 
                 case Room3NES:
-                    monsters.push_back(new Entity(Monster3NES[i][0], Monster3NES[i][1], idMonst[i]));
+                    monsters.push_back(new Entity(Archetype::Monster3NES[i][0], Archetype::Monster3NES[i][1], idMonst[i]));
                     break;
 
                 case Room3ESW:
-                    monsters.push_back(new Entity(Monster3ESW[i][0], Monster3ESW[i][1], idMonst[i]));
+                    monsters.push_back(new Entity(Archetype::Monster3ESW[i][0], Archetype::Monster3ESW[i][1], idMonst[i]));
                     break;
 
                 case Room3NSW:
-                    monsters.push_back(new Entity(Monster3NSW[i][0], Monster3NSW[i][1], idMonst[i]));
+                    monsters.push_back(new Entity(Archetype::Monster3NSW[i][0], Archetype::Monster3NSW[i][1], idMonst[i]));
                     break;
 
                 case Room3NEW:
-                    monsters.push_back(new Entity(Monster3NEW[i][0], Monster3NEW[i][1], idMonst[i]));
+                    monsters.push_back(new Entity(Archetype::Monster3NEW[i][0], Archetype::Monster3NEW[i][1], idMonst[i]));
                     break;
 
                 default:
@@ -182,43 +181,43 @@ void Room::fillRocks(roomType t) {
     switch (t){
         case roomType::Room2WE1 :
             for(unsigned i = 0; i < 24; ++i){
-                rocks.push_back(Rock(Rocks2WE1[i][0], Rocks2WE1[i][1]));
+                rocks.push_back(Rock(Archetype::Rocks2WE1[i][0], Archetype::Rocks2WE1[i][1]));
             }
             break;
 
         case roomType::Room4NESW2:
             for(unsigned i = 0; i < 24; ++i){
-                rocks.push_back(Rock(Rocks4NESW2[i][0], Rocks4NESW2[i][1]));
+                rocks.push_back(Rock(Archetype::Rocks4NESW2[i][0], Archetype::Rocks4NESW2[i][1]));
             }
             break;
 
         case roomType::Room1N:
             for(unsigned i = 0; i < 8; ++i){
-                rocks.push_back(Rock(Rocks1N[i][0], Rocks1N[i][1]));
+                rocks.push_back(Rock(Archetype::Rocks1N[i][0], Archetype::Rocks1N[i][1]));
             }
             break;
 
         case roomType::Room1S:
             for(unsigned i = 0; i < 16; ++i){
-                rocks.push_back(Rock(Rocks1S[i][0], Rocks1S[i][1]));
+                rocks.push_back(Rock(Archetype::Rocks1S[i][0], Archetype::Rocks1S[i][1]));
             }
             break;
 
         case roomType::Room1W:
             for(unsigned i = 0; i < 31; ++i){
-                rocks.push_back(Rock(Rocks1W[i][0], Rocks1W[i][1]));
+                rocks.push_back(Rock(Archetype::Rocks1W[i][0], Archetype::Rocks1W[i][1]));
             }
             break;
 
         case roomType::Room3NSW:
             for(unsigned i = 0; i < 11; ++i){
-                rocks.push_back(Rock(Rocks3NSW[i][0], Rocks3NSW[i][1]));
+                rocks.push_back(Rock(Archetype::Rocks3NSW[i][0], Archetype::Rocks3NSW[i][1]));
             }
             break;
 
         case roomType::Room3NEW:
             for(unsigned i = 0; i < 7; ++i){
-                rocks.push_back(Rock(Rocks3NEW[i][0], Rocks3NEW[i][1]));
+                rocks.push_back(Rock(Archetype::Rocks3NEW[i][0], Archetype::Rocks3NEW[i][1]));
             }
             break;
 
@@ -250,7 +249,6 @@ Chest* Room::getChest() const {
     return chest;
 }
 
-
 std::string Room::getStringType() const{
 
     switch(type){
@@ -273,13 +271,13 @@ std::string Room::getStringType() const{
             return "Room2NS2";
 
         case roomType::Room4NESW1:
-            return Room4NESW1;
+            return "Room4NESW1";
 
         case roomType::Room4NESW2:
             return "Room4NESW2";
 
-        case roomType::Room1E:
-            return "Room1E";
+        case roomType::Room1N:
+            return "Room1N";
 
         case roomType::Room1E:
             return "Room1E";
