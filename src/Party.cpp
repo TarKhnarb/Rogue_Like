@@ -432,27 +432,27 @@ void Party::setChestCloseSprites(Room curRoom){
     if(chest){
         switch(curRoom.getType()){
             case roomType::Room3ESW:
-                sf::Chest = getSprite("ChestN");
+                sf::Chest = getSprite("ChestCloseN");
                 sf::Chest.setPosition(Chest3ESW[0], Chest3ESW[1]);
                 break;
 
             case roomType::Room1N:
-                sf::Chest = getSprite("ChestS");
+                sf::Chest = getSprite("ChestCloseS");
                 sf::Chest.setPosition(Chest1N[0], Chest1N[1]);
                 break;
 
             case roomType::Room1E:
-                sf::Chest = getSprite("ChestW");
+                sf::Chest = getSprite("ChestCloseW");
                 sf::Chest.setPosition(Chest1E[0], Chest1E[1]);
                 break;
 
             case roomType::Room1S:
-                sf::Chest = getSprite("ChestN");
+                sf::Chest = getSprite("ChestCloseN");
                 sf::Chest.setPosition(Chest1S[0], Chest1S[1]);
                 break;
 
             case roomType::Room1W:
-                sf::Chest = getSprite("ChestE");
+                sf::Chest = getSprite("ChestCloseE");
                 sf::Chest.setPosition(Chest1W[0], Chest1W[1]);
                 break;
 
