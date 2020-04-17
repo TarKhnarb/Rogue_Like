@@ -599,7 +599,7 @@ void Party::update(sf::Time deltaTime){
 		test.height += realSpeed;
 		
 		if (!test.intersects(sRock.getGlobalBounds()))
-			movement.y -= PlayerSpeed;
+			movement.y -= realSpeed;
 	}
 	
     if(mIsMovingDown)
@@ -607,7 +607,7 @@ void Party::update(sf::Time deltaTime){
 		test.height += realSpeed;
 		
 		if (!test.intersects(sRock.getGlobalBounds()))
-			movement.y += PlayerSpeed;
+			movement.y += realSpeed;
 	}
 	
     if(mIsMovingLeft)
@@ -616,7 +616,7 @@ void Party::update(sf::Time deltaTime){
 		test.width += realSpeed;
 		
 		if (!test.intersects(sRock.getGlobalBounds()))
-			movement.x -= PlayerSpeed;
+			movement.x -= realSpeed;
 	}
 	
     if(mIsMovingRight)
@@ -624,10 +624,10 @@ void Party::update(sf::Time deltaTime){
         test.width += realSpeed;
 		
 		if (!test.intersects(sRock.getGlobalBounds()))
-			movement.x += PlayerSpeed;
+			movement.x += realSpeed;
 	}
 
-    sPlayer.move(movement * deltaTime.asSeconds());
+    sPlayer.move(movement);
 }
 
 void Party::render(){

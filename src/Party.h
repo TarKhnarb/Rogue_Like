@@ -66,10 +66,10 @@ private:
         // Différents sprites pouvant être sur la map
     sf::Sprite sPlayer;
     sf::Sprite sRoom;
-    std::vector<sf::Sprites> sMonsters;
-    std::vector<sf::Sprites> sRocks;
-    std::vector<sf::Sprites> sFrames;
-    std::vector<sf::Sprites> sDoors;
+    std::vector<sf::Sprite> sMonsters;
+    std::vector<sf::Sprite> sRocks;
+    std::vector<sf::Sprite> sFrames;
+    std::vector<sf::Sprite> sDoors;
     sf::Sprite sChest;
 
 };
