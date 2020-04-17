@@ -73,6 +73,8 @@ public:
     std::vector<Rock> getRocks() const;
     Chest* getChest() const;
 
+    std::string getStringType() const;
+
 private:
 
     roomType type; // type of the current Room

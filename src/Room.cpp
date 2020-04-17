@@ -249,3 +249,60 @@ std::vector<Rock> Room::getRocks() const {
 Chest* Room::getChest() const {
     return chest;
 }
+
+
+std::string Room::getStringType() const{
+
+    switch(type){
+        case roomType::Start:
+            return "RoomStart";
+
+        case roomType::Boss:
+            return "RoomBoss";
+
+        case roomType::Room2WE1 :
+            return "Room2WE1";
+
+        case roomType::Room2WE2:
+            return "Room2WE2";
+
+        case roomType::Room2NS1:
+            return "Room2NS1";
+
+        case roomType::Room2NS2:
+            return "Room2NS2";
+
+        case roomType::Room4NESW1:
+            return Room4NESW1;
+
+        case roomType::Room4NESW2:
+            return "Room4NESW2";
+
+        case roomType::Room1E:
+            return "Room1E";
+
+        case roomType::Room1E:
+            return "Room1E";
+
+        case roomType::Room1S:
+            return "Room1S";
+
+        case roomType::Room1W:
+            return "Room1W";
+
+        case roomType::Room3NEW:
+            return "Room3NEW";
+
+        case roomType::Room3NSW:
+            return "Room3NSW";
+
+        case roomType::Room3ESW:
+            return "Room3ESW";
+
+        case roomType::Room3NES:
+            return "Room3NES";
+
+        default:
+            throw std::runtime_error ("Room::getStringType(roomType type) const - Sélectionnez un type valide");
+    }
+}

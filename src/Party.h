@@ -3,9 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <cstring>
+#include <string>
 #include <map>
-#include <memory>
 
 #include "Position.h"
 #include "Entity.h"
@@ -36,7 +35,7 @@ private:
     void setFrameSprite(Room);
     void setRockSprites(Room);
     //void setMonsterSprites(Room);
-    void setChestSprites(Room);
+    void setChestOpenSprites(Room);
 
     void setSpritesForCurrentRoom(unsigned, unsigned);
 
@@ -70,7 +69,7 @@ private:
     std::vector<sf::Sprite> sRocks;
     std::vector<sf::Sprite> sFrames;
     std::vector<sf::Sprite> sDoors;
-    sf::Sprite sChest;
+    std::vector<sf::Sprite> sChest;
 
 };
 

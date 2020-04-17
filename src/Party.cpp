@@ -309,156 +309,181 @@ sf::Sprite Party::getSprite(const std::string& name){
 }
 
 void Party::setDoorOpenSprites(Room curRoom){ // /!\ Peut être a modifier a cause des door[i]
-    std::vector<Door*> door = curRoom.getDoors();
+    std::vector<Door*> doors = curRoom.getDoors();
+    sf::Sprite door;
 
-    for(unsigned i = 0; i < door.size(); ++i){
-        if(door[i]){
+    unsigned size = sDoors.size();
+    for (unsigned i = 0 ; i < size ; ++i)
+        sDoors.pop_back();
+
+    for(unsigned i = 0; i < doors.size(); ++i){
+        if(doors[i]){
             switch(i){
                 case 0:
-                    sDoors.push_back(getSprites("DoorOpenN"));
-                    sDoors[i].setPosition(DoorN[1][0], DoorN[1][1]);
+                    door = getSprite("DoorOpenN");
+                    door.setPosition(DoorN[1][0], DoorN[1][1]);
                     break;
 
                 case 1:
-                    sDoors.push_back(getSprites("DoorOpenE"));
-                    sDoors[i].setPosition(DoorE[1][0], DoorE[1][1]);
+                    door = getSprite("DoorOpenE");
+                    door.setPosition(DoorE[1][0], DoorE[1][1]);
                     break;
 
                 case 2:
-                    sDoors.push_back(getSprites("DoorOpenS"));
-                    sDoors[i].setPosition(DoorS[1][0], DoorS[1][1]);
+                    door = setSprite("DoorOpenS");
+                    door.setPosition(DoorS[1][0], DoorS[1][1]);
                     break;
 
                 case 3:
-                    sDoors.push_back(getSprites("DoorOpenW"));
-                    sDoors[i].setPosition(DoorW[1][0], DoorW[1][1]);
+                    door = getSprite("DoorOpenW");
+                    door.setPosition(DoorW[1][0], DoorW[1][1]);
                     break;
 
                 default:
                     break;
             }
+            sDoors.push_back(door);
         }
-        else
-            sDoor.reverve(1);
     }
 }
 
 void Party::setDoorCloseSprites(Room curRoom){ // /!\ Peut être a modifier a cause des door[i]
-    std::vector<Door*> door = curRoom.getDoors();
+    std::vector<Door*> doors = curRoom.getDoors();
+    sf::Sprite door;
 
-    for(unsigned i = 0; i < door.size(); ++i){
-        if(door[i]){
+    unsigned size = sDoors.size();
+    for (unsigned i = 0 ; i < size ; ++i)
+        sDoors.pop_back();
+
+    for(unsigned i = 0; i < doors.size(); ++i){
+        if(doors[i]){
             switch(i){
                 case 0:
-                    sDoors.push_back(getSprites("DoorCloseN"));
-                    sDoors[i].setPosition(DoorN[1][0], DoorN[1][1]);
+                    door = getSprite("DoorCloseN");
+                    door.setPosition(DoorN[1][0], DoorN[1][1]);
                     break;
 
                 case 1:
-                    sDoors.push_back(getSprites("DoorCloseE"));
-                    sDoors[i].setPosition(DoorE[1][0], DoorE[1][1]);
+                    door = getSprite("DoorCloseE");
+                    door.setPosition(DoorE[1][0], DoorE[1][1]);
                     break;
 
                 case 2:
-                    sDoors.push_back(getSprites("DoorCloseS"));
-                    sDoors[i].setPosition(DoorS[1][0], DoorS[1][1]);
+                    door = setSprite("DoorCloseS");
+                    door.setPosition(DoorS[1][0], DoorS[1][1]);
                     break;
 
                 case 3:
-                    sDoors.push_back(getSprites("DoorCloseW"));
-                    sDoors[i].setPosition(DoorW[1][0], DoorW[1][1]);
+                    door = getSprite("DoorCloseW");
+                    door.setPosition(DoorW[1][0], DoorW[1][1]);
                     break;
 
                 default:
                     break;
             }
+            sDoors.push_back(door);
         }
-        else
-            sDoor.reverve(1);
     }
 }
 
 void Party::setFrameSprites(Room curRoom){ // /!\ Peut être a modifier a cause des door[i]
     std::vector<Door*> door = curRoom.getDoors();
+    sf::Sprite frame;
+
+    unsigned size = sFrames.size();
+    for (unsigned i = 0 ; i < size ; ++i)
+        sFrame.pop_back();
 
     for(unsigned i = 0; i < door.size(); ++i){
         if(door[i]){
             switch(i){
                 case 0:
-                    sFrame.push_back(getSprites("FrameN"));
-                    sFrame[i].setPosition(DoorN[0][0], DoorN[0][1]);
+                    frame = getSprite("FrameN");
+                    frame.setPosition(DoorN[0][0], DoorN[0][1]);
                     break;
 
                 case 1:
-                    sFrame.push_back(getSprites("FrameE"));
-                    sFrame[i].setPosition(DoorE[0][0], DoorE[0][1]);
+                    framne = getSprite("FrameE");
+                    frame.setPosition(DoorE[0][0], DoorE[0][1]);
                     break;
 
                 case 2:
-                    sFrame.push_back(getSprites("FrameS"));
-                    sFrame[i].setPosition(DoorS[0][0], DoorS[0][1]);
+                    frame = getSprite("FrameS");
+                    frame.setPosition(DoorS[0][0], DoorS[0][1]);
                     break;
 
                 case 3:
-                    sFrame.push_back(getSprites("FrameW"));
-                    sFrame[i].setPosition(DoorW[0][0], DoorW[0][1]);
+                    frame = getSprite("FrameW");
+                    frame.setPosition(DoorW[0][0], DoorW[0][1]);
                     break;
 
                 default:
                     break;
             }
+            sFrames.push_back(frame);
         }
-        else
-            sDoor.reverve(1);
     }
 }
 
 void Party::setRockSprites(Room curRoom){
     std::vector<Rock> rocks = curRoom.getRocks();
+    sf::Sprite rock;
 
-    if(rocks.size() > 0) {
+    unsigned size = sRocks.size();
+    for (unsigned i = 0 ; i < size ; ++i)
+        sRocks.pop_back();
+
+    if(! rocks.empty()) {
         for (unsigned k = 0; k < rocks.size(); ++k) {
+            rock = getSprite("Rock"+std::to_string((rand%30)%3+1));
+            rock.setPosition(rocks[k].getPosition(true), rocks[k].getPosition(false));
 
-            sRocks.push_back(getSprite("Rock"+std::to_string((rand%30)%3+1))); // Permet de charher le sprite d'un des 3 rochers
-            sRocks.setPosition(rocks[k].getPosition(true), rocks[k].getPosition(false));
+            sRocks.push_back(rock);
         }
     }
 }
 
 //void Party::setMonsterSprites(Room curRoom){std::vector<Entity*> monster = curRoom.getMonsters();}
 
-void Party::setChestCloseSprites(Room curRoom){
+void Party::setChestCloseSprites(Room curRoom){  //sf::chest le mettre en vector
     Chest* chest = curRoom.getChest();
+
+    sf::Sprite ches;
+    unsigned size = sChest.size();
+    for(unsigned i = 0; i < size; ++i)
+        sChest.pop_back();
+
     if(chest){
         switch(curRoom.getType()){
             case roomType::Room3ESW:
-                sf::Chest = getSprite("ChestCloseN");
-                sf::Chest.setPosition(Chest3ESW[0], Chest3ESW[1]);
+                ches = getSprite("ChestCloseN");
+                ches.setPosition(Chest3ESW[0], Chest3ESW[1]);
                 break;
 
             case roomType::Room1N:
-                sf::Chest = getSprite("ChestCloseS");
-                sf::Chest.setPosition(Chest1N[0], Chest1N[1]);
+                ches = getSprite("ChestCloseS");
+                ches.setPosition(Chest1N[0], Chest1N[1]);
                 break;
 
             case roomType::Room1E:
-                sf::Chest = getSprite("ChestCloseW");
-                sf::Chest.setPosition(Chest1E[0], Chest1E[1]);
+                ches = getSprite("ChestCloseW");
+                ches.setPosition(Chest1E[0], Chest1E[1]);
                 break;
 
             case roomType::Room1S:
-                sf::Chest = getSprite("ChestCloseN");
-                sf::Chest.setPosition(Chest1S[0], Chest1S[1]);
+                ches = getSprite("ChestCloseN");
+                ches.setPosition(Chest1S[0], Chest1S[1]);
                 break;
 
             case roomType::Room1W:
-                sf::Chest = getSprite("ChestCloseE");
-                sf::Chest.setPosition(Chest1W[0], Chest1W[1]);
+                ches = getSprite("ChestCloseE");
+                ches.setPosition(Chest1W[0], Chest1W[1]);
                 break;
 
             default:
                 break;
         }
+        chest.push_back(ches)
     }
 
 }
@@ -466,82 +491,11 @@ void Party::setChestCloseSprites(Room curRoom){
 void Party::setSpritesForCurrentRoom(unsigned i, unsigned j){
     Room curRoom = donjon.getRoom(i, j);
 
-    sRoom = getSprite(std::to_string(curRoom.getType())); // on charge la map
+    // faire un tableau de stdtostring avec les salle correspondantes
+    // getStringType dans Room.h
+    sRoom = getSprite(curRoom.getStringType()); // on charge la map
+    sRoom.setPosition(0.f, 0.f);
 
-
-    switch (curRoom.getType()){
-
-        case roomType::Start:
-
-            break;
-
-        case roomType::Boss:
-            stream << "Z";
-            break;
-
-        case roomType::CommonStart:
-            stream << "s";
-            break;
-
-        case roomType::Room2WE1 :
-            stream << "A";
-            break;
-
-        case roomType::Room2WE2 :
-            stream << "B";
-            break;
-
-        case roomType::Room2NS1 :
-            stream << "C";
-            break;
-
-        case roomType::Room2NS2 :
-            stream << "D";
-            break;
-
-        case roomType::Room4NESW1:
-            stream << "E";
-            break;
-
-        case roomType::Room4NESW2:
-            stream << "F";
-            break;
-
-        case roomType::Room1N:
-            stream << "G";
-            break;
-
-        case roomType::Room1E:
-            stream << "H";
-            break;
-
-        case roomType::Room1S:
-            stream << "I";
-            break;
-
-        case roomType::Room1W :
-            stream << "J";
-            break;
-
-        case roomType::Room3NEW:
-            stream << "K";
-            break;
-
-        case roomType::Room3NSW:
-            stream << "L";
-            break;
-
-        case roomType::Room3ESW:
-            stream << "M";
-            break;
-
-        case roomType::Room3NES:
-            stream << "N";
-            break;
-
-        default:
-            break;
-    }
 
 }
 
