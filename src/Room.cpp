@@ -1,13 +1,5 @@
 #include "Room.h"
 
-/***************
- * Constructor *
- **************/
-
-Room::Room():
-        type(roomType::Common),
-        Doors(4, nullptr){}
-
 /********************************
  * Constructor With Room's Type *
  *******************************/
@@ -29,7 +21,7 @@ Room::~Room() {
         }
     }
 
-    for(auto monster : monsters){
+    for(auto& monster : monsters){
         if(monster){
             delete monster;
             monster = nullptr;
@@ -233,19 +225,19 @@ void Room::fillChest(std::vector<unsigned> Ids) {
     }
 }
 
-std::vector<Door*> Room::getDoors() const {
+std::vector<Door*> Room::getDoors() {
     return Doors;
 }
 
-std::vector<Entity*> Room::getMonsters() const {
+std::vector<Entity*> Room::getMonsters() {
     return monsters;
 }
 
-std::vector<Rock> Room::getRocks() const {
+std::vector<Rock>& Room::getRocks() {
     return rocks;
 }
 
-Chest* Room::getChest() const {
+Chest* Room::getChest() {
     return chest;
 }
 

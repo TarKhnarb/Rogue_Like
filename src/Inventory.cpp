@@ -8,13 +8,13 @@ Inventory::Inventory(unsigned idBasicStat, unsigned stuffSize, unsigned bagSize)
 
 Inventory::~Inventory(){
 
-	for(Object *p : stuff){
+	for(Object *&p : stuff){
 		if (p)
 			delete p;
 		p = nullptr;
 	}
 
-	for(Object *p : bag){
+	for(Object *&p : bag){
 		if (p)
 			delete p;
 		p = nullptr;
@@ -128,7 +128,7 @@ unsigned Inventory::removeObject(unsigned id, unsigned objectNb)
 {
 	unsigned removedObjects = 0;
 
-	for (auto p : bag){
+	for (auto& p : bag){
 		if (p && p->getId() == id){
 
 			unsigned idObjectNb = p->getObjectNumber();

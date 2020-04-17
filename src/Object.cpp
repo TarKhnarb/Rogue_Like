@@ -129,7 +129,7 @@ void Object::setObjectNumber(unsigned i) {
     objectNumber = i;
 }
 
-const unsigned Object::getMaxStack() const {
+unsigned Object::getMaxStack() const {
 
     switch (type){
         case Type::monsterLoot:

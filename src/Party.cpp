@@ -50,231 +50,232 @@ void Party::run(){
 void Party::loadTextures(){ // load dans le constructeur
         // Entity
             //Aspen
+	
     sf::Texture* texture(new sf::Texture ());
     texture->loadFromFile("data/Textures/Entity/AspenB.png");
-    textures.emplace("AspenB", texture);
-
+    textures.emplace("AspenB", std::move(texture));
+	
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Entity/AspenB1.png");
-    textures.emplace("AspenB1", texture);
+    textures.emplace("AspenB1", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data//Textures/Entity/AspenB2.png");
-    textures.emplace("AspenB2", texture);
+    textures.emplace("AspenB2", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Entity/AspenF.png");
-    textures.emplace("AspenF", texture);
+    textures.emplace("AspenF", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Entity/AspenF1.png");
-    textures.emplace("AspenF1", texture);
+    textures.emplace("AspenF1", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Entity/AspenF2.png");
-    textures.emplace("AspenF2", texture);
+    textures.emplace("AspenF2", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Entity/AspenL.png");
-    textures.emplace("AspenL", texture);
+    textures.emplace("AspenL", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Entity/AspenL1.png");
-    textures.emplace("AspenL1", texture);
+    textures.emplace("AspenL1", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Entity/AspenL2.png");
-    textures.emplace("AspenL2", texture);
+    textures.emplace("AspenL2", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Entity/AspenL3.png");
-    textures.emplace("AspenL3", texture);
+    textures.emplace("AspenL3", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Entity/AspenR.png");
-    textures.emplace("AspenR", texture);
+    textures.emplace("AspenR", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Entity/AspenR1.png");
-    textures.emplace("AspenR1", texture);
+    textures.emplace("AspenR1", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Entity/AspenR2.png");
-    textures.emplace("AspenR2", texture);
+    textures.emplace("AspenR2", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Entity/AspenR3.png");
-    textures.emplace("AspenR3", texture);
+    textures.emplace("AspenR3", std::move(texture));
 
         // Room
             // Start/Boss
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Start.jpg");
-    textures.emplace("RoomStart", texture);
+    textures.emplace("RoomStart", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Boss.jpg");
-    textures.emplace("RoomBoss", texture);
+    textures.emplace("RoomBoss", std::move(texture));
 
             // 1 Door
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Room1E.jpg");
-    textures.emplace("Room1E", texture);
+    textures.emplace("Room1E", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Room1N.jpg");
-    textures.emplace("Room1N", texture);
+    textures.emplace("Room1N", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Room1S.jpg");
-    textures.emplace("Room1S", texture);
+    textures.emplace("Room1S", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Room1W.jpg");
-    textures.emplace("Room1W", texture);
+    textures.emplace("Room1W", std::move(texture));
 
             // 2 Doors
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Room2NS1.jpg");
-    textures.emplace("Room2NS1", texture);
+    textures.emplace("Room2NS1", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Room2NS2.jpg");
-    textures.emplace("Room2NS2", texture);
+    textures.emplace("Room2NS2", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Room2WE1.jpg");
-    textures.emplace("Room2WE1", texture);
+    textures.emplace("Room2WE1", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Room2WE2.jpg");
-    textures.emplace("Room2WE2", texture);
+    textures.emplace("Room2WE2", std::move(texture));
 
             // 3 Doors
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Room3ESW.jpg");
-    textures.emplace("RoomESW", texture);
+    textures.emplace("RoomESW", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Room3NES.jpg");
-    textures.emplace("Room3NES", texture);
+    textures.emplace("Room3NES", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Room3NEW.jpg");
-    textures.emplace("Room3NEW", texture);
+    textures.emplace("Room3NEW", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Room3NSW.jpg");
-    textures.emplace("Room3NSW", texture);
+    textures.emplace("Room3NSW", std::move(texture));
 
             // 4 Doors
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Room4NESW1.jpg");
-    textures.emplace("Room4NESW1", texture);
+    textures.emplace("Room4NESW1", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Room4NESW2.jpg");
-    textures.emplace("Room4NESW2", texture);
+    textures.emplace("Room4NESW2", std::move(texture));
 
         // Rocks
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Rock/Rock1.png");
-    textures.emplace("Rock1", texture);
+    textures.emplace("Rock1", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Rock/Rock2.png");
-    textures.emplace("Rock2", texture);
+    textures.emplace("Rock2", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Rock/Rock3.png");
-    textures.emplace("Rock3", texture);
+    textures.emplace("Rock3", std::move(texture));
 
         // Frame
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Frame/FrameE.png");
-    textures.emplace("FrameE", texture);
+    textures.emplace("FrameE", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Frame/FrameN.png");
-    textures.emplace("FrameN", texture);
+    textures.emplace("FrameN", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Frame/FrameS.png");
-    textures.emplace("FrameS", texture);
+    textures.emplace("FrameS", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Frame/FrameW.png");
-    textures.emplace("FrameW", texture);
+    textures.emplace("FrameW", std::move(texture));
 
         //  Door
             // Open
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Door/Open/DoorOpenE.png");
-    textures.emplace("DoorOpenE", texture);
+    textures.emplace("DoorOpenE", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Door/Open/DoorOpenN.png");
-    textures.emplace("DoorOpenN", texture);
+    textures.emplace("DoorOpenN", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Door/Open/DoorOpenS.png");
-    textures.emplace("DoorOpenS", texture);
+    textures.emplace("DoorOpenS", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Door/Open/DoorOpenW.png");
-    textures.emplace("DoorOpenW", texture);
+    textures.emplace("DoorOpenW", std::move(texture));
 
             // Close
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Door/Close/DoorCloseE.png");
-    textures.emplace("DoorCloseE", texture);
+    textures.emplace("DoorCloseE", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Door/Close/DoorCloseN.png");
-    textures.emplace("DoorCloseN", texture);
+    textures.emplace("DoorCloseN", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Door/Close/DoorCloseS.png");
-    textures.emplace("DoorCloseS", texture);
+    textures.emplace("DoorCloseS", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Door/Close/DoorCloseW.png");
-    textures.emplace("DoorCloseW", texture);
+    textures.emplace("DoorCloseW", std::move(texture));
 
         // Chest
             // Close
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Chest/Close/ChestCloseE.png");
-    textures.emplace("ChestCloseE", texture);
+    textures.emplace("ChestCloseE", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Chest/Close/ChestCloseN.png");
-    textures.emplace("ChestCloseN", texture);
+    textures.emplace("ChestCloseN", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Chest/Close/ChestCloseS.png");
-    textures.emplace("ChestCloseS", texture);
+    textures.emplace("ChestCloseS", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Chest/Close/ChestCloseW.png");
-    textures.emplace("ChestCloseW", texture);
+    textures.emplace("ChestCloseW", std::move(texture));
 
         // Open
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Chest/Open/ChestOpenE.png");
-    textures.emplace("ChestOpenE", texture);
+    textures.emplace("ChestOpenE", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Chest/Open/ChestOpenN.png");
-    textures.emplace("ChestOpenN", texture);
+    textures.emplace("ChestOpenN", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Chest/Open/ChestOpenS.png");
-    textures.emplace("ChestOpenS", texture);
+    textures.emplace("ChestOpenS", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Chest/Open/ChestOpenW.png");
-    textures.emplace("ChestOpenW", texture);
+    textures.emplace("ChestOpenW", std::move(texture));
 }
 
 sf::Texture& Party::getTexture(const std::string& nameText){ // récupere un etexture quand on en a besoin
@@ -309,7 +310,7 @@ sf::Sprite Party::getSprite(const std::string& name){
     return found->second;
 }
 
-void Party::setDoorOpenSprites(Room curRoom){ // /!\ Peut être a modifier a cause des door[i]
+void Party::setDoorOpenSprites(Room& curRoom){ // /!\ Peut être a modifier a cause des door[i]
     std::vector<Door*> doors = curRoom.getDoors();
     sf::Sprite door;
 
@@ -348,7 +349,7 @@ void Party::setDoorOpenSprites(Room curRoom){ // /!\ Peut être a modifier a cau
     }
 }
 
-void Party::setDoorCloseSprites(Room curRoom){ // /!\ Peut être a modifier a cause des door[i]
+void Party::setDoorCloseSprites(Room& curRoom){ // /!\ Peut être a modifier a cause des door[i]
     std::vector<Door*> doors = curRoom.getDoors();
     sf::Sprite door;
 
@@ -387,7 +388,7 @@ void Party::setDoorCloseSprites(Room curRoom){ // /!\ Peut être a modifier a ca
     }
 }
 
-void Party::setFrameSprites(Room curRoom){ // /!\ Peut être a modifier a cause des door[i]
+void Party::setFrameSprites(Room& curRoom){ // /!\ Peut être a modifier a cause des door[i]
     std::vector<Door*> door = curRoom.getDoors();
     sf::Sprite frame;
 
@@ -426,7 +427,7 @@ void Party::setFrameSprites(Room curRoom){ // /!\ Peut être a modifier a cause 
     }
 }
 
-void Party::setRockSprites(Room curRoom){
+void Party::setRockSprites(Room& curRoom){
     std::vector<Rock> rocks = curRoom.getRocks();
     sf::Sprite rock;
 
@@ -446,7 +447,7 @@ void Party::setRockSprites(Room curRoom){
 
 //void Party::setMonsterSprites(Room curRoom){std::vector<Entity*> monster = curRoom.getMonsters();}
 
-void Party::setChestSprites(Room curRoom){  //sf::chest le mettre en vector
+void Party::setChestSprites(Room& curRoom){  //sf::chest le mettre en vector
     Chest* chest = curRoom.getChest();
 
     sf::Sprite ches;
@@ -490,16 +491,19 @@ void Party::setChestSprites(Room curRoom){  //sf::chest le mettre en vector
 }
 
 void Party::setSpritesForCurrentRoom(){
-    Room curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
+    Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
+	
+	if (curRoom)
+	{
+		sRoom = getSprite(curRoom->getStringType()); // on charge la map
+		sRoom.setPosition(0.f, 0.f);
 
-    sRoom = getSprite(curRoom.getStringType()); // on charge la map
-    sRoom.setPosition(0.f, 0.f);
-
-        // On charge les différent éléments de la salle
-    setFrameSprites(curRoom);
-    setDoorOpenSprites(curRoom);
-    setRockSprites(curRoom);
-    setChestSprites(curRoom);
+			// On charge les différent éléments de la salle
+		setFrameSprites(*curRoom);
+		setDoorOpenSprites(*curRoom);
+		setRockSprites(*curRoom);
+		setChestSprites(*curRoom);
+	}
 }
 
 void Party::processEvents(){

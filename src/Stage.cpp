@@ -66,7 +66,7 @@ void Stage::generate(unsigned &stage){
                     if (roomsCnt < roomsNb-1 && rand()%density) // Place une salle seulement si le mod est différent de 0
 					// on écrit roomsNb-1 car on garde une salle pour le boss
                     {
-                        RoomsMap[i][mid-k] = new Room();
+                        RoomsMap[i][mid-k] = new Room(Common, hero);
                         roomsCnt ++;
                     }
                 }
@@ -76,7 +76,7 @@ void Stage::generate(unsigned &stage){
 
                 if(roomsCnt < roomsNb-1 && rand()%density)
                 {
-                    RoomsMap[mid-k][mid-k] = new Room();
+                    RoomsMap[mid-k][mid-k] = new Room(Common, hero);
                     roomsCnt ++;
                 }
             }
@@ -87,7 +87,7 @@ void Stage::generate(unsigned &stage){
                 {
                     if (roomsCnt < roomsNb-1 && rand()%density)
                     {
-                        RoomsMap[mid+k][j] = new Room();
+                        RoomsMap[mid+k][j] = new Room(Common, hero);
                         roomsCnt ++;
                     }
                 }
@@ -99,7 +99,7 @@ void Stage::generate(unsigned &stage){
                 {
                     if (roomsCnt < roomsNb-1 && rand()%density)
                     {
-                        RoomsMap[mid-k][j] = new Room();
+                        RoomsMap[mid-k][j] = new Room(Common, hero);
                         roomsCnt ++;
                     }
                 }
@@ -111,7 +111,7 @@ void Stage::generate(unsigned &stage){
                 {
                     if (roomsCnt < roomsNb-1 && rand()%density)
                     {
-                        RoomsMap[i][mid+k] = new Room();
+                        RoomsMap[i][mid+k] = new Room(Common, hero);
                         roomsCnt ++;
                     }
                 }
@@ -221,7 +221,7 @@ bool Stage::getRandom() const{
  * Get Room *
  ***********/
 
-Room* Stage::getRoom(unsigned i, unsigned j) const{
+Room* Stage::getRoom(unsigned i, unsigned j){
     return RoomsMap[i][j];
 }
 
@@ -410,7 +410,8 @@ void Stage::reset(unsigned stage) {
 
     for(unsigned i = 0; i < maxSize; i++) {
         for (unsigned j = 0; j < maxSize; j++) {
-            delete RoomsMap[i][j];
+			if (RoomsMap[i][j])
+				delete RoomsMap[i][j];
             RoomsMap[i][j] = nullptr;
         }
     }
@@ -508,7 +509,7 @@ Chest* Stage::getChest(unsigned i, unsigned j) const {
  * Graphic View *
  ***************/
 
-std::ostream& operator<<(std::ostream& stream, const Stage *s){
+std::ostream& operator<<(std::ostream& stream, Stage *s){
 
 	for (unsigned i = 0; i < maxSize; i++){
 		for (unsigned j = 0; j < maxSize; j++){

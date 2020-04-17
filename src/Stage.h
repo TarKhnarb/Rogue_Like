@@ -28,7 +28,7 @@ public:
     void setRandom(bool);
     bool getRandom() const;
 
-    Room* getRoom(unsigned, unsigned) const;
+    Room* getRoom(unsigned, unsigned);
 
     void affectRoomTypeMonsterObject(); // Affecte a chaque salles un type en fonction de son nombre de portes (tableau)
 
@@ -51,7 +51,7 @@ public:
 
 private:
 
-    Entity hero;
+    Entity& hero;
     
     Room* RoomsMap[maxSize][maxSize];
 
@@ -61,6 +61,6 @@ private:
     bool random;
 };
 
-std::ostream& operator<<(std::ostream&, const Stage*);
+std::ostream& operator<<(std::ostream&, Stage*);
 
 #endif

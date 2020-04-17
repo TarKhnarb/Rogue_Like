@@ -23,8 +23,8 @@ Stage* Donjon::getCurrentStage() const {
     return currentStage;
 }
 
-Room& Donjon::getRoom(unsigned i, unsigned j){
-    return *currentStage->getRoom(i, j);
+Room* Donjon::getRoom(unsigned i, unsigned j){
+    return currentStage->getRoom(i, j);
 }
 
 unsigned Donjon::getStage() {

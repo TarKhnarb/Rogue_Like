@@ -48,7 +48,6 @@ class Room{
 
 public:
 
-    Room();
     Room(roomType, Entity&);
     ~Room();
 
@@ -69,10 +68,10 @@ public:
     void fillRocks(roomType);
     void fillChest(std::vector<unsigned>);
 
-    std::vector<Door*> getDoors() const;
-    std::vector<Entity*> getMonsters() const;
-    std::vector<Rock> getRocks() const;
-    Chest* getChest() const;
+    std::vector<Door*> getDoors();
+    std::vector<Entity*> getMonsters();
+    std::vector<Rock>& getRocks();
+    Chest* getChest();
 
     std::string getStringType() const;
 
@@ -80,7 +79,7 @@ private:
 
     roomType type; // type of the current Room
 
-    Entity hero;
+    Entity& hero;
 
     std::vector<Door*> Doors; // Index: (0: north, 1: east, 2: south, 3: west),return table of Door according their orientation
     std::vector<Entity*> monsters; // Monstres de la salle

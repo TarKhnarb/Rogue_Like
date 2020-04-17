@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <utility>
 
 #include "Position.h"
 #include "Entity.h"
@@ -31,12 +32,12 @@ private:
     void loadSprites(std::string name);
     sf::Sprite getSprite(const std::string&); // On donne la categorie du sprite, et le nom de la texture
 
-    void setDoorOpenSprites(Room);
-    void setDoorCloseSprites(Room);
-    void setFrameSprites(Room);
-    void setRockSprites(Room);
+    void setDoorOpenSprites(Room&);
+    void setDoorCloseSprites(Room&);
+    void setFrameSprites(Room&);
+    void setRockSprites(Room&);
     //void setMonsterSprites(Room);
-    void setChestSprites(Room);
+    void setChestSprites(Room&);
 
     void setSpritesForCurrentRoom();
 

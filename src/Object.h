@@ -80,7 +80,7 @@ public :
     /**
      * @brief get the max stack
      **/
-    const unsigned getMaxStack() const;
+    unsigned getMaxStack() const;
 
     /**
      * @brief  converts an istringstream into an unsigned variable

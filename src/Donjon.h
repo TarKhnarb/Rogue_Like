@@ -19,7 +19,7 @@ public:
 	~Donjon();
 
     Stage* getCurrentStage() const;
-    Room& getRoom(unsigned, unsigned);
+    Room* getRoom(unsigned, unsigned);
 
     unsigned getStage();
 
@@ -32,7 +32,7 @@ public:
 
 private:
 
-    Entity hero;
+    Entity& hero;
     unsigned stageNb;
     unsigned stage;
     Stage *currentStage;
