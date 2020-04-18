@@ -4,7 +4,7 @@
  * Constructor *
  **************/
 
-Door::Door(): open(false){}
+Door::Door(): open(true){}
 
 /************
  * Get Open *

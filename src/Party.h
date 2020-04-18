@@ -46,6 +46,8 @@ private:
     //void setMonsterRectangleShape(Room);
     void setChestRectangleShape(Room&);
     void setRectangleShapeForCurrentRoom();
+	
+	void reloadRoom();
 
     void entityCollision();
 
@@ -63,7 +65,7 @@ private:
 
 private:
 
-    Position<unsigned> posDonjon;
+    Position<int> posDonjon;
     Position<float> posAspen;
     Entity Aspen;
     Donjon donjon;

@@ -37,9 +37,7 @@ Party::Party():
     sPlayer.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
     sPlayer.setTexture(getTexture("AspenF"));
 	
-	// TODO à faire lors du changement de salle
-	setSpritesForCurrentRoom();
-    setRectangleShapeForCurrentRoom();
+	reloadRoom();
 }
 
 Party::~Party(){
@@ -429,11 +427,14 @@ void Party::setWall(){
         rect.setPosition(arch.Walls[i][0], arch.Walls[i][1]); // on set la position du rectangle
         Walls.push_back(rect);
     }
+    
+    
 }
 
 void Party::setDoorOpenRectangleShape(Room& curRoom){
     std::vector<Door*> doors = curRoom.getDoors();
     sf::RectangleShape door;
+	door.setFillColor(sf::Color(0, 0, 0, 0));
 
     unsigned size = sDoors.size();
     for (unsigned i = 0 ; i < size ; ++i)
@@ -469,14 +470,37 @@ void Party::setDoorOpenRectangleShape(Room& curRoom){
                 default:
                     break;
             }
-            sDoors.push_back(door);
+        }else{
+            switch(i){
+                case 0:
+                    door.setPosition(arch.DoorN[1][0], arch.DoorN[1][1]);
+                    door.setSize({120.f, 80.f});
+                    break;
+
+                case 1:
+                    door.setPosition(arch.DoorE[1][0], arch.DoorE[1][1]);
+                    door.setSize({80.f, 1200.f});
+                    break;
+
+                case 2:
+                    door.setPosition(arch.DoorS[1][0], arch.DoorS[1][1]);
+                    door.setSize({120.f, 80.f});
+                    break;
+
+                case 3:
+                    door.setPosition(arch.DoorW[1][0], arch.DoorW[1][1]);
+                    door.setSize({80.f, 1200.f});
+                    break;
+            }
         }
+        sDoors.push_back(door);
     }
 }
 
 void Party::setDoorCloseRectangleShape(Room& curRoom){
     std::vector<Door*> doors = curRoom.getDoors();
     sf::RectangleShape door;
+	door.setFillColor(sf::Color(0, 0, 0, 0));
 
     unsigned size = sDoors.size();
     for (unsigned i = 0 ; i < size ; ++i)
@@ -512,8 +536,30 @@ void Party::setDoorCloseRectangleShape(Room& curRoom){
                 default:
                     break;
             }
-            sDoors.push_back(door);
+		}else{
+            switch(i){
+                case 0:
+                    door.setPosition(arch.DoorN[1][0], arch.DoorN[1][1]);
+                    door.setSize({120.f, 80.f});
+                    break;
+
+                case 1:
+                    door.setPosition(arch.DoorE[1][0], arch.DoorE[1][1]);
+                    door.setSize({80.f, 1200.f});
+                    break;
+
+                case 2:
+                    door.setPosition(arch.DoorS[1][0], arch.DoorS[1][1]);
+                    door.setSize({120.f, 80.f});
+                    break;
+
+                case 3:
+                    door.setPosition(arch.DoorW[1][0], arch.DoorW[1][1]);
+                    door.setSize({80.f, 1200.f});
+                    break;
+            }
         }
+		sDoors.push_back(door);
     }
 }
 
@@ -601,6 +647,15 @@ void Party::setRectangleShapeForCurrentRoom(){
     }
 }
 
+void Party::reloadRoom()
+{
+	Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
+	loadSprites(curRoom->getStringType());
+	
+	setSpritesForCurrentRoom();
+    setRectangleShapeForCurrentRoom();
+}
+
 void Party::entityCollision(){
 	sf::RectangleShape sPlayerCol ({sPlayer.getSize().x, sPlayer.getSize().y / 2.f});
 	sPlayerCol.setOrigin({0.f, sPlayerCol.getSize().y});
@@ -612,8 +667,49 @@ void Party::entityCollision(){
         Collision col = Collision(wall);
         (Collision(sPlayerCol)).checkCollision(col, 0.f);
     }
-    sf::Vector2f posEnd = sPlayerCol.getPosition();
 	
+	std::vector<Door*> door = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getDoors();
+	for (unsigned i = 0 ; i < sDoors.size() ; ++i){
+		Collision col = Collision(sDoors[i]);
+		if (Collision(sPlayerCol).checkCollision(col, 0.f) && door[i] && door[i]->getOpen())
+		{
+			switch (i)
+			{
+				case 0:
+					posDonjon.move(-1, 0);
+					sPlayer.setPosition(500, 300);
+					//sPlayer.setPosition(arch.PlayerN[0], arch.PlayerN[1]);
+					reloadRoom();
+					break;
+				
+				case 1:
+					posDonjon.move(0, 1);
+					sPlayer.setPosition(500, 300);
+					//sPlayer.setPosition(arch.PlayerE[0], .PlayerE[1]);
+					reloadRoom();
+					break;
+				
+				case 2:
+					posDonjon.move(1, 0);
+					sPlayer.setPosition(500, 300);
+					//sPlayer.setPosition(arch.PlayerS[0], .PlayerS[1]);
+					reloadRoom();
+					break;
+				
+				case 3:
+					posDonjon.move(0, -1);
+					sPlayer.setPosition(500, 300);
+					//sPlayer.setPosition(arch.PlayerO[0], .PlayerO[1]);
+					reloadRoom();
+					break;
+				
+				default:
+					break;
+			}
+		}
+	}
+	sf::Vector2f posEnd = sPlayerCol.getPosition();
+		
 	sPlayer.move(posEnd - posBegin);
 }
 
