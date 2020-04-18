@@ -602,9 +602,10 @@ void Party::setRectangleShapeForCurrentRoom(){
 }
 
 void Party::entityCollision(){
-	sf::RectangleShape sPlayerCol ({sPlayer.getSize().x, sPlayer.getSize().y / 3.f});
+	sf::RectangleShape sPlayerCol ({sPlayer.getSize().x, sPlayer.getSize().y / 2.f});
 	sPlayerCol.setOrigin({0.f, sPlayerCol.getSize().y});
 	sPlayerCol.setPosition(sPlayer.getPosition().x, sPlayer.getPosition().y + sPlayer.getSize().y);
+	sPlayerCol.move(0.f, sPlayer.getSize().y / 6.f);
 	
 	sf::Vector2f posBegin = sPlayerCol.getPosition();
     for(auto &wall : Walls){
