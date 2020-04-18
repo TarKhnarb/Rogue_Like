@@ -74,7 +74,6 @@ void Party::run(){
 void Party::loadTextures(){ // load dans le constructeur
         // Entity
             //Aspen
-	
     sf::Texture* texture(new sf::Texture ());
     texture->loadFromFile("data/Textures/Entity/AspenB.png");
     textures.emplace("AspenB", std::move(texture));
@@ -214,6 +213,10 @@ void Party::loadTextures(){ // load dans le constructeur
     texture->loadFromFile("data/Textures/Rock/Rock3.png");
     textures.emplace("Rock3", std::move(texture));
 
+    texture = new sf::Texture();
+    texture->loadFromFile("data/Textures/Rock/RockBreak.png");
+    textures.emplace("RockBreak", std::move(texture));
+
         // Frame
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Frame/FrameE.png");
@@ -265,6 +268,10 @@ void Party::loadTextures(){ // load dans le constructeur
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Door/Close/DoorCloseW.png");
     textures.emplace("DoorCloseW", std::move(texture));
+
+    texture = new sf::Texture();
+    texture->loadFromFile("data/Textures/Door/trappe.png");
+    textures.emplace("Trappe", std::move(texture));
 
         // Chest
             // Close
@@ -423,7 +430,6 @@ void Party::setWall(){
 void Party::setDoorOpenRectangleShape(Room& curRoom){
     std::vector<Door*> doors = curRoom.getDoors();
     sf::RectangleShape door;
-    loadRectangleShape("DoorOpen");
 
     unsigned size = sDoors.size();
     for (unsigned i = 0 ; i < size ; ++i)
@@ -435,25 +441,25 @@ void Party::setDoorOpenRectangleShape(Room& curRoom){
                 case 0:
                     door = getRectangleShape("DoorOpenN");
                     door.setPosition(arch.DoorN[1][0], arch.DoorN[1][1]);
-                    door.setTexture(getTexture("DoorCloseN"));
+                    door.setTexture(getTexture("DoorOpenN"));
                     break;
 
                 case 1:
                     door = getRectangleShape("DoorOpenE");
                     door.setPosition(arch.DoorE[1][0], arch.DoorE[1][1]);
-                    door.setTexture(getTexture("DoorCloseE"));
+                    door.setTexture(getTexture("DoorOpenE"));
                     break;
 
                 case 2:
                     door = getRectangleShape("DoorOpenS");
                     door.setPosition(arch.DoorS[1][0], arch.DoorS[1][1]);
-                    door.setTexture(getTexture("DoorCloseS"));
+                    door.setTexture(getTexture("DoorOpenS"));
                     break;
 
                 case 3:
                     door = getRectangleShape("DoorOpenW");
                     door.setPosition(arch.DoorW[1][0], arch.DoorW[1][1]);
-                    door.setTexture(getTexture("DoorCloseW"));
+                    door.setTexture(getTexture("DoorOpenW"));
                     break;
 
                 default:
@@ -467,7 +473,6 @@ void Party::setDoorOpenRectangleShape(Room& curRoom){
 void Party::setDoorCloseRectangleShape(Room& curRoom){
     std::vector<Door*> doors = curRoom.getDoors();
     sf::RectangleShape door;
-    loadRectangleShape("DoorCloseN");
 
     unsigned size = sDoors.size();
     for (unsigned i = 0 ; i < size ; ++i)
@@ -511,7 +516,6 @@ void Party::setDoorCloseRectangleShape(Room& curRoom){
 void Party::setRockRectangleShape(Room& curRoom){
     std::vector<Rock> rocks = curRoom.getRocks();
     sf::RectangleShape rock;
-    loadRectangleShape("Rock");
 
     unsigned size = sRocks.size();
     for (unsigned i = 0 ; i < size ; ++i)
@@ -586,15 +590,23 @@ void Party::setRectangleShapeForCurrentRoom(){
     if (curRoom) {
 
         setWall();
-        //setDoorOpenRectangleShape(*curRoom);
-        setDoorCloseRectangleShape(*curRoom);
+        setDoorOpenRectangleShape(*curRoom);
+        //setDoorCloseRectangleShape(*curRoom);
         setRockRectangleShape(*curRoom);
         setChestRectangleShape(*curRoom);
     }
 }
 
 void Party::entityCollision(){
+    for(auto &wall : Walls){
+        Collision col = Collision(wall);
+        (Collision(sPlayerCol)).checkCollision(col, 0.f);
+    }
 
+    /*for (auto& collider : m_board.getColliders())
+    {
+        m_player.getCollider().checkCollision(collider, 0.f);
+    }*/
 }
 
 void Party::processEvents(){
@@ -684,11 +696,15 @@ void Party::update(sf::Time deltaTime){
 
 void Party::render(){
 
+    sPlayerCol = sPlayer;
+
     setSpritesForCurrentRoom();
     setRectangleShapeForCurrentRoom();
 
     mWindow.clear();
     mWindow.draw(sRoom);
+
+    entityCollision();
 
     for(const auto &r : sRocks)
         mWindow.draw(r);

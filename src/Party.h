@@ -1,6 +1,8 @@
 #ifndef GAME_PARTY_H
 #define GAME_PARTY_H
 
+#include "Collision.h"
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
@@ -10,7 +12,6 @@
 #include "Position.h"
 #include "Entity.h"
 #include "Donjon.h"
-#include "Collision.h"
 #include "Archetype.h"
     // Utilisés pour récupérer les infos de leurs placements
 #include "Room.h"
@@ -76,6 +77,7 @@ private:
 
         // Différents sprites pouvant être sur la map
     sf::RectangleShape sPlayer;
+    sf::RectangleShape sPlayerCol;
     sf::Sprite sRoom;
     std::vector<sf::RectangleShape> Walls;
     std::vector<sf::RectangleShape> sMonsters;
@@ -83,6 +85,8 @@ private:
     std::vector<sf::Sprite> sFrames;
     std::vector<sf::RectangleShape> sDoors;
     std::vector<sf::RectangleShape> sChest;
+
+    std::vector<Collision> collisions;
 	
 	Archetype arch;
 };

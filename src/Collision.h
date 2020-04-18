@@ -11,7 +11,7 @@ public:
 
     void Move(float dx, float dy);
 
-    bool CheckCollision(Collision &other, float push);
+    bool checkCollision(Collision &other, float push);
 
     sf::Vector2f getPosition();
     sf::Vector2f getHalfSize();

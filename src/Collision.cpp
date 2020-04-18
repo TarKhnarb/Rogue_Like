@@ -11,7 +11,7 @@ void  Collision::Move(float dx, float dy){
     body.move(dx, dy);
 }
 
-bool Collision::CheckCollision(Collision &other, float push){
+bool Collision::checkCollision(Collision &other, float push){
 
     sf::Vector2f otherPosition = other.getPosition();
     sf::Vector2f otherHalfSize = other.getHalfSize();
@@ -53,7 +53,7 @@ bool Collision::CheckCollision(Collision &other, float push){
 }
 
 sf::Vector2f Collision::getPosition(){
-    return body.getPosition() + getHalfSize();
+    return body.getPosition();// + getHalfSize();
 }
 sf::Vector2f Collision::getHalfSize(){
     return body.getSize()/2.0f;
