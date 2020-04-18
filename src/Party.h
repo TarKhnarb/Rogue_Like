@@ -60,7 +60,7 @@ private:
     bool mIsMovingLeft = false;
     bool mIsMovingRight = false;
 
-    float PlayerSpeed = 50.f;
+    float PlayerSpeed = 150.f;
 
 private:
 
@@ -77,7 +77,6 @@ private:
 
         // Différents sprites pouvant être sur la map
     sf::RectangleShape sPlayer;
-    sf::RectangleShape sPlayerCol;
     sf::Sprite sRoom;
     std::vector<sf::RectangleShape> Walls;
     std::vector<sf::RectangleShape> sMonsters;

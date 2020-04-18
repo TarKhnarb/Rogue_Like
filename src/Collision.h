@@ -2,6 +2,7 @@
 #define GAME_COLLISION_H
 
 #include <SFML/Graphics.hpp>
+#include <cmath>
 
 class Collision{
 

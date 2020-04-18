@@ -15,13 +15,13 @@ bool Collision::checkCollision(Collision &other, float push){
 
     sf::Vector2f otherPosition = other.getPosition();
     sf::Vector2f otherHalfSize = other.getHalfSize();
-    sf::Vector2f thisPosition = other.getPosition();
-    sf::Vector2f thisHalfSize = other.getHalfSize();
+    sf::Vector2f thisPosition = getPosition();
+    sf::Vector2f thisHalfSize = getHalfSize();
 
     float deltaX = otherPosition.x - thisPosition.x;
     float deltaY = otherPosition.y - thisPosition.y;
-    float intersectX = abs(deltaX) - (otherHalfSize.x + thisHalfSize.x);
-    float intersectY = abs(deltaY) - (otherHalfSize.y + thisHalfSize.y);
+    float intersectX = fabs(deltaX) - (otherHalfSize.x + thisHalfSize.x);
+    float intersectY = fabs(deltaY) - (otherHalfSize.y + thisHalfSize.y);
 
     if(intersectX < 0.0f && intersectY < 0.0f){
         push = std::min(std::max(push, 0.0f), 1.0f);
@@ -53,7 +53,7 @@ bool Collision::checkCollision(Collision &other, float push){
 }
 
 sf::Vector2f Collision::getPosition(){
-    return body.getPosition();// + getHalfSize();
+    return body.getPosition() + getHalfSize() - body.getOrigin();
 }
 sf::Vector2f Collision::getHalfSize(){
     return body.getSize()/2.0f;

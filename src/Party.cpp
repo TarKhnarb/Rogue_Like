@@ -36,6 +36,10 @@ Party::Party():
     sPlayer = getRectangleShape("AspenF");
     sPlayer.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
     sPlayer.setTexture(getTexture("AspenF"));
+	
+	// TODO à faire lors du changement de salle
+	setSpritesForCurrentRoom();
+    setRectangleShapeForCurrentRoom();
 }
 
 Party::~Party(){
@@ -56,7 +60,7 @@ void Party::run(){
 
     sf::Clock clock;
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
-    sf::Time TimePerFrame = sf::seconds(1.f / 60.f);
+    sf::Time TimePerFrame = sf::seconds(1.f / 30.f);
 
     while (mWindow.isOpen()){
         processEvents();
@@ -598,15 +602,18 @@ void Party::setRectangleShapeForCurrentRoom(){
 }
 
 void Party::entityCollision(){
+	sf::RectangleShape sPlayerCol ({sPlayer.getSize().x, sPlayer.getSize().y / 3.f});
+	sPlayerCol.setOrigin({0.f, sPlayerCol.getSize().y});
+	sPlayerCol.setPosition(sPlayer.getPosition().x, sPlayer.getPosition().y + sPlayer.getSize().y);
+	
+	sf::Vector2f posBegin = sPlayerCol.getPosition();
     for(auto &wall : Walls){
         Collision col = Collision(wall);
         (Collision(sPlayerCol)).checkCollision(col, 0.f);
     }
-
-    /*for (auto& collider : m_board.getColliders())
-    {
-        m_player.getCollider().checkCollision(collider, 0.f);
-    }*/
+    sf::Vector2f posEnd = sPlayerCol.getPosition();
+	
+	sPlayer.move(posEnd - posBegin);
 }
 
 void Party::processEvents(){
@@ -648,63 +655,27 @@ void Party::handlePlayerInput(sf::Keyboard::Key key, bool isPressed){
 }
 
 void Party::update(sf::Time deltaTime){
-
-	float realSpeed = PlayerSpeed * deltaTime.asSeconds();
-	
-    sf::FloatRect test = sPlayer.getGlobalBounds();
-    test.height /= 3;
-    test.top += test.height * 2;
 	
 	sf::Vector2f movement(0.f, 0.f);
 	
     if(mIsMovingUp)
-	{
-        test.top -= realSpeed;
-		test.height += realSpeed;
-		
-		//if (!test.intersects(sRock.getGlobalBounds()))
-			movement.y -= realSpeed;
-	}
-	
+		movement.y -= PlayerSpeed;
     if(mIsMovingDown)
-	{
-		test.height += realSpeed;
-		
-	//	if (!test.intersects(sRock.getGlobalBounds()))
-			movement.y += realSpeed;
-	}
-	
+		movement.y += PlayerSpeed;
     if(mIsMovingLeft)
-	{
-        test.left -= realSpeed;
-		test.width += realSpeed;
-		
-		//if (!test.intersects(sRock.getGlobalBounds()))
-			movement.x -= realSpeed;
-	}
-	
+		movement.x -= PlayerSpeed;
     if(mIsMovingRight)
-	{
-        test.width += realSpeed;
-		
-		//if (!test.intersects(sRock.getGlobalBounds()))
-			movement.x += realSpeed;
-	}
+		movement.x += PlayerSpeed;
 
-    sPlayer.move(movement);
+    sPlayer.move(movement * deltaTime.asSeconds());
+	
+	entityCollision();
 }
 
 void Party::render(){
 
-    sPlayerCol = sPlayer;
-
-    setSpritesForCurrentRoom();
-    setRectangleShapeForCurrentRoom();
-
     mWindow.clear();
     mWindow.draw(sRoom);
-
-    entityCollision();
 
     for(const auto &r : sRocks)
         mWindow.draw(r);
@@ -717,7 +688,8 @@ void Party::render(){
 
     for(const auto &c : sChest)
         mWindow.draw(c);
-
+	
     mWindow.draw(sPlayer);
+	
     mWindow.display();
 }
