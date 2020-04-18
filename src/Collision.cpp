@@ -48,7 +48,6 @@ bool Collision::checkCollision(Collision &other, float push){
         }
         return true;
     }
-
     return false;
 }
 

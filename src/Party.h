@@ -1,8 +1,6 @@
 #ifndef GAME_PARTY_H
 #define GAME_PARTY_H
 
-#include "Collision.h"
-
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
@@ -12,6 +10,7 @@
 #include "Position.h"
 #include "Entity.h"
 #include "Donjon.h"
+#include "Collision.h"
 #include "Archetype.h"
     // Utilisés pour récupérer les infos de leurs placements
 #include "Room.h"
@@ -69,13 +68,14 @@ private:
     Entity Aspen;
     Donjon donjon;
 
+        // Maps des différents élément à afficher
     std::map<std::string, sf::Texture*> textures;
     std::map<std::string, sf::Sprite> sprites;
     std::map<std::string, sf::RectangleShape*> rectangleShapes;
 
     sf::RenderWindow mWindow;
 
-        // Différents sprites pouvant être sur la map
+        // Différents sprites/rectangleShape pouvant être sur la map
     sf::RectangleShape sPlayer;
     sf::Sprite sRoom;
     std::vector<sf::RectangleShape> Walls;
