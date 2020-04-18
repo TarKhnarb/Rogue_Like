@@ -10,14 +10,32 @@ Party::Party():
 
     loadTextures(); // On charge les textures
 
-    loadSprites("Aspen"); // On charge les images de Aspen
     loadSprites("RoomStart"); // On charge la map de start
     loadSprites("Frame"); // on charge les encadrements de porte
-    loadSprites("Door"); // On charge les portes ouvertes/fermées
-    loadSprites("Rock");
 
-    sPlayer = getSprite("AspenF");
-    sPlayer.setPosition(320.f, 240.f);
+    loadRectangleShape("ChestCloseN");
+    loadRectangleShape("ChestCloseE");
+    loadRectangleShape("ChestCloseS");
+    loadRectangleShape("ChestCloseW");
+
+    loadRectangleShape("Rock1");
+    loadRectangleShape("Rock2");
+    loadRectangleShape("Rock3");
+
+    loadRectangleShape("DoorOpenN");
+    loadRectangleShape("DoorOpenE");
+    loadRectangleShape("DoorOpenS");
+    loadRectangleShape("DoorOpenW");
+
+    loadRectangleShape("DoorCloseN");
+    loadRectangleShape("DoorCloseE");
+    loadRectangleShape("DoorCloseS");
+    loadRectangleShape("DoorCloseW");
+
+    loadRectangleShape("AspenF");
+    sPlayer = getRectangleShape("AspenF");
+    sPlayer.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
+    sPlayer.setTexture(getTexture("AspenF"));
 }
 
 Party::~Party(){
@@ -25,6 +43,12 @@ Party::~Party(){
 		if (t.second)
 			delete t.second;
         t.second = nullptr;
+    }
+
+    for(auto &r : rectangleShapes){
+        if(r.second)
+            delete r.second;
+        r.second = nullptr;
     }
 }
 
@@ -278,12 +302,12 @@ void Party::loadTextures(){ // load dans le constructeur
     textures.emplace("ChestOpenW", std::move(texture));
 }
 
-sf::Texture& Party::getTexture(const std::string& nameText){ // récupere un etexture quand on en a besoin
+sf::Texture* Party::getTexture(const std::string& nameText){ // récupere un etexture quand on en a besoin
     auto found = textures.find(nameText);
     if(found == textures.end())
         throw std::runtime_error ("Party::getTexture(const std::string&) - Aucune texture de ce nom " + nameText);
 
-    return *found->second; // ( si pas * on retourne un pointeur de texture)
+    return found->second; // ( si pas * on retourne un pointeur de texture)
 }
 
 // sf::Rect< T >::height/left/top/width
@@ -296,7 +320,7 @@ void Party::loadSprites(std::string name){
                 break;
 
             default:
-                sprites.emplace(t.first, getTexture(t.first));
+                sprites.emplace(t.first, *getTexture(t.first));
                 break;
         }
     }
@@ -310,85 +334,30 @@ sf::Sprite Party::getSprite(const std::string& name){
     return found->second;
 }
 
-void Party::setDoorOpenSprites(Room& curRoom){ // /!\ Peut être a modifier a cause des door[i]
-    std::vector<Door*> doors = curRoom.getDoors();
-    sf::Sprite door;
+void Party::loadRectangleShape(std::string name){
+    for(auto &t : textures){
+        switch((t.first).find(name)){
+            case std::string::npos:
+                break;
 
-    unsigned size = sDoors.size();
-    for (unsigned i = 0 ; i < size ; ++i)
-        sDoors.pop_back();
-
-    for(unsigned i = 0; i < doors.size(); ++i){
-        if(doors[i]){
-            switch(i){
-                case 0:
-                    door = getSprite("DoorOpenN");
-                    door.setPosition(arch.DoorN[1][0], arch.DoorN[1][1]);
-                    break;
-
-                case 1:
-                    door = getSprite("DoorOpenE");
-                    door.setPosition(arch.DoorE[1][0], arch.DoorE[1][1]);
-                    break;
-
-                case 2:
-                    door = getSprite("DoorOpenS");
-                    door.setPosition(arch.DoorS[1][0], arch.DoorS[1][1]);
-                    break;
-
-                case 3:
-                    door = getSprite("DoorOpenW");
-                    door.setPosition(arch.DoorW[1][0], arch.DoorW[1][1]);
-                    break;
-
-                default:
-                    break;
-            }
-            sDoors.push_back(door);
+            default:
+                sf::Vector2u vectu = (t.second)->getSize();
+                sf::Vector2f vectf(vectu.x, vectu.y);
+                rectangleShapes.emplace(t.first, new sf::RectangleShape(vectf));
+                break;
         }
     }
 }
 
-void Party::setDoorCloseSprites(Room& curRoom){ // /!\ Peut être a modifier a cause des door[i]
-    std::vector<Door*> doors = curRoom.getDoors();
-    sf::Sprite door;
+sf::RectangleShape Party::getRectangleShape(const std::string& name){
+    auto found = rectangleShapes.find(name);
+    if(found == rectangleShapes.end())
+        throw std::runtime_error ("Party::getRectangleShape(const std::string&) - Aucun rectangleShape de ce nom " + name);
 
-    unsigned size = sDoors.size();
-    for (unsigned i = 0 ; i < size ; ++i)
-        sDoors.pop_back();
-
-    for(unsigned i = 0; i < doors.size(); ++i){
-        if(doors[i]){
-            switch(i){
-                case 0:
-                    door = getSprite("DoorCloseN");
-                    door.setPosition(arch.DoorN[1][0], arch.DoorN[1][1]);
-                    break;
-
-                case 1:
-                    door = getSprite("DoorCloseE");
-                    door.setPosition(arch.DoorE[1][0], arch.DoorE[1][1]);
-                    break;
-
-                case 2:
-                    door = getSprite("DoorCloseS");
-                    door.setPosition(arch.DoorS[1][0], arch.DoorS[1][1]);
-                    break;
-
-                case 3:
-                    door = getSprite("DoorCloseW");
-                    door.setPosition(arch.DoorW[1][0], arch.DoorW[1][1]);
-                    break;
-
-                default:
-                    break;
-            }
-            sDoors.push_back(door);
-        }
-    }
+    return *found->second;
 }
 
-void Party::setFrameSprites(Room& curRoom){ // /!\ Peut être a modifier a cause des door[i]
+void Party::setFrameSprite(Room& curRoom){ // /!\ Peut être a modifier a cause des door[i]
     std::vector<Door*> door = curRoom.getDoors();
     sf::Sprite frame;
 
@@ -427,9 +396,122 @@ void Party::setFrameSprites(Room& curRoom){ // /!\ Peut être a modifier a cause
     }
 }
 
-void Party::setRockSprites(Room& curRoom){
+void Party::setSpritesForCurrentRoom(){
+    Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
+	
+	if (curRoom)
+	{
+		sRoom = getSprite(curRoom->getStringType()); // on charge la map
+		sRoom.setPosition(0.f, 0.f);
+
+		    // On charge les différent éléments de la salle
+
+		setFrameSprite(*curRoom);
+	}
+}
+
+void Party::setWall(){
+
+    for(unsigned i = 0; i < 8; ++i){
+        sf::Vector2f vect(arch.Walls[i][2], arch.Walls[i][3]);
+        sf::RectangleShape rect(vect); // set de la taille du rectangle
+        rect.setPosition(arch.Walls[i][0], arch.Walls[i][1]); // on set la position du rectangle
+        Walls.push_back(rect);
+    }
+}
+
+void Party::setDoorOpenRectangleShape(Room& curRoom){
+    std::vector<Door*> doors = curRoom.getDoors();
+    sf::RectangleShape door;
+    loadRectangleShape("DoorOpen");
+
+    unsigned size = sDoors.size();
+    for (unsigned i = 0 ; i < size ; ++i)
+        sDoors.pop_back();
+
+    for(unsigned i = 0; i < doors.size(); ++i){
+        if(doors[i]){
+            switch(i){
+                case 0:
+                    door = getRectangleShape("DoorOpenN");
+                    door.setPosition(arch.DoorN[1][0], arch.DoorN[1][1]);
+                    door.setTexture(getTexture("DoorCloseN"));
+                    break;
+
+                case 1:
+                    door = getRectangleShape("DoorOpenE");
+                    door.setPosition(arch.DoorE[1][0], arch.DoorE[1][1]);
+                    door.setTexture(getTexture("DoorCloseE"));
+                    break;
+
+                case 2:
+                    door = getRectangleShape("DoorOpenS");
+                    door.setPosition(arch.DoorS[1][0], arch.DoorS[1][1]);
+                    door.setTexture(getTexture("DoorCloseS"));
+                    break;
+
+                case 3:
+                    door = getRectangleShape("DoorOpenW");
+                    door.setPosition(arch.DoorW[1][0], arch.DoorW[1][1]);
+                    door.setTexture(getTexture("DoorCloseW"));
+                    break;
+
+                default:
+                    break;
+            }
+            sDoors.push_back(door);
+        }
+    }
+}
+
+void Party::setDoorCloseRectangleShape(Room& curRoom){
+    std::vector<Door*> doors = curRoom.getDoors();
+    sf::RectangleShape door;
+    loadRectangleShape("DoorCloseN");
+
+    unsigned size = sDoors.size();
+    for (unsigned i = 0 ; i < size ; ++i)
+        sDoors.pop_back();
+
+    for(unsigned i = 0; i < doors.size(); ++i){
+        if(doors[i]){
+            switch(i){
+                case 0:
+                    door = getRectangleShape("DoorCloseN");
+                    door.setPosition(arch.DoorN[1][0], arch.DoorN[1][1]);
+                    door.setTexture(getTexture("DoorCloseN"));
+                    break;
+
+                case 1:
+                    door = getRectangleShape("DoorCloseE");
+                    door.setPosition(arch.DoorE[1][0], arch.DoorE[1][1]);
+                    door.setTexture(getTexture("DoorCloseE"));
+                    break;
+
+                case 2:
+                    door = getRectangleShape("DoorCloseS");
+                    door.setPosition(arch.DoorS[1][0], arch.DoorS[1][1]);
+                    door.setTexture(getTexture("DoorCloseS"));
+                    break;
+
+                case 3:
+                    door = getRectangleShape("DoorCloseW");
+                    door.setPosition(arch.DoorW[1][0], arch.DoorW[1][1]);
+                    door.setTexture(getTexture("DoorCloseW"));
+                    break;
+
+                default:
+                    break;
+            }
+            sDoors.push_back(door);
+        }
+    }
+}
+
+void Party::setRockRectangleShape(Room& curRoom){
     std::vector<Rock> rocks = curRoom.getRocks();
-    sf::Sprite rock;
+    sf::RectangleShape rock;
+    loadRectangleShape("Rock");
 
     unsigned size = sRocks.size();
     for (unsigned i = 0 ; i < size ; ++i)
@@ -437,20 +519,22 @@ void Party::setRockSprites(Room& curRoom){
 
     if(! rocks.empty()) {
         for (unsigned k = 0; k < rocks.size(); ++k) {
-            rock = getSprite("Rock"+std::to_string((rand()%30)%3+1));
+            unsigned random = (rand()%30)%3+1;
+            rock = getRectangleShape("Rock"+std::to_string(random));
             rock.setPosition(rocks[k].getPosition(true), rocks[k].getPosition(false));
+            rock.setTexture(getTexture("Rock"+std::to_string(random)));
 
             sRocks.push_back(rock);
         }
     }
 }
 
-//void Party::setMonsterSprites(Room curRoom){std::vector<Entity*> monster = curRoom.getMonsters();}
+//void Party::setMonsterRectangleShape(Room curRoom){std::vector<Entity*> monster = curRoom.getMonsters();}
 
-void Party::setChestSprites(Room& curRoom){  //sf::chest le mettre en vector
+void Party::setChestRectangleShape(Room& curRoom){  //sf::chest le mettre en vector
     Chest* chest = curRoom.getChest();
 
-    sf::Sprite ches;
+    sf::RectangleShape ches;
     unsigned size = sChest.size();
     for(unsigned i = 0; i < size; ++i)
         sChest.pop_back();
@@ -458,28 +542,33 @@ void Party::setChestSprites(Room& curRoom){  //sf::chest le mettre en vector
     if(chest){
         switch(curRoom.getType()){
             case roomType::Room3ESW:
-                ches = getSprite("ChestCloseN");
+                ches = getRectangleShape("ChestCloseN");
                 ches.setPosition(arch.Chest3ESW[0], arch.Chest3ESW[1]);
+                ches.setTexture(getTexture("ChestCloseN"));
                 break;
 
             case roomType::Room1N:
-                ches = getSprite("ChestCloseS");
+                ches = getRectangleShape("ChestCloseS");
                 ches.setPosition(arch.Chest1N[0], arch.Chest1N[1]);
+                ches.setTexture(getTexture("ChestCloseS"));
                 break;
 
             case roomType::Room1E:
-                ches = getSprite("ChestCloseW");
+                ches = getRectangleShape("ChestCloseW");
                 ches.setPosition(arch.Chest1E[0], arch.Chest1E[1]);
+                ches.setTexture(getTexture("ChestCloseW"));
                 break;
 
             case roomType::Room1S:
-                ches = getSprite("ChestCloseN");
+                ches = getRectangleShape("ChestCloseN");
                 ches.setPosition(arch.Chest1S[0], arch.Chest1S[1]);
+                ches.setTexture(getTexture("ChestCloseN"));
                 break;
 
             case roomType::Room1W:
-                ches = getSprite("ChestCloseE");
+                ches = getRectangleShape("ChestCloseE");
                 ches.setPosition(arch.Chest1W[0], arch.Chest1W[1]);
+                ches.setTexture(getTexture("ChestCloseE"));
                 break;
 
             default:
@@ -490,20 +579,22 @@ void Party::setChestSprites(Room& curRoom){  //sf::chest le mettre en vector
 
 }
 
-void Party::setSpritesForCurrentRoom(){
-    Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
-	
-	if (curRoom)
-	{
-		sRoom = getSprite(curRoom->getStringType()); // on charge la map
-		sRoom.setPosition(0.f, 0.f);
+void Party::setRectangleShapeForCurrentRoom(){
 
-			// On charge les différent éléments de la salle
-		setFrameSprites(*curRoom);
-		setDoorOpenSprites(*curRoom);
-		setRockSprites(*curRoom);
-		setChestSprites(*curRoom);
-	}
+    Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
+
+    if (curRoom) {
+
+        setWall();
+        //setDoorOpenRectangleShape(*curRoom);
+        setDoorCloseRectangleShape(*curRoom);
+        setRockRectangleShape(*curRoom);
+        setChestRectangleShape(*curRoom);
+    }
+}
+
+void Party::entityCollision(){
+
 }
 
 void Party::processEvents(){
@@ -594,6 +685,7 @@ void Party::update(sf::Time deltaTime){
 void Party::render(){
 
     setSpritesForCurrentRoom();
+    setRectangleShapeForCurrentRoom();
 
     mWindow.clear();
     mWindow.draw(sRoom);
