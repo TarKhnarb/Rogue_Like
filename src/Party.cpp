@@ -440,7 +440,6 @@ void Party::setHole(Room& curRoom){
             for(unsigned i = 0; i < 28; ++i){
                 sf::RectangleShape hole({60.f, 60.f}); //set la size
                 hole.setPosition(arch.Hole2NS1[i][0], arch.Hole2NS1[i][1]); // set la position
-                hole.setOutlineColor(sf::Color::Red);
                 Holes.push_back(hole);
             }
             break;
