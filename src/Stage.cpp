@@ -294,7 +294,7 @@ void Stage::affectRoomTypeMonsterObject(){
 
                     case 2:
                         if(RoomsMap[i][j]->getDoor(0) && RoomsMap[i][j]->getDoor(2)){ // Doors at North South
-                            if(seed % 2){
+                            if((rand()%seed) % 2){
                                 RoomsMap[i][j]->setType(Room2NS1);
                                 RoomsMap[i][j]->fillMonsters(randomMonsters(), Room2NS1);
                             }
@@ -305,7 +305,7 @@ void Stage::affectRoomTypeMonsterObject(){
                         }
 
                         if(RoomsMap[i][j]->getDoor(1) && RoomsMap[i][j]->getDoor(3)){ // Doors at West East 1
-                            if(seed % 2){
+                            if((rand()%seed) % 2){
                                 RoomsMap[i][j]->setType(Room2WE1);
                                 RoomsMap[i][j]->fillMonsters(randomMonsters(), Room2WE1);
                                 RoomsMap[i][j]->fillRocks(Room2WE1);

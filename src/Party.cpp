@@ -2,7 +2,7 @@
 
 Party::Party():
         posDonjon(10, 10),
-        posAspen(620, 320),
+        posAspen(620, 310),
         Aspen (posAspen.getPosition(true), posAspen.getPosition(false)),
         donjon(stageNumber, Aspen),
         mWindow(sf::VideoMode(1280, 720), "Aspen's Adventure"){
@@ -469,8 +469,9 @@ void Party::setDoorOpenRectangleShape(Room& curRoom){
                 default:
                     break;
             }
-        }else{
-			door.setFillColor(sf::Color(0, 0, 0, 0));
+        }
+        else{
+            door.setFillColor(sf::Color(0, 0, 0, 0));
             switch(i){
                 case 0:
                     door.setPosition(arch.DoorN[1][0], arch.DoorN[1][1]);
@@ -535,8 +536,9 @@ void Party::setDoorCloseRectangleShape(Room& curRoom){
                 default:
                     break;
             }
-		}else{
-			door.setFillColor(sf::Color(0, 0, 0, 0));
+		}
+        else{
+            door.setFillColor(sf::Color(0, 0, 0, 0));
             switch(i){
                 case 0:
                     door.setPosition(arch.DoorN[1][0], arch.DoorN[1][1]);
@@ -602,9 +604,9 @@ void Party::setChestRectangleShape(Room& curRoom){  //sf::chest le mettre en vec
                 break;
 
             case roomType::Room1N:
-                ches = getRectangleShape("ChestCloseS");
+                ches = getRectangleShape("ChestCloseN");
                 ches.setPosition(arch.Chest1N[0], arch.Chest1N[1]);
-                ches.setTexture(getTexture("ChestCloseS"));
+                ches.setTexture(getTexture("ChestCloseN"));
                 break;
 
             case roomType::Room1E:
