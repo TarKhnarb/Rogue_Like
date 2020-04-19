@@ -2,16 +2,16 @@
 #include <istream>
 
 #include "Party.h"
-//#include "Entity.h"
-//#include "Donjon.h"
+#include "Entity.h"
+#include "Donjon.h"
 //#include "Npc.h"
 
 
-
+/*
 int main(){
     Party game;
     game.run();
-}
+}*/
 /*int main()
 {
     sf::RenderWindow window(sf::VideoMode(640, 480), "SFMLApplication");
@@ -32,20 +32,24 @@ int main(){
         window.display();
     }
 }*/
-/*
+
 int main(){
 
-    unsigned stage = 2;
+    unsigned stage = 0;
+    unsigned maxStage = 5;
 
     float x = 0.0, y = 0.0;
 
     Entity Aspen(x, y);
 
-    Donjon test(stage, Aspen);
-    unsigned i = 0, j = 0;
+    Donjon test(5, Aspen);
+    std::cout << std::endl;
+    std::cout << std::endl;
+    test.nextStage();
+    std::cout << test.getCurrentStage();
 
-    std::cout << test.getStage();
-    std::cout << "Entrer les coords de la salle" << std::endl;
+    //std::cout << test.getStage();
+ /*   std::cout << "Entrer les coords de la salle" << std::endl;
     std::cin >> i >> j;
     test.displayDoors(i, j);
 
@@ -92,8 +96,7 @@ int main(){
     npc.upgradeBlacksmith(Aspen, choice); //fabrique l'object 11
     Aspen.displayEntity();
     std::cout << "On fabrique l'obj 11 (a besoin de 1 fois l'obj 58)" << std::endl;
-    std::cin >> t;
+    std::cin >> t;*/
 
     return 0;
 }
-*/

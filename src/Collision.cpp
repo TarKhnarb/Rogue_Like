@@ -7,7 +7,7 @@ Collision::Collision(sf::RectangleShape &body):
 
 Collision::~Collision(){}
 
-void  Collision::Move(float dx, float dy){
+void Collision::Move(float dx, float dy){
     body.move(dx, dy);
 }
 

@@ -417,10 +417,7 @@ void Stage::reset(unsigned stage) {
     }
 
     unsigned mid = (maxSize - 1)/2;
-    if (stage == 0) {
-        RoomsMap[mid][mid] = new Room(Start, hero);
-    }
-    else RoomsMap[mid][mid] = new Room(CommonStart, hero);
+    RoomsMap[mid][mid] = new Room(roomType::Start, hero);
 }
 
 /************************

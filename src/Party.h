@@ -46,9 +46,11 @@ private:
     void setRockRectangleShape(Room&);
     //void setMonsterRectangleShape(Room);
     void setChestRectangleShape(Room&);
+    void setTrapRectangleShape(Room&);
     void setRectangleShapeForCurrentRoom();
 	
 	void reloadRoom();
+    void loadNextStage();
 
     void entityCollision();
 
@@ -81,6 +83,7 @@ private:
         // Différents sprites/rectangleShape pouvant être sur la map
     sf::RectangleShape sPlayer;
     sf::Sprite sRoom;
+    std::vector<sf::RectangleShape> sTrap;
     std::vector<sf::RectangleShape> Walls;
     std::vector<sf::RectangleShape> Holes;
     std::vector<sf::RectangleShape> sMonsters;
@@ -88,8 +91,7 @@ private:
     std::vector<sf::Sprite> sFrames;
     std::vector<sf::RectangleShape> sDoors;
     std::vector<sf::RectangleShape> sChest;
-
-    std::vector<Collision> collisions;
+    //std::vector<sf::RectangleShape> sProjectiles;
 	
 	Archetype arch;
 };

@@ -32,6 +32,8 @@ Party::Party():
     loadRectangleShape("DoorCloseS");
     loadRectangleShape("DoorCloseW");
 
+    loadRectangleShape("Trap");
+
     loadRectangleShape("AspenF");
     sPlayer = getRectangleShape("AspenF");
     sPlayer.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
@@ -272,8 +274,8 @@ void Party::loadTextures(){ // load dans le constructeur
     textures.emplace("DoorCloseW", std::move(texture));
 
     texture = new sf::Texture();
-    texture->loadFromFile("data/Textures/Door/trappe.png");
-    textures.emplace("Trappe", std::move(texture));
+    texture->loadFromFile("data/Textures/Door/Trap.png");
+    textures.emplace("Trap", std::move(texture));
 
         // Chest
             // Close
@@ -701,6 +703,21 @@ void Party::setChestRectangleShape(Room& curRoom){  //sf::chest le mettre en vec
 
 }
 
+void Party::setTrapRectangleShape(Room& curRoom){
+
+    unsigned size = sTrap.size();
+    for(unsigned i = 0; i < size; ++i)
+        sTrap.pop_back();
+
+    if(curRoom.getType() == roomType::Boss){
+        sf::RectangleShape trap;
+        trap = getRectangleShape("Trap");
+        trap.setPosition(610.f, 300.f);
+        trap.setTexture(getTexture("Trap"));
+        sTrap.push_back(trap);
+    }
+}
+
 void Party::setRectangleShapeForCurrentRoom(){
 
     Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
@@ -713,11 +730,12 @@ void Party::setRectangleShapeForCurrentRoom(){
         //setDoorCloseRectangleShape(*curRoom);
         setRockRectangleShape(*curRoom);
         setChestRectangleShape(*curRoom);
+        setTrapRectangleShape(*curRoom);
     }
 }
 
-void Party::reloadRoom()
-{
+void Party::reloadRoom(){
+
 	Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
 	loadSprites(curRoom->getStringType());
 	
@@ -725,7 +743,20 @@ void Party::reloadRoom()
     setRectangleShapeForCurrentRoom();
 }
 
+void Party::loadNextStage(){
+    sTrap.pop_back();
+    std::cout << "etape 1" << std::endl;
+    posAspen.setPosition(620.f, 310.f);
+    std::cout << "etape 2" << std::endl;
+    posDonjon.setPosition(10, 10);
+    std::cout << "etape 3" << std::endl;
+    donjon.nextStage();
+    std::cout << "etape 4" << std::endl;
+    reloadRoom();
+}
+
 void Party::entityCollision(){
+
 	sf::RectangleShape sPlayerCol ({sPlayer.getSize().x, sPlayer.getSize().y / 2.f});
 	sPlayerCol.setOrigin({0.f, sPlayerCol.getSize().y});
 	sPlayerCol.setPosition(sPlayer.getPosition().x, sPlayer.getPosition().y + sPlayer.getSize().y);
@@ -748,6 +779,18 @@ void Party::entityCollision(){
         if(!Aspen.entityCanFly()){
             Collision col = Collision(rock);
             (Collision(sPlayerCol)).checkCollision(col, 0.f);
+        }
+    }
+
+    for(auto &trap : sTrap){
+        sf::RectangleShape sTrapCol ({trap.getSize().x, trap.getSize().y / 2.f});
+        sTrapCol.setOrigin({0.f, trap.getSize().y});
+        sTrapCol.setPosition(trap.getPosition().x, trap.getPosition().y + trap.getSize().y);
+        //sTrapCol.move(0.f, sTrap.getSize().y);
+
+        Collision colt = Collision(sTrapCol);
+        if((Collision(sPlayerCol)).checkCollision(colt, 0.f)){
+            loadNextStage();
         }
     }
 	
@@ -864,6 +907,9 @@ void Party::render(){
 
     for(const auto &c : sChest)
         mWindow.draw(c);
+
+    for(const auto &t : sTrap)
+        mWindow.draw(t);
 	
     mWindow.draw(sPlayer);
 	
