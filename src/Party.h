@@ -40,6 +40,7 @@ private:
     sf::RectangleShape getRectangleShape(const std::string&);
 
     void setWall();
+    void setHole(Room&);
     void setDoorOpenRectangleShape(Room&);
     void setDoorCloseRectangleShape(Room&);
     void setRockRectangleShape(Room&);
@@ -81,6 +82,7 @@ private:
     sf::RectangleShape sPlayer;
     sf::Sprite sRoom;
     std::vector<sf::RectangleShape> Walls;
+    std::vector<sf::RectangleShape> Holes;
     std::vector<sf::RectangleShape> sMonsters;
     std::vector<sf::RectangleShape> sRocks;
     std::vector<sf::Sprite> sFrames;

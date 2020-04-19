@@ -427,8 +427,75 @@ void Party::setWall(){
         rect.setPosition(arch.Walls[i][0], arch.Walls[i][1]); // on set la position du rectangle
         Walls.push_back(rect);
     }
-    
-    
+}
+
+void Party::setHole(Room& curRoom){
+
+    unsigned size = Holes.size();
+    for(unsigned i = 0; i < size; ++i)
+        Holes.pop_back();
+
+    switch(curRoom.getType()){
+        case roomType::Room2NS1:
+            for(unsigned i = 0; i < 28; ++i){
+                sf::RectangleShape hole({60.f, 60.f}); //set la size
+                hole.setPosition(arch.Hole2NS1[i][0], arch.Hole2NS1[i][1]); // set la position
+                hole.setOutlineColor(sf::Color::Red);
+                Holes.push_back(hole);
+            }
+            break;
+
+        case roomType::Room2WE1:
+            for(unsigned i = 0; i < 19; ++i){
+                sf::RectangleShape hole({60.f, 60.f}); //set la size
+                hole.setPosition(arch.Hole2WE1[i][0], arch.Hole2WE1[i][1]); // set la position
+                Holes.push_back(hole);
+            }
+            break;
+
+        case roomType::Room1N:
+            for(unsigned i = 0; i < 20; ++i){
+                sf::RectangleShape hole({60.f, 60.f}); //set la size
+                hole.setPosition(arch.Hole1N[i][0], arch.Hole1N[i][1]); // set la position
+                Holes.push_back(hole);
+            }
+            break;
+
+        case roomType::Room1S:
+            for(unsigned i = 0; i < 22; ++i){
+                sf::RectangleShape hole({60.f, 60.f}); //set la size
+                hole.setPosition(arch.Hole1S[i][0], arch.Hole1S[i][1]); // set la position
+                Holes.push_back(hole);
+            }
+            break;
+
+        case roomType::Room1W:
+            for(unsigned i = 0; i < 16; ++i){
+                sf::RectangleShape hole({60.f, 60.f}); //set la size
+                hole.setPosition(arch.Hole1W[i][0], arch.Hole1W[i][1]); // set la position
+                Holes.push_back(hole);
+            }
+            break;
+
+        case roomType::Room3NEW:
+            for(unsigned i = 0; i < 10; ++i){
+                sf::RectangleShape hole({60.f, 60.f}); //set la size
+                hole.setPosition(arch.Hole3NEW[i][0], arch.Hole3NEW[i][1]); // set la position
+                Holes.push_back(hole);
+            }
+            break;
+
+        case roomType::Room3ESW:
+            for(unsigned i = 0; i < 12; ++i){
+                sf::RectangleShape hole({60.f, 60.f}); //set la size
+                hole.setPosition(arch.Hole3ESW[i][0], arch.Hole3ESW[i][1]); // set la position
+                Holes.push_back(hole);
+            }
+            break;
+
+        default:
+            break;
+    }
 }
 
 void Party::setDoorOpenRectangleShape(Room& curRoom){
@@ -642,6 +709,7 @@ void Party::setRectangleShapeForCurrentRoom(){
     if (curRoom) {
 
         setWall();
+        setHole(*curRoom);
         setDoorOpenRectangleShape(*curRoom);
         //setDoorCloseRectangleShape(*curRoom);
         setRockRectangleShape(*curRoom);
@@ -667,6 +735,11 @@ void Party::entityCollision(){
 	sf::Vector2f posBegin = sPlayerCol.getPosition();
     for(auto &wall : Walls){
         Collision col = Collision(wall);
+        (Collision(sPlayerCol)).checkCollision(col, 0.f);
+    }
+
+    for(auto &hole : Holes){
+        Collision col = Collision(hole);
         (Collision(sPlayerCol)).checkCollision(col, 0.f);
     }
 	
