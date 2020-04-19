@@ -738,8 +738,10 @@ void Party::entityCollision(){
     }
 
     for(auto &hole : Holes){
-        Collision col = Collision(hole);
-        (Collision(sPlayerCol)).checkCollision(col, 0.f);
+        if(!Aspen.entityCanFly()){
+            Collision col = Collision(hole);
+            (Collision(sPlayerCol)).checkCollision(col, 0.f);
+        }
     }
 	
 	std::vector<Door*> door = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getDoors();
