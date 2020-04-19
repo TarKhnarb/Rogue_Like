@@ -13,8 +13,10 @@ Donjon::Donjon(unsigned stageNumb, Entity& aspen):
 }
 
 Donjon::~Donjon(){
-	if (currentStage)
-		delete currentStage;
+	if (currentStage){
+        delete currentStage;
+        currentStage = nullptr;
+	}
 }
 
 

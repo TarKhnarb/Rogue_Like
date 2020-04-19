@@ -22,6 +22,7 @@ public:
 
     Chest() = default;
     Chest(Entity &, orientation); // Entity pour stoker les objects
+    ~Chest() = default;
 
     void placeInChest(unsigned); // Index de l'inventaire du joueur
     void addInChest(unsigned); // add un object avec son id

@@ -24,13 +24,12 @@ Stage::Stage(Entity & aspen):
  *************/
 
 Stage::~Stage(){
-    for(unsigned i = 0; i < maxSize; i++)
-	{
-        for (unsigned j = 0; j < maxSize; j++)
-		{
-			if(RoomsMap[i][j])
-				delete RoomsMap[i][j];
-            RoomsMap[i][j] = nullptr;
+    for(unsigned i = 0; i < maxSize; i++){
+        for (unsigned j = 0; j < maxSize; j++){
+			if(RoomsMap[i][j]){
+                delete RoomsMap[i][j];
+                RoomsMap[i][j] = nullptr;
+			}
         }
     }
 }

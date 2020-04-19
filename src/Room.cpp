@@ -14,10 +14,10 @@ Room::Room(roomType t, Entity &apsen):
  *************/
 
 Room::~Room() {
-    for(int i = 0; i < 4 ; ++i){
-        if(Doors[i]){
-            delete Doors[i];
-            Doors[i] = nullptr;
+    for(auto &d : Doors){
+        if(d){
+            delete d;
+            d = nullptr;
         }
     }
 
@@ -27,6 +27,7 @@ Room::~Room() {
             monster = nullptr;
         }
     }
+
     if(chest){
         delete chest;
         chest = nullptr;
