@@ -63,7 +63,7 @@ void Stage::generate(unsigned &stage){
             {
                 if ((i > 0 && RoomsMap[i-1][mid-k]) || RoomsMap[i][mid-k+1]) // Test sur les cases à gauche et en dessous
                 {
-                    if (roomsCnt < roomsNb-1 && rand()%density) // Place une salle seulement si le mod est différent de 0
+                    if (roomsCnt < roomsNb-1 && rand()%density == density - 1) // Place une salle seulement si le mod est différent de 0
 					// on écrit roomsNb-1 car on garde une salle pour le boss
                     {
                         RoomsMap[i][mid-k] = new Room(Common, hero);
@@ -74,7 +74,7 @@ void Stage::generate(unsigned &stage){
 
             if (RoomsMap[mid-k+1][mid-k]){ // Traitement de la case tout en haut à gauche
 
-                if(roomsCnt < roomsNb-1 && rand()%density)
+                if(roomsCnt < roomsNb-1 && rand()%density == density - 1)
                 {
                     RoomsMap[mid-k][mid-k] = new Room(Common, hero);
                     roomsCnt ++;
@@ -85,7 +85,7 @@ void Stage::generate(unsigned &stage){
             {
                 if ((j > 0 && RoomsMap[mid+k][j-1]) || RoomsMap[mid+k-1][j]) // Test sur les cases au dessus et à gauche
                 {
-                    if (roomsCnt < roomsNb-1 && rand()%density)
+                    if (roomsCnt < roomsNb-1 && rand()%density == density - 1)
                     {
                         RoomsMap[mid+k][j] = new Room(Common, hero);
                         roomsCnt ++;
@@ -97,7 +97,7 @@ void Stage::generate(unsigned &stage){
             {
                 if ((j > 0 && RoomsMap[mid-k][j-1]) || RoomsMap[mid-k+1][j]) // test sur les cases au dessus et à droite
                 {
-                    if (roomsCnt < roomsNb-1 && rand()%density)
+                    if (roomsCnt < roomsNb-1 && rand()%density == density - 1)
                     {
                         RoomsMap[mid-k][j] = new Room(Common, hero);
                         roomsCnt ++;
@@ -109,7 +109,7 @@ void Stage::generate(unsigned &stage){
             {
                 if ((i+1 < maxSize && RoomsMap[i+1][mid+k]) || RoomsMap[i][mid+k-1]) // Test de la case à gauche et au dessus
                 {
-                    if (roomsCnt < roomsNb-1 && rand()%density)
+                    if (roomsCnt < roomsNb-1 && rand()%density == density - 1)
                     {
                         RoomsMap[i][mid+k] = new Room(Common, hero);
                         roomsCnt ++;
@@ -127,7 +127,7 @@ void Stage::generate(unsigned &stage){
                 {       // Test si la case même n'est pas deja une salle, compte si elle peut se raccrocher au Stage et ve
                     if (!RoomsMap[i][mid-k] && countRoomsAround(i, mid-k) == 1)
                     {
-                        if (roomsCnt == roomsNb-1 && rand()%density) // Place une salle seulement si le mod est différent de 0
+                        if (roomsCnt == roomsNb-1 && rand()%density == density - 1) // Place une salle seulement si le mod est différent de 0
                         {
                             RoomsMap[i][mid-k] = new Room(Boss, hero);
                             roomsCnt ++;
@@ -136,7 +136,7 @@ void Stage::generate(unsigned &stage){
                 }
 
                 if (!RoomsMap[mid-k][mid-k] && countRoomsAround(mid-k, mid-k)){ // Traitement de la case tout en haut à gauche
-                    if(roomsCnt == roomsNb-1 && rand()%density)
+                    if(roomsCnt == roomsNb-1 && rand()%density == density - 1)
                     {
                         RoomsMap[mid-k][mid-k] = new Room(Boss, hero);
                         roomsCnt ++;
@@ -147,7 +147,7 @@ void Stage::generate(unsigned &stage){
                 {
                     if (!RoomsMap[mid+k][j] && countRoomsAround(mid+k, j))
                     {
-                        if (roomsCnt == roomsNb-1 && rand()%density)
+                        if (roomsCnt == roomsNb-1 && rand()%density == density - 1)
                         {
                             RoomsMap[mid+k][j] = new Room(Boss, hero);
                             roomsCnt ++;
@@ -159,7 +159,7 @@ void Stage::generate(unsigned &stage){
                 {
                     if (!RoomsMap[mid-k][j] && countRoomsAround(mid-k, j))
                     {
-                        if (roomsCnt == roomsNb-1 && rand()%density)
+                        if (roomsCnt == roomsNb-1 && rand()%density == density - 1)
                         {
                             RoomsMap[mid-k][j] = new Room(Boss, hero);
                             roomsCnt ++;
@@ -171,7 +171,7 @@ void Stage::generate(unsigned &stage){
                 {
                     if (!RoomsMap[i][mid+k] && countRoomsAround(i, mid+k))
                     {
-                        if (roomsCnt == roomsNb-1 && rand()%density)
+                        if (roomsCnt == roomsNb-1 && rand()%density == density - 1)
                         {
                             RoomsMap[i][mid+k] = new Room(Boss, hero);
                             roomsCnt ++;

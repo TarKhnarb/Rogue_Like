@@ -61,7 +61,7 @@ private:
     bool mIsMovingLeft = false;
     bool mIsMovingRight = false;
 
-    float PlayerSpeed = 150.f;
+    float PlayerSpeed = 500.f;
 
 private:
 

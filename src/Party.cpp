@@ -179,7 +179,7 @@ void Party::loadTextures(){ // load dans le constructeur
             // 3 Doors
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Room3ESW.jpg");
-    textures.emplace("RoomESW", std::move(texture));
+    textures.emplace("Room3ESW", std::move(texture));
 
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Room/Room3NES.jpg");
@@ -434,7 +434,6 @@ void Party::setWall(){
 void Party::setDoorOpenRectangleShape(Room& curRoom){
     std::vector<Door*> doors = curRoom.getDoors();
     sf::RectangleShape door;
-	door.setFillColor(sf::Color(0, 0, 0, 0));
 
     unsigned size = sDoors.size();
     for (unsigned i = 0 ; i < size ; ++i)
@@ -471,6 +470,7 @@ void Party::setDoorOpenRectangleShape(Room& curRoom){
                     break;
             }
         }else{
+			door.setFillColor(sf::Color(0, 0, 0, 0));
             switch(i){
                 case 0:
                     door.setPosition(arch.DoorN[1][0], arch.DoorN[1][1]);
@@ -500,7 +500,6 @@ void Party::setDoorOpenRectangleShape(Room& curRoom){
 void Party::setDoorCloseRectangleShape(Room& curRoom){
     std::vector<Door*> doors = curRoom.getDoors();
     sf::RectangleShape door;
-	door.setFillColor(sf::Color(0, 0, 0, 0));
 
     unsigned size = sDoors.size();
     for (unsigned i = 0 ; i < size ; ++i)
@@ -537,6 +536,7 @@ void Party::setDoorCloseRectangleShape(Room& curRoom){
                     break;
             }
 		}else{
+			door.setFillColor(sf::Color(0, 0, 0, 0));
             switch(i){
                 case 0:
                     door.setPosition(arch.DoorN[1][0], arch.DoorN[1][1]);
@@ -677,29 +677,25 @@ void Party::entityCollision(){
 			{
 				case 0:
 					posDonjon.move(-1, 0);
-					sPlayer.setPosition(500, 300);
-					//sPlayer.setPosition(arch.PlayerN[0], arch.PlayerN[1]);
+					sPlayer.setPosition(arch.PlayerS[0], arch.PlayerS[1]);
 					reloadRoom();
 					break;
 				
 				case 1:
 					posDonjon.move(0, 1);
-					sPlayer.setPosition(500, 300);
-					//sPlayer.setPosition(arch.PlayerE[0], .PlayerE[1]);
+					sPlayer.setPosition(arch.PlayerW[0], arch.PlayerW[1]);
 					reloadRoom();
 					break;
 				
 				case 2:
 					posDonjon.move(1, 0);
-					sPlayer.setPosition(500, 300);
-					//sPlayer.setPosition(arch.PlayerS[0], .PlayerS[1]);
+					sPlayer.setPosition(arch.PlayerN[0], arch.PlayerN[1]);
 					reloadRoom();
 					break;
 				
 				case 3:
 					posDonjon.move(0, -1);
-					sPlayer.setPosition(500, 300);
-					//sPlayer.setPosition(arch.PlayerO[0], .PlayerO[1]);
+					sPlayer.setPosition(arch.PlayerE[0], arch.PlayerE[1]);
 					reloadRoom();
 					break;
 				
