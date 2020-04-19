@@ -7,22 +7,20 @@ Inventory::Inventory(unsigned idBasicStat, unsigned stuffSize, unsigned bagSize)
 { }
 
 Inventory::~Inventory(){
-
 	for(Object *&p : stuff) {
         if (p){
             delete p;
             p = nullptr;
         }
 	}
-	stuff.clear();
-
+	//stuff.clear();
 	for(Object *&p : bag){
         if (p){
             delete p;
             p = nullptr;
         }
 	}
-	bag.clear();
+	//bag.clear();
 }
 
 void Inventory::equip(unsigned bagIndex){

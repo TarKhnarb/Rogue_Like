@@ -2,16 +2,16 @@
 #include <istream>
 
 #include "Party.h"
-#include "Entity.h"
-#include "Donjon.h"
+//#include "Entity.h"
+//#include "Donjon.h"
 //#include "Npc.h"
 
 
-/*
+
 int main(){
     Party game;
     game.run();
-}*/
+}
 /*int main()
 {
     sf::RenderWindow window(sf::VideoMode(640, 480), "SFMLApplication");
@@ -32,7 +32,7 @@ int main(){
         window.display();
     }
 }*/
-
+/*
 int main(){
 
     unsigned stage = 0;
@@ -49,7 +49,7 @@ int main(){
     std::cout << test.getCurrentStage();
 
     //std::cout << test.getStage();
- /*   std::cout << "Entrer les coords de la salle" << std::endl;
+    std::cout << "Entrer les coords de la salle" << std::endl;
     std::cin >> i >> j;
     test.displayDoors(i, j);
 
@@ -96,7 +96,7 @@ int main(){
     npc.upgradeBlacksmith(Aspen, choice); //fabrique l'object 11
     Aspen.displayEntity();
     std::cout << "On fabrique l'obj 11 (a besoin de 1 fois l'obj 58)" << std::endl;
-    std::cin >> t;*/
+    std::cin >> t;
 
     return 0;
-}
+}*/

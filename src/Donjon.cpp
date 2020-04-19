@@ -46,13 +46,13 @@ void Donjon::nextStage() {
         currentStage->affectRoomTypeMonsterObject();
         std::cout << "T6" << std::endl;*/
         stage+=1;
+        delete currentStage;
         currentStage = new Stage(hero);
         currentStage->generate(stage);
         currentStage->affectRoomTypeMonsterObject();
     }
     else
-        std::cout << "Fin du Donjon" << std::endl;
-        //throw std::runtime_error ("Donjon::nextStage(" + std::to_string(stage) + ") - Bravo ! Vous êtes arrivé à bout de ce donjon !");
+        throw std::runtime_error ("Donjon::nextStage(" + std::to_string(stage) + ") - Bravo ! Vous êtes arrivé à bout de ce donjon !");
 
 }
 

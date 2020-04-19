@@ -7,7 +7,8 @@
 Room::Room(roomType t, Entity &apsen):
         type(t),
         hero(apsen),
-        Doors(4, nullptr){}
+        Doors(4, nullptr),
+        chest(nullptr){}
 
 /**************
  * Destructor *
