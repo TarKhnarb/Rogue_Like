@@ -35,7 +35,7 @@ Party::Party():
     loadRectangleShape("Trap");
 
     loadAnimation();
-	
+    
 	rocksCollider.setStyle(Style::Separated);
 	
 	reloadRoom();
@@ -329,29 +329,30 @@ void Party::loadAnimation(){
     walkingAspenUp.setSpriteSheet(*getTexture("AspenBack"));
     walkingAspenUp.addFrame(sf::IntRect(0, 0, 40, 80));
     walkingAspenUp.addFrame(sf::IntRect(40, 0, 40, 80));
-    walkingAspenUp.addFrame(sf::IntRect(80, 0, 40, 80));
     walkingAspenUp.addFrame(sf::IntRect(0, 0, 40, 80));
+    walkingAspenUp.addFrame(sf::IntRect(80, 0, 40, 80));
 
     walkingAspenRight.setSpriteSheet(*getTexture("AspenRight"));
     walkingAspenRight.addFrame(sf::IntRect(0, 0, 40, 80));
     walkingAspenRight.addFrame(sf::IntRect(40, 0, 40, 80));
-    walkingAspenRight.addFrame(sf::IntRect(80, 0, 40, 80));
     walkingAspenRight.addFrame(sf::IntRect(0, 0, 40, 80));
+    walkingAspenRight.addFrame(sf::IntRect(80, 0, 40, 80));
 
     walkingAspenDown.setSpriteSheet(*getTexture("AspenFront"));
     walkingAspenDown.addFrame(sf::IntRect(0, 0, 40, 80));
     walkingAspenDown.addFrame(sf::IntRect(40, 0, 40, 80));
-    walkingAspenDown.addFrame(sf::IntRect(80, 0, 40, 80));
     walkingAspenDown.addFrame(sf::IntRect(0, 0, 40, 80));
+    walkingAspenDown.addFrame(sf::IntRect(80, 0, 40, 80));
 
     walkingAspenLeft.setSpriteSheet(*getTexture("AspenLeft"));
     walkingAspenLeft.addFrame(sf::IntRect(0, 0, 40, 80));
     walkingAspenLeft.addFrame(sf::IntRect(40, 0, 40, 80));
-    walkingAspenLeft.addFrame(sf::IntRect(80, 0, 40, 80));
     walkingAspenLeft.addFrame(sf::IntRect(0, 0, 40, 80));
+    walkingAspenLeft.addFrame(sf::IntRect(80, 0, 40, 80));
 
     currentAnimation = &walkingAspenDown;
-    aspenAnimated = AnimatedSprite(sf::seconds(0.15), true, false);
+    aspenAnimated.setFrameTime(sf::seconds(0.15f));
+    aspenAnimated.setLooped(true);
     aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
 }
 
@@ -863,7 +864,7 @@ void Party::processEvents(){
                 break;
 
             default:
-                aspenAnimated.stop();
+                // aspenAnimated.stop(); POURQUOI CETTE HÉRÉSIE ?
                 break;
         }
     }
@@ -891,26 +892,38 @@ void Party::update(sf::Time deltaTime){
     if(mIsMovingUp){
         currentAnimation = &walkingAspenUp;
         movement.y -= PlayerSpeed;
+        noKeyWasPressed = false;
     }
 
     if(mIsMovingDown){
         currentAnimation = &walkingAspenDown;
         movement.y += PlayerSpeed;
+        noKeyWasPressed = false;
     }
 
     if(mIsMovingLeft){
         currentAnimation = &walkingAspenLeft;
         movement.x -= PlayerSpeed;
+        noKeyWasPressed = false;
     }
 
     if(mIsMovingRight){
         currentAnimation = &walkingAspenRight;
         movement.x += PlayerSpeed;
+        noKeyWasPressed = false;
     }
 
     aspenAnimated.play(*currentAnimation);
     aspenAnimated.move(movement * deltaTime.asSeconds());
+    
+	if (noKeyWasPressed)
+	{
+		aspenAnimated.stop();
+	}
+	noKeyWasPressed = true;
+	
     aspenAnimated.update(deltaTime);
+	
 	entityCollision();
 }
 

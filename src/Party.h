@@ -67,8 +67,9 @@ private:
     bool mIsMovingDown = false;
     bool mIsMovingLeft = false;
     bool mIsMovingRight = false;
+	bool noKeyWasPressed = true;
 
-    float PlayerSpeed = 100.f;
+    float PlayerSpeed = 250.f;
 
 private:
 
