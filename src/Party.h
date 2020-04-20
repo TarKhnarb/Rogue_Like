@@ -10,7 +10,7 @@
 #include "Position.h"
 #include "Entity.h"
 #include "Donjon.h"
-#include "Collision.h"
+#include "Collider.h"
 #include "Archetype.h"
     // Utilisés pour récupérer les infos de leurs placements
 #include "Room.h"
@@ -92,6 +92,15 @@ private:
     std::vector<sf::RectangleShape> sDoors;
     std::vector<sf::RectangleShape> sChest;
     //std::vector<sf::RectangleShape> sProjectiles;
+	
+	Collider trapCollider;
+	Collider wallsCollider;
+	Collider holesCollider;
+	Collider rocksCollider;
+	Collider doorsCollider;
+	// Collider monstersCollider;
+	Collider chestsCollider;
+	// Collider projectilesCollider;
 	
 	Archetype arch;
 };

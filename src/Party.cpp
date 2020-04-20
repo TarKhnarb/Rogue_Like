@@ -39,6 +39,8 @@ Party::Party():
     sPlayer.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
     sPlayer.setTexture(getTexture("AspenF"));
 	
+	rocksCollider.setStyle(Style::Separated);
+	
 	reloadRoom();
 }
 
@@ -429,6 +431,8 @@ void Party::setWall(){
         rect.setPosition(arch.Walls[i][0], arch.Walls[i][1]); // on set la position du rectangle
         Walls.push_back(rect);
     }
+    
+    wallsCollider.pushBodies(Walls.begin(), Walls.end());
 }
 
 void Party::setHole(Room& curRoom){
@@ -497,6 +501,8 @@ void Party::setHole(Room& curRoom){
         default:
             break;
     }
+    
+    holesCollider.pushBodies(Holes.begin(), Holes.end());
 }
 
 void Party::setDoorOpenRectangleShape(Room& curRoom){
@@ -562,8 +568,17 @@ void Party::setDoorOpenRectangleShape(Room& curRoom){
                     break;
             }
         }
+        
         sDoors.push_back(door);
     }
+    
+    for (unsigned i = 0; i < doors.size(); ++i){
+		if (doors[i]){
+			doorsCollider.pushBody(sDoors[i]);
+		}else{
+			wallsCollider.pushBody(sDoors[i]);
+		}
+	}
 }
 
 void Party::setDoorCloseRectangleShape(Room& curRoom){
@@ -629,8 +644,17 @@ void Party::setDoorCloseRectangleShape(Room& curRoom){
                     break;
             }
         }
-		sDoors.push_back(door);
+        
+        sDoors.push_back(door);
     }
+    
+    for (unsigned i = 0; i < doors.size(); ++i){
+		if (doors[i]){
+			doorsCollider.pushBody(sDoors[i]);
+		}else{
+			wallsCollider.pushBody(sDoors[i]);
+		}
+	}
 }
 
 void Party::setRockRectangleShape(Room& curRoom){
@@ -651,6 +675,8 @@ void Party::setRockRectangleShape(Room& curRoom){
             sRocks.push_back(rock);
         }
     }
+    
+    rocksCollider.pushBodies(sRocks.begin(), sRocks.end());
 }
 
 //void Party::setMonsterRectangleShape(Room curRoom){std::vector<Entity*> monster = curRoom.getMonsters();}
@@ -700,6 +726,8 @@ void Party::setChestRectangleShape(Room& curRoom){  //sf::chest le mettre en vec
         }
         sChest.push_back(ches);
     }
+    
+    chestsCollider.pushBodies(sChest.begin(), sChest.end());
 
 }
 
@@ -716,6 +744,8 @@ void Party::setTrapRectangleShape(Room& curRoom){
         trap.setTexture(getTexture("Trap"));
         sTrap.push_back(trap);
     }
+    
+    trapCollider.pushBodies(sTrap.begin(), sTrap.end());
 }
 
 void Party::setRectangleShapeForCurrentRoom(){
@@ -739,19 +769,25 @@ void Party::reloadRoom(){
 	Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
 	loadSprites(curRoom->getStringType());
 	
+	trapCollider.clean();
+	wallsCollider.clean();
+	holesCollider.clean();
+	rocksCollider.clean();
+	doorsCollider.clean();
+	// monstersCollider.clean();
+	chestsCollider.clean();
+	// projectilesCollider.clean();
+	
 	setSpritesForCurrentRoom();
     setRectangleShapeForCurrentRoom();
 }
 
 void Party::loadNextStage(){
     sTrap.pop_back();
-    std::cout << "etape 1" << std::endl;
     posAspen.setPosition(620.f, 310.f);
-    std::cout << "etape 2" << std::endl;
     posDonjon.setPosition(10, 10);
-    std::cout << "etape 3" << std::endl;
     donjon.nextStage();
-    std::cout << "etape 4" << std::endl;
+    
     reloadRoom();
 }
 
@@ -762,81 +798,70 @@ void Party::entityCollision(){
 	sPlayerCol.setPosition(sPlayer.getPosition().x, sPlayer.getPosition().y + sPlayer.getSize().y);
 	sPlayerCol.move(0.f, sPlayer.getSize().y / 6.f);
 	
+	sf::Vector2f colDirection;
 	sf::Vector2f posBegin = sPlayerCol.getPosition();
-    for(auto &wall : Walls){
-        Collision col = Collision(wall);
-        (Collision(sPlayerCol)).checkCollision(col, 0.f);
-    }
+    
+	Collider playerCol (sPlayerCol);
+	
+    playerCol.checkCollision(wallsCollider, colDirection, 0.f);
+	playerCol.checkCollision(rocksCollider, colDirection, 0.f);
+	playerCol.checkCollision(chestsCollider, colDirection, 0.f);
 
-    for(auto &hole : Holes){
-        if(!Aspen.entityCanFly()){
-            Collision col = Collision(hole);
-            (Collision(sPlayerCol)).checkCollision(col, 0.f);
-        }
-    }
+	if (!Aspen.entityCanFly()){
+		playerCol.checkCollision(holesCollider, colDirection, 0.f);
+	}
 
-    for(auto &rock : sRocks){
-        if(!Aspen.entityCanFly()){
-            Collision col = Collision(rock);
-            (Collision(sPlayerCol)).checkCollision(col, 0.f);
-        }
-    }
-
-    for(auto &trap : sTrap){
+	if (!sTrap.empty())
+	{
+		sf::RectangleShape& trap = sTrap[0];
         sf::RectangleShape sTrapCol ({trap.getSize().x, trap.getSize().y / 2.f});
         sTrapCol.setOrigin({0.f, trap.getSize().y});
         sTrapCol.setPosition(trap.getPosition().x, trap.getPosition().y + trap.getSize().y);
         //sTrapCol.move(0.f, sTrap.getSize().y);
 
-        Collision colt = Collision(sTrapCol);
-        if((Collision(sPlayerCol)).checkCollision(colt, 0.f)){
+        Collider colt (sTrapCol);
+        if(playerCol.checkCollision(colt, colDirection, 0.f)){
             loadNextStage();
-        }
+		}
     }
 	
 	std::vector<Door*> door = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getDoors();
-	for (unsigned i = 0 ; i < sDoors.size() ; ++i){
-		Collision col = Collision(sDoors[i]);
-		if (Collision(sPlayerCol).checkCollision(col, 0.f) && door[i] && door[i]->getOpen())
+	if (playerCol.checkCollision(doorsCollider, colDirection, 0.f))
+	{
+		if (colDirection.y < 0.f && door[0] && door[0]->getOpen())
 		{
-			switch (i)
-			{
-				case 0:
-					posDonjon.move(-1, 0);
-					sPlayer.setPosition(arch.PlayerS[0], arch.PlayerS[1]);
-					reloadRoom();
-					break;
-				
-				case 1:
-					posDonjon.move(0, 1);
-					sPlayer.setPosition(arch.PlayerW[0], arch.PlayerW[1]);
-					reloadRoom();
-					break;
-				
-				case 2:
-					posDonjon.move(1, 0);
-					sPlayer.setPosition(arch.PlayerN[0], arch.PlayerN[1]);
-					reloadRoom();
-					break;
-				
-				case 3:
-					posDonjon.move(0, -1);
-					sPlayer.setPosition(arch.PlayerE[0], arch.PlayerE[1]);
-					reloadRoom();
-					break;
-				
-				default:
-					break;
-			}
+			posDonjon.move(-1, 0);
+			sPlayer.setPosition(arch.PlayerS[0], arch.PlayerS[1]);
+			reloadRoom();
+		}
+		else if (colDirection.y > 0.f && door[2] && door[2]->getOpen())
+		{
+			posDonjon.move(1, 0);
+			sPlayer.setPosition(arch.PlayerN[0], arch.PlayerN[1]);
+			reloadRoom();
+		}
+		
+		if (colDirection.x < 0.f && door[3] && door[3]->getOpen())
+		{
+			posDonjon.move(0, -1);
+			sPlayer.setPosition(arch.PlayerE[0], arch.PlayerE[1]);
+			reloadRoom();
+		}
+		else if (colDirection.x > 0.f && door[1] && door[1]->getOpen())
+		{
+			posDonjon.move(0, 1);
+			sPlayer.setPosition(arch.PlayerW[0], arch.PlayerW[1]);
+			reloadRoom();
 		}
 	}
+	
 	sf::Vector2f posEnd = sPlayerCol.getPosition();
 		
 	sPlayer.move(posEnd - posBegin);
 }
 
 void Party::processEvents(){
-
+	
     sf::Event event;
     while (mWindow.pollEvent(event)){
         switch (event.type){
