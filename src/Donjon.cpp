@@ -34,17 +34,6 @@ unsigned Donjon::getStage() {
 
 void Donjon::nextStage() {
     if(stage < stageNumber){
-        /*std::cout << "T1" << std::endl;
-        stage+=1;
-        std::cout << "T2 " << stage << std::endl;
-        delete currentStage;
-        std::cout << "T3" << std::endl;
-        currentStage = new Stage(hero);
-        std::cout << "T4" << std::endl;
-        currentStage->generate(stage);
-        std::cout << "T5" << std::endl;
-        currentStage->affectRoomTypeMonsterObject();
-        std::cout << "T6" << std::endl;*/
         stage+=1;
         delete currentStage;
         currentStage = new Stage(hero);

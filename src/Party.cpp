@@ -34,10 +34,7 @@ Party::Party():
 
     loadRectangleShape("Trap");
 
-    loadRectangleShape("AspenF");
-    sPlayer = getRectangleShape("AspenF");
-    sPlayer.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
-    sPlayer.setTexture(getTexture("AspenF"));
+    loadAnimation();
 	
 	rocksCollider.setStyle(Style::Separated);
 	
@@ -81,60 +78,20 @@ void Party::loadTextures(){ // load dans le constructeur
         // Entity
             //Aspen
     sf::Texture* texture(new sf::Texture ());
-    texture->loadFromFile("data/Textures/Entity/AspenB.png");
-    textures.emplace("AspenB", std::move(texture));
-	
-    texture = new sf::Texture();
-    texture->loadFromFile("data/Textures/Entity/AspenB1.png");
-    textures.emplace("AspenB1", std::move(texture));
+    texture->loadFromFile("data/Textures/Entity/AspenBack.png");
+    textures.emplace("AspenBack", std::move(texture));
 
     texture = new sf::Texture();
-    texture->loadFromFile("data//Textures/Entity/AspenB2.png");
-    textures.emplace("AspenB2", std::move(texture));
+    texture->loadFromFile("data/Textures/Entity/AspenFront.png");
+    textures.emplace("AspenFront", std::move(texture));
 
     texture = new sf::Texture();
-    texture->loadFromFile("data/Textures/Entity/AspenF.png");
-    textures.emplace("AspenF", std::move(texture));
+    texture->loadFromFile("data/Textures/Entity/AspenLeft.png");
+    textures.emplace("AspenLeft", std::move(texture));
 
     texture = new sf::Texture();
-    texture->loadFromFile("data/Textures/Entity/AspenF1.png");
-    textures.emplace("AspenF1", std::move(texture));
-
-    texture = new sf::Texture();
-    texture->loadFromFile("data/Textures/Entity/AspenF2.png");
-    textures.emplace("AspenF2", std::move(texture));
-
-    texture = new sf::Texture();
-    texture->loadFromFile("data/Textures/Entity/AspenL.png");
-    textures.emplace("AspenL", std::move(texture));
-
-    texture = new sf::Texture();
-    texture->loadFromFile("data/Textures/Entity/AspenL1.png");
-    textures.emplace("AspenL1", std::move(texture));
-
-    texture = new sf::Texture();
-    texture->loadFromFile("data/Textures/Entity/AspenL2.png");
-    textures.emplace("AspenL2", std::move(texture));
-
-    texture = new sf::Texture();
-    texture->loadFromFile("data/Textures/Entity/AspenL3.png");
-    textures.emplace("AspenL3", std::move(texture));
-
-    texture = new sf::Texture();
-    texture->loadFromFile("data/Textures/Entity/AspenR.png");
-    textures.emplace("AspenR", std::move(texture));
-
-    texture = new sf::Texture();
-    texture->loadFromFile("data/Textures/Entity/AspenR1.png");
-    textures.emplace("AspenR1", std::move(texture));
-
-    texture = new sf::Texture();
-    texture->loadFromFile("data/Textures/Entity/AspenR2.png");
-    textures.emplace("AspenR2", std::move(texture));
-
-    texture = new sf::Texture();
-    texture->loadFromFile("data/Textures/Entity/AspenR3.png");
-    textures.emplace("AspenR3", std::move(texture));
+    texture->loadFromFile("data/Textures/Entity/AspenRight.png");
+    textures.emplace("AspenRight", std::move(texture));
 
         // Room
             // Start/Boss
@@ -323,8 +280,6 @@ sf::Texture* Party::getTexture(const std::string& nameText){ // récupere un ete
     return found->second; // ( si pas * on retourne un pointeur de texture)
 }
 
-// sf::Rect< T >::height/left/top/width
-
 void Party::loadSprites(std::string name){
 
     for(auto &t : textures){
@@ -368,6 +323,36 @@ sf::RectangleShape Party::getRectangleShape(const std::string& name){
         throw std::runtime_error ("Party::getRectangleShape(const std::string&) - Aucun rectangleShape de ce nom " + name);
 
     return *found->second;
+}
+
+void Party::loadAnimation(){
+    walkingAspenUp.setSpriteSheet(*getTexture("AspenBack"));
+    walkingAspenUp.addFrame(sf::IntRect(0, 0, 40, 80));
+    walkingAspenUp.addFrame(sf::IntRect(40, 0, 40, 80));
+    walkingAspenUp.addFrame(sf::IntRect(80, 0, 40, 80));
+    walkingAspenUp.addFrame(sf::IntRect(0, 0, 40, 80));
+
+    walkingAspenRight.setSpriteSheet(*getTexture("AspenRight"));
+    walkingAspenRight.addFrame(sf::IntRect(0, 0, 40, 80));
+    walkingAspenRight.addFrame(sf::IntRect(40, 0, 40, 80));
+    walkingAspenRight.addFrame(sf::IntRect(80, 0, 40, 80));
+    walkingAspenRight.addFrame(sf::IntRect(0, 0, 40, 80));
+
+    walkingAspenDown.setSpriteSheet(*getTexture("AspenFront"));
+    walkingAspenDown.addFrame(sf::IntRect(0, 0, 40, 80));
+    walkingAspenDown.addFrame(sf::IntRect(40, 0, 40, 80));
+    walkingAspenDown.addFrame(sf::IntRect(80, 0, 40, 80));
+    walkingAspenDown.addFrame(sf::IntRect(0, 0, 40, 80));
+
+    walkingAspenLeft.setSpriteSheet(*getTexture("AspenLeft"));
+    walkingAspenLeft.addFrame(sf::IntRect(0, 0, 40, 80));
+    walkingAspenLeft.addFrame(sf::IntRect(40, 0, 40, 80));
+    walkingAspenLeft.addFrame(sf::IntRect(80, 0, 40, 80));
+    walkingAspenLeft.addFrame(sf::IntRect(0, 0, 40, 80));
+
+    currentAnimation = &walkingAspenDown;
+    aspenAnimated = AnimatedSprite(sf::seconds(0.15), true, false);
+    aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
 }
 
 void Party::setFrameSprite(Room& curRoom){ // /!\ Peut être a modifier a cause des door[i]
@@ -793,10 +778,10 @@ void Party::loadNextStage(){
 
 void Party::entityCollision(){
 
-	sf::RectangleShape sPlayerCol ({sPlayer.getSize().x, sPlayer.getSize().y / 2.f});
+	sf::RectangleShape sPlayerCol ({(aspenAnimated.getLocalBounds()).width, (aspenAnimated.getLocalBounds()).height / 2.f});
 	sPlayerCol.setOrigin({0.f, sPlayerCol.getSize().y});
-	sPlayerCol.setPosition(sPlayer.getPosition().x, sPlayer.getPosition().y + sPlayer.getSize().y);
-	sPlayerCol.move(0.f, sPlayer.getSize().y / 6.f);
+	sPlayerCol.setPosition(aspenAnimated.getPosition().x, aspenAnimated.getPosition().y + (aspenAnimated.getLocalBounds()).height);
+	sPlayerCol.move(0.f, (aspenAnimated.getLocalBounds()).height / 6.f);
 	
 	sf::Vector2f colDirection;
 	sf::Vector2f posBegin = sPlayerCol.getPosition();
@@ -831,33 +816,33 @@ void Party::entityCollision(){
 		if (colDirection.y < 0.f && door[0] && door[0]->getOpen())
 		{
 			posDonjon.move(-1, 0);
-			sPlayer.setPosition(arch.PlayerS[0], arch.PlayerS[1]);
+			aspenAnimated.setPosition(arch.PlayerS[0], arch.PlayerS[1]);
 			reloadRoom();
 		}
 		else if (colDirection.y > 0.f && door[2] && door[2]->getOpen())
 		{
 			posDonjon.move(1, 0);
-			sPlayer.setPosition(arch.PlayerN[0], arch.PlayerN[1]);
+			aspenAnimated.setPosition(arch.PlayerN[0], arch.PlayerN[1]);
 			reloadRoom();
 		}
 		
 		if (colDirection.x < 0.f && door[3] && door[3]->getOpen())
 		{
 			posDonjon.move(0, -1);
-			sPlayer.setPosition(arch.PlayerE[0], arch.PlayerE[1]);
+			aspenAnimated.setPosition(arch.PlayerE[0], arch.PlayerE[1]);
 			reloadRoom();
 		}
 		else if (colDirection.x > 0.f && door[1] && door[1]->getOpen())
 		{
 			posDonjon.move(0, 1);
-			sPlayer.setPosition(arch.PlayerW[0], arch.PlayerW[1]);
+			aspenAnimated.setPosition(arch.PlayerW[0], arch.PlayerW[1]);
 			reloadRoom();
 		}
 	}
 	
 	sf::Vector2f posEnd = sPlayerCol.getPosition();
 		
-	sPlayer.move(posEnd - posBegin);
+	aspenAnimated.move(posEnd - posBegin);
 }
 
 void Party::processEvents(){
@@ -878,6 +863,7 @@ void Party::processEvents(){
                 break;
 
             default:
+                aspenAnimated.stop();
                 break;
         }
     }
@@ -888,13 +874,13 @@ void Party::handlePlayerInput(sf::Keyboard::Key key, bool isPressed){
     if (key == sf::Keyboard::Z)
         mIsMovingUp = isPressed;
 
-    else if (key == sf::Keyboard::S)
+    if (key == sf::Keyboard::S)
         mIsMovingDown = isPressed;
 
-    else if (key == sf::Keyboard::Q)
+    if (key == sf::Keyboard::Q)
         mIsMovingLeft = isPressed;
 
-    else if (key == sf::Keyboard::D)
+    if (key == sf::Keyboard::D)
         mIsMovingRight = isPressed;
 }
 
@@ -902,17 +888,29 @@ void Party::update(sf::Time deltaTime){
 	
 	sf::Vector2f movement(0.f, 0.f);
 	
-    if(mIsMovingUp)
-		movement.y -= PlayerSpeed;
-    if(mIsMovingDown)
-		movement.y += PlayerSpeed;
-    if(mIsMovingLeft)
-		movement.x -= PlayerSpeed;
-    if(mIsMovingRight)
-		movement.x += PlayerSpeed;
+    if(mIsMovingUp){
+        currentAnimation = &walkingAspenUp;
+        movement.y -= PlayerSpeed;
+    }
 
-    sPlayer.move(movement * deltaTime.asSeconds());
-	
+    if(mIsMovingDown){
+        currentAnimation = &walkingAspenDown;
+        movement.y += PlayerSpeed;
+    }
+
+    if(mIsMovingLeft){
+        currentAnimation = &walkingAspenLeft;
+        movement.x -= PlayerSpeed;
+    }
+
+    if(mIsMovingRight){
+        currentAnimation = &walkingAspenRight;
+        movement.x += PlayerSpeed;
+    }
+
+    aspenAnimated.play(*currentAnimation);
+    aspenAnimated.move(movement * deltaTime.asSeconds());
+    aspenAnimated.update(deltaTime);
 	entityCollision();
 }
 
@@ -936,7 +934,7 @@ void Party::render(){
     for(const auto &t : sTrap)
         mWindow.draw(t);
 	
-    mWindow.draw(sPlayer);
+    mWindow.draw(aspenAnimated);
 	
     mWindow.display();
 }

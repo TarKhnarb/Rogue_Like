@@ -7,6 +7,8 @@
 #include <map>
 #include <utility>
 
+#include "AnimatedSprite.h"
+
 #include "Position.h"
 #include "Entity.h"
 #include "Donjon.h"
@@ -39,6 +41,8 @@ private:
     void loadRectangleShape(std::string name);
     sf::RectangleShape getRectangleShape(const std::string&);
 
+    void loadAnimation();
+
     void setWall();
     void setHole(Room&);
     void setDoorOpenRectangleShape(Room&);
@@ -64,7 +68,7 @@ private:
     bool mIsMovingLeft = false;
     bool mIsMovingRight = false;
 
-    float PlayerSpeed = 500.f;
+    float PlayerSpeed = 100.f;
 
 private:
 
@@ -103,6 +107,16 @@ private:
 	// Collider projectilesCollider;
 	
 	Archetype arch;
+
+	    //  Asepn animation
+
+	Animation *currentAnimation;
+	AnimatedSprite aspenAnimated;
+
+	Animation walkingAspenUp;
+	Animation walkingAspenRight;
+	Animation walkingAspenDown;
+	Animation walkingAspenLeft;
 };
 
 #endif
