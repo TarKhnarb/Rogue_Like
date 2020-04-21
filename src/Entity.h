@@ -11,7 +11,7 @@
 #include <math.h>
 
 const unsigned monsterBagSize = 3;
-const unsigned playerBagSize = 20;
+const unsigned playerBagSize = 10;
 const unsigned playerStuffSize = 6;
 
 class Entity {

@@ -326,6 +326,7 @@ sf::RectangleShape Party::getRectangleShape(const std::string& name){
 }
 
 void Party::loadAnimation(){
+
     walkingAspenUp.setSpriteSheet(*getTexture("AspenBack"));
     walkingAspenUp.addFrame(sf::IntRect(0, 0, 40, 80));
     walkingAspenUp.addFrame(sf::IntRect(40, 0, 40, 80));
@@ -801,7 +802,7 @@ void Party::entityCollision(){
 	{
 		sf::RectangleShape& trap = sTrap[0];
         sf::RectangleShape sTrapCol ({trap.getSize().x, trap.getSize().y / 2.f});
-        sTrapCol.setOrigin({0.f, trap.getSize().y});
+        sTrapCol.setOrigin({0.f, sTrapCol.getSize().y});
         sTrapCol.setPosition(trap.getPosition().x, trap.getPosition().y + trap.getSize().y);
         //sTrapCol.move(0.f, sTrap.getSize().y);
 
