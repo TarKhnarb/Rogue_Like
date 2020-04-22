@@ -41,6 +41,9 @@ private:
     void loadRectangleShape(std::string name);
     sf::RectangleShape getRectangleShape(const std::string&);
 
+    //void loadTextureFromChestItem(std::string); // le string correspond a l'id de l'object ("11" -> "64")
+    //sf::RectangleShape getRectangleShapeItem(const std::string&);
+
     void loadAnimation();
 
     void setWall();
@@ -52,6 +55,11 @@ private:
     void setChestRectangleShape(Room&);
     void setTrapRectangleShape(Room&);
     void setRectangleShapeForCurrentRoom();
+
+    void setInventoryItem(); // bag et stuff
+    void setChestItem(Room&);
+
+    void updateInventory();
 	
 	void reloadRoom();
     void loadNextStage();
@@ -67,6 +75,7 @@ private:
     bool mIsMovingDown = false;
     bool mIsMovingLeft = false;
     bool mIsMovingRight = false;
+    bool mIsOpenIventory = false;
 	bool noKeyWasPressed = true;
 
     float PlayerSpeed = 250.f;
@@ -109,7 +118,7 @@ private:
 	
 	Archetype arch;
 
-	    //  Asepn animation
+	    //  Aspen animation
 
 	Animation *currentAnimation;
 	AnimatedSprite aspenAnimated;
@@ -118,6 +127,17 @@ private:
 	Animation walkingAspenRight;
 	Animation walkingAspenDown;
 	Animation walkingAspenLeft;
+
+	    // Inventory / Chest
+	bool inventoryOpen; // si l'inventaire est ouvert bloque les mouvements du player et ne permet que les mouvements dans l'inventaire
+	sf::Sprite playerInventory;
+	sf::Sprite chestInventory;
+
+	std::map<unsigned, sf::RectangleShape> bagItem;
+	std::map<unsigned, sf::RectangleShape> stuffItem;
+	std::map<unsigned, sf::RectangleShape> chestItem; // Si pas d'item, le rectangleShape est blanc, unsigned -> place dans l'inventaire
+
+
 };
 
 #endif

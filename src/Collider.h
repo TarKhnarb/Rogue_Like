@@ -51,7 +51,11 @@ class Collider
 		
 		void clean();
 		
-		bool checkCollision(Collider&, sf::Vector2f& direction, float push);
+		bool checkCollision(Collider&, float);
+		bool checkCollision(Collider&, sf::Vector2f&, float);
+		bool checkCollision(Collider&, std::vector<std::pair<std::size_t, std::size_t>>&, float);
+		bool checkCollision(Collider&, sf::Vector2f&, std::vector<std::pair<std::size_t, std::size_t>>&, float);
+		
 		sf::Vector2f pushCalculate(sf::Vector2f intersect, sf::Vector2f delta);
 		
 		void setStyle(Style);

@@ -7,7 +7,7 @@
 #include <vector>
 #include <string>
 
-const unsigned chestSize = 30;
+const unsigned chestSize = 20;
 
 class Chest{
 

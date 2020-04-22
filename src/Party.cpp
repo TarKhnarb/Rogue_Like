@@ -326,6 +326,7 @@ sf::RectangleShape Party::getRectangleShape(const std::string& name){
 }
 
 void Party::loadAnimation(){
+
     walkingAspenUp.setSpriteSheet(*getTexture("AspenBack"));
     walkingAspenUp.addFrame(sf::IntRect(0, 0, 40, 80));
     walkingAspenUp.addFrame(sf::IntRect(40, 0, 40, 80));
@@ -750,6 +751,10 @@ void Party::setRectangleShapeForCurrentRoom(){
     }
 }
 
+void Party::setInventoryItem(){
+
+}
+
 void Party::reloadRoom(){
 
 	Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
@@ -801,9 +806,8 @@ void Party::entityCollision(){
 	{
 		sf::RectangleShape& trap = sTrap[0];
         sf::RectangleShape sTrapCol ({trap.getSize().x, trap.getSize().y / 2.f});
-        sTrapCol.setOrigin({0.f, trap.getSize().y});
+        sTrapCol.setOrigin({0.f, sTrapCol.getSize().y});
         sTrapCol.setPosition(trap.getPosition().x, trap.getPosition().y + trap.getSize().y);
-        //sTrapCol.move(0.f, sTrap.getSize().y);
 
         Collider colt (sTrapCol);
         if(playerCol.checkCollision(colt, colDirection, 0.f)){
@@ -864,7 +868,6 @@ void Party::processEvents(){
                 break;
 
             default:
-                // aspenAnimated.stop(); POURQUOI CETTE HÉRÉSIE ?
                 break;
         }
     }
@@ -883,48 +886,59 @@ void Party::handlePlayerInput(sf::Keyboard::Key key, bool isPressed){
 
     if (key == sf::Keyboard::D)
         mIsMovingRight = isPressed;
+
+    if (key == sf::Keyboard::E){
+        inventoryOpen = false;
+        mIsOpenIventory = isPressed;
+    }
 }
 
 void Party::update(sf::Time deltaTime){
-	
-	sf::Vector2f movement(0.f, 0.f);
-	
-    if(mIsMovingUp){
-        currentAnimation = &walkingAspenUp;
-        movement.y -= PlayerSpeed;
-        noKeyWasPressed = false;
+
+    if(!inventoryOpen){
+        sf::Vector2f movement(0.f, 0.f);
+
+        if(mIsMovingUp){
+            currentAnimation = &walkingAspenUp;
+            movement.y -= PlayerSpeed;
+            noKeyWasPressed = false;
+        }
+
+        if(mIsMovingDown){
+            currentAnimation = &walkingAspenDown;
+            movement.y += PlayerSpeed;
+            noKeyWasPressed = false;
+        }
+
+        if(mIsMovingLeft){
+            currentAnimation = &walkingAspenLeft;
+            movement.x -= PlayerSpeed;
+            noKeyWasPressed = false;
+        }
+
+        if(mIsMovingRight){
+            currentAnimation = &walkingAspenRight;
+            movement.x += PlayerSpeed;
+            noKeyWasPressed = false;
+        }
+
+        aspenAnimated.play(*currentAnimation);
+        aspenAnimated.move(movement * deltaTime.asSeconds());
+
+        if (noKeyWasPressed)
+        {
+            aspenAnimated.stop();
+        }
+        noKeyWasPressed = true;
+
+        aspenAnimated.update(deltaTime);
+
+        entityCollision();
+    }
+    else{
+
     }
 
-    if(mIsMovingDown){
-        currentAnimation = &walkingAspenDown;
-        movement.y += PlayerSpeed;
-        noKeyWasPressed = false;
-    }
-
-    if(mIsMovingLeft){
-        currentAnimation = &walkingAspenLeft;
-        movement.x -= PlayerSpeed;
-        noKeyWasPressed = false;
-    }
-
-    if(mIsMovingRight){
-        currentAnimation = &walkingAspenRight;
-        movement.x += PlayerSpeed;
-        noKeyWasPressed = false;
-    }
-
-    aspenAnimated.play(*currentAnimation);
-    aspenAnimated.move(movement * deltaTime.asSeconds());
-    
-	if (noKeyWasPressed)
-	{
-		aspenAnimated.stop();
-	}
-	noKeyWasPressed = true;
-	
-    aspenAnimated.update(deltaTime);
-	
-	entityCollision();
 }
 
 void Party::render(){
