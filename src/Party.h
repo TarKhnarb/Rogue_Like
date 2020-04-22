@@ -75,7 +75,6 @@ private:
     bool mIsMovingDown = false;
     bool mIsMovingLeft = false;
     bool mIsMovingRight = false;
-    bool mIsOpenIventory = false;
 	bool noKeyWasPressed = true;
 
     float PlayerSpeed = 250.f;

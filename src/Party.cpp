@@ -887,9 +887,8 @@ void Party::handlePlayerInput(sf::Keyboard::Key key, bool isPressed){
     if (key == sf::Keyboard::D)
         mIsMovingRight = isPressed;
 
-    if (key == sf::Keyboard::E){
-        inventoryOpen = false;
-        mIsOpenIventory = isPressed;
+    if (isPressed && key == sf::Keyboard::E){
+        inventoryOpen = !inventoryOpen;
     }
 }
 
