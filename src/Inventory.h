@@ -55,6 +55,10 @@ class Inventory
 
 		const Object* getObject(unsigned bagIndex) const;
 
+		std::vector<Object*> getStuff();
+		std::vector<Object*> getBag();
+
+
 		bool isItInInventory(unsigned, unsigned);
 
         bool isEmpty();
