@@ -37,7 +37,7 @@ Party::Party():
     loadAnimation();
     
 	rocksCollider.setStyle(Style::Separated);
-	
+    setInventoryItem();
 	reloadRoom();
 }
 
@@ -271,6 +271,7 @@ void Party::loadTextures(){ // load dans le constructeur
     texture->loadFromFile("data/Textures/Chest/Open/ChestOpenW.png");
     textures.emplace("ChestOpenW", std::move(texture));
 
+        // Inventory
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Inventory/ChestInventory.png");
     textures.emplace("ChestInventory", std::move(texture));
@@ -769,6 +770,10 @@ void Party::setInventoryItem(){
 
     sf::RectangleShape item;
 
+    unsigned size = bagItem.size();
+    for(unsigned i = 0; i < size; ++i)
+        bagItem.erase(i);
+
     for (unsigned i = 0; i < playerBagSize; ++i){
         const Object* object = Aspen.getInventoryObject(i);
 
@@ -1014,6 +1019,14 @@ void Party::render(){
         mWindow.draw(t);
 	
     mWindow.draw(aspenAnimated);
+
+    if(inventoryOpen){
+        for(const auto &b : bagItem)
+            mWindow.draw(b.second);
+
+        for(const auto &s : stuffItem)
+            mWindow.draw(s.second);
+    }
 	
     mWindow.display();
 }
