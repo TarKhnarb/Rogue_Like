@@ -126,8 +126,8 @@ private:
 
 	    // Inventory / Chest
 	bool inventoryOpen; // si l'inventaire est ouvert bloque les mouvements du player et ne permet que les mouvements dans l'inventaire
-	sf::Sprite playerInventory;
-	sf::Sprite chestInventory;
+	sf::RectangleShape playerInventory;
+	sf::RectangleShape chestInventory;
 
 	std::map<unsigned, sf::RectangleShape> bagItem;
 	std::map<unsigned, sf::RectangleShape> stuffItem;

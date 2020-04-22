@@ -270,6 +270,14 @@ void Party::loadTextures(){ // load dans le constructeur
     texture = new sf::Texture();
     texture->loadFromFile("data/Textures/Chest/Open/ChestOpenW.png");
     textures.emplace("ChestOpenW", std::move(texture));
+
+    texture = new sf::Texture();
+    texture->loadFromFile("data/Textures/Inventory/ChestInventory.png");
+    textures.emplace("ChestInventory", std::move(texture));
+
+    texture = new sf::Texture();
+    texture->loadFromFile("data/Textures/Inventory/PlayerInventory.png");
+    textures.emplace("PlayerInventory", std::move(texture));
 }
 
 sf::Texture* Party::getTexture(const std::string& nameText){ // récupere un etexture quand on en a besoin
@@ -754,10 +762,16 @@ void Party::setRectangleShapeForCurrentRoom(){
 void Party::setInventoryItem(){
     //bagItem;
     //std::map<unsigned, sf::RectangleShape> stuffItem;
+
+    playerInventory.setSize({480.f, 280.f});
+    playerInventory.setPosition(arch.playerInventory[0], arch.playerInventory[1]);
+    playerInventory.setTexture(getTexture("PlayerInventory"));
+
     sf::RectangleShape item;
 
     for (unsigned i = 0; i < playerBagSize; ++i){
         const Object* object = Aspen.getInventoryObject(i);
+
         if(object){
             item.setSize({50.f, 50.f});
             item.setPosition(arch.itemBag[i][0], arch.itemBag[i][1]);
@@ -771,6 +785,27 @@ void Party::setInventoryItem(){
             bagItem.emplace(i, item);
         }
     }
+
+    for (unsigned i = 0; i < playerStuffSize; ++i){
+        const Object* object = Aspen.getInventoryStuff(i);
+
+        if(object){
+            item.setSize({50.f, 50.f});
+            item.setPosition(arch.itemStuff[i][0], arch.itemStuff[i][1]);
+            item.setFillColor(sf::Color::Red);
+            stuffItem.emplace(i, item);
+        }
+        else{
+            item.setSize({50.f, 50.f});
+            item.setPosition(arch.itemStuff[i][0], arch.itemStuff[i][1]);
+            item.setFillColor(sf::Color::Yellow);
+            stuffItem.emplace(i, item);
+        }
+    }
+}
+
+void Party::setChestItem(Room& curRoom){
+
 }
 
 void Party::reloadRoom(){
