@@ -752,7 +752,9 @@ void Party::setRectangleShapeForCurrentRoom(){
 }
 
 void Party::setInventoryItem(){
-
+    //bagItem;
+    //std::map<unsigned, sf::RectangleShape> stuffItem;
+    std::vector<Object*> bag =
 }
 
 void Party::reloadRoom(){

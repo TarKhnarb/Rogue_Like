@@ -69,6 +69,8 @@ public :
     void removeInventoryObject(unsigned); // Vide la case de l'inventaire de l'index passé en paramètre
     unsigned removeInventoryObjectNb(unsigned id, unsigned objectNb = 1); // Enlève un object del'inventaire avec un Id et un nombre d'éléments et retourne le nombre d'éléments manquants
 
+
+
     /**
     * @brief check if player can fly
     * @return a bool : 1 if player can fly >> 0 if not
