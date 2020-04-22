@@ -754,7 +754,23 @@ void Party::setRectangleShapeForCurrentRoom(){
 void Party::setInventoryItem(){
     //bagItem;
     //std::map<unsigned, sf::RectangleShape> stuffItem;
-    std::vector<Object*> bag =
+    sf::RectangleShape item;
+
+    for (unsigned i = 0; i < playerBagSize; ++i){
+        const Object* object = Aspen.getInventoryObject(i);
+        if(object){
+            item.setSize({50.f, 50.f});
+            item.setPosition(arch.itemBag[i][0], arch.itemBag[i][1]);
+            item.setFillColor(sf::Color::Red);
+            bagItem.emplace(i, item);
+        }
+        else{
+            item.setSize({50.f, 50.f});
+            item.setPosition(arch.itemBag[i][0], arch.itemBag[i][1]);
+            item.setFillColor(sf::Color::Yellow);
+            bagItem.emplace(i, item);
+        }
+    }
 }
 
 void Party::reloadRoom(){
@@ -889,9 +905,8 @@ void Party::handlePlayerInput(sf::Keyboard::Key key, bool isPressed){
     if (key == sf::Keyboard::D)
         mIsMovingRight = isPressed;
 
-    if (key == sf::Keyboard::E){
-        inventoryOpen = false;
-        mIsOpenIventory = isPressed;
+    if (isPressed && key == sf::Keyboard::E){
+        inventoryOpen = !inventoryOpen;
     }
 }
 

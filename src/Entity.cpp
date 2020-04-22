@@ -91,6 +91,10 @@ const Object* Entity::getInventoryObject(unsigned index) {
     return inventory.getObject(index);
 }
 
+const Object* Entity::getInventoryStuff(unsigned index){
+    return inventory.getStuff(index);
+}
+
 void Entity::addInventoryObject(unsigned id, unsigned int objectNb) {
     inventory.addObject(id, objectNb);
 }
@@ -104,14 +108,6 @@ void Entity::removeInventoryObject(unsigned index) {
 }
 unsigned Entity::removeInventoryObjectNb(unsigned id, unsigned objectNb) {
     return inventory.removeObject(id, objectNb);
-}
-
-std::vector<Object*> Entity::getStuffInventory(){
-    return inventory.getStuff();
-}
-
-std::vector<Object*> Entity::getBagInventory(){
-    return inventory.getBag();
 }
 
 bool Entity::entityCanFly()const{
