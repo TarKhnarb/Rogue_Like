@@ -761,8 +761,6 @@ void Party::setRectangleShapeForCurrentRoom(){
 }
 
 void Party::setInventoryItem(){
-    //bagItem;
-    //std::map<unsigned, sf::RectangleShape> stuffItem;
 
     playerInventory.setSize({480.f, 280.f});
     playerInventory.setPosition(arch.playerInventory[0], arch.playerInventory[1]);
@@ -835,6 +833,73 @@ void Party::setChestItem(Room& curRoom){
             }
         }
     }
+}
+
+void Party::scrollingMenu(unsigned value, unsigned index){
+    switch(value){
+        case 1: // unequip
+            break;
+
+        case 2: // deplacer, jeter, equip, (ajouter au coffre si le coffre est ouvert)
+            break;
+
+        case 3: // ajouter a l'inventaire(enlever du coffre)
+            break;
+
+        default:
+            break;
+    }
+}
+
+void updateInventory(sf::Keyboard::Key key){
+
+    switch(key){
+        case sf::Keyboard::Z: // On monte dans l'inventaire
+            break;
+
+        case sf::Keyboard::Q: // On se décale a gauche
+            break;
+
+        case sf::Keyboard::S: // on descend dans l'inventaire
+            break;
+
+        case sf::Keyboard::D: // on va a droite dans l'inventaire
+            break;
+
+        case sf::Keyboard::Space: // on ouvre les menu déroulant
+            break;
+
+        default: // On ne bouge pas le curseur
+            break;
+    }
+
+}
+
+void drawPlayerInventory(unsigned value, unsigned index){ // 1: stuff, 2: bag, 3: chest
+    //Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
+
+    setInventoryItem();
+    sIventoryCursor.setSize({50.f, 50.f});
+    switch(value){
+        case 1:
+            sIventoryCursor.setPosition(arch.itemStuff[index][0], arch.itemStuff[index][1]);
+            break;
+
+        case 2:
+            sIventoryCursor.setPosition(arch.itemBag[index][0], arch.itemBag[index][1]);
+            break;
+
+        case 3:
+            sIventoryCursor.setPosition(arch.itemChest[index][0], arch.itemChest[index][1]);
+            break;
+
+        default:
+            break;
+    }
+
+    sIventoryCursor.setFillColor(sf::Color::Transparent);
+    sIventoryCursor.setOutlineThickness(2.f);
+    setOutlineThickness.setOutlineColor(sf::Color::Blue);
 }
 
 void Party::reloadRoom(){
@@ -971,6 +1036,8 @@ void Party::handlePlayerInput(sf::Keyboard::Key key, bool isPressed){
 
     if (isPressed && key == sf::Keyboard::E){
         inventoryOpen = !inventoryOpen;
+        inventoryValue = 2;
+        inventoryIndex = 0;
     }
 }
 

@@ -56,7 +56,9 @@ private:
     void setInventoryItem(); // bag et stuff
     void setChestItem(Room&);
 
-    void updateInventory();
+    void scrollingMenu(unsigned, unsigned);
+    void updateInventory(sf::Time);
+    void drawInventory(unsigned, unsigned);
 	
 	void reloadRoom();
     void loadNextStage();
@@ -133,6 +135,9 @@ private:
 	std::map<unsigned, sf::RectangleShape> stuffItem;
 	std::map<unsigned, sf::RectangleShape> chestItem; // Si pas d'item, le rectangleShape est blanc, unsigned -> place dans l'inventaire
 
+	sf::RectangleShape sIventoryCursor;
+    unsigned inventoryValue; // 1: stuff, 2: bag, 3: chest
+    unsigned inventoryIndex; // valeur de l'index selectionné
 
 };
 
