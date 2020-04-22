@@ -886,7 +886,7 @@ void Party::updateInventory(){
 							inventoryValue = 1;
 							inventoryIndex = inventoryIndex < 3 ? inventoryIndex + 3 : playerStuffSize - 1;
 						}
-						if(inventoryIndex > 4){
+						else if(inventoryIndex > 4){
 							inventoryIndex -= 5;
 						}
 					}
@@ -926,7 +926,7 @@ void Party::updateInventory(){
 							inventoryValue = 2;
 							inventoryIndex -= 3;
 						}
-						if(inventoryIndex < 3){
+						else if(inventoryIndex < 3){
 							inventoryIndex += 3;
 						}
 					}
@@ -937,6 +937,10 @@ void Party::updateInventory(){
 				
 				case sf::Keyboard::E: // on ferme l'inventaire
 					inventoryOpen = false;
+                    mIsMovingUp = false;
+                    mIsMovingDown = false;
+                    mIsMovingLeft = false;
+                    mIsMovingRight = false;
 					break;
 					
 				default: // On ne bouge pas le curseur
