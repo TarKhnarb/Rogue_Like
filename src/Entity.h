@@ -61,16 +61,13 @@ public :
 
     void unequipObject(unsigned); // deséquipe un object en fonction de son index d'equipement
 
-    const Object* getInventoryObject(unsigned); // Retourne un object de l'inventaire en fonction de son index
+    const Object* getInventoryObject(unsigned) const; // Retourne un object de l'inventaire en fonction de son index
 
     void addInventoryObject(unsigned id, unsigned objectNb = 1); // Ajoute un object a l'inventaire en fonction de son id et du nb (par defaut à 1)
     unsigned addInventoryObjectNb(unsigned id, unsigned objectNb = 1); // // Ajoute un object a l'inventaire en fonction de son id et du nb (par defaut à 1) ET retourne le nb d'object qui n'a pas pu être ajoutés
 
     void removeInventoryObject(unsigned); // Vide la case de l'inventaire de l'index passé en paramètre
     unsigned removeInventoryObjectNb(unsigned id, unsigned objectNb = 1); // Enlève un object del'inventaire avec un Id et un nombre d'éléments et retourne le nombre d'éléments manquants
-
-    std::vector<Object*> getStuffInventory();
-    std::vector<Object*> getBagInventory();
 
     /**
     * @brief check if player can fly

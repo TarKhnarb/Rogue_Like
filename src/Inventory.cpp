@@ -205,13 +205,6 @@ const Object* Inventory::getObject(unsigned bagIndex) const{
 	return static_cast<const Object*>(bag[bagIndex]);
 }
 
-std::vector<Object*> getStuff(){
-    return stuff;
-}
-std::vector<Object*> getBag(){
-    return bag;
-}
-
 std::string Inventory::getBasicStatName() const {
     return basicStat.getName();
 }

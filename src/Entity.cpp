@@ -87,7 +87,7 @@ void Entity::unequipObject(unsigned inventoryIndex) {
     inventory.unequip(inventoryIndex);
 }
 
-const Object* Entity::getInventoryObject(unsigned index) {
+const Object* Entity::getInventoryObject(unsigned index) const {
     return inventory.getObject(index);
 }
 
@@ -104,14 +104,6 @@ void Entity::removeInventoryObject(unsigned index) {
 }
 unsigned Entity::removeInventoryObjectNb(unsigned id, unsigned objectNb) {
     return inventory.removeObject(id, objectNb);
-}
-
-std::vector<Object*> Entity::getStuffInventory(){
-    return inventory.getStuff();
-}
-
-std::vector<Object*> Entity::getBagInventory(){
-    return inventory.getBag();
 }
 
 bool Entity::entityCanFly()const{
