@@ -757,7 +757,7 @@ void Party::setInventoryItem(){
     sf::RectangleShape item;
 
     for (unsigned i = 0; i < playerBagSize; ++i){
-		const Object* object = Aspen.getInventoryObject(i);
+        const Object* object = Aspen.getInventoryObject(i);
         if(object){
             item.setSize({50.f, 50.f});
             item.setPosition(arch.itemBag[i][0], arch.itemBag[i][1]);

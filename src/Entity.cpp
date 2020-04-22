@@ -91,6 +91,10 @@ const Object* Entity::getInventoryObject(unsigned index) const {
     return inventory.getObject(index);
 }
 
+const Object* Entity::getInventoryStuff(unsigned index){
+    return inventory.getStuff(index);
+}
+
 void Entity::addInventoryObject(unsigned id, unsigned int objectNb) {
     inventory.addObject(id, objectNb);
 }

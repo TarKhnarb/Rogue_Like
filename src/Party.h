@@ -41,9 +41,6 @@ private:
     void loadRectangleShape(std::string name);
     sf::RectangleShape getRectangleShape(const std::string&);
 
-    //void loadTextureFromChestItem(std::string); // le string correspond a l'id de l'object ("11" -> "64")
-    //sf::RectangleShape getRectangleShapeItem(const std::string&);
-
     void loadAnimation();
 
     void setWall();
