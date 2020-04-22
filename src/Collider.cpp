@@ -10,7 +10,29 @@ void Collider::clean()
 	}
 }
 
+bool Collider::checkCollision(Collider& other, float push)
+{
+	sf::Vector2f direction;
+	std::vector<std::pair<std::size_t, std::size_t>> effectiveCollisions;
+	
+	return checkCollision(other, direction, effectiveCollisions, push);
+}
+
 bool Collider::checkCollision(Collider& other, sf::Vector2f& direction, float push)
+{
+	std::vector<std::pair<std::size_t, std::size_t>> effectiveCollisions;
+	
+	return checkCollision(other, direction, effectiveCollisions, push);
+}
+
+bool Collider::checkCollision(Collider& other, std::vector<std::pair<std::size_t, std::size_t>>& effectiveCollisions, float push)
+{
+	sf::Vector2f direction;
+	
+	return checkCollision(other, direction, effectiveCollisions, push);
+}
+
+bool Collider::checkCollision(Collider& other, sf::Vector2f& direction, std::vector<std::pair<std::size_t, std::size_t>>& effectiveCollisions, float push)
 {
 	/*
 	 * Calculating each collision with associated intersections
@@ -49,6 +71,8 @@ bool Collider::checkCollision(Collider& other, sf::Vector2f& direction, float pu
 	direction.x = 0.f;
 	direction.y = 0.f;
 	
+	effectiveCollisions.resize(0);
+	
 	/*
 	 * Pushing and calculating collisions
 	 * while there's no more
@@ -74,6 +98,8 @@ bool Collider::checkCollision(Collider& other, sf::Vector2f& direction, float pu
 				maxAreaIndex = i;
 			}
 		}
+		
+		effectiveCollisions.push_back(collidedShapes[maxAreaIndex]);
 		
 		/*
 		 * Doing the push for the more important collision
