@@ -88,6 +88,10 @@ void Chest::saveChest(std::string fileName) {
     file.close();
 }
 
+const Object* Chest::getItem(unsigned index){
+    return chest.getObject(index);
+}
+
 void Chest::display() {
     chest.display();
 }

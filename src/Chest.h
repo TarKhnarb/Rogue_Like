@@ -34,6 +34,8 @@ public:
     void loadChest(std::string);
     void saveChest(std::string);
 
+    const Object* getItem(unsigned);
+
     void display();
 
 private:

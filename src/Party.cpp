@@ -810,7 +810,31 @@ void Party::setInventoryItem(){
 }
 
 void Party::setChestItem(Room& curRoom){
+    sf::RectangleShape item;
+    Chest* chest = curRoom.getChest();
 
+    if(chest){
+        unsigned size = chestItem.size();
+        for(unsigned i = 0; i < size; ++i)
+            chestItem.erase(i);
+
+        for (unsigned i = 0; i < chestSize; ++i){
+            const Object* object = chest->getItem(i);
+
+            if(object){
+                item.setSize({50.f, 50.f});
+                item.setPosition(arch.itemChest[i][0], arch.itemChest[i][1]);
+                item.setFillColor(sf::Color::Red);
+                chestItem.emplace(i, item);
+            }
+            else{
+                item.setSize({50.f, 50.f});
+                item.setPosition(arch.itemChest[i][0], arch.itemChest[i][1]);
+                item.setFillColor(sf::Color::Yellow);
+                chestItem.emplace(i, item);
+            }
+        }
+    }
 }
 
 void Party::reloadRoom(){
@@ -1020,13 +1044,15 @@ void Party::render(){
 	
     mWindow.draw(aspenAnimated);
 
+  /*  mWindow.draw(playerInventory);
+
     if(inventoryOpen){
         for(const auto &b : bagItem)
             mWindow.draw(b.second);
 
         for(const auto &s : stuffItem)
             mWindow.draw(s.second);
-    }
+    }*/
 	
     mWindow.display();
 }
