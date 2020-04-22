@@ -6,6 +6,7 @@
 #include <string>
 #include <map>
 #include <utility>
+#include <cmath>
 
 #include "AnimatedSprite.h"
 
@@ -56,9 +57,9 @@ private:
     void setInventoryItem(); // bag et stuff
     void setChestItem(Room&);
 
-    void scrollingMenu(unsigned, unsigned);
-    void updateInventory(sf::Time);
-    void drawInventory(unsigned, unsigned);
+    void scrollingMenu();
+    void updateInventory();
+    void drawPlayerInventory();
 	
 	void reloadRoom();
     void loadNextStage();
@@ -127,7 +128,7 @@ private:
 	Animation walkingAspenLeft;
 
 	    // Inventory / Chest
-	bool inventoryOpen; // si l'inventaire est ouvert bloque les mouvements du player et ne permet que les mouvements dans l'inventaire
+	bool inventoryOpen = false; // si l'inventaire est ouvert bloque les mouvements du player et ne permet que les mouvements dans l'inventaire
 	sf::RectangleShape playerInventory;
 	sf::RectangleShape chestInventory;
 
@@ -135,7 +136,7 @@ private:
 	std::map<unsigned, sf::RectangleShape> stuffItem;
 	std::map<unsigned, sf::RectangleShape> chestItem; // Si pas d'item, le rectangleShape est blanc, unsigned -> place dans l'inventaire
 
-	sf::RectangleShape sIventoryCursor;
+	sf::RectangleShape sInventoryCursor;
     unsigned inventoryValue; // 1: stuff, 2: bag, 3: chest
     unsigned inventoryIndex; // valeur de l'index selectionné
 

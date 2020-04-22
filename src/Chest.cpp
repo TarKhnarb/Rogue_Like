@@ -88,7 +88,7 @@ void Chest::saveChest(std::string fileName) {
     file.close();
 }
 
-const Object* Chest::getItem(unsigned index){
+const Object* Chest::getItem(unsigned index) const {
     return chest.getObject(index);
 }
 

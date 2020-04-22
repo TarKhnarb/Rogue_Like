@@ -62,14 +62,20 @@ void Party::run(){
     sf::Time TimePerFrame = sf::seconds(1.f / 30.f);
 
     while (mWindow.isOpen()){
-        processEvents();
-        timeSinceLastUpdate += clock.restart();
-
-        while (timeSinceLastUpdate > TimePerFrame){
-            timeSinceLastUpdate -= TimePerFrame;
-            processEvents();
-            update(TimePerFrame);
-        }
+		timeSinceLastUpdate += clock.restart();
+		
+		while (timeSinceLastUpdate > TimePerFrame){
+			timeSinceLastUpdate -= TimePerFrame;
+			
+			if(!inventoryOpen){
+				processEvents();
+				update(TimePerFrame);
+			}
+			else{
+				updateInventory();
+			}
+		}
+		
         render();
     }
 }
@@ -768,9 +774,8 @@ void Party::setInventoryItem(){
 
     sf::RectangleShape item;
 
-    unsigned size = bagItem.size();
-    for(unsigned i = 0; i < size; ++i)
-        bagItem.erase(i);
+    bagItem.clear();
+	stuffItem.clear();
 
     for (unsigned i = 0; i < playerBagSize; ++i){
         const Object* object = Aspen.getInventoryObject(i);
@@ -805,6 +810,12 @@ void Party::setInventoryItem(){
             stuffItem.emplace(i, item);
         }
     }
+    
+    sInventoryCursor.setSize({50.f, 50.f});
+
+    sInventoryCursor.setFillColor(sf::Color::Transparent);
+    sInventoryCursor.setOutlineThickness(2.f);
+    sInventoryCursor.setOutlineColor(sf::Color::Blue);
 }
 
 void Party::setChestItem(Room& curRoom){
@@ -812,9 +823,7 @@ void Party::setChestItem(Room& curRoom){
     Chest* chest = curRoom.getChest();
 
     if(chest){
-        unsigned size = chestItem.size();
-        for(unsigned i = 0; i < size; ++i)
-            chestItem.erase(i);
+        chestItem.clear();
 
         for (unsigned i = 0; i < chestSize; ++i){
             const Object* object = chest->getItem(i);
@@ -835,8 +844,8 @@ void Party::setChestItem(Room& curRoom){
     }
 }
 
-void Party::scrollingMenu(unsigned value, unsigned index){
-    switch(value){
+void Party::scrollingMenu(){
+    switch(inventoryValue){
         case 1: // unequip
             break;
 
@@ -851,55 +860,123 @@ void Party::scrollingMenu(unsigned value, unsigned index){
     }
 }
 
-void updateInventory(sf::Keyboard::Key key){
+void Party::updateInventory(){
+	sf::Event event;
+	while (mWindow.pollEvent(event)){
+		if (event.type == sf::Event::KeyPressed){
+			switch(event.key.code){
+				case sf::Keyboard::Z: // On monte dans l'inventaire
+					if (inventoryValue == 2){ // dans le sac
+						if (inventoryIndex != 0)
+							--inventoryIndex;
+						else{
+							inventoryValue = 1;
+							inventoryIndex = playerStuffSize - 1;
+						}
+					}
+					else if (inventoryValue == 1){ // dans le stuff
+						if (inventoryIndex != 0)
+							--inventoryIndex;
+					}
+					break;
 
-    switch(key){
-        case sf::Keyboard::Z: // On monte dans l'inventaire
-            break;
+				case sf::Keyboard::Q: // On se décale a gauche
+					if(inventoryValue == 2){
+						if(inventoryIndex < 5){
+							inventoryValue = 1;
+							inventoryIndex = inventoryIndex < 3 ? inventoryIndex + 3 : playerStuffSize - 1;
+						}
+						if(inventoryIndex > 4){
+							inventoryIndex -= 5;
+						}
+					}
+					else if(inventoryValue == 1){
+						if(inventoryIndex > 2){
+							inventoryIndex -= 3;
+						}
+					}
+					break;
 
-        case sf::Keyboard::Q: // On se décale a gauche
-            break;
+				case sf::Keyboard::S: // on descend dans l'inventaire
+					if (inventoryValue == 2){ // dans le sac
+						if (inventoryIndex != playerBagSize - 1)
+							++inventoryIndex;
+						else{
+							// se déplacer dans le sac et mettre l'index à 0
+						}
+					}
+					else if (inventoryValue == 1){ // dans le stuff
+						if (inventoryIndex != playerStuffSize - 1)
+							++inventoryIndex;
+						else{
+							inventoryValue = 2;
+							inventoryIndex = 0;
+						}
+					}
+					break;
 
-        case sf::Keyboard::S: // on descend dans l'inventaire
-            break;
+				case sf::Keyboard::D: // on va a droite dans l'inventaire
+					if(inventoryValue == 2){
+						if(inventoryIndex < 5){
+							inventoryIndex += 5;
+						}
+					}
+					else if(inventoryValue == 1){
+						if(inventoryIndex > 2){
+							inventoryValue = 2;
+							inventoryIndex -= 3;
+						}
+						if(inventoryIndex < 3){
+							inventoryIndex += 3;
+						}
+					}
+					break;
 
-        case sf::Keyboard::D: // on va a droite dans l'inventaire
-            break;
-
-        case sf::Keyboard::Space: // on ouvre les menu déroulant
-            break;
-
-        default: // On ne bouge pas le curseur
-            break;
+				case sf::Keyboard::Space: // on ouvre les menu déroulant
+					break;
+				
+				case sf::Keyboard::E: // on ferme l'inventaire
+					inventoryOpen = false;
+					break;
+					
+				default: // On ne bouge pas le curseur
+					break;
+			}
+		}
+		else if (event.type == sf::Event::Closed){
+			mWindow.close();
+		}
     }
-
-}
-
-void drawPlayerInventory(unsigned value, unsigned index){ // 1: stuff, 2: bag, 3: chest
-    //Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
-
-    setInventoryItem();
-    sIventoryCursor.setSize({50.f, 50.f});
-    switch(value){
+    
+    switch(inventoryValue){
         case 1:
-            sIventoryCursor.setPosition(arch.itemStuff[index][0], arch.itemStuff[index][1]);
+            sInventoryCursor.setPosition(arch.itemStuff[inventoryIndex][0], arch.itemStuff[inventoryIndex][1]);
             break;
 
         case 2:
-            sIventoryCursor.setPosition(arch.itemBag[index][0], arch.itemBag[index][1]);
+            sInventoryCursor.setPosition(arch.itemBag[inventoryIndex][0], arch.itemBag[inventoryIndex][1]);
             break;
 
         case 3:
-            sIventoryCursor.setPosition(arch.itemChest[index][0], arch.itemChest[index][1]);
+            sInventoryCursor.setPosition(arch.itemChest[inventoryIndex][0], arch.itemChest[inventoryIndex][1]);
             break;
 
         default:
             break;
     }
 
-    sIventoryCursor.setFillColor(sf::Color::Transparent);
-    sIventoryCursor.setOutlineThickness(2.f);
-    setOutlineThickness.setOutlineColor(sf::Color::Blue);
+}
+
+void Party::drawPlayerInventory(){ // 1: stuff, 2: bag, 3: chest
+	mWindow.draw(playerInventory);
+
+	for(const auto &b : bagItem)
+		mWindow.draw(b.second);
+
+	for(const auto &s : stuffItem)
+		mWindow.draw(s.second);
+	
+	mWindow.draw(sInventoryCursor);
 }
 
 void Party::reloadRoom(){
@@ -1035,7 +1112,7 @@ void Party::handlePlayerInput(sf::Keyboard::Key key, bool isPressed){
         mIsMovingRight = isPressed;
 
     if (isPressed && key == sf::Keyboard::E){
-        inventoryOpen = !inventoryOpen;
+        inventoryOpen = true;
         inventoryValue = 2;
         inventoryIndex = 0;
     }
@@ -1043,83 +1120,72 @@ void Party::handlePlayerInput(sf::Keyboard::Key key, bool isPressed){
 
 void Party::update(sf::Time deltaTime){
 
-    if(!inventoryOpen){
-        sf::Vector2f movement(0.f, 0.f);
+	sf::Vector2f movement(0.f, 0.f);
 
-        if(mIsMovingUp){
-            currentAnimation = &walkingAspenUp;
-            movement.y -= PlayerSpeed;
-            noKeyWasPressed = false;
-        }
+	if(mIsMovingUp){
+		currentAnimation = &walkingAspenUp;
+		movement.y -= PlayerSpeed;
+		noKeyWasPressed = false;
+	}
 
-        if(mIsMovingDown){
-            currentAnimation = &walkingAspenDown;
-            movement.y += PlayerSpeed;
-            noKeyWasPressed = false;
-        }
+	if(mIsMovingDown){
+		currentAnimation = &walkingAspenDown;
+		movement.y += PlayerSpeed;
+		noKeyWasPressed = false;
+	}
 
-        if(mIsMovingLeft){
-            currentAnimation = &walkingAspenLeft;
-            movement.x -= PlayerSpeed;
-            noKeyWasPressed = false;
-        }
+	if(mIsMovingLeft){
+		currentAnimation = &walkingAspenLeft;
+		movement.x -= PlayerSpeed;
+		noKeyWasPressed = false;
+	}
 
-        if(mIsMovingRight){
-            currentAnimation = &walkingAspenRight;
-            movement.x += PlayerSpeed;
-            noKeyWasPressed = false;
-        }
+	if(mIsMovingRight){
+		currentAnimation = &walkingAspenRight;
+		movement.x += PlayerSpeed;
+		noKeyWasPressed = false;
+	}
 
-        aspenAnimated.play(*currentAnimation);
-        aspenAnimated.move(movement * deltaTime.asSeconds());
+	aspenAnimated.play(*currentAnimation);
+	aspenAnimated.move(movement * deltaTime.asSeconds());
 
-        if (noKeyWasPressed)
-        {
-            aspenAnimated.stop();
-        }
-        noKeyWasPressed = true;
+	if (noKeyWasPressed)
+	{
+		aspenAnimated.stop();
+	}
+	noKeyWasPressed = true;
 
-        aspenAnimated.update(deltaTime);
+	aspenAnimated.update(deltaTime);
 
-        entityCollision();
-    }
-    else{
-
-    }
-
+	entityCollision();
 }
 
 void Party::render(){
 
     mWindow.clear();
-    mWindow.draw(sRoom);
-
-    for(const auto &r : sRocks)
-        mWindow.draw(r);
-
-    for(const auto &f : sFrames)
-        mWindow.draw(f);
-
-    for(const auto &d : sDoors)
-        mWindow.draw(d);
-
-    for(const auto &c : sChest)
-        mWindow.draw(c);
-
-    for(const auto &t : sTrap)
-        mWindow.draw(t);
 	
-    mWindow.draw(aspenAnimated);
+	mWindow.draw(sRoom);
 
-  /*  mWindow.draw(playerInventory);
+	for(const auto &r : sRocks)
+		mWindow.draw(r);
 
-    if(inventoryOpen){
-        for(const auto &b : bagItem)
-            mWindow.draw(b.second);
+	for(const auto &f : sFrames)
+		mWindow.draw(f);
 
-        for(const auto &s : stuffItem)
-            mWindow.draw(s.second);
-    }*/
+	for(const auto &d : sDoors)
+		mWindow.draw(d);
+
+	for(const auto &c : sChest)
+		mWindow.draw(c);
+
+	for(const auto &t : sTrap)
+		mWindow.draw(t);
 	
+	mWindow.draw(aspenAnimated);
+	
+	if(inventoryOpen) {
+		drawPlayerInventory();
+	}
+		
     mWindow.display();
 }
