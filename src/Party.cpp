@@ -79,6 +79,9 @@ void Party::run(){
 			}
 			else{
 				updateInventory();
+                if(scrollingMenuOpen){
+
+                }
 			}
 		}
 		
@@ -850,9 +853,16 @@ void Party::setChestItem(Room& curRoom){
     }
 }
 
-void Party::scrollingMenu(){
-    //sf::Font scroll;
-    //sf::RectangleShape scrollingMenu;
+void Party::setScrollingMenu(){
+
+    scrollingValue = 1;
+    scrollingIndex = 0;
+
+    sf::RectangleShape scrollMenu;
+    scrollMenu.setSize({10.f, 50.f});
+    scrollMenu.setFillColor(sf::Color::Transparent);
+    scrollMenu.setOutlineColor(sf::Color::Blue);
+    scrollMenu.setOutlineThickness(2.f);
 
     sf::Text txt;
     txt.setFont(scroll);
@@ -861,53 +871,155 @@ void Party::scrollingMenu(){
     switch(inventoryValue){ // RAJOUTER DANS 1/2 LA CONDITION DE SI LE COFFRE EST OUVERT, PROPOSER DE METTRE DANS LE COFFRE
         case 1: // unequip
             if(Aspen.getInventoryStuff(inventoryIndex)){
-                txt = sf::Text("unequip", scroll);
+                txt.setString("unequip");
                 txt.setPosition(arch.itemStuff[inventoryIndex][0] + 50.f, arch.itemStuff[inventoryIndex][1]);
+                textScrolling.push_back(txt);
+
+                scrollMenu.setPosition(arch.itemStuff[inventoryIndex][0] + 48.f, arch.itemStuff[inventoryIndex][1] - 2.f);
+                rectangleShapeScrolling.push_back(scrollMenu);
             }
             break;
 
         case 2: // deplacer, jeter, equip, (ajouter au coffre si le coffre est ouvert)
             if(Aspen.getInventoryObject(inventoryIndex)){
                 if(Aspen.getInventoryObject(inventoryIndex)->getType() == Object::Type::monsterLoot){
-                    txt = sf::Text("move", scroll);
+                    scrollingValue = 2;
+                    txt.setString("move");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1]);
+                    textScrolling.push_back(txt);
 
-                    txt = sf::Text("throw", scroll);
+                    scrollMenu.setPosition(arch.itemBag[inventoryIndex][0] + 48.f, arch.itemBag[inventoryIndex][1] - 2.f);
+                    rectangleShapeScrolling.push_back(scrollMenu);
+
+                    txt.setString("throw");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1] + 15.f);
+                    textScrolling.push_back(txt);
+
+                    scrollMenu.setPosition(arch.itemBag[inventoryIndex][0] + 48.f, arch.itemBag[inventoryIndex][1] + 13.f);
+                    rectangleShapeScrolling.push_back(scrollMenu);
                 }
                 else if(Aspen.getInventoryObject(inventoryIndex)->getType() == Object::Type::potion){
-                    txt = sf::Text("use", scroll);
+                    scrollingValue = 3;
+                    txt.setString("use");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1]);
+                    textScrolling.push_back(txt);
 
-                    txt = sf::Text("move", scroll);
+                    scrollMenu.setPosition(arch.itemBag[inventoryIndex][0] + 48.f, arch.itemBag[inventoryIndex][1] - 2.f);
+                    rectangleShapeScrolling.push_back(scrollMenu);
+
+                    txt.setString("move");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1] + 15.f);
+                    textScrolling.push_back(txt);
 
-                    txt = sf::Text("throw", scroll);
+                    scrollMenu.setPosition(arch.itemBag[inventoryIndex][0] + 48.f, arch.itemBag[inventoryIndex][1] + 13.f);
+                    rectangleShapeScrolling.push_back(scrollMenu);
+
+                    txt.setString("throw");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1] + 30.f);
+                    textScrolling.push_back(txt);
+
+                    scrollMenu.setPosition(arch.itemBag[inventoryIndex][0] + 48.f, arch.itemBag[inventoryIndex][1] + 28.f);
+                    rectangleShapeScrolling.push_back(scrollMenu);
                 }
                 else{ // Si c'est un equipement
-                    txt = sf::Text("equip", scroll);
+                    scrollingValue = 3;
+                    txt.setString("equip");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1]);
+                    textScrolling.push_back(txt);
 
-                    txt = sf::Text("move", scroll);
+                    scrollMenu.setPosition(arch.itemBag[inventoryIndex][0] + 48.f, arch.itemBag[inventoryIndex][1] - 2.f);
+                    rectangleShapeScrolling.push_back(scrollMenu);
+
+                    txt.setString("move");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1] + 15.f);
+                    textScrolling.push_back(txt);
 
-                    txt = sf::Text("throw", scroll);
+                    scrollMenu.setPosition(arch.itemBag[inventoryIndex][0] + 48.f, arch.itemBag[inventoryIndex][1] + 13.f);
+                    rectangleShapeScrolling.push_back(scrollMenu);
+
+                    txt.setString("throw");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1] + 30.f);
+                    textScrolling.push_back(txt);
+
+                    scrollMenu.setPosition(arch.itemBag[inventoryIndex][0] + 48.f, arch.itemBag[inventoryIndex][1] + 28.f);
+                    rectangleShapeScrolling.push_back(scrollMenu);
                 }
             }
             break;
 
         case 3: // ajouter a l'inventaire(enlever du coffre)
-            txt = sf::Text("add to inventory", scroll);
-            txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1]);
+            txt.setString("add to inventory");
+            txt.setPosition(arch.itemChest[inventoryIndex][0] + 50.f, arch.itemChest[inventoryIndex][1]);
+            textScrolling.push_back(txt);
+
+            scrollMenu.setPosition(arch.itemChest[inventoryIndex][0] + 50.f, arch.itemChest[inventoryIndex][1] - 2.f);
+            rectangleShapeScrolling.push_back(scrollMenu);
             break;
 
         default:
             break;
     }
-    txt.setCharacterSize(10); // sinon la taille n'est pas prise en compte
+    txt.setCharacterSize(10); // ici sinon la taille n'est pas prise en compte
     mWindow.draw(txt);
+}
+
+void Party::updateScrollingMenu(){
+
+    sf::Event event;
+    while (mWindow.pollEvent(event)){
+        if (event.type == sf::Event::KeyPressed) {
+
+            switch(event.key.code){
+                case sf::Keyboard::Escape: // on reviens a l'inventaire
+                    scrollingMenuOpen = !scrollingMenuOpen;
+                    break;
+
+                case sf::Keyboard::Z:// on monte dans la selection
+                    if(scrollingIndex > 0)
+                        scrollingIndex--;
+                    break;
+
+                case sf::Keyboard::S: // on descend dans la selections
+                    if(scrollingIndex < scrollingValue)
+                        scrollingIndex++;
+                    break;
+
+                case sf::Keyboard::Return:// on appui sur entrer on applique le choix selectionné
+                    std::string value = sf::String::toUtf8(textScrolling[scrollingIndex].getString());
+
+                    switch(value){
+                        case "use": // on utilise la potion donc on régénère la vie du player
+                            break;
+
+                        case "throw": // on jette l'item par terre
+                            break;
+
+                        case "move": // on déplace l'objet là ou le player choisi l'emplacement via le cursor de playerInventory
+                            break;
+
+                        case "equip": // On équip l'objet dans le stuff
+                            break;
+
+                        case "unequip": // on déséquip l'object
+                            break;
+
+                        case "add to inventory": // on ajoute l'objet du coffre a l'inventaire
+                            break;
+
+                        default:
+                            break;
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        else if (event.type == sf::Event::Closed){
+            mWindow.close();
+        }
+        mWindow.draw(rectangleShapeScrolling[scrollingIndex]);
+    }
 }
 
 void Party::updateInventory(){

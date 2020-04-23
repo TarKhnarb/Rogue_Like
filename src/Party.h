@@ -57,7 +57,8 @@ private:
     void setInventoryItem(); // bag et stuff
     void setChestItem(Room&);
 
-    void scrollingMenu();
+    void setScrollingMenu();
+    void updateScrollingMenu();
     void updateInventory();
     void drawPlayerInventory();
 	
@@ -134,14 +135,19 @@ private:
 
 	std::map<unsigned, sf::RectangleShape> bagItem;
 	std::map<unsigned, sf::RectangleShape> stuffItem;
-	std::map<unsigned, sf::RectangleShape> chestIteme; // Si pas d'item, le rectangleShape est blanc, unsigned -> place dans l'inventaire
+	std::map<unsigned, sf::RectangleShape> chestItem; // Si pas d'item, le rectangleShape est blanc, unsigned -> place dans l'inventaire
 
 	sf::RectangleShape sInventoryCursor;
     unsigned inventoryValue; // 1: stuff, 2: bag, 3: chest
     unsigned inventoryIndex; // valeur de l'index selectionné
         // scrolling  menu
+    bool scrollingMenuOpen = false;
     sf::Font scroll;
     sf::RectangleShape sScrollingMenu;
+    std::vector<sf::Text> textScrolling;
+    std::vector<sf::RectangleShape> rectangleShapeScrolling;
+    unsigned scrollingValue;
+    unsigned scrollingIndex;
 
 };
 
