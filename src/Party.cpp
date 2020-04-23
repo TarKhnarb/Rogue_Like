@@ -816,7 +816,7 @@ void Party::setInventoryItem(){
                 
                 sf::FloatRect bounds = txt.getLocalBounds();
                 txt.setOrigin({bounds.width, bounds.height});
-                txt.setPosition(arch.itemBag[i][0] + 50.f, arch.itemBag[i][1] + 50.f);
+                txt.setPosition(arch.itemBag[i][0] + 48.f, arch.itemBag[i][1] + 48.f);
                 
                 objectsNumber.emplace(i, txt);
             }
@@ -843,7 +843,7 @@ void Party::setInventoryItem(){
                 
                 sf::FloatRect bounds = txt.getLocalBounds();
                 txt.setOrigin({bounds.width, bounds.height});
-                txt.setPosition(arch.itemStuff[i][0] + 50.f, arch.itemStuff[i][1] + 50.f);
+                txt.setPosition(arch.itemStuff[i][0] + 48.f, arch.itemStuff[i][1] + 48.f);
                 
                 objectsNumber.emplace(i, txt);
             }

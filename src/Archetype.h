@@ -15,6 +15,8 @@
 struct Archetype{
         // Inventory
     const float playerInventory[2] = {400, 80};
+    
+    //const float statInventory[2][2] = {{420, 270}, {525, 270}};
 
     const float itemBag[10][2] =
             {{665, 91}, {665, 143}, {665, 195}, {665, 247}, {665, 299},
