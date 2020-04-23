@@ -35,16 +35,18 @@ Party::Party():
     loadRectangleShape("Trap");
 
     scroll.loadFromFile("data/Font/verdana.ttf"); // charge le police d'écriture verdana
+    objectsFont.loadFromFile("data/Font/verdana.ttf");
 
     loadAnimation();
+    
+    Aspen.addInventoryObject(60, 20); // monsterLoot
+	Aspen.addInventoryObject(47, 1); // potion
+	Aspen.addInventoryObject(11); // helmet
+    Aspen.addInventoryObject(30); // boots
     
 	rocksCollider.setStyle(Style::Separated);
     setInventoryItem();
 	reloadRoom();
-
-	Aspen.addInventoryObject(60, 1); // monsterLoot
-	Aspen.addInventoryObject(47, 1); // potion
-	Aspen.addInventoryObject(11, 1); // equipement
 }
 
 Party::~Party(){
@@ -788,7 +790,15 @@ void Party::setInventoryItem(){
     playerInventory.setTexture(getTexture("PlayerInventory"));
 
     sf::RectangleShape item;
-
+    
+    sf::Text txt;
+    txt.setFont(objectsFont);
+    txt.setCharacterSize(10);
+    txt.setFillColor(sf::Color::White);
+    txt.setOutlineColor(sf::Color::Black);
+    txt.setOutlineThickness(1.f);
+    
+    objectsNumber.clear();
     bagItem.clear();
 	stuffItem.clear();
 
@@ -800,6 +810,16 @@ void Party::setInventoryItem(){
             item.setPosition(arch.itemBag[i][0], arch.itemBag[i][1]);
             item.setFillColor(sf::Color::Red);
             bagItem.emplace(i, item);
+            
+            if (object->getObjectNumber() > 1){
+                txt.setString(std::to_string(object->getObjectNumber()));
+                
+                sf::FloatRect bounds = txt.getLocalBounds();
+                txt.setOrigin({bounds.width, bounds.height});
+                txt.setPosition(arch.itemBag[i][0] + 50.f, arch.itemBag[i][1] + 50.f);
+                
+                objectsNumber.emplace(i, txt);
+            }
         }
         else{
             item.setSize({50.f, 50.f});
@@ -817,6 +837,16 @@ void Party::setInventoryItem(){
             item.setPosition(arch.itemStuff[i][0], arch.itemStuff[i][1]);
             item.setFillColor(sf::Color::Red);
             stuffItem.emplace(i, item);
+            
+            if (object->getObjectNumber() > 1){
+                txt.setString(std::to_string(object->getObjectNumber()));
+                
+                sf::FloatRect bounds = txt.getLocalBounds();
+                txt.setOrigin({bounds.width, bounds.height});
+                txt.setPosition(arch.itemStuff[i][0] + 50.f, arch.itemStuff[i][1] + 50.f);
+                
+                objectsNumber.emplace(i, txt);
+            }
         }
         else{
             item.setSize({50.f, 50.f});
@@ -886,7 +916,7 @@ void Party::setScrollingMenu(){
     switch(inventoryValue){ // RAJOUTER DANS 1/2 LA CONDITION DE SI LE COFFRE EST OUVERT, PROPOSER DE METTRE DANS LE COFFRE
         case 1: // unequip
             if(Aspen.getInventoryStuff(inventoryIndex)){
-                txt.setString("unequip");
+                txt.setString("Unequip");
                 txt.setPosition(arch.itemStuff[inventoryIndex][0] + 52.f, arch.itemStuff[inventoryIndex][1]);
                 textScrolling.push_back(txt);
 
@@ -904,7 +934,7 @@ void Party::setScrollingMenu(){
             if(Aspen.getInventoryObject(inventoryIndex)){
                 if(Aspen.getInventoryObject(inventoryIndex)->getType() == Object::Type::monsterLoot){
                     scrollingValue = 2;
-                    txt.setString("move");
+                    txt.setString("Move");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1]);
                     textScrolling.push_back(txt);
 
@@ -913,7 +943,7 @@ void Party::setScrollingMenu(){
                     scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                     rectangleShapeScrolling.push_back(scrollMenu);
 
-                    txt.setString("throw");
+                    txt.setString("Trash");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1] + 15.f);
                     textScrolling.push_back(txt);
 
@@ -924,7 +954,7 @@ void Party::setScrollingMenu(){
                 }
                 else if(Aspen.getInventoryObject(inventoryIndex)->getType() == Object::Type::potion){
                     scrollingValue = 3;
-                    txt.setString("use");
+                    txt.setString("Use");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1]);
                     textScrolling.push_back(txt);
 
@@ -933,7 +963,7 @@ void Party::setScrollingMenu(){
                     scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                     rectangleShapeScrolling.push_back(scrollMenu);
 
-                    txt.setString("move");
+                    txt.setString("Move");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1] + 15.f);
                     textScrolling.push_back(txt);
 
@@ -942,7 +972,7 @@ void Party::setScrollingMenu(){
                     scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                     rectangleShapeScrolling.push_back(scrollMenu);
 
-                    txt.setString("throw");
+                    txt.setString("Trash");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1] + 30.f);
                     textScrolling.push_back(txt);
 
@@ -953,7 +983,7 @@ void Party::setScrollingMenu(){
                 }
                 else{ // Si c'est un equipement
                     scrollingValue = 3;
-                    txt.setString("equip");
+                    txt.setString("Equip");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1]);
                     textScrolling.push_back(txt);
 
@@ -962,7 +992,7 @@ void Party::setScrollingMenu(){
                     scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                     rectangleShapeScrolling.push_back(scrollMenu);
 
-                    txt.setString("move");
+                    txt.setString("Move");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1] + 15.f);
                     textScrolling.push_back(txt);
 
@@ -971,7 +1001,7 @@ void Party::setScrollingMenu(){
                     scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                     rectangleShapeScrolling.push_back(scrollMenu);
 
-                    txt.setString("throw");
+                    txt.setString("Trash");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1] + 30.f);
                     textScrolling.push_back(txt);
 
@@ -987,7 +1017,7 @@ void Party::setScrollingMenu(){
             break;
 
         case 3: // ajouter a l'inventaire(enlever du coffre) seulement s'il y a un object, sinon fermer le scrollingMenu
-            txt.setString("add to inventory");
+            txt.setString("Add to inventory");
             txt.setPosition(arch.itemChest[inventoryIndex][0] + 52.f, arch.itemChest[inventoryIndex][1]);
             textScrolling.push_back(txt);
 
@@ -1019,7 +1049,7 @@ void Party::updateScrollingMenu(){
                     break;
 
                 case sf::Keyboard::S: // on descend dans la selections
-                    if(scrollingIndex < scrollingValue)
+                    if(scrollingIndex < scrollingValue - 1)
                         scrollingIndex++;
                     break;
 
@@ -1027,22 +1057,25 @@ void Party::updateScrollingMenu(){
 					{
 						std::string action = textScrolling[scrollingIndex].getString();
 
-						if(action == std::string("use")){// on utilise la potion donc on régénère la vie du player
+						if(action == std::string("Use")){// on utilise la potion donc on régénère la vie du player
 
 						}
-						else if(action == std::string("throw")){ // on jette l'item par terre
+						else if(action == std::string("Trash")){ // on jette l'item par terre
+                            Aspen.removeInventoryObject(inventoryIndex);
+                            setInventoryItem();
+						}
+						else if(action == std::string("Move")){ // on déplace l'objet là ou le player choisi l'emplacement via le cursor de playerInventory
 
 						}
-						else if(action == std::string("move")){ // on déplace l'objet là ou le player choisi l'emplacement via le cursor de playerInventory
-
+						else if(action == std::string("Equip")){ // On équip l'objet dans le stuff
+                            Aspen.equipObject(inventoryIndex);
+                            setInventoryItem();
 						}
-						else if(action == std::string("equip")){ // On équip l'objet dans le stuff
-
+						else if(action == std::string("Unequip")) {
+                            Aspen.unequipObject(inventoryIndex);
+                            setInventoryItem();
 						}
-						else if(action == std::string("unequip")) {
-
-						}
-						else if(action == std::string("add to inventory")){ // on ajoute l'objet du coffre a l'inventaire
+						else if(action == std::string("Add to inventory")){ // on ajoute l'objet du coffre a l'inventaire
 
 						}
 					}
@@ -1186,17 +1219,20 @@ void Party::updateInventory(){
 }
 
 void Party::drawPlayerInventory(){ // 1: stuff, 2: bag, 3: chest
-	mWindow.draw(playerInventory);
+    mWindow.draw(playerInventory);
 
-	for(const auto &b : bagItem)
-		mWindow.draw(b.second);
+    for(const auto &b : bagItem)
+        mWindow.draw(b.second);
 
-	for(const auto &s : stuffItem)
-		mWindow.draw(s.second);
-	
-	mWindow.draw(sInventoryCursor);
-	
-	if (scrollingMenuOpen){
+    for(const auto &s : stuffItem)
+        mWindow.draw(s.second);
+    
+    for (const auto &t : objectsNumber)
+        mWindow.draw(t.second);
+    
+    mWindow.draw(sInventoryCursor);
+    
+    if (scrollingMenuOpen){
         for (auto& rect : rectangleShapeScrolling){
             mWindow.draw(rect);
         }
