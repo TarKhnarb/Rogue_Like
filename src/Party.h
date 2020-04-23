@@ -148,6 +148,8 @@ private:
     std::vector<sf::RectangleShape> rectangleShapeScrolling;
     unsigned scrollingValue;
     unsigned scrollingIndex;
+	
+	sf::RectangleShape scrollingMenuCursor;
 
 };
 

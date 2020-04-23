@@ -73,16 +73,22 @@ void Party::run(){
 		while (timeSinceLastUpdate > TimePerFrame){
 			timeSinceLastUpdate -= TimePerFrame;
 			
-			if(!inventoryOpen){
+			if(!inventoryOpen){ // game state
 				processEvents();
 				update(TimePerFrame);
+                
+                if (inventoryOpen) // late update
+                    updateInventory();
 			}
-			else{
+			else if (!scrollingMenuOpen){ // inventory state
 				updateInventory();
-                if(scrollingMenuOpen){
-
-                }
+                
+                if (scrollingMenuOpen) // late update
+                    updateScrollingMenu();
 			}
+			else{ // srolling menu state
+                updateScrollingMenu();
+            }
 		}
 		
         render();
@@ -854,29 +860,43 @@ void Party::setChestItem(Room& curRoom){
 }
 
 void Party::setScrollingMenu(){
-
+    
+    rectangleShapeScrolling.resize(0);
+    textScrolling.resize(0);
+    
     scrollingValue = 1;
     scrollingIndex = 0;
 
     sf::RectangleShape scrollMenu;
-    scrollMenu.setSize({10.f, 50.f});
-    scrollMenu.setFillColor(sf::Color::Transparent);
-    scrollMenu.setOutlineColor(sf::Color::Blue);
+    scrollMenu.setFillColor(sf::Color::White);
+    scrollMenu.setOutlineColor(sf::Color::Red);
     scrollMenu.setOutlineThickness(2.f);
 
     sf::Text txt;
     txt.setFont(scroll);
-    txt.setFillColor(sf::Color::White);
+    txt.setFillColor(sf::Color::Black);
+    txt.setCharacterSize(12);
+    
+    sf::FloatRect bounds;
+    
+    scrollingMenuCursor.setFillColor(sf::Color::Transparent);
+    scrollingMenuCursor.setOutlineColor(sf::Color::Blue);
+    scrollingMenuCursor.setOutlineThickness(2.f);
 
     switch(inventoryValue){ // RAJOUTER DANS 1/2 LA CONDITION DE SI LE COFFRE EST OUVERT, PROPOSER DE METTRE DANS LE COFFRE
         case 1: // unequip
             if(Aspen.getInventoryStuff(inventoryIndex)){
                 txt.setString("unequip");
-                txt.setPosition(arch.itemStuff[inventoryIndex][0] + 50.f, arch.itemStuff[inventoryIndex][1]);
+                txt.setPosition(arch.itemStuff[inventoryIndex][0] + 52.f, arch.itemStuff[inventoryIndex][1]);
                 textScrolling.push_back(txt);
 
-                scrollMenu.setPosition(arch.itemStuff[inventoryIndex][0] + 48.f, arch.itemStuff[inventoryIndex][1] - 2.f);
+                scrollMenu.setPosition(txt.getPosition().x - 2.f, txt.getPosition().y);
+                bounds = txt.getGlobalBounds();
+                scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                 rectangleShapeScrolling.push_back(scrollMenu);
+            }
+            else{
+                scrollingMenuOpen = false;
             }
             break;
 
@@ -885,82 +905,101 @@ void Party::setScrollingMenu(){
                 if(Aspen.getInventoryObject(inventoryIndex)->getType() == Object::Type::monsterLoot){
                     scrollingValue = 2;
                     txt.setString("move");
-                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1]);
+                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1]);
                     textScrolling.push_back(txt);
 
-                    scrollMenu.setPosition(arch.itemBag[inventoryIndex][0] + 48.f, arch.itemBag[inventoryIndex][1] - 2.f);
+                    scrollMenu.setPosition(txt.getPosition().x - 2.f, txt.getPosition().y);
+                    bounds = txt.getGlobalBounds();
+                    scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                     rectangleShapeScrolling.push_back(scrollMenu);
 
                     txt.setString("throw");
-                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1] + 15.f);
+                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1] + 15.f);
                     textScrolling.push_back(txt);
 
-                    scrollMenu.setPosition(arch.itemBag[inventoryIndex][0] + 48.f, arch.itemBag[inventoryIndex][1] + 13.f);
+                    scrollMenu.setPosition(txt.getPosition().x - 2.f, txt.getPosition().y);
+                    bounds = txt.getGlobalBounds();
+                    scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                     rectangleShapeScrolling.push_back(scrollMenu);
                 }
                 else if(Aspen.getInventoryObject(inventoryIndex)->getType() == Object::Type::potion){
                     scrollingValue = 3;
                     txt.setString("use");
-                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1]);
+                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1]);
                     textScrolling.push_back(txt);
 
-                    scrollMenu.setPosition(arch.itemBag[inventoryIndex][0] + 48.f, arch.itemBag[inventoryIndex][1] - 2.f);
+                    scrollMenu.setPosition(txt.getPosition().x - 2.f, txt.getPosition().y);
+                    bounds = txt.getGlobalBounds();
+                    scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                     rectangleShapeScrolling.push_back(scrollMenu);
 
                     txt.setString("move");
-                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1] + 15.f);
+                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1] + 15.f);
                     textScrolling.push_back(txt);
 
-                    scrollMenu.setPosition(arch.itemBag[inventoryIndex][0] + 48.f, arch.itemBag[inventoryIndex][1] + 13.f);
+                    scrollMenu.setPosition(txt.getPosition().x - 2.f, txt.getPosition().y);
+                    bounds = txt.getGlobalBounds();
+                    scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                     rectangleShapeScrolling.push_back(scrollMenu);
 
                     txt.setString("throw");
-                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1] + 30.f);
+                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1] + 30.f);
                     textScrolling.push_back(txt);
 
-                    scrollMenu.setPosition(arch.itemBag[inventoryIndex][0] + 48.f, arch.itemBag[inventoryIndex][1] + 28.f);
+                    scrollMenu.setPosition(txt.getPosition().x - 2.f, txt.getPosition().y);
+                    bounds = txt.getGlobalBounds();
+                    scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                     rectangleShapeScrolling.push_back(scrollMenu);
                 }
                 else{ // Si c'est un equipement
                     scrollingValue = 3;
                     txt.setString("equip");
-                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1]);
+                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1]);
                     textScrolling.push_back(txt);
 
-                    scrollMenu.setPosition(arch.itemBag[inventoryIndex][0] + 48.f, arch.itemBag[inventoryIndex][1] - 2.f);
+                    scrollMenu.setPosition(txt.getPosition().x - 2.f, txt.getPosition().y);
+                    bounds = txt.getGlobalBounds();
+                    scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                     rectangleShapeScrolling.push_back(scrollMenu);
 
                     txt.setString("move");
-                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1] + 15.f);
+                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1] + 15.f);
                     textScrolling.push_back(txt);
 
-                    scrollMenu.setPosition(arch.itemBag[inventoryIndex][0] + 48.f, arch.itemBag[inventoryIndex][1] + 13.f);
+                    scrollMenu.setPosition(txt.getPosition().x - 2.f, txt.getPosition().y);
+                    bounds = txt.getGlobalBounds();
+                    scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                     rectangleShapeScrolling.push_back(scrollMenu);
 
                     txt.setString("throw");
-                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1] + 30.f);
+                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1] + 30.f);
                     textScrolling.push_back(txt);
 
-                    scrollMenu.setPosition(arch.itemBag[inventoryIndex][0] + 48.f, arch.itemBag[inventoryIndex][1] + 28.f);
+                    scrollMenu.setPosition(txt.getPosition().x - 2.f, txt.getPosition().y);
+                    bounds = txt.getGlobalBounds();
+                    scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                     rectangleShapeScrolling.push_back(scrollMenu);
                 }
             }
+            else{
+                scrollingMenuOpen = false;
+            }
             break;
 
-        case 3: // ajouter a l'inventaire(enlever du coffre)
+        case 3: // ajouter a l'inventaire(enlever du coffre) seulement s'il y a un object, sinon fermer le scrollingMenu
             txt.setString("add to inventory");
-            txt.setPosition(arch.itemChest[inventoryIndex][0] + 50.f, arch.itemChest[inventoryIndex][1]);
+            txt.setPosition(arch.itemChest[inventoryIndex][0] + 52.f, arch.itemChest[inventoryIndex][1]);
             textScrolling.push_back(txt);
 
-            scrollMenu.setPosition(arch.itemChest[inventoryIndex][0] + 50.f, arch.itemChest[inventoryIndex][1] - 2.f);
+            scrollMenu.setPosition(txt.getPosition().x - 2.f, txt.getPosition().y);
+            bounds = txt.getGlobalBounds();
+            scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
             rectangleShapeScrolling.push_back(scrollMenu);
             break;
 
         default:
             break;
     }
-    txt.setCharacterSize(10); // ici sinon la taille n'est pas prise en compte
-    mWindow.draw(txt);
 }
 
 void Party::updateScrollingMenu(){
@@ -970,8 +1009,8 @@ void Party::updateScrollingMenu(){
         if (event.type == sf::Event::KeyPressed) {
 
             switch(event.key.code){
-                case sf::Keyboard::Escape: // on reviens a l'inventaire
-                    scrollingMenuOpen = !scrollingMenuOpen;
+                case sf::Keyboard::Space: // on reviens a l'inventaire
+                    scrollingMenuOpen = false;
                     break;
 
                 case sf::Keyboard::Z:// on monte dans la selection
@@ -1007,6 +1046,7 @@ void Party::updateScrollingMenu(){
 
 						}
 					}
+					scrollingMenuOpen = false;
                     break;
 
                 default:
@@ -1016,7 +1056,17 @@ void Party::updateScrollingMenu(){
         else if (event.type == sf::Event::Closed){
             mWindow.close();
         }
-        mWindow.draw(rectangleShapeScrolling[scrollingIndex]);
+    }
+    
+    sf::RectangleShape& pointedShape = rectangleShapeScrolling[scrollingIndex];
+    scrollingMenuCursor.setPosition(pointedShape.getPosition());
+    
+    if (scrollingIndex + 1 < rectangleShapeScrolling.size()){
+        sf::RectangleShape& nextToPointed = rectangleShapeScrolling[scrollingIndex + 1];
+        scrollingMenuCursor.setSize({pointedShape.getSize().x, nextToPointed.getPosition().y - pointedShape.getPosition().y - 2.f});
+    }
+    else{
+        scrollingMenuCursor.setSize(pointedShape.getSize());
     }
 }
 
@@ -1093,7 +1143,10 @@ void Party::updateInventory(){
 					break;
 
 				case sf::Keyboard::Space: // on ouvre les menu déroulant
-                    //scrollingMenu();
+					{
+						scrollingMenuOpen = true;
+						setScrollingMenu();
+					}
 					break;
 				
 				case sf::Keyboard::E: // on ferme l'inventaire
@@ -1142,6 +1195,16 @@ void Party::drawPlayerInventory(){ // 1: stuff, 2: bag, 3: chest
 		mWindow.draw(s.second);
 	
 	mWindow.draw(sInventoryCursor);
+	
+	if (scrollingMenuOpen){
+        for (auto& rect : rectangleShapeScrolling){
+            mWindow.draw(rect);
+        }
+        for (auto& text : textScrolling){
+            mWindow.draw(text);
+        }
+        mWindow.draw(scrollingMenuCursor);
+    }
 }
 
 void Party::reloadRoom(){
