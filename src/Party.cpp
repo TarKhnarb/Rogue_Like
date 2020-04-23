@@ -985,31 +985,26 @@ void Party::updateScrollingMenu(){
                     break;
 
                 case sf::Keyboard::Return:// on appui sur entrer on applique le choix selectionné
-                    std::string value = sf::String::toUtf8(textScrolling[scrollingIndex].getString());
+                    std::string action = textScrolling[scrollingIndex].getString();
 
-                    switch(value){
-                        case "use": // on utilise la potion donc on régénère la vie du player
-                            break;
+                    if(action == std::string("use")){// on utilise la potion donc on régénère la vie du player
 
-                        case "throw": // on jette l'item par terre
-                            break;
-
-                        case "move": // on déplace l'objet là ou le player choisi l'emplacement via le cursor de playerInventory
-                            break;
-
-                        case "equip": // On équip l'objet dans le stuff
-                            break;
-
-                        case "unequip": // on déséquip l'object
-                            break;
-
-                        case "add to inventory": // on ajoute l'objet du coffre a l'inventaire
-                            break;
-
-                        default:
-                            break;
                     }
-                    break;
+                    else if(action == std::string("throw")){ // on jette l'item par terre
+
+                    }
+                    else if(action == std::string("move")){ // on déplace l'objet là ou le player choisi l'emplacement via le cursor de playerInventory
+
+                    }
+                    else if(action == std::string("equip")){ // On équip l'objet dans le stuff
+
+                    }
+                    else if(action == std::string("unequip")) {
+
+                    }
+                    else if(action == std::string("add to inventory")){ // on ajoute l'objet du coffre a l'inventaire
+
+                    }
 
                 default:
                     break;
