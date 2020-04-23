@@ -34,11 +34,17 @@ Party::Party():
 
     loadRectangleShape("Trap");
 
+    scroll.loadFromFile("data/Font/verdana.ttf"); // charge le police d'écriture verdana
+
     loadAnimation();
     
 	rocksCollider.setStyle(Style::Separated);
     setInventoryItem();
 	reloadRoom();
+
+	Aspen.addInventoryObject(60, 1); // monsterLoot
+	Aspen.addInventoryObject(47, 1); // potion
+	Aspen.addInventoryObject(11, 1); // equipement
 }
 
 Party::~Party(){
@@ -845,19 +851,63 @@ void Party::setChestItem(Room& curRoom){
 }
 
 void Party::scrollingMenu(){
-    switch(inventoryValue){
+    //sf::Font scroll;
+    //sf::RectangleShape scrollingMenu;
+
+    sf::Text txt;
+    txt.setFont(scroll);
+    txt.setFillColor(sf::Color::White);
+
+    switch(inventoryValue){ // RAJOUTER DANS 1/2 LA CONDITION DE SI LE COFFRE EST OUVERT, PROPOSER DE METTRE DANS LE COFFRE
         case 1: // unequip
+            if(Aspen.getInventoryStuff(inventoryIndex)){
+                txt = sf::Text("unequip", scroll);
+                txt.setPosition(arch.itemStuff[inventoryIndex][0] + 50.f, arch.itemStuff[inventoryIndex][1]);
+            }
             break;
 
         case 2: // deplacer, jeter, equip, (ajouter au coffre si le coffre est ouvert)
+            if(Aspen.getInventoryObject(inventoryIndex)){
+                if(Aspen.getInventoryObject(inventoryIndex)->getType() == Object::Type::monsterLoot){
+                    txt = sf::Text("move", scroll);
+                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1]);
+
+                    txt = sf::Text("throw", scroll);
+                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1] + 15.f);
+                }
+                else if(Aspen.getInventoryObject(inventoryIndex)->getType() == Object::Type::potion){
+                    txt = sf::Text("use", scroll);
+                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1]);
+
+                    txt = sf::Text("move", scroll);
+                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1] + 15.f);
+
+                    txt = sf::Text("throw", scroll);
+                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1] + 30.f);
+                }
+                else{ // Si c'est un equipement
+                    txt = sf::Text("equip", scroll);
+                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1]);
+
+                    txt = sf::Text("move", scroll);
+                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1] + 15.f);
+
+                    txt = sf::Text("throw", scroll);
+                    txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1] + 30.f);
+                }
+            }
             break;
 
         case 3: // ajouter a l'inventaire(enlever du coffre)
+            txt = sf::Text("add to inventory", scroll);
+            txt.setPosition(arch.itemBag[inventoryIndex][0] + 50.f, arch.itemBag[inventoryIndex][1]);
             break;
 
         default:
             break;
     }
+    txt.setCharacterSize(10); // sinon la taille n'est pas prise en compte
+    mWindow.draw(txt);
 }
 
 void Party::updateInventory(){
@@ -933,6 +983,7 @@ void Party::updateInventory(){
 					break;
 
 				case sf::Keyboard::Space: // on ouvre les menu déroulant
+                    //scrollingMenu();
 					break;
 				
 				case sf::Keyboard::E: // on ferme l'inventaire
@@ -1189,6 +1240,9 @@ void Party::render(){
 	
 	if(inventoryOpen) {
 		drawPlayerInventory();
+        //scrollingMenu();
+
+        //mWindow.draw(txt);
 	}
 		
     mWindow.display();
