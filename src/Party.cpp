@@ -828,6 +828,13 @@ void Party::setInventoryStats(){
 
 void Party::setInventoryItem(){
 
+    viewAspen.setSize({60.f, 120.f});
+    viewAspen.setPosition(arch.inventoryAspen[0], arch.inventoryAspen[1]);
+    sf::Texture *textu = getTexture("AspenFront");
+    textu->setSmooth(true);
+    viewAspen.setTexture(textu);
+    viewAspen.setTextureRect(sf::IntRect(0, 0, 40, 80));
+
     playerInventory.setSize({480.f, 280.f});
     playerInventory.setPosition(arch.playerInventory[0], arch.playerInventory[1]);
     playerInventory.setTexture(getTexture("PlayerInventory"));
@@ -1352,6 +1359,8 @@ void Party::drawPlayerInventory(){ // 1: stuff, 2: bag, 3: chest
             mWindow.draw(moveCursor);
         }
     }
+
+    mWindow.draw(viewAspen);
 
     for(auto &txt : textStats)
         mWindow.draw(txt);

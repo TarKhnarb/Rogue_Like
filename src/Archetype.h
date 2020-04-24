@@ -26,7 +26,7 @@ struct Archetype{
             {{422, 95}, {422, 150}, {422, 205},
              {557, 95}, {557, 150}, {557, 205}};
 
-    const float inventoryAspen[2] = {485, 125};
+    const float inventoryAspen[2] = {485, 115};
 
     const float chestInventory[2] = {400, 360};
 

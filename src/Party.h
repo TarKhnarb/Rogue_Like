@@ -134,6 +134,7 @@ private:
 	bool inventoryOpen = false; // si l'inventaire est ouvert bloque les mouvements du player et ne permet que les mouvements dans l'inventaire
 	sf::RectangleShape playerInventory;
 	sf::RectangleShape chestInventory;
+	sf::RectangleShape viewAspen;
 
 	std::map<unsigned, sf::RectangleShape> bagItem;
 	std::map<unsigned, sf::RectangleShape> stuffItem;
