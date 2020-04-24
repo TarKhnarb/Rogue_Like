@@ -27,7 +27,7 @@ public:
     void addInChest(unsigned); // add un object avec son id
 
     void placeInChest(unsigned); // Index de l'inventaire du joueur
-    void removeFromChest(unsigned); // Index de l'inventaire du coffre
+    unsigned removeFromChest(unsigned); // Index de l'inventaire du coffre et renvoie l'id de l'objet supprimé
 
     //bool chestIsEmpty(); // A voir si utile ou non
 

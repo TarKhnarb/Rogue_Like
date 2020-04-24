@@ -23,7 +23,7 @@ void Chest::addInChest(unsigned id) {
     chest.addObject(id);
 }
 
-void Chest::removeFromChest(unsigned indexC) { // Prend l'index du coffre, PEUT ETRE UN PEU LEGER, A TESTER SI SUFFISANT
+unsigned Chest::removeFromChest(unsigned indexC) { // Prend l'index du coffre, PEUT ETRE UN PEU LEGER, A TESTER SI SUFFISANT
 
     unsigned objId = chest.getObject(indexC)->getId();
     unsigned objNb = chest.getObject(indexC)->getObjectNumber();
@@ -35,6 +35,8 @@ void Chest::removeFromChest(unsigned indexC) { // Prend l'index du coffre, PEUT 
     else{
         chest.removeObject(objId, objNb-objAdd);
     }
+
+    return objId;
 }
 
 void Chest::loadChest(std::string fileName) {

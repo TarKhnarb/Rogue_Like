@@ -1122,16 +1122,18 @@ void Party::updateScrollingMenu(){
                         scrollingIndex++;
                     break;
 
-                case sf::Keyboard::Return:// on appui sur entrer on applique le choix selectionné
-					{
+                case sf::Keyboard::Return:{// on appui sur entrer on applique le choix selectionné
+
 						std::string action = textScrolling[scrollingIndex].getString();
 
 						if(action == std::string("Use")){// on utilise la potion donc on régénère la vie du player
+
 							Aspen.usePotion(inventoryIndex);
                             setInventoryItem();
                             scrollingMenuOpen = false;
 						}
 						else if(action == std::string("Trash")){ // on jette l'item par terre
+
                             Aspen.removeInventoryObject(inventoryIndex);
                             setInventoryItem();
                             scrollingMenuOpen = false;
@@ -1140,17 +1142,21 @@ void Party::updateScrollingMenu(){
                             moveObjectOpen = true;
 						}
 						else if(action == std::string("Equip")){ // On équip l'objet dans le stuff
+
                             Aspen.equipObject(inventoryIndex);
                             setInventoryItem();
                             scrollingMenuOpen = false;
 						}
 						else if(action == std::string("Unequip")) {
+
                             Aspen.unequipObject(inventoryIndex);
                             setInventoryItem();
                             scrollingMenuOpen = false;
 						}
 						else if(action == std::string("Add to inventory")){ // on ajoute l'objet du coffre a l'inventaire
-							// TODO ajouter l'objet dans le sac du joueur
+
+							Chest *chest = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getChest();
+						    Aspen.addInventoryObject(chest->removeFromChest(scrollingIndex), chest->getItem(scrollingIndex)->getObjectNumber());
                             setInventoryItem();
                             setChestItem(*donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false)));
 						    scrollingMenuOpen = false;
@@ -1640,10 +1646,11 @@ void Party::render(){
 	mWindow.draw(aspenAnimated);
 	
 	if(inventoryOpen) {
+        if(chestOpen){
+            drawChestInventory();
+        }
 		drawPlayerInventory();
-		if(chestOpen){
-		    drawChestInventory();
-		}
+
 	}
 		
     mWindow.display();
