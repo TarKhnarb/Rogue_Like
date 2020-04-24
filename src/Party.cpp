@@ -1298,6 +1298,7 @@ void Party::updateInventory(){
 				
 				case sf::Keyboard::E: // on ferme l'inventaire
 					inventoryOpen = false;
+					chestOpen = false;
                     mIsMovingUp = false;
                     mIsMovingDown = false;
                     mIsMovingLeft = false;
@@ -1330,6 +1331,16 @@ void Party::updateInventory(){
             break;
     }
 
+}
+
+void Party::drawChestInventory(){
+    Chest *chest = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getChest();
+
+    if(chest && chestOpen){
+        mWindow.draw(chestInventory);
+        for(auto &c : chestItem)
+            mWindow.draw(c.second);
+    }
 }
 
 void Party::drawPlayerInventory(){ // 1: stuff, 2: bag, 3: chest
@@ -1406,11 +1417,15 @@ void Party::entityCollision(){
 	Collider playerCol (sPlayerCol);
 	
     playerCol.checkCollision(wallsCollider, colDirection, 0.f);
-	playerCol.checkCollision(rocksCollider, colDirection, 0.f);
-	playerCol.checkCollision(chestsCollider, colDirection, 0.f);
+
+	if(playerCol.checkCollision(chestsCollider, colDirection, 0.f)){
+	    inventoryOpen = !inventoryOpen;
+	    chestOpen = !chestOpen;
+	}
 
 	if (!Aspen.entityCanFly()){
 		playerCol.checkCollision(holesCollider, colDirection, 0.f);
+        playerCol.checkCollision(rocksCollider, colDirection, 0.f);
 	}
 
 	if (!sTrap.empty())
@@ -1572,6 +1587,9 @@ void Party::render(){
 	
 	if(inventoryOpen) {
 		drawPlayerInventory();
+		if(chestOpen){
+		    drawChestInventory();
+		}
 	}
 		
     mWindow.display();
