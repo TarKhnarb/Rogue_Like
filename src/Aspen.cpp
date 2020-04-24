@@ -6,20 +6,19 @@
 //#include "Donjon.h"
 //#include "Npc.h"
 #include "Stage.h"
-#include "chest.h"
 
-int main(){
+/*int main(){
     Chest chest;
 
     Stage test;
     test.gererate()
-}
+}*/
 
-/*
 int main(){
     Party game;
     game.run();
-}*/
+}
+
 /*int main()
 {
     sf::RenderWindow window(sf::VideoMode(640, 480), "SFMLApplication");

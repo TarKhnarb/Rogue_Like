@@ -1151,6 +1151,7 @@ void Party::updateScrollingMenu(){
                             scrollingMenuOpen = false;
 						}
 						else if(action == std::string("Add to inventory")){ // on ajoute l'objet du coffre a l'inventaire
+							// TODO ajouter l'objet dans le sac du joueur
                             setInventoryItem();
                             setChestItem(*donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false)));
 						    scrollingMenuOpen = false;
@@ -1251,6 +1252,15 @@ void Party::updateInventory(){
 						if (inventoryIndex != 0)
 							--inventoryIndex;
 					}
+					else if (inventoryValue == 3){ // dans le coffre
+						if (inventoryIndex > 4){
+							inventoryIndex -= 5;
+						}
+						else {
+							inventoryValue = 2;
+							inventoryIndex = playerBagSize - 1;
+						}
+					}
 					break;
 
 				case sf::Keyboard::Q: // On se décale a gauche
@@ -1268,14 +1278,24 @@ void Party::updateInventory(){
 							inventoryIndex -= 3;
 						}
 					}
+					else if (inventoryValue == 3){ // dans le coffre
+						if (inventoryIndex != 0){
+							--inventoryIndex;
+						}
+						else{
+							inventoryValue = 2;
+							inventoryIndex = playerBagSize - 1;
+						}
+					}
 					break;
 
 				case sf::Keyboard::S: // on descend dans l'inventaire
 					if (inventoryValue == 2){ // dans le sac
 						if (inventoryIndex != playerBagSize - 1)
 							++inventoryIndex;
-						else{
-							// se déplacer dans le coffre et mettre l'index à 0
+						else if (chestOpen){
+							inventoryValue = 3;
+							inventoryIndex = 0;
 						}
 					}
 					else if (inventoryValue == 1){ // dans le stuff
@@ -1286,12 +1306,22 @@ void Party::updateInventory(){
 							inventoryIndex = 0;
 						}
 					}
+					else if (inventoryValue == 3){ // dans le coffre
+						if (inventoryIndex < 15)
+							inventoryIndex += 5;
+					}
 					break;
 
 				case sf::Keyboard::D: // on va a droite dans l'inventaire
 					if(inventoryValue == 2){
 						if(inventoryIndex < 5){
 							inventoryIndex += 5;
+						}
+						else if (chestOpen){
+							inventoryValue = 3;
+							inventoryIndex -= 5;
+							if (inventoryIndex > 3)
+								inventoryIndex = 3;
 						}
 					}
 					else if(inventoryValue == 1){
@@ -1301,6 +1331,11 @@ void Party::updateInventory(){
 						}
 						else if(inventoryIndex < 3){
 							inventoryIndex += 3;
+						}
+					}
+					else if (inventoryValue == 3){ // dans le coffre
+						if (inventoryIndex < 19){
+							++inventoryIndex;
 						}
 					}
 					break;
@@ -1354,8 +1389,11 @@ void Party::drawChestInventory(){
 
     if(chest && chestOpen){
         mWindow.draw(chestInventory);
+		
         for(auto &c : chestItem)
             mWindow.draw(c.second);
+		
+		mWindow.draw(sInventoryCursor);
     }
 }
 
@@ -1437,6 +1475,8 @@ void Party::entityCollision(){
 	if(playerCol.checkCollision(chestsCollider, colDirection, 0.f)){
 	    inventoryOpen = true;
 	    chestOpen = true;
+		inventoryValue = 2;
+        inventoryIndex = 0;
 	}
 
 	if (!Aspen.entityCanFly()){
