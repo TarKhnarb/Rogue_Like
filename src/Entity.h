@@ -9,6 +9,7 @@
 #include <string>
 #include <iostream>
 #include <math.h>
+#include <cassert>
 
 const unsigned monsterBagSize = 3;
 const unsigned playerBagSize = 10;
@@ -73,6 +74,7 @@ public :
 	
 	void swapObjects(unsigned, unsigned);
 
+    void usePotion(unsigned);// utilise un potion en fonction de son index
     /**
     * @brief check if player can fly
     * @return a bool : 1 if player can fly >> 0 if not
@@ -101,6 +103,16 @@ public :
     bool inventoryEmpty();
 
     std::string getName() const;
+    unsigned getMoney() const;
+    unsigned addMoney(unsigned);
+    unsigned getMaxLife() const;
+    unsigned getAttack() const;
+    unsigned getAttackSpeed() const;
+    unsigned getDefence() const;
+    unsigned getSpeed() const;
+
+    int getLife() const;
+    void setLife(int);
 
     /**
      * @brief displays the statistics of the entity
@@ -118,7 +130,8 @@ private:
     unsigned money;
     Orientation orientation; //0 = North, 1 = East, 2 = South, 3 = West
 
-    unsigned life;
+    int life;
+    unsigned maxLife;
     unsigned attack;
     unsigned attackSpeed;
     unsigned defence;

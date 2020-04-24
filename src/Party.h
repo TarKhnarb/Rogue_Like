@@ -54,6 +54,7 @@ private:
     void setTrapRectangleShape(Room&);
     void setRectangleShapeForCurrentRoom();
 
+    void setInventoryStats(); // pour afficher les stats du joueur
     void setInventoryItem(); // bag et stuff
     void setChestItem(Room&);
 
@@ -139,6 +140,10 @@ private:
 	std::map<unsigned, sf::RectangleShape> chestItem; // Si pas d'item, le rectangleShape est blanc, unsigned -> place dans l'inventaire
 	std::map<unsigned, sf::Text> objectsNumber;
 	sf::Font objectsFont;
+	
+	// stats for player's inventory
+	sf::Font statsFont;
+	std::vector<sf::Text> textStats;
 	
 	sf::RectangleShape sInventoryCursor;
     unsigned inventoryValue; // 1: stuff, 2: bag, 3: chest

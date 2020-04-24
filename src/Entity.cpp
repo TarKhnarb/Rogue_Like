@@ -39,7 +39,7 @@ void Entity::getStatistics() {
                 break;
 
             case 3:
-                life = entityStats.at(i);
+                maxLife = entityStats.at(i);
                 break;
 
             case 4:
@@ -81,10 +81,12 @@ void Entity::sellObject(unsigned id, unsigned number) {
 
 void Entity::equipObject(unsigned inventoryIndex) {
     inventory.equip(inventoryIndex);
+    getStatistics();
 }
 
 void Entity::unequipObject(unsigned inventoryIndex) {
     inventory.unequip(inventoryIndex);
+    getStatistics();
 }
 
 const Object* Entity::getInventoryObject(unsigned index) const {
@@ -113,6 +115,19 @@ unsigned Entity::removeInventoryObjectNb(unsigned id, unsigned objectNb) {
 
 void Entity::swapObjects(unsigned id1, unsigned id2) {
     inventory.swapBagBag(id1, id2);
+}
+
+void Entity::usePotion(unsigned index){
+    assert((inventory.getObject(index))->getType() == Object::Type::potion);
+
+    unsigned heal = (inventory.getObject(index)->getStats()).at(3); // récupère la vie a rendre au joueur
+
+    if((life + heal) <= maxLife)
+        life += heal;
+    else
+        life = maxLife;
+
+    inventory.removeObject(inventory.getObject(index)->getId(), 1);
 }
 
 bool Entity::entityCanFly()const{
@@ -169,6 +184,38 @@ bool Entity::inventoryEmpty() {
 
 std::string Entity::getName() const {
     return name;
+}
+
+unsigned Entity::getMoney() const{
+    return money;
+}
+
+unsigned Entity::getMaxLife() const{
+    return maxLife;
+}
+
+unsigned Entity::getAttack() const{
+    return attack;
+}
+
+unsigned Entity::getAttackSpeed() const{
+    return attackSpeed;
+}
+
+unsigned Entity::getDefence() const{
+    return defence;
+}
+
+unsigned Entity::getSpeed() const{
+    return speed;
+}
+
+int Entity::getLife() const{
+    return life;
+}
+
+void Entity::setLife(int value){
+    life = value;
 }
 
 void Entity::displayEntity() {
