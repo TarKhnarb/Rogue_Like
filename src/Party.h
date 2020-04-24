@@ -54,6 +54,7 @@ private:
     void setTrapRectangleShape(Room&);
     void setRectangleShapeForCurrentRoom();
 
+    void setInventoryStats(); // pour afficher les stats du joueur
     void setInventoryItem(); // bag et stuff
     void setChestItem(Room&);
 
@@ -152,6 +153,9 @@ private:
     unsigned scrollingIndex;
 	
 	sf::RectangleShape scrollingMenuCursor;
+	    // stats for player's inventory
+	sf::Font stats;
+	std::vector<sf::Text> textStats;
 
 };
 

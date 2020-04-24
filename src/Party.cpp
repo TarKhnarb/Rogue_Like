@@ -783,6 +783,42 @@ void Party::setRectangleShapeForCurrentRoom(){
     }
 }
 
+void Party::setInventoryStats(){
+
+    textStats.resize(0);
+
+    sf::Text txtStat;
+    txtStat.setFont(stats);
+    txtStat.setCharacterSize(10);
+    txtStat.setFillColor(sf::Color::White);
+    txtStat.setOutlineColor(sf::Color::Black);
+    txtStat.setOutlineThickness(1.f);
+
+    txtStat.setString("Max Life :   "+ std::to_string(Aspen.getMaxLife()));
+    txtStat.setPosition(arch.statInventory[0][0], arch.statInventory[0][1]);
+    textStats.push_back(txtStat);
+
+    txtStat.setString("Attack :   "+ std::to_string(Aspen.getAttack()));
+    txtStat.setPosition(arch.statInventory[0][0], arch.statInventory[0][1] + 25.f);
+    textStats.push_back(txtStat);
+
+    txtStat.setString("AttackSpeed :   "+ std::to_string(Aspen.getAttackSpeed()));
+    txtStat.setPosition(arch.statInventory[0][0], arch.statInventory[0][1] + 50.f);
+    textStats.push_back(txtStat);
+
+    txtStat.setString("Defence :   "+ std::to_string(Aspen.getDefence()));
+    txtStat.setPosition(arch.statInventory[1][0], arch.statInventory[1][1]);
+    textStats.push_back(txtStat);
+
+    txtStat.setString("Speed :   "+ std::to_string(Aspen.getSpeed()));
+    txtStat.setPosition(arch.statInventory[1][0], arch.statInventory[1][1] + 25.f);
+    textStats.push_back(txtStat);
+
+    txtStat.setString("Money :   "+ std::to_string(Aspen.getMoney()));
+    txtStat.setPosition(arch.statInventory[1][0], arch.statInventory[1][1] + 50.f);
+    textStats.push_back(txtStat);
+}
+
 void Party::setInventoryItem(){
 
     playerInventory.setSize({480.f, 280.f});
@@ -861,6 +897,9 @@ void Party::setInventoryItem(){
     sInventoryCursor.setFillColor(sf::Color::Transparent);
     sInventoryCursor.setOutlineThickness(2.f);
     sInventoryCursor.setOutlineColor(sf::Color::Blue);
+
+        // player's stats
+    setInventoryStats();
 }
 
 void Party::setChestItem(Room& curRoom){
@@ -1058,7 +1097,8 @@ void Party::updateScrollingMenu(){
 						std::string action = textScrolling[scrollingIndex].getString();
 
 						if(action == std::string("Use")){// on utilise la potion donc on régénère la vie du player
-
+                            Aspen.usePotion(inventoryIndex);
+                            setInventoryItem();
 						}
 						else if(action == std::string("Trash")){ // on jette l'item par terre
                             Aspen.removeInventoryObject(inventoryIndex);
@@ -1241,6 +1281,9 @@ void Party::drawPlayerInventory(){ // 1: stuff, 2: bag, 3: chest
         }
         mWindow.draw(scrollingMenuCursor);
     }
+
+    for(auto &txt : textStats)
+        mWindow.draw(txt);
 }
 
 void Party::reloadRoom(){
@@ -1449,9 +1492,6 @@ void Party::render(){
 	
 	if(inventoryOpen) {
 		drawPlayerInventory();
-        //scrollingMenu();
-
-        //mWindow.draw(txt);
 	}
 		
     mWindow.display();
