@@ -47,6 +47,7 @@ Party::Party():
     
 	rocksCollider.setStyle(Style::Separated);
     setInventoryItem();
+    setChestItem(*donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false)));
 	reloadRoom();
 }
 
@@ -920,8 +921,13 @@ void Party::setChestItem(Room& curRoom){
     sf::RectangleShape item;
     Chest* chest = curRoom.getChest();
 
+    chestInventory.setSize({480.f, 280.f});
+    chestInventory.setPosition(arch.chestInventory[0], arch.chestInventory[1]);
+    chestInventory.setTexture(getTexture("ChestInventory"));
+
     if(chest){
         chestItem.clear();
+        std::cout << chestOpen << std::endl;
 
         for (unsigned i = 0; i < chestSize; ++i){
             const Object* object = chest->getItem(i);
@@ -1076,14 +1082,19 @@ void Party::setScrollingMenu(){
             break;
 
         case 3: // ajouter a l'inventaire(enlever du coffre) seulement s'il y a un object, sinon fermer le scrollingMenu
-            txt.setString("Add to inventory");
-            txt.setPosition(arch.itemChest[inventoryIndex][0] + 52.f, arch.itemChest[inventoryIndex][1]);
-            textScrolling.push_back(txt);
+            if(Aspen.getInventoryObject(inventoryIndex)){
+                scrollingValue = 1;
+                txt.setString("Add to inventory");
+                txt.setPosition(arch.itemChest[inventoryIndex][0] + 52.f, arch.itemChest[inventoryIndex][1]);
+                textScrolling.push_back(txt);
 
-            scrollMenu.setPosition(txt.getPosition().x - 2.f, txt.getPosition().y);
-            bounds = txt.getGlobalBounds();
-            scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
-            rectangleShapeScrolling.push_back(scrollMenu);
+                scrollMenu.setPosition(txt.getPosition().x - 2.f, txt.getPosition().y);
+                bounds = txt.getGlobalBounds();
+                scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
+                rectangleShapeScrolling.push_back(scrollMenu);
+            }
+            else
+                scrollingMenuOpen = false;
             break;
 
         default:
@@ -1140,7 +1151,9 @@ void Party::updateScrollingMenu(){
                             scrollingMenuOpen = false;
 						}
 						else if(action == std::string("Add to inventory")){ // on ajoute l'objet du coffre a l'inventaire
-                            scrollingMenuOpen = false;
+                            setInventoryItem();
+                            setChestItem(*donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false)));
+						    scrollingMenuOpen = false;
 						}
 					}
                     break;
@@ -1200,6 +1213,9 @@ void Party::updateMoveObject(){
                 case sf::Keyboard::Return: // on valide le mouvement
                     Aspen.swapObjects(inventoryIndex, moveObjectIndex);
                     setInventoryItem();
+
+                    if(chestOpen)
+                        setChestItem(*donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false)));
                     moveObjectOpen = false;
                     scrollingMenuOpen = false;
 					inventoryIndex = moveObjectIndex;
@@ -1419,8 +1435,8 @@ void Party::entityCollision(){
     playerCol.checkCollision(wallsCollider, colDirection, 0.f);
 
 	if(playerCol.checkCollision(chestsCollider, colDirection, 0.f)){
-	    inventoryOpen = !inventoryOpen;
-	    chestOpen = !chestOpen;
+	    inventoryOpen = true;
+	    chestOpen = true;
 	}
 
 	if (!Aspen.entityCanFly()){

@@ -418,6 +418,10 @@ void Stage::reset(unsigned stage) {
 
     unsigned mid = (maxSize - 1)/2;
     RoomsMap[mid][mid] = new Room(roomType::Start, hero);
+
+    /*
+     * You can also used this version which allow you to change the type of "CommonStage" to "Start" at the 2nd stage
+     */
 }
 
 /************************
