@@ -106,8 +106,13 @@ unsigned Entity::addInventoryObjectNb(unsigned id, unsigned int objectNb) {
 void Entity::removeInventoryObject(unsigned index) {
     inventory.removeObject(index);
 }
+
 unsigned Entity::removeInventoryObjectNb(unsigned id, unsigned objectNb) {
     return inventory.removeObject(id, objectNb);
+}
+
+void Entity::swapObjects(unsigned id1, unsigned id2) {
+    inventory.swapBagBag(id1, id2);
 }
 
 bool Entity::entityCanFly()const{

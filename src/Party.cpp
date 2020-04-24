@@ -88,8 +88,14 @@ void Party::run(){
                 if (scrollingMenuOpen) // late update
                     updateScrollingMenu();
 			}
-			else{ // srolling menu state
+			else if (!moveObjectOpen){ // srolling menu state
                 updateScrollingMenu();
+                
+                if (moveObjectOpen) // late update
+                    updateMoveObject();
+            }
+            else{ // move object state
+                updateMoveObject();
             }
 		}
 		
@@ -912,6 +918,12 @@ void Party::setScrollingMenu(){
     scrollingMenuCursor.setFillColor(sf::Color::Transparent);
     scrollingMenuCursor.setOutlineColor(sf::Color::Blue);
     scrollingMenuCursor.setOutlineThickness(2.f);
+    
+    moveCursor.setSize({50.f, 50.f});
+	moveCursor.setFillColor(sf::Color::Transparent);
+	moveCursor.setOutlineColor(sf::Color::Green);
+	moveCursor.setOutlineThickness(2.f);
+    moveObjectIndex = inventoryIndex;
 
     switch(inventoryValue){ // RAJOUTER DANS 1/2 LA CONDITION DE SI LE COFFRE EST OUVERT, PROPOSER DE METTRE DANS LE COFFRE
         case 1: // unequip
@@ -1058,28 +1070,31 @@ void Party::updateScrollingMenu(){
 						std::string action = textScrolling[scrollingIndex].getString();
 
 						if(action == std::string("Use")){// on utilise la potion donc on régénère la vie du player
-
+                            setInventoryItem();
+                            scrollingMenuOpen = false;
 						}
 						else if(action == std::string("Trash")){ // on jette l'item par terre
                             Aspen.removeInventoryObject(inventoryIndex);
                             setInventoryItem();
+                            scrollingMenuOpen = false;
 						}
 						else if(action == std::string("Move")){ // on déplace l'objet là ou le player choisi l'emplacement via le cursor de playerInventory
-
+                            moveObjectOpen = true;
 						}
 						else if(action == std::string("Equip")){ // On équip l'objet dans le stuff
                             Aspen.equipObject(inventoryIndex);
                             setInventoryItem();
+                            scrollingMenuOpen = false;
 						}
 						else if(action == std::string("Unequip")) {
                             Aspen.unequipObject(inventoryIndex);
                             setInventoryItem();
+                            scrollingMenuOpen = false;
 						}
 						else if(action == std::string("Add to inventory")){ // on ajoute l'objet du coffre a l'inventaire
-
+                            scrollingMenuOpen = false;
 						}
 					}
-					scrollingMenuOpen = false;
                     break;
 
                 default:
@@ -1101,6 +1116,56 @@ void Party::updateScrollingMenu(){
     else{
         scrollingMenuCursor.setSize(pointedShape.getSize());
     }
+}
+
+void Party::updateMoveObject(){
+    sf::Event event;
+	while (mWindow.pollEvent(event)){
+		if (event.type == sf::Event::KeyPressed){
+			switch(event.key.code){
+				case sf::Keyboard::Z: // On monte dans l'inventaire
+                    if (moveObjectIndex != 0)
+                        --moveObjectIndex;
+					break;
+
+				case sf::Keyboard::Q: // On se décale a gauche
+                    if(moveObjectIndex > 4){
+                        moveObjectIndex -= 5;
+                    }
+					break;
+
+				case sf::Keyboard::S: // on descend dans l'inventaire
+                    if (moveObjectIndex != playerBagSize - 1)
+                        ++moveObjectIndex;
+					break;
+
+				case sf::Keyboard::D: // on va a droite dans l'inventaire
+                    if(moveObjectIndex < 5){
+                        moveObjectIndex += 5;
+                    }
+                    break;
+
+                case sf::Keyboard::Space: // on abandonne le move
+                    moveObjectOpen = false;
+                    break;
+                
+                case sf::Keyboard::Return: // on valide le mouvement
+                    Aspen.swapObjects(inventoryIndex, moveObjectIndex);
+                    setInventoryItem();
+                    moveObjectOpen = false;
+                    scrollingMenuOpen = false;
+                    break;
+                    
+                default: // On ne bouge pas le curseur
+                    break;
+            }
+        }
+        else if (event.type == sf::Event::Closed){
+            mWindow.close();
+        }
+    }
+    
+    moveCursor.setPosition(arch.itemBag[moveObjectIndex][0], arch.itemBag[moveObjectIndex][1]);
 }
 
 void Party::updateInventory(){
@@ -1145,7 +1210,7 @@ void Party::updateInventory(){
 						if (inventoryIndex != playerBagSize - 1)
 							++inventoryIndex;
 						else{
-							// se déplacer dans le sac et mettre l'index à 0
+							// se déplacer dans le coffre et mettre l'index à 0
 						}
 					}
 					else if (inventoryValue == 1){ // dans le stuff
@@ -1240,6 +1305,10 @@ void Party::drawPlayerInventory(){ // 1: stuff, 2: bag, 3: chest
             mWindow.draw(text);
         }
         mWindow.draw(scrollingMenuCursor);
+        
+        if (moveObjectOpen){
+            mWindow.draw(moveCursor);
+        }
     }
 }
 

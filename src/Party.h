@@ -59,6 +59,7 @@ private:
 
     void setScrollingMenu();
     void updateScrollingMenu();
+	void updateMoveObject();
     void updateInventory();
     void drawPlayerInventory();
 	
@@ -152,7 +153,10 @@ private:
     unsigned scrollingIndex;
 	
 	sf::RectangleShape scrollingMenuCursor;
-
+	
+	bool moveObjectOpen = false;
+	sf::RectangleShape moveCursor;
+	unsigned moveObjectIndex;
 };
 
 #endif
