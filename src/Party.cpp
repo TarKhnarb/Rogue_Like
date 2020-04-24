@@ -47,7 +47,6 @@ Party::Party():
     
 	rocksCollider.setStyle(Style::Separated);
     setInventoryItem();
-    setChestItem(*donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false)));
 	reloadRoom();
 }
 
@@ -1214,9 +1213,6 @@ void Party::updateMoveObject(){
                 case sf::Keyboard::Return: // on valide le mouvement
                     Aspen.swapObjects(inventoryIndex, moveObjectIndex);
                     setInventoryItem();
-
-                    if(chestOpen)
-                        setChestItem(*donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false)));
                     moveObjectOpen = false;
                     scrollingMenuOpen = false;
 					inventoryIndex = moveObjectIndex;
@@ -1447,6 +1443,8 @@ void Party::reloadRoom(){
 	
 	setSpritesForCurrentRoom();
     setRectangleShapeForCurrentRoom();
+	
+	setChestItem(*curRoom);
 }
 
 void Party::loadNextStage(){
