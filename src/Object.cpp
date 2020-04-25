@@ -113,13 +113,13 @@ unsigned Object::getObjectNumber() const {
 unsigned Object::addObjectNumber(unsigned nb) {
 	unsigned place = getMaxStack() - objectNumber;
 
-	if (nb > place)
-	{
+	if (nb > place){
+
 		objectNumber = getMaxStack();
 		return nb - place;
 	}
-	else
-	{
+	else{
+
 		objectNumber += nb;
 		return 0;
 	}

@@ -239,7 +239,7 @@ std::vector<Rock>& Room::getRocks() {
     return rocks;
 }
 
-Chest* Room::getChest() {
+Chest* Room::getChest(){
     return chest;
 }
 

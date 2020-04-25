@@ -787,6 +787,8 @@ void Party::setRectangleShapeForCurrentRoom(){
         setRockRectangleShape(*curRoom);
         setChestRectangleShape(*curRoom);
         setTrapRectangleShape(*curRoom);
+        if(curRoom->getChest())
+            curRoom->getChest()->display();
     }
 }
 
@@ -926,7 +928,6 @@ void Party::setChestItem(Room& curRoom){
 
     if(chest){
         chestItem.clear();
-        std::cout << chestOpen << std::endl;
 
         for (unsigned i = 0; i < chestSize; ++i){
             const Object* object = chest->getItem(i);
@@ -997,7 +998,7 @@ void Party::setScrollingMenu(){
         case 2: // deplacer, jeter, equip, (ajouter au coffre si le coffre est ouvert)
             if(Aspen.getInventoryObject(inventoryIndex)){
                 if(Aspen.getInventoryObject(inventoryIndex)->getType() == Object::Type::monsterLoot){
-                    scrollingValue = 2;
+                    scrollingValue = 3;
                     txt.setString("Move");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1]);
                     textScrolling.push_back(txt);
@@ -1015,9 +1016,20 @@ void Party::setScrollingMenu(){
                     bounds = txt.getGlobalBounds();
                     scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                     rectangleShapeScrolling.push_back(scrollMenu);
+
+                    if(chestOpen){
+                        txt.setString("Add to chest");
+                        txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1] + 30.f);
+                        textScrolling.push_back(txt);
+
+                        scrollMenu.setPosition(txt.getPosition().x - 2.f, txt.getPosition().y);
+                        bounds = txt.getGlobalBounds();
+                        scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
+                        rectangleShapeScrolling.push_back(scrollMenu);
+                    }
                 }
                 else if(Aspen.getInventoryObject(inventoryIndex)->getType() == Object::Type::potion){
-                    scrollingValue = 3;
+                    scrollingValue = 4;
                     txt.setString("Use");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1]);
                     textScrolling.push_back(txt);
@@ -1044,9 +1056,20 @@ void Party::setScrollingMenu(){
                     bounds = txt.getGlobalBounds();
                     scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                     rectangleShapeScrolling.push_back(scrollMenu);
+
+                    if(chestOpen){
+                        txt.setString("Add to chest");
+                        txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1] + 45.f);
+                        textScrolling.push_back(txt);
+
+                        scrollMenu.setPosition(txt.getPosition().x - 2.f, txt.getPosition().y);
+                        bounds = txt.getGlobalBounds();
+                        scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
+                        rectangleShapeScrolling.push_back(scrollMenu);
+                    }
                 }
                 else{ // Si c'est un equipement
-                    scrollingValue = 3;
+                    scrollingValue = 4;
                     txt.setString("Equip");
                     txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1]);
                     textScrolling.push_back(txt);
@@ -1073,6 +1096,17 @@ void Party::setScrollingMenu(){
                     bounds = txt.getGlobalBounds();
                     scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                     rectangleShapeScrolling.push_back(scrollMenu);
+
+                    if(chestOpen){
+                        txt.setString("Add to chest");
+                        txt.setPosition(arch.itemBag[inventoryIndex][0] + 52.f, arch.itemBag[inventoryIndex][1] + 45.f);
+                        textScrolling.push_back(txt);
+
+                        scrollMenu.setPosition(txt.getPosition().x - 2.f, txt.getPosition().y);
+                        bounds = txt.getGlobalBounds();
+                        scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
+                        rectangleShapeScrolling.push_back(scrollMenu);
+                    }
                 }
             }
             else{
@@ -1080,8 +1114,9 @@ void Party::setScrollingMenu(){
             }
             break;
 
-        case 3: // ajouter a l'inventaire(enlever du coffre) seulement s'il y a un object, sinon fermer le scrollingMenu
-            if(Aspen.getInventoryObject(inventoryIndex)){
+        case 3: { // ajouter a l'inventaire(enlever du coffre) seulement s'il y a un object, sinon fermer le scrollingMenu
+
+            if (donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getChest()->getItem(inventoryIndex)) {
                 scrollingValue = 1;
                 txt.setString("Add to inventory");
                 txt.setPosition(arch.itemChest[inventoryIndex][0] + 52.f, arch.itemChest[inventoryIndex][1]);
@@ -1091,10 +1126,10 @@ void Party::setScrollingMenu(){
                 bounds = txt.getGlobalBounds();
                 scrollMenu.setSize({bounds.width + 4.f, bounds.height * 1.8f});
                 rectangleShapeScrolling.push_back(scrollMenu);
-            }
-            else
+            } else
                 scrollingMenuOpen = false;
             break;
+        }
 
         default:
             break;
@@ -1156,10 +1191,18 @@ void Party::updateScrollingMenu(){
 						else if(action == std::string("Add to inventory")){ // on ajoute l'objet du coffre a l'inventaire
 
 							Chest *chest = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getChest();
-						    Aspen.addInventoryObject(chest->removeFromChest(scrollingIndex), chest->getItem(scrollingIndex)->getObjectNumber());
+							chest->removeFromChest(inventoryIndex);
                             setInventoryItem();
                             setChestItem(*donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false)));
 						    scrollingMenuOpen = false;
+						}
+						else if(action == std::string("Add to chest")){
+
+						    Chest *chest = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getChest();
+						    chest->placeInChest(inventoryIndex);
+                            setInventoryItem();
+                            setChestItem(*donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false)));
+                            scrollingMenuOpen = false;
 						}
 					}
                     break;
@@ -1255,8 +1298,8 @@ void Party::updateInventory(){
 							--inventoryIndex;
 					}
 					else if (inventoryValue == 3){ // dans le coffre
-						if (inventoryIndex > 4){
-							inventoryIndex -= 5;
+						if (inventoryIndex != 0){
+							--inventoryIndex;
 						}
 						else {
 							inventoryValue = 2;
@@ -1281,12 +1324,12 @@ void Party::updateInventory(){
 						}
 					}
 					else if (inventoryValue == 3){ // dans le coffre
-						if (inventoryIndex != 0){
-							--inventoryIndex;
-						}
-						else{
-							inventoryValue = 2;
-							inventoryIndex = playerBagSize - 1;
+                        if(inventoryIndex < 4){
+                            inventoryValue = 2;
+                            inventoryIndex = playerBagSize - 1;
+                        }
+						else if (inventoryIndex > 3){
+							inventoryIndex -= 4;
 						}
 					}
 					break;
@@ -1309,8 +1352,8 @@ void Party::updateInventory(){
 						}
 					}
 					else if (inventoryValue == 3){ // dans le coffre
-						if (inventoryIndex < 15)
-							inventoryIndex += 5;
+						if (inventoryIndex < chestSize - 1)
+							++inventoryIndex;
 					}
 					break;
 
@@ -1321,9 +1364,7 @@ void Party::updateInventory(){
 						}
 						else if (chestOpen){
 							inventoryValue = 3;
-							inventoryIndex -= 5;
-							if (inventoryIndex > 3)
-								inventoryIndex = 3;
+							inventoryIndex = 0;
 						}
 					}
 					else if(inventoryValue == 1){
@@ -1335,15 +1376,18 @@ void Party::updateInventory(){
 							inventoryIndex += 3;
 						}
 					}
-					else if (inventoryValue == 3){ // dans le coffre
-						if (inventoryIndex < 19){
-							++inventoryIndex;
+					else if(inventoryValue == 3){ // dans le coffre
+						if(inventoryIndex < 16){
+							inventoryIndex += 4;
 						}
+					//	else if(inventoryIndex > 15 && inventoryIndex < chestSize - 1){ // 4 dernières cases de droite seulement
+					//	    ++inventoryIndex;
+					//	}
 					}
 					break;
 
-				case sf::Keyboard::Space: // on ouvre les menu déroulant
-					{
+				case sf::Keyboard::Space:{ // on ouvre les menu déroulant
+
 						scrollingMenuOpen = true;
 						setScrollingMenu();
 					}
@@ -1361,7 +1405,9 @@ void Party::updateInventory(){
 				default: // On ne bouge pas le curseur
 					break;
 			}
+			std::cout << inventoryIndex << std::endl;
 		}
+
 		else if (event.type == sf::Event::Closed){
 			mWindow.close();
 		}

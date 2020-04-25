@@ -101,7 +101,7 @@ void Entity::addInventoryObject(unsigned id, unsigned int objectNb) {
     inventory.addObject(id, objectNb);
 }
 
-unsigned Entity::addInventoryObjectNb(unsigned id, unsigned int objectNb) {
+unsigned Entity::addInventoryObjectNb(unsigned id, unsigned objectNb) {
     return inventory.addObjectNb(id, objectNb);
 }
 

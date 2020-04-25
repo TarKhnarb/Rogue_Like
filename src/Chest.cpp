@@ -27,13 +27,13 @@ unsigned Chest::removeFromChest(unsigned indexC) { // Prend l'index du coffre, P
 
     unsigned objId = chest.getObject(indexC)->getId();
     unsigned objNb = chest.getObject(indexC)->getObjectNumber();
-    unsigned objAdd = hero.addInventoryObjectNb(objId, objNb);
+    unsigned objNotAdd = hero.addInventoryObjectNb(objId, objNb);
 
-    if(objAdd == 0){
+    if(objNotAdd == 0){
         chest.removeObject(indexC);
     }
     else{
-        chest.removeObject(objId, objNb-objAdd);
+        chest.removeObject(objId, objNb-objNotAdd);
     }
 
     return objId;

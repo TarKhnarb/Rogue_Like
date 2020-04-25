@@ -96,11 +96,11 @@ void Inventory::addObject(unsigned id, unsigned objectNb){
 unsigned Inventory::addObjectNb(unsigned id, unsigned objectNb){
 
     while (objectNb > 0){
-        auto pred = [id] (Object* obj) -> bool { return obj && obj->getId() == id && obj->getObjectNumber() < obj->getMaxStack(); }; // Si l'id est bien un object, que l'id correspond et que son maxStack n'est pas atteint
+        auto pred = [id] (Object* obj) -> bool { return obj && obj->getId() == id && obj->getObjectNumber() < obj->getMaxStack(); }; // On cherche a un index si l'objet est identique a celui qu'on veut ajouter et verifi si son maxStack n'est pas atteint(regarde si on peux l'ajouter)
         auto found = std::find_if(bag.begin(), bag.end(), pred); // Recherche si pred entre le début et la fin du bag
 
         if (found != bag.end()){ // Si on trouve une case avec pred
-            objectNb = (*found)->addObjectNumber(objectNb); // On ajoute a cet object existant le nombre d'object
+            objectNb = (*found)->addObjectNumber(objectNb);
         }
         else{ // Si on ne trouve pas
             found = std::find(bag.begin(), bag.end(), nullptr); // On cherche les cases vides
@@ -109,7 +109,7 @@ unsigned Inventory::addObjectNb(unsigned id, unsigned objectNb){
 
             *found = new Object {id}; // On créer un nouvel object a la case trouvée
             objectNb -= 1; // On désincrémente car quand on créer un object, on l'init a 1 car sinon il ne peut exister (trivial quand on le sait)
-            objectNb = (*found)->addObjectNumber(objectNb); // On ajoute a cet object existant le nombre d'object
+            objectNb = (*found)->addObjectNumber(objectNb); // On ajoute a cet object existant le nombre d'object qu'on a pas pu ajouter
         }
     }
     return objectNb;
@@ -219,7 +219,7 @@ void Inventory::display(){
 
 	for (auto p : stuff){
 		if (p)
-		std::cout << "          "  << p->getId() << std::endl;
+		std::cout << "          "  << p->getId() << "          " << p->getObjectNumber() << std::endl;
 	}
 
     std::cout << std::endl;
@@ -227,7 +227,7 @@ void Inventory::display(){
     std::cout << std::endl;
 	for (auto p : bag){
 		if (p)
-		std::cout << "          " << p->getId() << std::endl;
+		std::cout << "          " << p->getId() << "          " << p->getObjectNumber() << std::endl;
 	}
 }
 

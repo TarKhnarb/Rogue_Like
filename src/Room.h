@@ -68,6 +68,7 @@ public:
     void fillRocks(roomType);
     void fillChest(std::vector<unsigned>);
 
+        // not const to allow HMI to change them
     std::vector<Door*> getDoors();
     std::vector<Entity*> getMonsters();
     std::vector<Rock>& getRocks();
