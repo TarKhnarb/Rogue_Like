@@ -787,8 +787,6 @@ void Party::setRectangleShapeForCurrentRoom(){
         setRockRectangleShape(*curRoom);
         setChestRectangleShape(*curRoom);
         setTrapRectangleShape(*curRoom);
-        if(curRoom->getChest())
-            curRoom->getChest()->display();
     }
 }
 
@@ -926,8 +924,16 @@ void Party::setChestItem(Room& curRoom){
     chestInventory.setPosition(arch.chestInventory[0], arch.chestInventory[1]);
     chestInventory.setTexture(getTexture("ChestInventory"));
 
+    sf::Text txt;
+    txt.setFont(objectsFont);
+    txt.setCharacterSize(10);
+    txt.setFillColor(sf::Color::White);
+    txt.setOutlineColor(sf::Color::Black);
+    txt.setOutlineThickness(1.f);
+
     if(chest){
         chestItem.clear();
+        chestObjectNumber.clear();
 
         for (unsigned i = 0; i < chestSize; ++i){
             const Object* object = chest->getItem(i);
@@ -937,6 +943,15 @@ void Party::setChestItem(Room& curRoom){
                 item.setPosition(arch.itemChest[i][0], arch.itemChest[i][1]);
                 item.setFillColor(sf::Color::Red);
                 chestItem.emplace(i, item);
+
+                if (object->getObjectNumber() > 1){
+                    txt.setString(std::to_string(object->getObjectNumber()));
+
+                    sf::FloatRect bounds = txt.getLocalBounds();
+                    txt.setOrigin({bounds.width, bounds.height});
+                    txt.setPosition(arch.itemChest[i][0] + 48.f, arch.itemChest[i][1] + 48.f);
+                    chestObjectNumber.emplace(i, txt);
+                }
             }
             else{
                 item.setSize({50.f, 50.f});
@@ -1405,7 +1420,6 @@ void Party::updateInventory(){
 				default: // On ne bouge pas le curseur
 					break;
 			}
-			std::cout << inventoryIndex << std::endl;
 		}
 
 		else if (event.type == sf::Event::Closed){
@@ -1440,6 +1454,9 @@ void Party::drawChestInventory(){
 		
         for(auto &c : chestItem)
             mWindow.draw(c.second);
+
+        for(auto &n : chestObjectNumber)
+            mWindow.draw(n.second);
 		
 		mWindow.draw(sInventoryCursor);
     }

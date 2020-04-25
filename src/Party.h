@@ -188,6 +188,7 @@ private:
 	std::map<unsigned, sf::RectangleShape> stuffItem;
 	std::map<unsigned, sf::RectangleShape> chestItem; // Si pas d'item, le rectangleShape est blanc, unsigned -> place dans l'inventaire
 	std::map<unsigned, sf::Text> objectsNumber;
+	std::map<unsigned, sf::Text> chestObjectNumber;
 	sf::Font objectsFont;
 	
 	// stats for player's inventory
