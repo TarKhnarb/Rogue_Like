@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <string>
 #include <map>
 #include <utility>
@@ -29,6 +31,8 @@ public:
     void run();
 
 private:
+
+    std::string returnCsvItem(std::istringstream &);
     /**
      * @brief loads textures according
     */
