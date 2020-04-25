@@ -1,4 +1,8 @@
 // A C++ Program to implement A* Search Algorithm
+//normallt 1 will be for obstacle
+//0 for free space
+
+//try to factorise the search a star instead of reapeting 4 times more or less the same thing
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -25,10 +29,12 @@ struct cell
 
 // A Utility Function to check whether the given cell is
 // blocked or not
+//have to change that function as will not use a array but an array only containing witdh/height/position of obstacles
+//all other cells will be unblocked by definition
 bool isUnBlocked(int grid[][COL], int row, int col)
 {
     // Returns true if the cell is not blocked else false
-    if (grid[row][col] == 1)
+    if //this if is the one to change mainly
         return (true);
     else
         return (false);
@@ -160,23 +166,19 @@ closedList[i][j] = true;
 /*
  Generating all the 8 successor of this cell
 
-     N.W   N   N.E
-       \   |   /
-        \  |  /
+           N   
+           |   
+           |  
      W----Cell----E
-          / | \
-        /   |  \
-     S.W    S   S.E
+           |  
+           |   
+           S   
 
  Cell-->Popped Cell (i, j)
  N -->  North       (i-1, j)
  S -->  South       (i+1, j)
  E -->  East        (i, j+1)
- W -->  West           (i, j-1)
- N.E--> North-East  (i-1, j+1)
- N.W--> North-West  (i-1, j-1)
- S.E--> South-East  (i+1, j+1)
- S.W--> South-West  (i+1, j-1)*/
+ W -->  West           (i, j-1)*/
 
 // To store the 'g', 'h' and 'f' of the 8 successors
 double gNew, hNew, fNew;
@@ -384,6 +386,7 @@ int main() {
     /* Description of the Grid-
      1--> The cell is not blocked
      0--> The cell is blocked    */
+     //27*27 grid >> if mode txt, then a point >> sfml is a surface
     int grid[ROW][COL] =
             {
                     {1, 0, 1, 1, 1, 1, 0, 1, 1, 1},
@@ -404,6 +407,6 @@ int main() {
     Pair dest = make_pair(0, 0);
 
     aStarSearch(grid, src, dest);
-
+//have to return only next note not all path of node
     return (0);
 }

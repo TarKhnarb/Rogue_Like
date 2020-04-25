@@ -29,12 +29,30 @@ public:
     void run();
 
 private:
-
+    /**
+     * @brief loads textures according
+    */
     void loadTextures();
+    
+    /** 
+     * @brief search for a texture given in parameter
+     * @param[in] name : a string the name of the textures to search
+     * @return texture if found or not
+     */
     sf::Texture* getTexture(const std::string&);
 
+    /**
+     * @brief load sprites
+     */
     void loadSprites(std::string name);
+    
+    /** 
+     * @brief search for a sprite given in parameter
+     * @param[in] name : a string the name of the sprite to search
+     * @return sprite if found or not
+     */
     sf::Sprite getSprite(const std::string&); // On donne la categorie du sprite, et le nom de la texture
+
 
     void setFrameSprite(Room&);
     void setSpritesForCurrentRoom();
@@ -42,6 +60,9 @@ private:
     void loadRectangleShape(std::string name);
     sf::RectangleShape getRectangleShape(const std::string&);
 
+    /**
+     * @brief the animations of the player according to whether the sprite is walking up, down, left, right
+    */
     void loadAnimation();
 
     void setWall();
@@ -66,13 +87,37 @@ private:
     void drawPlayerInventory();
 	
 	void reloadRoom();
+	
+	/**
+	 * @brief loads the next stage, sets apsen to the new position, loads next stage, calls realoadRoom
+    */
     void loadNextStage();
 
+    /**
+     * @brief check for collisions
+    */
     void entityCollision();
 
+    /**
+     * @brief an event loop, with input from player(close window, keyPressed and released)
+    */
     void processEvents();
+    
+    /**
+     * @brief gets the input from the player on keyboard only
+     * @param[in] key : sfml keyboard input parameter
+     * @param[in] isPressed : is key pressed
+    */
     void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
+    
+    /**
+     * @brief calls the correct functions when player going up,down...
+    */
     void update(sf::Time);
+    
+    /**
+     * @brief render function
+    */
     void render();
 
     bool mIsMovingUp = false;

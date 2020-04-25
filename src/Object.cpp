@@ -58,9 +58,7 @@ Object::Object(unsigned id){
             default:
                 break;
          }
-
         name = returnCsvItem(iss);
-
     }
 
     else{
@@ -140,6 +138,7 @@ unsigned Object::getMaxStack() const {
     }
 }
 
+//mainly for debug
 void Object::display(){
 
     std::cout << "      idObject     : " << idObject << std::endl;

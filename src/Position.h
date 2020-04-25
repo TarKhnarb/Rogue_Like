@@ -30,7 +30,8 @@ public :
    /* Position(const POS &,
              const POS &,
              const POS &,
-             const POS &);*/
+             const POS &);
+    */
 
     /**
       * @brief affects x and y value to another Position
@@ -90,8 +91,6 @@ public :
      */
     POS distance(const Position &) const;
 
-
-
 private :
     POS x,y;
 };
@@ -101,6 +100,8 @@ Position<POS>::Position(const POS & a, const POS & b) {
     x=a;
     y=b;
 }
+
+//not currently uselful
 /*
 template <class POS>
 Position<POS>::Position(const POS & minX,
@@ -138,7 +139,6 @@ template <class POS>
 Position<POS> Position<POS>::move(const POS & a, const POS & b){
     x+=a;
     y+=b;
-
     return Position<POS> (x, y);
 }
 
@@ -164,9 +164,10 @@ POS Position<POS>::dist(const Position & a, bool xORy) const {
         return abs(y-a.y);
 }
 
-
 template <class POS>
 POS Position<POS>::distance(const Position & a) const {
+    //pythagorean distance (does not take into account obstacles or not)
+    //just a straight line bewteen 2 points
     POS Y = a.y-y;
     POS X = a.x-x;
     return sqrt((Y*Y)+(X*X));
