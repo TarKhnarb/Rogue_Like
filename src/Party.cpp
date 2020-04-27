@@ -64,6 +64,12 @@ Party::~Party(){
             delete r.second;
         r.second = nullptr;
     }
+    
+    for(auto p = sProjectiles.begin(); p != sProjectiles.end();){
+        if(p->first)
+            delete p->first;
+        p = sProjectiles.erase(p);
+    }
 }
 
 void Party::run(){
@@ -510,6 +516,16 @@ void Party::setDoorCloseRectangleShape(Room& curRoom){
 	}
 }
 
+void Party::setRockChoice(Room& curRoom){
+    std::vector<Rock> rocks = curRoom.getRocks();
+    
+    rocksChoice.resize(0);
+    
+    for (unsigned k = 0; k < rocks.size(); ++k) {
+        rocksChoice.push_back((rand()%30)%3+1);
+    }
+}
+
 void Party::setRockRectangleShape(Room& curRoom){
     std::vector<Rock> rocks = curRoom.getRocks();
     sf::RectangleShape rock;
@@ -521,27 +537,25 @@ void Party::setRockRectangleShape(Room& curRoom){
     size = sNoRocks.size();
     for (unsigned i = 0 ; i < size ; ++i)
         sNoRocks.pop_back();
-
-    if(! rocks.empty()) {
-        for (unsigned k = 0; k < rocks.size(); ++k) {
-            if(rocks[k].getState()){
-                unsigned random = (rand()%30)%3+1;
-                rock = getRectangleShape("Rock"+std::to_string(random));
-                rock.setPosition(rocks[k].getPosition(true), rocks[k].getPosition(false));
-                rock.setTexture(getTexture("Rock"+std::to_string(random)));
-                
-                sRocks.push_back(rock);
-            }
-            else{
-                rock = getRectangleShape("RockBreak");
-                rock.setPosition(rocks[k].getPosition(true), rocks[k].getPosition(false));
-                rock.setTexture(getTexture("RockBreak"));
-                
-                sNoRocks.push_back(rock);
-                
-                sf::RectangleShape noRock;
-                sRocks.push_back(noRock);
-            }
+    
+    for (unsigned k = 0; k < rocks.size(); ++k) {
+        if(rocks[k].getState()){
+            unsigned random = rocksChoice[k];
+            rock = getRectangleShape("Rock"+std::to_string(random));
+            rock.setPosition(rocks[k].getPosition(true), rocks[k].getPosition(false));
+            rock.setTexture(getTexture("Rock"+std::to_string(random)));
+            
+            sRocks.push_back(rock);
+        }
+        else{
+            rock = getRectangleShape("RockBreak");
+            rock.setPosition(rocks[k].getPosition(true), rocks[k].getPosition(false));
+            rock.setTexture(getTexture("RockBreak"));
+            
+            sNoRocks.push_back(rock);
+            
+            sf::RectangleShape noRock;
+            sRocks.push_back(noRock);
         }
     }
     
@@ -715,6 +729,7 @@ void Party::setRectangleShapeForCurrentRoom(){
         setHole(*curRoom);
         setDoorOpenRectangleShape(*curRoom);
         //setDoorCloseRectangleShape(*curRoom);
+        setRockChoice(*curRoom);
         setRockRectangleShape(*curRoom);
         setChestRectangleShape(*curRoom);
         setTrapRectangleShape(*curRoom);
@@ -1346,6 +1361,10 @@ void Party::updateInventory(){
                     mIsMovingDown = false;
                     mIsMovingLeft = false;
                     mIsMovingRight = false;
+                    mIsShootingUp = false;
+                    mIsShootingDown = false;
+                    mIsShootingLeft = false;
+                    mIsShootingRight = false;
 					break;
 					
 				default: // On ne bouge pas le curseur
@@ -1542,18 +1561,6 @@ void Party::projectileCollision(){
         if(p->first){
             Collider projCol (p->second);
             
-                // Walls
-            if(projCol.checkCollision(wallsCollider, 0.f)){
-                p = sProjectiles.erase(p);
-                continue;
-            }
-
-                // Doors
-            if (projCol.checkCollision(doorsCollider, 0.f)){
-                p = sProjectiles.erase(p);
-                continue;
-            }
-            
                 // Rocks
             
             std::vector<std::pair<std::size_t, std::size_t>> collisions;
@@ -1574,6 +1581,25 @@ void Party::projectileCollision(){
                     setRockRectangleShape(*curRoom);
                 }
                 
+                continue;
+            }
+            
+                // Chests
+            
+            if (projCol.checkCollision(chestsCollider, 0.f)){
+                p = sProjectiles.erase(p);
+                continue;
+            }
+            
+                // Walls
+            if(projCol.checkCollision(wallsCollider, 0.f)){
+                p = sProjectiles.erase(p);
+                continue;
+            }
+
+                // Doors
+            if (projCol.checkCollision(doorsCollider, 0.f)){
+                p = sProjectiles.erase(p);
                 continue;
             }
         }
@@ -1734,6 +1760,8 @@ void Party::render(){
 	for(const auto &t : sTrap)
 		mWindow.draw(t);
 	
+    drawProjectile();
+    
 	mWindow.draw(aspenAnimated);
 	
 	if(inventoryOpen) {
@@ -1743,8 +1771,6 @@ void Party::render(){
 		drawPlayerInventory();
 
 	}
-
-    drawProjectile();
 		
     mWindow.display();
 }

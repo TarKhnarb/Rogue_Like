@@ -74,6 +74,7 @@ private:
     void setHole(Room&);
     void setDoorOpenRectangleShape(Room&);
     void setDoorCloseRectangleShape(Room&);
+	void setRockChoice(Room&);
     void setRockRectangleShape(Room&);
     //void setMonsterRectangleShape(Room);
     void setChestRectangleShape(Room&);
@@ -171,6 +172,7 @@ private:
     std::vector<sf::RectangleShape> sMonsters;
     std::vector<sf::RectangleShape> sRocks;
 	std::vector<sf::RectangleShape> sNoRocks;
+	std::vector<unsigned> rocksChoice;
     std::vector<sf::Sprite> sFrames;
     std::vector<sf::RectangleShape> sDoors;
     std::vector<sf::RectangleShape> sChest;
