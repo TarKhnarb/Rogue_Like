@@ -1412,6 +1412,8 @@ void Party::drawPlayerInventory(){ // 1: stuff, 2: bag, 3: chest
 
 void Party::reloadRoom(){
 
+    sProjectiles.clear();
+
 	Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
 	loadSprites(curRoom->getStringType());
 	
@@ -1428,8 +1430,6 @@ void Party::reloadRoom(){
     setRectangleShapeForCurrentRoom();
 	
 	setChestItem(*curRoom);
-
-    sProjectiles.clear();
 }
 
 void Party::loadNextStage(){
@@ -1522,13 +1522,17 @@ void Party::projectileCollision(){
     for(std::map<Projectile*, sf::RectangleShape>::iterator p = sProjectiles.begin(); p !=sProjectiles.end(); ++p ){
         if(p->first){
                 // Walls
-            Collider projCol (p->second);
-            if(projCol.checkCollision(wallsCollider, colDirection, 0.f))
+            Collider projCol (p->second, Style::Separated);
+            if(projCol.checkCollision(wallsCollider, colDirection, 0.f)){
                 sProjectiles.erase(p);
+                break;
+            }
 
                 // Doors
-            if (projCol.checkCollision(doorsCollider, colDirection, 0.f))
+            if (projCol.checkCollision(doorsCollider, colDirection, 0.f)){
                 sProjectiles.erase(p);
+                break;
+            }
         }
     }
 
