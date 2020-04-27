@@ -78,8 +78,8 @@ private:
     //void setMonsterRectangleShape(Room);
     void setChestRectangleShape(Room&);
     void setTrapRectangleShape(Room&);
-    sf::Texture* selectProjectileTexture(Entity, unsigned);
-    void setProjectileRectangleShape(Entity, unsigned); // l'entity afin de récupérer sa position, unsigned 0 -> 4 pour son orientation
+    sf::Texture* selectProjectileTexture(const Entity&, unsigned);
+    void setProjectileRectangleShape(const Entity&, unsigned); // l'entity afin de récupérer sa position, unsigned 0 -> 4 pour son orientation
     void updateProjectile();
     void drawProjectile();
     void setRectangleShapeForCurrentRoom();
@@ -119,7 +119,7 @@ private:
     */
     void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 
-    void updateForShooting();
+    void updateForShooting(sf::Time);
 
     /**
      * @brief calls the correct functions when player going up,down...
@@ -159,7 +159,6 @@ private:
     sf::RenderWindow mWindow;
 
     // Pour les projectiles
-    sf::Clock shootClock;
     sf::Time elapsedTime;
     sf::Time aspenAttackSpeed;
 

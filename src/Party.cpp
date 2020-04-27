@@ -8,7 +8,7 @@ Party::Party():
         mWindow(sf::VideoMode(1280, 720), "Aspen's Adventure"){
 
 
-    sf::Time elapsedTime = sf::Time::Zero;
+    elapsedTime = sf::Time::Zero;
     loadTextures(); // On charge les textures
 
     loadSprites("RoomStart"); // On charge la map de start
@@ -600,7 +600,7 @@ void Party::setTrapRectangleShape(Room& curRoom){
     trapCollider.pushBodies(sTrap.begin(), sTrap.end());
 }
 
-sf::Texture* Party::selectProjectileTexture(Entity entity, unsigned orient){
+sf::Texture* Party::selectProjectileTexture(const Entity& entity, unsigned orient){
 
     switch(orient){
         case 0:
@@ -624,7 +624,7 @@ sf::Texture* Party::selectProjectileTexture(Entity entity, unsigned orient){
     }
 }
 
-void Party::setProjectileRectangleShape(Entity entity, unsigned orient){ // A appeler quand une entity tire ou si le joeur appui sur une touche de tir
+void Party::setProjectileRectangleShape(const Entity& entity, unsigned orient){ // A appeler quand une entity tire ou si le joeur appui sur une touche de tir
 
     sf::RectangleShape proj;
     Position<float> posProjectile(0.f, 0.f);
@@ -634,29 +634,33 @@ void Party::setProjectileRectangleShape(Entity entity, unsigned orient){ // A ap
 
     switch(orient){
         case 0:
+            proj.setSize({10.f, 40.f});
             proj.setTexture(selectProjectileTexture(entity, orient));
-            posProjectile.setPosition(entity.getPosition(true) + ((40.f - proj.getGlobalBounds().width)/2.f), entity.getPosition(false) + proj.getGlobalBounds().height);
+            posProjectile.setPosition(posAspen.getPosition(true) + ((20.f - proj.getGlobalBounds().width)/2.f), posAspen.getPosition(false) + proj.getGlobalBounds().height);
             proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
             sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision), proj);
             break;
 
         case 1:
+            proj.setSize({40.f, 10.f});
             proj.setTexture(selectProjectileTexture(entity, orient));
-            posProjectile.setPosition(entity.getPosition(true) + 40.f, entity.getPosition(false) + ((40.f - proj.getGlobalBounds().height)/2.f));
+            posProjectile.setPosition(posAspen.getPosition(true) + 40.f, posAspen.getPosition(false) + ((40.f - proj.getGlobalBounds().height)/2.f));
             proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
             sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision), proj);
             break;
 
         case 2:
+            proj.setSize({10.f, 40.f});
             proj.setTexture(selectProjectileTexture(entity, orient));
-            posProjectile.setPosition(entity.getPosition(true) + ((40.f - proj.getGlobalBounds().width)/2.f), entity.getPosition(false) + 120.f);
+            posProjectile.setPosition(posAspen.getPosition(true) + ((20.f - proj.getGlobalBounds().width)/2.f), posAspen.getPosition(false) + 120.f);
             proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
             sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision), proj);
             break;
 
         case 3:
+            proj.setSize({40.f, 10.f});
             proj.setTexture(selectProjectileTexture(entity, orient));
-            posProjectile.setPosition(entity.getPosition(true) - proj.getGlobalBounds().width, entity.getPosition(false) + ((40.f - proj.getGlobalBounds().height)/2.f));
+            posProjectile.setPosition(posAspen.getPosition(true) - proj.getGlobalBounds().width, posAspen.getPosition(false) + ((40.f - proj.getGlobalBounds().height)/2.f));
             proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
             sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision), proj);
             break;
@@ -664,12 +668,6 @@ void Party::setProjectileRectangleShape(Entity entity, unsigned orient){ // A ap
         default:
             std::cout << "default" << std::endl;
             break;
-    }
-    for(auto &p : sProjectiles) {
-        if (p.first) {
-            p.first->displayProjectile();
-            std::cout << "============================" << std::endl;
-        }
     }
 }
 
@@ -1566,29 +1564,28 @@ void Party::handlePlayerInput(sf::Keyboard::Key key, bool isPressed){
     }
 }
 
-void Party::updateForShooting(){
+void Party::updateForShooting(sf::Time deltaTime){
 
-    elapsedTime += shootClock.restart();
-    aspenAttackSpeed = sf::seconds(Aspen.getAttackSpeed()/100.f);
+    aspenAttackSpeed = sf::seconds(10.f / Aspen.getAttackSpeed());
+    
+    if (mIsShootingUp || mIsShootingDown || mIsShootingRight || mIsShootingLeft){
+        elapsedTime += deltaTime;
+        
+        while (elapsedTime > aspenAttackSpeed){ // seulement actif losqu'on appuie sur une touche de tir
+            elapsedTime -= aspenAttackSpeed;
 
-    while (!(!mIsShootingUp && !mIsShootingDown && !mIsShootingRight && !mIsShootingLeft) && elapsedTime > aspenAttackSpeed){ // seulement actif losqu'on appuie sur une touche de tir
-        elapsedTime -= aspenAttackSpeed;
-
-        if(mIsShootingUp){
-            setProjectileRectangleShape(Aspen, 0);
-            mIsShootingUp = false;
-        }
-        else if(mIsShootingDown){
-            setProjectileRectangleShape(Aspen, 2);
-            mIsShootingDown = false;
-        }
-        else if(mIsShootingRight){
-            setProjectileRectangleShape(Aspen, 1);
-            mIsShootingRight = false;
-        }
-        else if(mIsShootingLeft){
-            setProjectileRectangleShape(Aspen, 2);
-            mIsShootingLeft = false;
+            if(mIsShootingUp){
+                setProjectileRectangleShape(Aspen, 0);
+            }
+            else if(mIsShootingDown){
+                setProjectileRectangleShape(Aspen, 2);
+            }
+            else if(mIsShootingRight){
+                setProjectileRectangleShape(Aspen, 1);
+            }
+            else if(mIsShootingLeft){
+                setProjectileRectangleShape(Aspen, 3);
+            }
         }
     }
 }
@@ -1601,31 +1598,27 @@ void Party::update(sf::Time deltaTime){
 		currentAnimation = &walkingAspenUp;
 		movement.y -= PlayerSpeed;
 		noKeyWasPressed = false;
-        updateForShooting();
 	}
 
 	if(mIsMovingDown){
 		currentAnimation = &walkingAspenDown;
 		movement.y += PlayerSpeed;
 		noKeyWasPressed = false;
-        updateForShooting();
 	}
 
 	if(mIsMovingLeft){
 		currentAnimation = &walkingAspenLeft;
 		movement.x -= PlayerSpeed;
 		noKeyWasPressed = false;
-        updateForShooting();
 	}
 
 	if(mIsMovingRight){
 		currentAnimation = &walkingAspenRight;
 		movement.x += PlayerSpeed;
 		noKeyWasPressed = false;
-        updateForShooting();
 	}
 
-    updateForShooting();
+    updateForShooting(deltaTime);
 
 	aspenAnimated.play(*currentAnimation);
 	aspenAnimated.move(movement * deltaTime.asSeconds());
