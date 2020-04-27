@@ -22,6 +22,7 @@ Party::Party():
     loadRectangleShape("Rock1");
     loadRectangleShape("Rock2");
     loadRectangleShape("Rock3");
+    loadRectangleShape("RockBreak");
 
     loadRectangleShape("DoorOpenN");
     loadRectangleShape("DoorOpenE");
@@ -516,15 +517,31 @@ void Party::setRockRectangleShape(Room& curRoom){
     unsigned size = sRocks.size();
     for (unsigned i = 0 ; i < size ; ++i)
         sRocks.pop_back();
+    
+    size = sNoRocks.size();
+    for (unsigned i = 0 ; i < size ; ++i)
+        sNoRocks.pop_back();
 
     if(! rocks.empty()) {
         for (unsigned k = 0; k < rocks.size(); ++k) {
-            unsigned random = (rand()%30)%3+1;
-            rock = getRectangleShape("Rock"+std::to_string(random));
-            rock.setPosition(rocks[k].getPosition(true), rocks[k].getPosition(false));
-            rock.setTexture(getTexture("Rock"+std::to_string(random)));
-
-            sRocks.push_back(rock);
+            if(rocks[k].getState()){
+                unsigned random = (rand()%30)%3+1;
+                rock = getRectangleShape("Rock"+std::to_string(random));
+                rock.setPosition(rocks[k].getPosition(true), rocks[k].getPosition(false));
+                rock.setTexture(getTexture("Rock"+std::to_string(random)));
+                
+                sRocks.push_back(rock);
+            }
+            else{
+                rock = getRectangleShape("RockBreak");
+                rock.setPosition(rocks[k].getPosition(true), rocks[k].getPosition(false));
+                rock.setTexture(getTexture("RockBreak"));
+                
+                sNoRocks.push_back(rock);
+                
+                sf::RectangleShape noRock;
+                sRocks.push_back(noRock);
+            }
         }
     }
     
@@ -1517,34 +1534,52 @@ void Party::entityCollision(){
 }
 
 void Party::projectileCollision(){
-
-    sf::Vector2f colDirection;
-    for(std::map<Projectile*, sf::RectangleShape>::iterator p = sProjectiles.begin(); p !=sProjectiles.end(); ++p){
+    
+    Room *curRoom = donjon.getRoom(posDonjon.getPosition(true),posDonjon.getPosition(false));
+    
+    auto p = sProjectiles.begin();
+    while (p != sProjectiles.end()){
         if(p->first){
+            Collider projCol (p->second);
+            
                 // Walls
-            Collider projCol (p->second, Style::Separated);
-            if(projCol.checkCollision(wallsCollider, colDirection, 0.f)){
-                sProjectiles.erase(p);
-                break;
+            if(projCol.checkCollision(wallsCollider, 0.f)){
+                p = sProjectiles.erase(p);
+                continue;
             }
 
                 // Doors
-            if (projCol.checkCollision(doorsCollider, colDirection, 0.f)){
-                sProjectiles.erase(p);
-                break;
+            if (projCol.checkCollision(doorsCollider, 0.f)){
+                p = sProjectiles.erase(p);
+                continue;
             }
-
-            for(std::vector<sf::RectangleShape>::iterator r = rocksCollider.begin(); r != rocksCollider.end(); ++d){
-                if(projCol.checkCollision(d, colDirection, 0.f)){
-                    sProjectiles.erase(p);
-                    rock
-                    break;
+            
+                // Rocks
+            
+            std::vector<std::pair<std::size_t, std::size_t>> collisions;
+            bool resetCollider = false;
+            
+            if (projCol.checkCollision(rocksCollider, collisions, 0.f)){
+                p = sProjectiles.erase(p);
+                
+                std::vector<Rock>& rocks = curRoom->getRocks();
+                
+                for (auto c : collisions){
+                    if (--rocks[c.second].life == 0){
+                        resetCollider = true;
+                    }
                 }
+                
+                if (resetCollider){
+                    setRockRectangleShape(*curRoom);
+                }
+                
+                continue;
             }
         }
+        
+        ++p;
     }
-
-    //checkCollision(Collider&, sf::Vector2f&, std::vector<std::pair<std::size_t, std::size_t>>&, float)
 }
 
 void Party::processEvents(){
@@ -1682,6 +1717,9 @@ void Party::render(){
 	mWindow.draw(sRoom);
 
 	for(const auto &r : sRocks)
+		mWindow.draw(r);
+    
+	for(const auto &r : sNoRocks)
 		mWindow.draw(r);
 
 	for(const auto &f : sFrames)

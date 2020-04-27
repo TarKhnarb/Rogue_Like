@@ -170,6 +170,7 @@ private:
     std::vector<sf::RectangleShape> Holes;
     std::vector<sf::RectangleShape> sMonsters;
     std::vector<sf::RectangleShape> sRocks;
+	std::vector<sf::RectangleShape> sNoRocks;
     std::vector<sf::Sprite> sFrames;
     std::vector<sf::RectangleShape> sDoors;
     std::vector<sf::RectangleShape> sChest;
