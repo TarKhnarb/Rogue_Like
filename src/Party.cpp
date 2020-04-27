@@ -1422,7 +1422,7 @@ void Party::reloadRoom(){
 	doorsCollider.clean();
 	// monstersCollider.clean();
 	chestsCollider.clean();
-	// projectilesCollider.clean();
+	projectilesCollider.clean();
 	
 	setSpritesForCurrentRoom();
     setRectangleShapeForCurrentRoom();
@@ -1483,30 +1483,26 @@ void Party::entityCollision(){
 	std::vector<Door*> door = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getDoors();
 	if (playerCol.checkCollision(doorsCollider, colDirection, 0.f))
 	{
-		if (colDirection.y < 0.f && door[0] && door[0]->getOpen())
-		{
+		if (colDirection.y < 0.f && door[0] && door[0]->getOpen()){
 			posDonjon.move(-1, 0);
             posAspen.setPosition(arch.PlayerS[0], arch.PlayerS[1]);
             aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
 			reloadRoom();
 		}
-		else if (colDirection.y > 0.f && door[2] && door[2]->getOpen())
-		{
+		else if (colDirection.y > 0.f && door[2] && door[2]->getOpen()){
 			posDonjon.move(1, 0);
             posAspen.setPosition(arch.PlayerN[0], arch.PlayerN[1]);
             aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
 			reloadRoom();
 		}
 		
-		if (colDirection.x < 0.f && door[3] && door[3]->getOpen())
-		{
+		if (colDirection.x < 0.f && door[3] && door[3]->getOpen()){
 			posDonjon.move(0, -1);
             posAspen.setPosition(arch.PlayerE[0], arch.PlayerE[1]);
             aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
 			reloadRoom();
 		}
-		else if (colDirection.x > 0.f && door[1] && door[1]->getOpen())
-		{
+		else if (colDirection.x > 0.f && door[1] && door[1]->getOpen()){
 			posDonjon.move(0, 1);
             posAspen.setPosition(arch.PlayerW[0], arch.PlayerW[1]);
             aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
@@ -1518,6 +1514,25 @@ void Party::entityCollision(){
 		
 	posAspen.move(posEnd.x - posBegin.x, posEnd.y - posBegin.y);
     aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
+}
+
+void Party::projectileCollision(){
+
+    sf::Vector2f colDirection;
+    for(std::map<Projectile*, sf::RectangleShape>::iterator p = sProjectiles.begin(); p !=sProjectiles.end(); ++p ){
+        if(p->first){
+                // Walls
+            Collider projCol (p->second);
+            if(projCol.checkCollision(wallsCollider, colDirection, 0.f))
+                sProjectiles.erase(p);
+
+                // Doors
+            if (projCol.checkCollision(doorsCollider, colDirection, 0.f))
+                sProjectiles.erase(p);
+        }
+    }
+
+    //checkCollision(Collider&, sf::Vector2f&, std::vector<std::pair<std::size_t, std::size_t>>&, float)
 }
 
 void Party::processEvents(){
@@ -1645,6 +1660,7 @@ void Party::update(sf::Time deltaTime){
 	aspenAnimated.update(deltaTime);
     updateProjectile();
 	entityCollision();
+    projectileCollision();
 }
 
 void Party::render(){

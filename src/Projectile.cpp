@@ -17,16 +17,16 @@ Projectile::~Projectile(){
 void Projectile::update(){ //updates the position according to the orientation
     switch(orientation){
         case 0:
-            positionProjectile->move(0, -0.1f*speedProjectile);
+            positionProjectile->move(0, -0.5f*speedProjectile);
             break;
         case 1:
-            positionProjectile->move(0.1f*speedProjectile, 0);
+            positionProjectile->move(0.5f*speedProjectile, 0);
             break;
         case 2:
-            positionProjectile->move(0, 0.1f*speedProjectile);
+            positionProjectile->move(0, 0.5f*speedProjectile);
             break;
         case 3:
-            positionProjectile->move(-0.1f*speedProjectile, 0);
+            positionProjectile->move(-0.5f*speedProjectile, 0);
             break;
     }
 }

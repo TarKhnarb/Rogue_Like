@@ -107,6 +107,8 @@ private:
     */
     void entityCollision();
 
+    void projectileCollision();
+
     /**
      * @brief an event loop, with input from player(close window, keyPressed and released)
     */
