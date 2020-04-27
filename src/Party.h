@@ -163,7 +163,6 @@ private:
     sf::Time aspenAttackSpeed;
 
     // Différents sprites/rectangleShape pouvant être sur la map
-    sf::RectangleShape sPlayer;
     sf::Sprite sRoom;
     std::vector<sf::RectangleShape> Walls;
     std::vector<sf::RectangleShape> Holes;

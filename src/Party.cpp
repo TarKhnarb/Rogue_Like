@@ -1479,33 +1479,38 @@ void Party::entityCollision(){
 		if (colDirection.y < 0.f && door[0] && door[0]->getOpen())
 		{
 			posDonjon.move(-1, 0);
-			aspenAnimated.setPosition(arch.PlayerS[0], arch.PlayerS[1]);
+            posAspen.setPosition(arch.PlayerS[0], arch.PlayerS[1]);
+            aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
 			reloadRoom();
 		}
 		else if (colDirection.y > 0.f && door[2] && door[2]->getOpen())
 		{
 			posDonjon.move(1, 0);
-			aspenAnimated.setPosition(arch.PlayerN[0], arch.PlayerN[1]);
+            posAspen.setPosition(arch.PlayerN[0], arch.PlayerN[1]);
+            aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
 			reloadRoom();
 		}
 		
 		if (colDirection.x < 0.f && door[3] && door[3]->getOpen())
 		{
 			posDonjon.move(0, -1);
-			aspenAnimated.setPosition(arch.PlayerE[0], arch.PlayerE[1]);
+            posAspen.setPosition(arch.PlayerE[0], arch.PlayerE[1]);
+            aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
 			reloadRoom();
 		}
 		else if (colDirection.x > 0.f && door[1] && door[1]->getOpen())
 		{
 			posDonjon.move(0, 1);
-			aspenAnimated.setPosition(arch.PlayerW[0], arch.PlayerW[1]);
+            posAspen.setPosition(arch.PlayerW[0], arch.PlayerW[1]);
+            aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
 			reloadRoom();
 		}
 	}
 	
 	sf::Vector2f posEnd = sPlayerCol.getPosition();
 		
-	aspenAnimated.move(posEnd - posBegin);
+	posAspen.move(posEnd.x - posBegin.x, posEnd.y - posBegin.y);
+    aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
 }
 
 void Party::processEvents(){
@@ -1621,7 +1626,8 @@ void Party::update(sf::Time deltaTime){
     updateForShooting(deltaTime);
 
 	aspenAnimated.play(*currentAnimation);
-	aspenAnimated.move(movement * deltaTime.asSeconds());
+	posAspen.move(movement.x * deltaTime.asSeconds(), movement.y * deltaTime.asSeconds());
+    aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
 
 	if (noKeyWasPressed)
 	{
