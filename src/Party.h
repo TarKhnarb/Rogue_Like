@@ -186,7 +186,6 @@ private:
     Collider doorsCollider;
     Collider chestsCollider;
 	Collider trapCollider;
-	Collider projectilesCollider;
 
 	    //  Aspen animation
 

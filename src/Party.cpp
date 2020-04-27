@@ -1448,7 +1448,11 @@ void Party::drawPlayerInventory(){ // 1: stuff, 2: bag, 3: chest
 
 void Party::reloadRoom(){
 
-    sProjectiles.clear();
+    for(auto p = sProjectiles.begin(); p != sProjectiles.end();){
+        if(p->first)
+            delete p->first;
+        p = sProjectiles.erase(p);
+    }
 
 	Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
 	loadSprites(curRoom->getStringType());
@@ -1460,7 +1464,6 @@ void Party::reloadRoom(){
 	doorsCollider.clean();
 	// monstersCollider.clean();
 	chestsCollider.clean();
-	projectilesCollider.clean();
 	
 	setSpritesForCurrentRoom();
     setRectangleShapeForCurrentRoom();
