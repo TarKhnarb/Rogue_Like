@@ -636,7 +636,7 @@ void Party::setProjectileRectangleShape(const Entity& entity, unsigned orient){ 
         case 0:
             proj.setSize({10.f, 40.f});
             proj.setTexture(selectProjectileTexture(entity, orient));
-            posProjectile.setPosition(posAspen.getPosition(true) + ((20.f - proj.getGlobalBounds().width)/2.f), posAspen.getPosition(false) + proj.getGlobalBounds().height);
+            posProjectile.setPosition(posAspen.getPosition(true) + ((40 - proj.getGlobalBounds().width)/2.f), posAspen.getPosition(false) + (80.f*(2.f/3.f) - proj.getGlobalBounds().height));
             proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
             sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision), proj);
             break;
@@ -644,7 +644,7 @@ void Party::setProjectileRectangleShape(const Entity& entity, unsigned orient){ 
         case 1:
             proj.setSize({40.f, 10.f});
             proj.setTexture(selectProjectileTexture(entity, orient));
-            posProjectile.setPosition(posAspen.getPosition(true) + 40.f, posAspen.getPosition(false) + ((40.f - proj.getGlobalBounds().height)/2.f));
+            posProjectile.setPosition(posAspen.getPosition(true) + 40.f, posAspen.getPosition(false) + (80.f*(5.f/6.f) - (proj.getGlobalBounds().height/2.f)));
             proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
             sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision), proj);
             break;
@@ -652,7 +652,7 @@ void Party::setProjectileRectangleShape(const Entity& entity, unsigned orient){ 
         case 2:
             proj.setSize({10.f, 40.f});
             proj.setTexture(selectProjectileTexture(entity, orient));
-            posProjectile.setPosition(posAspen.getPosition(true) + ((20.f - proj.getGlobalBounds().width)/2.f), posAspen.getPosition(false) + 120.f);
+            posProjectile.setPosition(posAspen.getPosition(true) + ((40.f - proj.getGlobalBounds().width)/2.f), posAspen.getPosition(false) + 80.f);
             proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
             sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision), proj);
             break;
@@ -660,7 +660,7 @@ void Party::setProjectileRectangleShape(const Entity& entity, unsigned orient){ 
         case 3:
             proj.setSize({40.f, 10.f});
             proj.setTexture(selectProjectileTexture(entity, orient));
-            posProjectile.setPosition(posAspen.getPosition(true) - proj.getGlobalBounds().width, posAspen.getPosition(false) + ((40.f - proj.getGlobalBounds().height)/2.f));
+            posProjectile.setPosition(posAspen.getPosition(true) - proj.getGlobalBounds().width, posAspen.getPosition(false) + (80.f*(5.f/6.f) - (proj.getGlobalBounds().height/2.f)));
             proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
             sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision), proj);
             break;
@@ -672,7 +672,12 @@ void Party::setProjectileRectangleShape(const Entity& entity, unsigned orient){ 
 }
 
 void Party::updateProjectile(){
-
+    for(auto &p :sProjectiles){
+        if(p.first){
+            p.first->update();
+            p.second.setPosition(p.first->getProjectilePosition(true), p.first->getProjectilePosition(false));
+        }
+    }
 }
 
 void Party::drawProjectile(){
@@ -1423,6 +1428,8 @@ void Party::reloadRoom(){
     setRectangleShapeForCurrentRoom();
 	
 	setChestItem(*curRoom);
+
+    sProjectiles.clear();
 }
 
 void Party::loadNextStage(){
@@ -1571,7 +1578,7 @@ void Party::handlePlayerInput(sf::Keyboard::Key key, bool isPressed){
 
 void Party::updateForShooting(sf::Time deltaTime){
 
-    aspenAttackSpeed = sf::seconds(10.f / Aspen.getAttackSpeed());
+    aspenAttackSpeed = sf::seconds(1.f / Aspen.getAttackSpeed());
     
     if (mIsShootingUp || mIsShootingDown || mIsShootingRight || mIsShootingLeft){
         elapsedTime += deltaTime;
@@ -1636,7 +1643,7 @@ void Party::update(sf::Time deltaTime){
 	noKeyWasPressed = true;
 
 	aspenAnimated.update(deltaTime);
-
+    updateProjectile();
 	entityCollision();
 }
 
