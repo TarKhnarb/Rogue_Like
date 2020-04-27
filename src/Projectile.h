@@ -26,8 +26,10 @@ public:
      * @param[in] entityY : position Y axis of entity when fires
      * @param[in] o : orientation of projectile which depends of orientation of entity when fired
      * @param[in] type : type of the person who launched the projectile (0 if player, 1 monster)
+     * @param[in] speed : speed of the projectile
+     * @param[in] collisions : number of collisions before destroying the projectile
      * */
-    Projectile(const unsigned, const unsigned, const unsigned &,const unsigned &);
+    Projectile(const float, const float, const unsigned, const unsigned, const float, const unsigned);
 
     /**
      *  @brief destructor
@@ -38,7 +40,7 @@ public:
      * @brief sets number of collision for a projectile
      * @param[in] nb : number of collision for a projectile
      */
-    void setCollisionNb(const unsigned &);
+    void setCollisionNb(const unsigned);
 
     /**
      * @return nb of collision left for an object
@@ -90,9 +92,9 @@ public:
     void displayProjectile();
 
 private:
-    Position<unsigned> * positionProjectile;
+    Position<float> *positionProjectile;
     unsigned nbCollision;
-    unsigned speedProjectile;
+    float speedProjectile;
     EntityType entityType; // O : player, 1 : monster
     Orientation orientation; //0 = North, 1 = East, 2 = South, 3 = West
     unsigned collisionNb;

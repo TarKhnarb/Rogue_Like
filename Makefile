@@ -8,7 +8,7 @@ all: $(O) $(B) $(B)/Aspen
 $(B)/Aspen: $(O)/Party.o $(O)/Base.o $(O)/Npc.o
 	g++ -ggdb $(S)/Aspen.cpp -o $(B)/Aspen $(O)/*.o -lsfml-graphics -lsfml-window -lsfml-system
 
-$(O)/Party.o: $(O)/Donjon.o $(O)/Entity.o $(O)/Collider.o $(O)/AnimatedSprite.o
+$(O)/Party.o: $(O)/Donjon.o $(O)/Entity.o $(O)/Collider.o $(O)/AnimatedSprite.o $(O)/Projectile.o
 	g++ $(FLAGS) $(S)/Party.cpp -o $(O)/Party.o
 
 $(O)/Collider.o:

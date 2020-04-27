@@ -8,6 +8,7 @@ Party::Party():
         mWindow(sf::VideoMode(1280, 720), "Aspen's Adventure"){
 
 
+    sf::Time elapsedTime = sf::Time::Zero;
     loadTextures(); // On charge les textures
 
     loadSprites("RoomStart"); // On charge la map de start
@@ -597,6 +598,91 @@ void Party::setTrapRectangleShape(Room& curRoom){
     }
     
     trapCollider.pushBodies(sTrap.begin(), sTrap.end());
+}
+
+sf::Texture* Party::selectProjectileTexture(Entity entity, unsigned orient){
+
+    switch(orient){
+        case 0:
+            return getTexture("ProjectileN");
+            break;
+
+        case 1:
+            return getTexture("ProjectileE");
+            break;
+
+        case 2:
+            return getTexture("ProjectileS");
+            break;
+
+        case 3:
+            return getTexture("ProjectileW");
+            break;
+
+        default:
+            return getTexture("Projectile1");
+    }
+}
+
+void Party::setProjectileRectangleShape(Entity entity, unsigned orient){ // A appeler quand une entity tire ou si le joeur appui sur une touche de tir
+
+    sf::RectangleShape proj;
+    Position<float> posProjectile(0.f, 0.f);
+    unsigned type = entity.getName() == "Aspen" ? 0 : 1;
+    unsigned speed = entity.getSpeed() + 10;
+    unsigned nbCollision = 1;
+
+    switch(orient){
+        case 0:
+            proj.setTexture(selectProjectileTexture(entity, orient));
+            posProjectile.setPosition(entity.getPosition(true) + ((40.f - proj.getGlobalBounds().width)/2.f), entity.getPosition(false) + proj.getGlobalBounds().height);
+            proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
+            sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision), proj);
+            break;
+
+        case 1:
+            proj.setTexture(selectProjectileTexture(entity, orient));
+            posProjectile.setPosition(entity.getPosition(true) + 40.f, entity.getPosition(false) + ((40.f - proj.getGlobalBounds().height)/2.f));
+            proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
+            sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision), proj);
+            break;
+
+        case 2:
+            proj.setTexture(selectProjectileTexture(entity, orient));
+            posProjectile.setPosition(entity.getPosition(true) + ((40.f - proj.getGlobalBounds().width)/2.f), entity.getPosition(false) + 120.f);
+            proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
+            sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision), proj);
+            break;
+
+        case 3:
+            proj.setTexture(selectProjectileTexture(entity, orient));
+            posProjectile.setPosition(entity.getPosition(true) - proj.getGlobalBounds().width, entity.getPosition(false) + ((40.f - proj.getGlobalBounds().height)/2.f));
+            proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
+            sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision), proj);
+            break;
+
+        default:
+            std::cout << "default" << std::endl;
+            break;
+    }
+    for(auto &p : sProjectiles) {
+        if (p.first) {
+            p.first->displayProjectile();
+            std::cout << "============================" << std::endl;
+        }
+    }
+}
+
+void Party::updateProjectile(){
+
+}
+
+void Party::drawProjectile(){
+    for(auto &p : sProjectiles){
+        if(p.first) {
+            mWindow.draw(p.second);
+        }
+    }
 }
 
 void Party::setRectangleShapeForCurrentRoom(){
@@ -1461,10 +1547,49 @@ void Party::handlePlayerInput(sf::Keyboard::Key key, bool isPressed){
     if (key == sf::Keyboard::D)
         mIsMovingRight = isPressed;
 
+    if (key == sf::Keyboard::Up)
+        mIsShootingUp = isPressed;
+
+    if (key == sf::Keyboard::Left)
+        mIsShootingLeft = isPressed;
+
+    if (key == sf::Keyboard::Right)
+        mIsShootingRight = isPressed;
+
+    if (key == sf::Keyboard::Down)
+        mIsShootingDown = isPressed;
+
     if (isPressed && key == sf::Keyboard::E){
         inventoryOpen = true;
         inventoryValue = 2;
         inventoryIndex = 0;
+    }
+}
+
+void Party::updateForShooting(){
+
+    elapsedTime += shootClock.restart();
+    aspenAttackSpeed = sf::seconds(Aspen.getAttackSpeed()/100.f);
+
+    while (!(!mIsShootingUp && !mIsShootingDown && !mIsShootingRight && !mIsShootingLeft) && elapsedTime > aspenAttackSpeed){ // seulement actif losqu'on appuie sur une touche de tir
+        elapsedTime -= aspenAttackSpeed;
+
+        if(mIsShootingUp){
+            setProjectileRectangleShape(Aspen, 0);
+            mIsShootingUp = false;
+        }
+        else if(mIsShootingDown){
+            setProjectileRectangleShape(Aspen, 2);
+            mIsShootingDown = false;
+        }
+        else if(mIsShootingRight){
+            setProjectileRectangleShape(Aspen, 1);
+            mIsShootingRight = false;
+        }
+        else if(mIsShootingLeft){
+            setProjectileRectangleShape(Aspen, 2);
+            mIsShootingLeft = false;
+        }
     }
 }
 
@@ -1476,25 +1601,31 @@ void Party::update(sf::Time deltaTime){
 		currentAnimation = &walkingAspenUp;
 		movement.y -= PlayerSpeed;
 		noKeyWasPressed = false;
+        updateForShooting();
 	}
 
 	if(mIsMovingDown){
 		currentAnimation = &walkingAspenDown;
 		movement.y += PlayerSpeed;
 		noKeyWasPressed = false;
+        updateForShooting();
 	}
 
 	if(mIsMovingLeft){
 		currentAnimation = &walkingAspenLeft;
 		movement.x -= PlayerSpeed;
 		noKeyWasPressed = false;
+        updateForShooting();
 	}
 
 	if(mIsMovingRight){
 		currentAnimation = &walkingAspenRight;
 		movement.x += PlayerSpeed;
 		noKeyWasPressed = false;
+        updateForShooting();
 	}
+
+    updateForShooting();
 
 	aspenAnimated.play(*currentAnimation);
 	aspenAnimated.move(movement * deltaTime.asSeconds());
@@ -1540,6 +1671,8 @@ void Party::render(){
 		drawPlayerInventory();
 
 	}
+
+    drawProjectile();
 		
     mWindow.display();
 }

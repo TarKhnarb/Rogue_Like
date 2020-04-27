@@ -2,6 +2,11 @@ data/Textures/Entity/AspenBack.png,AspenBack
 data/Textures/Entity/AspenFront.png,AspenFront
 data/Textures/Entity/AspenLeft.png,AspenLeft
 data/Textures/Entity/AspenRight.png,AspenRight
+data/Textures/Projectile/Projectile1.png,Projectile1
+data/Textures/Projectile/ProjectileN.png,ProjectileN
+data/Textures/Projectile/ProjectileE.png,ProjectileE
+data/Textures/Projectile/ProjectileS.png,ProjectileS
+data/Textures/Projectile/ProjectileW.png,ProjectileW
 data/Textures/Room/Start.jpg,RoomStart
 data/Textures/Room/Boss.jpg,RoomBoss
 data/Textures/Room/Room1E.jpg,Room1E

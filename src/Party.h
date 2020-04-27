@@ -15,6 +15,7 @@
 #include "Position.h"
 #include "Entity.h"
 #include "Donjon.h"
+#include "Projectile.h"
 #include "Collider.h"
 #include "Archetype.h"
     // Utilisés pour récupérer les infos de leurs placements
@@ -77,6 +78,10 @@ private:
     //void setMonsterRectangleShape(Room);
     void setChestRectangleShape(Room&);
     void setTrapRectangleShape(Room&);
+    sf::Texture* selectProjectileTexture(Entity, unsigned);
+    void setProjectileRectangleShape(Entity, unsigned); // l'entity afin de récupérer sa position, unsigned 0 -> 4 pour son orientation
+    void updateProjectile();
+    void drawProjectile();
     void setRectangleShapeForCurrentRoom();
 
     void setInventoryStats(); // pour afficher les stats du joueur
@@ -113,7 +118,9 @@ private:
      * @param[in] isPressed : is key pressed
     */
     void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
-    
+
+    void updateForShooting();
+
     /**
      * @brief calls the correct functions when player going up,down...
     */
@@ -128,6 +135,10 @@ private:
     bool mIsMovingDown = false;
     bool mIsMovingLeft = false;
     bool mIsMovingRight = false;
+    bool mIsShootingUp = false;
+    bool mIsShootingLeft = false;
+    bool mIsShootingRight = false;
+    bool mIsShootingDown = false;
 	bool noKeyWasPressed = true;
 
     float PlayerSpeed = 250.f;
@@ -136,8 +147,9 @@ private:
 
     Position<int> posDonjon;
     Position<float> posAspen;
-    Entity Aspen;
+    Entity Aspen; // a passer en donné resultat par le constructeur à terme
     Donjon donjon;
+    Archetype arch; // Pour récupérer toutes les positions pour placer les images
 
         // Maps des différents élément à afficher
     std::map<std::string, sf::Texture*> textures;
@@ -146,10 +158,14 @@ private:
 
     sf::RenderWindow mWindow;
 
-        // Différents sprites/rectangleShape pouvant être sur la map
+    // Pour les projectiles
+    sf::Clock shootClock;
+    sf::Time elapsedTime;
+    sf::Time aspenAttackSpeed;
+
+    // Différents sprites/rectangleShape pouvant être sur la map
     sf::RectangleShape sPlayer;
     sf::Sprite sRoom;
-    std::vector<sf::RectangleShape> sTrap;
     std::vector<sf::RectangleShape> Walls;
     std::vector<sf::RectangleShape> Holes;
     std::vector<sf::RectangleShape> sMonsters;
@@ -157,18 +173,17 @@ private:
     std::vector<sf::Sprite> sFrames;
     std::vector<sf::RectangleShape> sDoors;
     std::vector<sf::RectangleShape> sChest;
-    //std::vector<sf::RectangleShape> sProjectiles;
-	
+    std::vector<sf::RectangleShape> sTrap;
+    std::map<Projectile*, sf::RectangleShape> sProjectiles; // pour update, on parcour le map, on appel sProjectile.first->update() et on modifie sProjectile.second en fonction de la nouvelle position
+
+    Collider wallsCollider;
+    Collider holesCollider;
+    //Collider monstersCollider;
+    Collider rocksCollider;
+    Collider doorsCollider;
+    Collider chestsCollider;
 	Collider trapCollider;
-	Collider wallsCollider;
-	Collider holesCollider;
-	Collider rocksCollider;
-	Collider doorsCollider;
-	// Collider monstersCollider;
-	Collider chestsCollider;
-	// Collider projectilesCollider;
-	
-	Archetype arch;
+	Collider projectilesCollider;
 
 	    //  Aspen animation
 

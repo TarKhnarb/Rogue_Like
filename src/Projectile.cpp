@@ -1,36 +1,37 @@
 #include "Projectile.h"
 
-Projectile::Projectile(unsigned entityX, unsigned entityY, const unsigned & o, const unsigned & type) {
-    positionProjectile = new Position<unsigned>(entityX,entityY); //puts bullet at the entity position
-    orientation = static_cast<Orientation>(o); //cast an unsigned int to enum
-    entityType = static_cast<EntityType>(type);
-    speedProjectile = 1;
-    setCollisionNb(2);
-}
+Projectile::Projectile(const float entityX, const float entityY, const unsigned o, const unsigned type, const float speed, const unsigned collision) :
+        positionProjectile(new Position<float>(entityX,entityY)), //puts bullet at the entity position
+        nbCollision(0),
+        speedProjectile(speed),
+        entityType(static_cast<EntityType>(type)),
+        orientation(static_cast<Orientation>(o)),
+        collisionNb(collision){}
 
-Projectile::~Projectile() {
+Projectile::~Projectile(){
 	if (positionProjectile)
 		delete positionProjectile;
+	positionProjectile = nullptr;
 }
 
-void Projectile::update() { //updates the position according to the orientation
+void Projectile::update(){ //updates the position according to the orientation
     switch(orientation){
         case 0:
-            positionProjectile->move(-speedProjectile, 0);
+            positionProjectile->move(-0.01f*speedProjectile, 0);
             break;
         case 1:
-            positionProjectile->move(0, speedProjectile);
+            positionProjectile->move(0, 0.01f*speedProjectile);
             break;
         case 2:
-            positionProjectile->move(speedProjectile, 0);
+            positionProjectile->move(0.01f*speedProjectile, 0);
             break;
         case 3:
-            positionProjectile->move(0, -speedProjectile);
+            positionProjectile->move(0, -0.01f*speedProjectile);
             break;
     }
 }
 
-void Projectile::setCollisionNb(const unsigned & nb){
+void Projectile::setCollisionNb(const unsigned nb){
     collisionNb = nb;
 }
 
@@ -42,9 +43,11 @@ unsigned Projectile::getProjectilePosition(bool xORy) const{
     return positionProjectile->getPosition(xORy);
 }
 
-void Projectile::collision() {
+void Projectile::collision(){
+    //~Projectile(); ??????
 	if (positionProjectile)
 		delete positionProjectile;
+    positionProjectile = nullptr;
     //check ennemy position and delete ennemy because collision with him
 }
 
