@@ -1519,7 +1519,7 @@ void Party::entityCollision(){
 void Party::projectileCollision(){
 
     sf::Vector2f colDirection;
-    for(std::map<Projectile*, sf::RectangleShape>::iterator p = sProjectiles.begin(); p !=sProjectiles.end(); ++p ){
+    for(std::map<Projectile*, sf::RectangleShape>::iterator p = sProjectiles.begin(); p !=sProjectiles.end(); ++p){
         if(p->first){
                 // Walls
             Collider projCol (p->second, Style::Separated);
@@ -1532,6 +1532,14 @@ void Party::projectileCollision(){
             if (projCol.checkCollision(doorsCollider, colDirection, 0.f)){
                 sProjectiles.erase(p);
                 break;
+            }
+
+            for(std::vector<sf::RectangleShape>::iterator r = rocksCollider.begin(); r != rocksCollider.end(); ++d){
+                if(projCol.checkCollision(d, colDirection, 0.f)){
+                    sProjectiles.erase(p);
+                    rock
+                    break;
+                }
             }
         }
     }
