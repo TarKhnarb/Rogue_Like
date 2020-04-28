@@ -199,11 +199,11 @@ const Object* Inventory::getStuff(unsigned stuffIndex) const{
 	return static_cast<const Object*>(stuff[stuffIndex]);
 }
 
-const Object* Inventory::getObject(unsigned bagIndex) const{
+Object* Inventory::getObject(unsigned bagIndex) const{
 
 	assert(bagIndex < bag.size());
 
-	return static_cast<const Object*>(bag[bagIndex]);
+	return static_cast<Object*>(bag[bagIndex]);
 }
 
 std::string Inventory::getBasicStatName() const {

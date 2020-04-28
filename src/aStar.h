@@ -32,8 +32,9 @@ struct cell{
  * @param xORy if true, return x axis value, false y axis value
  * @return if true, return x axis value, false y axis value
  */
-unsigned path(bool xORy);
+unsigned pathX();
 
+unsigned pathY()
 /**
  * @brief check if cell is an obstacle
  * @param row row value to check

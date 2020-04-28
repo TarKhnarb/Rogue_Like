@@ -2,12 +2,12 @@
 
 Result result;
 
-unsigned path(bool xORy){
-    if(xORy){
-        return result.a;
-    }else{
-        return result.b;
-    }
+unsigned pathX(){
+    return result.a;
+}
+
+unsigned pathY(){
+    return result.b
 }
 
 bool isValid(int row, int col){
@@ -47,12 +47,12 @@ void tracePath(cell cellDetails[][COL], Pair dest){
     }
     Path.push (std::make_pair (row, col));
 
-    for(unsigned i=0;i<2;++i){ //to have the next value (if i=3 have 2 step, i=4 have 3 step)
+    for(unsigned i = 0; i < 2; ++i){ //to have the next value (if i=3 have 2 step, i=4 have 3 step)
         Path.pop();
         std::pair<int,int> p = Path.top();
-        if(i==0){
-            result.a=p.first;
-            result.b=p.second;
+        if(i == 0){
+            result.a = p.first;
+            result.b = p.second;
         }
     }
     return;
@@ -85,8 +85,8 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
     cell cellDetails[ROW][COL];//parameters of cell
 
     unsigned  i,j;
-    for (i=0; i<ROW; i++){
-        for (j=0; j<COL; j++){
+    for(unsigned i = 0; i < ROW; i++){
+        for (unsigne j = 0; j < COL; j++){
             cellDetails[i][j].f = FLT_MAX;
             cellDetails[i][j].g = FLT_MAX;
             cellDetails[i][j].h = FLT_MAX;

@@ -53,7 +53,7 @@ class Inventory
 
 		const Object* getStuff(unsigned stuffIndex) const;
 
-		const Object* getObject(unsigned bagIndex) const;
+		Object* getObject(unsigned bagIndex);
 
 		bool isItInInventory(unsigned, unsigned);
 

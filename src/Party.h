@@ -76,7 +76,7 @@ private:
     void setDoorCloseRectangleShape(Room&);
 	void setRockChoice(Room&);
     void setRockRectangleShape(Room&);
-    //void setMonsterRectangleShape(Room);
+    void setMonsterRectangleShape(Room);
     void setChestRectangleShape(Room&);
     void setTrapRectangleShape(Room&);
     sf::Texture* selectProjectileTexture(const Entity&, unsigned);
@@ -182,7 +182,7 @@ private:
 
     Collider wallsCollider;
     Collider holesCollider;
-    //Collider monstersCollider;
+    Collider monstersCollider;
     Collider rocksCollider;
     Collider doorsCollider;
     Collider chestsCollider;

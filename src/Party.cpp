@@ -564,7 +564,23 @@ void Party::setRockRectangleShape(Room& curRoom){
     rocksCollider.pushBodies(sRocks.begin(), sRocks.end());
 }
 
-//void Party::setMonsterRectangleShape(Room curRoom){std::vector<Entity*> monster = curRoom.getMonsters();}
+void Party::setMonsterRectangleShape(Room curRoom){
+    std::vector<Entity*> monster = curRoom.getMonsters();
+
+    sf::RectangleShape monst({40.f, 80.f});
+
+    unsigned size = sMonsters.size();
+    for (unsigned i = 0 ; i < size ; ++i)
+        sMonsters.pop_back();
+
+    for(unsigned i = 0; i < monster.size(); ++i){
+        monst.setFillColor(sf::Color::Red);
+        monst.setPosition(monster[i]->getPosition(true) - 20.f, monster[i]->getPosition(false) - 40.f);
+        sMonsters.push_back(monst);
+    }
+
+    monstersCollider.pushBodies(sMonsters.begin(), sMonsters.end());
+}
 
 void Party::setChestRectangleShape(Room& curRoom){  //sf::chest le mettre en vector
     Chest* chest = curRoom.getChest();
@@ -771,6 +787,7 @@ void Party::setRectangleShapeForCurrentRoom(){
         //setDoorCloseRectangleShape(*curRoom);
         setRockChoice(*curRoom);
         setRockRectangleShape(*curRoom);
+        setMonsterRectangleShape(*curRoom);
         setChestRectangleShape(*curRoom);
         setTrapRectangleShape(*curRoom);
     }
@@ -1671,7 +1688,7 @@ void Party::reloadRoom(){
 	holesCollider.clean();
 	rocksCollider.clean();
 	doorsCollider.clean();
-	// monstersCollider.clean();
+	monstersCollider.clean();
 	chestsCollider.clean();
 	
 	setSpritesForCurrentRoom();
@@ -1973,6 +1990,9 @@ void Party::render(){
 		mWindow.draw(t);
 	
     drawProjectile();
+
+   /* for(const auto &m : sMonsters)
+        mWindow.draw(m);*/
     
 	mWindow.draw(aspenAnimated);
 	
