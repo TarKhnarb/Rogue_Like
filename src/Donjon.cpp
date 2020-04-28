@@ -34,7 +34,7 @@ unsigned Donjon::getStage() {
 
 void Donjon::nextStage() {
     if(stage < stageNumber){
-        stage+=1;
+        ++stage;
         delete currentStage;
         currentStage = new Stage(hero);
         currentStage->generate(stage);

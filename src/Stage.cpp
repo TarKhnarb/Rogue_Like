@@ -28,8 +28,8 @@ Stage::~Stage(){
         for (unsigned j = 0; j < maxSize; j++){
 			if(RoomsMap[i][j]){
                 delete RoomsMap[i][j];
-                RoomsMap[i][j] = nullptr;
 			}
+			RoomsMap[i][j] = nullptr;
         }
     }
 }

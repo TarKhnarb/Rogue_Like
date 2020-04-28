@@ -13,14 +13,15 @@ Inventory::~Inventory(){
             p = nullptr;
         }
 	}
-	//stuff.clear();
+	stuff.clear();
+	
 	for(Object *&p : bag){
         if (p){
             delete p;
             p = nullptr;
         }
 	}
-	//bag.clear();
+	bag.clear();
 }
 
 void Inventory::equip(unsigned bagIndex){

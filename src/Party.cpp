@@ -1620,7 +1620,6 @@ void Party::reloadRoom(){
 	doorsCollider.clean();
 	// monstersCollider.clean();
 	chestsCollider.clean();
-	projectilesCollider.clean();
 	
 	setSpritesForCurrentRoom();
     setRectangleShapeForCurrentRoom();
