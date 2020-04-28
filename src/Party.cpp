@@ -46,6 +46,7 @@ Party::Party():
 	Aspen.addInventoryObject(47, 1); // potion
 	Aspen.addInventoryObject(11); // helmet
     Aspen.addInventoryObject(30); // boots
+    Aspen.addInventoryObject(35); // Projectile
     
 	rocksCollider.setStyle(Style::Separated);
     setInventoryItem();
@@ -819,10 +820,11 @@ sf::Color Party::setItemLvl(unsigned id){
             return sf::Color::Magenta;
             break;
         case 2:
-            return sf::Color::Transparent;
+            return sf::Color::White;
             break;
 
         default:
+            return sf::Color::Transparent;
             break;
     }
 }
@@ -907,7 +909,7 @@ void Party::setInventoryItem(){
                     item.setTexture(*getTexture("35"));
                 else
                     item.setTexture(*getTexture("38"));
-                item.scale(50.f/128.f, 50.f/128.f);
+                item.scale(50.f/64.f, 50.f/64.f);
             }
             if(type == Object::Type::amulet){
                 if(id < 44)
@@ -980,7 +982,7 @@ void Party::setInventoryItem(){
                     item.setTexture(*getTexture("35"));
                 else
                     item.setTexture(*getTexture("38"));
-                item.scale(50.f/128.f, 50.f/128.f);
+                item.scale(50.f/64.f, 50.f/64.f);
             }
             if(type == Object::Type::amulet){
                 if(id < 44)
