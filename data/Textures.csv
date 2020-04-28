@@ -31,6 +31,9 @@ data/Textures/Objects/Equipement/35.png,35
 data/Textures/Objects/Equipement/38.png,38
 data/Textures/Objects/Equipement/41.png,41
 data/Textures/Objects/Equipement/44.png,44
+data/Textures/Objects/Potion/47.png,47
+data/Textures/Objects/Potion/48.png,48
+data/Textures/Objects/Potion/49.png,49
 data/Textures/Objects/Loots/50.png,50
 data/Textures/Objects/Loots/51.png,51
 data/Textures/Objects/Loots/52.png,52
@@ -46,9 +49,6 @@ data/Textures/Objects/Loots/61.png,61
 data/Textures/Objects/Loots/62.png,62
 data/Textures/Objects/Loots/63.png,63
 data/Textures/Objects/Loots/64.png,64
-data/Textures/Objects/Potion/47.png,47
-data/Textures/Objects/Potion/48.png,48
-data/Textures/Objects/Potion/49.png,49
 data/Textures/Room/Start.jpg,RoomStart
 data/Textures/Room/Boss.jpg,RoomBoss
 data/Textures/Room/Room1E.jpg,Room1E
