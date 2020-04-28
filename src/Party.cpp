@@ -4,7 +4,7 @@ Party::Party():
         posDonjon(10, 10),
         posAspen(620, 310),
         Aspen (posAspen.getPosition(true), posAspen.getPosition(false)),
-        donjon(stageNumber, Aspen),
+        donjon(stageNumber, &Aspen),
         mWindow(sf::VideoMode(1280, 720), "Aspen's Adventure"){
 
 

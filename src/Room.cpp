@@ -4,7 +4,7 @@
  * Constructor With Room's Type *
  *******************************/
 
-Room::Room(roomType t, Entity &apsen):
+Room::Room(roomType t, Entity *apsen):
         type(t),
         hero(apsen),
         Doors(4, nullptr),
@@ -15,17 +15,17 @@ Room::Room(roomType t, Entity &apsen):
  *************/
 
 Room::~Room() {
-    for(auto &d : Doors){
-        if(d){
-            delete d;
-            d = nullptr;
+    for(auto it = Doors.begin(); it != Doors.end(); ++it){
+        if(*it){
+            delete *it;
+            *it = nullptr;
         }
     }
-
-    for(auto& monster : monsters){
-        if(monster){
-            delete monster;
-            monster = nullptr;
+    
+    for(auto it = monsters.begin(); it != monsters.end(); ++it){
+        if(*it){
+            delete *it;
+            *it = nullptr;
         }
     }
 

@@ -48,7 +48,7 @@ class Room{
 
 public:
 
-    Room(roomType, Entity&);
+    Room(roomType, Entity*);
     ~Room();
 
     void openDoors(); // Open all Doors
@@ -80,7 +80,7 @@ private:
 
     roomType type; // type of the current Room
 
-    Entity& hero;
+    Entity* hero;
 
     std::vector<Door*> Doors; // Index: (0: north, 1: east, 2: south, 3: west),return table of Door according their orientation
     std::vector<Entity*> monsters; // Monstres de la salle

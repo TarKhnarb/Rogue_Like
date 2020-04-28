@@ -15,7 +15,7 @@ class Donjon{
 
 public:
 
-    Donjon(unsigned, Entity&);
+    Donjon(unsigned, Entity*);
 	~Donjon();
 
     Stage* getCurrentStage() const;
@@ -32,7 +32,7 @@ public:
 
 private:
 
-    Entity& hero;
+    Entity* hero;
     unsigned stageNb;
     unsigned stage;
     Stage *currentStage;

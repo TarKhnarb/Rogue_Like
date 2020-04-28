@@ -4,7 +4,7 @@
  * Constructeur *
  ***************/
 
-Stage::Stage(Entity & aspen):
+Stage::Stage(Entity* aspen):
         hero(aspen){
     
     for(unsigned i = 0; i < maxSize; i++)

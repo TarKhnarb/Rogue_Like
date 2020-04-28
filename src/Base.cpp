@@ -1,6 +1,6 @@
 #include "Base.h"
 
-Base::Base(Entity & aspen, unsigned level):
+Base::Base(Entity * aspen, unsigned level):
         hero(aspen),
         chests (level, nullptr),
         lvl(level){
@@ -12,9 +12,10 @@ Base::Base(Entity & aspen, unsigned level):
 
 Base::~Base() {
     saveChests();
-    for(auto chest : chests){
-        if(chest){
-            delete chest;
+    for(auto it = chests.begin(); it != chests.end(); ++it){
+        if(*it){
+            delete *it;
+            *it = nullptr;
         }
     }
 }

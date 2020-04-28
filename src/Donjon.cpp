@@ -1,6 +1,6 @@
 #include "Donjon.h"
 
-Donjon::Donjon(unsigned stageNumb, Entity& aspen):
+Donjon::Donjon(unsigned stageNumb, Entity* aspen):
         hero(aspen),
         stageNb(stageNumb),
         stage(0),

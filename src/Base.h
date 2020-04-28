@@ -14,7 +14,7 @@ class Base{
 public:
 
     Base() = default;
-    Base(Entity &, unsigned level);
+    Base(Entity *, unsigned level);
     ~Base();
 
     void upgradeBase();
@@ -29,7 +29,7 @@ public:
 
 private:
 
-    Entity hero;
+    Entity* hero;
     std::vector<Chest*> chests;
     unsigned lvl;
 

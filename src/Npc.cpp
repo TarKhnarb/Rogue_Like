@@ -22,7 +22,8 @@ Npc::~Npc() {
     }
 
     for(unsigned i = 0; i < witchInventory.size(); ++i){
-        delete witchInventory[i];
+		if (witchInventory[i])
+			delete witchInventory[i];
         witchInventory[i] = nullptr;
     }
    /*

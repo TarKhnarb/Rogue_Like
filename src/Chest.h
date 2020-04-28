@@ -21,7 +21,7 @@ public:
     };
 
     Chest() = default;
-    Chest(Entity &, orientation); // Entity pour stoker les objects
+    Chest(Entity *, orientation); // Entity pour stoker les objects
     ~Chest() = default;
 
     void addInChest(unsigned); // add un object avec son id
@@ -44,7 +44,7 @@ private:
 
     orientation orient;
     Inventory chest;
-    Entity &hero;
+    Entity *hero;
 };
 
 #endif

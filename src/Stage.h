@@ -17,7 +17,7 @@ class Stage{
     
 public:
     
-    Stage(Entity &);
+    Stage(Entity*);
     ~Stage();
 
     void generate(unsigned &); // Génère le Stage
@@ -51,7 +51,7 @@ public:
 
 private:
 
-    Entity& hero;
+    Entity* hero;
     
     Room* RoomsMap[maxSize][maxSize];
 
