@@ -48,8 +48,8 @@ void tracePath(cell cellDetails[][COL], Pair dest){
     Path.push (std::make_pair (row, col));
 
     for(unsigned i=0;i<2;++i){ //to have the next value (if i=3 have 2 step, i=4 have 3 step)
-        std::pair<int,int> p = Path.top();
         Path.pop();
+        std::pair<int,int> p = Path.top();
         if(i==0){
             result.a=p.first;
             result.b=p.second;
@@ -252,6 +252,8 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
     // there is no way to destination cell (due to blockages)
     if (!foundDest)
         std::cerr << "Failed to find the destination cell" << std::endl;
+    
+    tracePath(cellDetails, dest);
     
     return;
 }
