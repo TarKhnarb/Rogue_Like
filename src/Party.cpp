@@ -839,8 +839,6 @@ void Party::setInventoryItem(){
     playerInventory.setSize({480.f, 280.f});
     playerInventory.setPosition(arch.playerInventory[0], arch.playerInventory[1]);
     playerInventory.setTexture(getTexture("PlayerInventory"));
-
-    sf::Sprite item;
     
     sf::Text txt;
     txt.setFont(objectsFont);
@@ -857,6 +855,7 @@ void Party::setInventoryItem(){
     Object::Type type;
 
     for (unsigned i = 0; i < playerBagSize; ++i){
+        sf::Sprite item;
         const Object* object = Aspen.getInventoryObject(i);
 
         if(object){
@@ -938,6 +937,7 @@ void Party::setInventoryItem(){
     }
 
     for (unsigned i = 0; i < playerStuffSize; ++i){
+        sf::Sprite item;
         const Object* object = Aspen.getInventoryStuff(i);
 
         if(object){
@@ -947,15 +947,6 @@ void Party::setInventoryItem(){
             type = object->getType();
 
             item.setColor(setItemLvl(id));
-
-            if(type == Object::Type::potion){
-                item.setTexture(*getTexture(std::to_string(id)));
-                item.scale(50.f/128.f, 50.f/128.f);
-            }
-            if(type == Object::Type::monsterLoot){
-                item.setTexture(*getTexture(std::to_string(id)));
-                item.scale(50.f/64.f, 50.f/64.f);
-            }
             if(type == Object::Type::helmet){
                 if(id < 14)
                     item.setTexture(*getTexture("11"));
@@ -999,12 +990,12 @@ void Party::setInventoryItem(){
                 item.scale(50.f/128.f, 50.f/128.f);
             }
 
-            bagItem.emplace(i, item);
+            stuffItem.emplace(i, item);
         }
         else{
             item.setPosition(arch.itemStuff[i][0], arch.itemStuff[i][1]);
             item.setTexture(*getTexture("Nothing"));
-            bagItem.emplace(i, item);
+            stuffItem.emplace(i, item);
         }
     }
     
