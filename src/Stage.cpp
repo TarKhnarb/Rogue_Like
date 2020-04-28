@@ -422,6 +422,12 @@ void Stage::reset(unsigned stage) {
     /*
      * You can also used this version which allow you to change the type of "CommonStage" to "Start" at the 2nd stage
      */
+/*
+    if(stage == 0)
+        RoomsMap[mid][mid] = new Room(roomType::CommonStart, hero);
+    else
+        RoomsMap[mid][mid] = new Room(roomType::Start, hero);
+*/
 }
 
 /************************

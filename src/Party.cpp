@@ -632,26 +632,64 @@ void Party::setTrapRectangleShape(Room& curRoom){
 }
 
 sf::Texture* Party::selectProjectileTexture(const Entity& entity, unsigned orient){
+    unsigned idProjectile;
+    if(entity.getName() == "Aspen"){
+
+        if(entity.getInventoryStuff(4)){
+            switch(entity.getInventoryStuff(4)->getId()){
+                case 35:
+                    idProjectile = 2;
+                    break;
+
+                case 36:
+                    idProjectile = 2;
+                    break;
+
+                case 37:
+                    idProjectile = 2;
+                    break;
+
+                case 38:
+                    idProjectile = 3;
+                    break;
+
+                case 39:
+                    idProjectile = 3;
+                    break;
+
+                case 40:
+                    idProjectile = 3;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        else
+            idProjectile = 1;
+    }
+    else
+        idProjectile = 0;
 
     switch(orient){
         case 0:
-            return getTexture("ProjectileN");
+            return getTexture("ProjectileN" + std::to_string(idProjectile));
             break;
 
         case 1:
-            return getTexture("ProjectileE");
+            return getTexture("ProjectileE" + std::to_string(idProjectile));
             break;
 
         case 2:
-            return getTexture("ProjectileS");
+            return getTexture("ProjectileS" + std::to_string(idProjectile));
             break;
 
         case 3:
-            return getTexture("ProjectileW");
+            return getTexture("ProjectileW" + std::to_string(idProjectile));
             break;
 
         default:
-            return getTexture("Projectile1");
+            break;
     }
 }
 
@@ -772,6 +810,23 @@ void Party::setInventoryStats(){
     textStats.push_back(txtStat);
 }
 
+sf::Color Party::setItemLvl(unsigned id){
+    switch(id%3){
+        case 0:
+            return sf::Color::Yellow;
+            break;
+        case 1:
+            return sf::Color::Magenta;
+            break;
+        case 2:
+            return sf::Color::Transparent;
+            break;
+
+        default:
+            break;
+    }
+}
+
 void Party::setInventoryItem(){
 
     viewAspen.setSize({60.f, 120.f});
@@ -785,7 +840,7 @@ void Party::setInventoryItem(){
     playerInventory.setPosition(arch.playerInventory[0], arch.playerInventory[1]);
     playerInventory.setTexture(getTexture("PlayerInventory"));
 
-    sf::RectangleShape item;
+    sf::Sprite item;
     
     sf::Text txt;
     txt.setFont(objectsFont);
@@ -798,13 +853,71 @@ void Party::setInventoryItem(){
     bagItem.clear();
 	stuffItem.clear();
 
+    unsigned id;
+    Object::Type type;
+
     for (unsigned i = 0; i < playerBagSize; ++i){
         const Object* object = Aspen.getInventoryObject(i);
 
         if(object){
-            item.setSize({50.f, 50.f});
             item.setPosition(arch.itemBag[i][0], arch.itemBag[i][1]);
-            item.setFillColor(sf::Color::Red);
+
+            id = object->getId();
+            type = object->getType();
+
+            item.setColor(setItemLvl(id));
+
+            if(type == Object::Type::potion){
+                item.setTexture(*getTexture(std::to_string(id)));
+                item.scale(50.f/128.f, 50.f/128.f);
+            }
+            if(type == Object::Type::monsterLoot){
+                item.setTexture(*getTexture(std::to_string(id)));
+                item.scale(50.f/64.f, 50.f/64.f);
+            }
+            if(type == Object::Type::helmet){
+                if(id < 14)
+                    item.setTexture(*getTexture("11"));
+                else
+                    item.setTexture(*getTexture("14"));
+                item.scale(50.f/128.f, 50.f/128.f);
+            }
+            if(type == Object::Type::chestplate){
+                if(id < 20)
+                    item.setTexture(*getTexture("17"));
+                else
+                    item.setTexture(*getTexture("20"));
+                item.scale(50.f/128.f, 50.f/128.f);
+            }
+            if(type == Object::Type::leggings){
+                if(id < 26)
+                    item.setTexture(*getTexture("23"));
+                else
+                    item.setTexture(*getTexture("26"));
+                item.scale(50.f/128.f, 50.f/128.f);
+            }
+            if(type == Object::Type::boots){
+                if(id < 32)
+                    item.setTexture(*getTexture("29"));
+                else
+                    item.setTexture(*getTexture("32"));
+                item.scale(50.f/128.f, 50.f/128.f);
+            }
+            if(type == Object::Type::projectile){
+                if(id < 38)
+                    item.setTexture(*getTexture("35"));
+                else
+                    item.setTexture(*getTexture("38"));
+                item.scale(50.f/128.f, 50.f/128.f);
+            }
+            if(type == Object::Type::amulet){
+                if(id < 44)
+                    item.setTexture(*getTexture("41"));
+                else
+                    item.setTexture(*getTexture("44"));
+                item.scale(50.f/128.f, 50.f/128.f);
+            }
+
             bagItem.emplace(i, item);
             
             if (object->getObjectNumber() > 1){
@@ -818,9 +931,8 @@ void Party::setInventoryItem(){
             }
         }
         else{
-            item.setSize({50.f, 50.f});
             item.setPosition(arch.itemBag[i][0], arch.itemBag[i][1]);
-            item.setFillColor(sf::Color::Yellow);
+            item.setTexture(*getTexture("Nothing"));
             bagItem.emplace(i, item);
         }
     }
@@ -829,31 +941,75 @@ void Party::setInventoryItem(){
         const Object* object = Aspen.getInventoryStuff(i);
 
         if(object){
-            item.setSize({50.f, 50.f});
             item.setPosition(arch.itemStuff[i][0], arch.itemStuff[i][1]);
-            item.setFillColor(sf::Color::Red);
-            stuffItem.emplace(i, item);
-            
-            if (object->getObjectNumber() > 1){
-                txt.setString(std::to_string(object->getObjectNumber()));
-                
-                sf::FloatRect bounds = txt.getLocalBounds();
-                txt.setOrigin({bounds.width, bounds.height});
-                txt.setPosition(arch.itemStuff[i][0] + 48.f, arch.itemStuff[i][1] + 48.f);
-                
-                objectsNumber.emplace(i, txt);
+
+            id = object->getId();
+            type = object->getType();
+
+            item.setColor(setItemLvl(id));
+
+            if(type == Object::Type::potion){
+                item.setTexture(*getTexture(std::to_string(id)));
+                item.scale(50.f/128.f, 50.f/128.f);
             }
+            if(type == Object::Type::monsterLoot){
+                item.setTexture(*getTexture(std::to_string(id)));
+                item.scale(50.f/64.f, 50.f/64.f);
+            }
+            if(type == Object::Type::helmet){
+                if(id < 14)
+                    item.setTexture(*getTexture("11"));
+                else
+                    item.setTexture(*getTexture("14"));
+                item.scale(50.f/128.f, 50.f/128.f);
+            }
+            if(type == Object::Type::chestplate){
+                if(id < 20)
+                    item.setTexture(*getTexture("17"));
+                else
+                    item.setTexture(*getTexture("20"));
+                item.scale(50.f/128.f, 50.f/128.f);
+            }
+            if(type == Object::Type::leggings){
+                if(id < 26)
+                    item.setTexture(*getTexture("23"));
+                else
+                    item.setTexture(*getTexture("26"));
+                item.scale(50.f/128.f, 50.f/128.f);
+            }
+            if(type == Object::Type::boots){
+                if(id < 32)
+                    item.setTexture(*getTexture("29"));
+                else
+                    item.setTexture(*getTexture("32"));
+                item.scale(50.f/128.f, 50.f/128.f);
+            }
+            if(type == Object::Type::projectile){
+                if(id < 38)
+                    item.setTexture(*getTexture("35"));
+                else
+                    item.setTexture(*getTexture("38"));
+                item.scale(50.f/128.f, 50.f/128.f);
+            }
+            if(type == Object::Type::amulet){
+                if(id < 44)
+                    item.setTexture(*getTexture("41"));
+                else
+                    item.setTexture(*getTexture("44"));
+                item.scale(50.f/128.f, 50.f/128.f);
+            }
+
+            bagItem.emplace(i, item);
         }
         else{
-            item.setSize({50.f, 50.f});
             item.setPosition(arch.itemStuff[i][0], arch.itemStuff[i][1]);
-            item.setFillColor(sf::Color::Yellow);
-            stuffItem.emplace(i, item);
+            item.setTexture(*getTexture("Nothing"));
+            bagItem.emplace(i, item);
         }
     }
     
-    sInventoryCursor.setSize({50.f, 50.f});
 
+    sInventoryCursor.setSize({50.f, 50.f});
     sInventoryCursor.setFillColor(sf::Color::Transparent);
     sInventoryCursor.setOutlineThickness(2.f);
     sInventoryCursor.setOutlineColor(sf::Color::Blue);
@@ -1448,7 +1604,11 @@ void Party::drawPlayerInventory(){ // 1: stuff, 2: bag, 3: chest
 
 void Party::reloadRoom(){
 
-    sProjectiles.clear();
+    for(auto p = sProjectiles.begin(); p != sProjectiles.end();){
+        if(p->first)
+            delete p->first;
+        p = sProjectiles.erase(p);
+    }
 
 	Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
 	loadSprites(curRoom->getStringType());

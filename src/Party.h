@@ -86,6 +86,7 @@ private:
     void setRectangleShapeForCurrentRoom();
 
     void setInventoryStats(); // pour afficher les stats du joueur
+    sf::Color setItemLvl(unsigned);
     void setInventoryItem(); // bag et stuff
     void setChestItem(Room&);
 
@@ -206,8 +207,8 @@ private:
 	bool chestOpen = false;
 	sf::RectangleShape chestInventory;
 
-	std::map<unsigned, sf::RectangleShape> bagItem;
-	std::map<unsigned, sf::RectangleShape> stuffItem;
+	std::map<unsigned, sf::Sprite> bagItem;
+	std::map<unsigned, sf::Sprite> stuffItem;
 	std::map<unsigned, sf::RectangleShape> chestItem; // Si pas d'item, le rectangleShape est blanc, unsigned -> place dans l'inventaire
 	std::map<unsigned, sf::Text> objectsNumber;
 	std::map<unsigned, sf::Text> chestObjectNumber;

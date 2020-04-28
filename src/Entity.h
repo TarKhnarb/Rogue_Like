@@ -64,7 +64,7 @@ public :
 
     const Object* getInventoryObject(unsigned) const; // Retourne un object de l'inventaire en fonction de son index
 
-    const Object* getInventoryStuff(unsigned); // Retourne un object de l'equipementdu joueur
+    const Object* getInventoryStuff(unsigned) const; // Retourne un object de l'equipementdu joueur
 
     void addInventoryObject(unsigned id, unsigned objectNb = 1); // Ajoute un object a l'inventaire en fonction de son id et du nb (par defaut à 1)
     unsigned addInventoryObjectNb(unsigned id, unsigned objectNb = 1); // // Ajoute un object a l'inventaire en fonction de son id et du nb (par defaut à 1) ET retourne le nb d'object qui n'a pas pu être ajoutés
