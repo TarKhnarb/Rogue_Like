@@ -117,23 +117,23 @@ void tracePath(cell cellDetails[][COL], Pair dest){
  * @param dest destination Pair (goal)
  */
 void aStarSearch(int grid[][COL], Pair src, Pair dest){
-    if (isValid (src.first, src.second) == false){//this is maybe useless in out case
+    if (!isValid(src.first, src.second)){//this is maybe useless in out case
         printf ("Source is invalid\n");
         return;
     }
-    if (isValid (dest.first, dest.second) == false){ //also this
+    if (!isValid (dest.first, dest.second)){ //also this
         printf ("Destination is invalid\n");
         return;
     }
 
     //check if the start or destination is blocked (surrounded with obstacles >> impossible to reach)
-    if (isUnBlocked(grid, src.first, src.second) == false || isUnBlocked(grid, dest.first, dest.second) == false){
+    if (!isUnBlocked(grid, src.first, src.second) || !isUnBlocked(grid, dest.first, dest.second)){
         printf ("Source or the destination is blocked\n");
         return;
     }
 
     // If the destination cell is the same as source cell
-    if (isDestination(src.first, src.second, dest) == true){
+    if (isDestination(src.first, src.second, dest)){
         printf ("We are already at the destination\n");
         return;
     }
@@ -177,8 +177,8 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
         double gNew, hNew, fNew;
 
         //----------- 1st Successor (North) ------------
-        if (isValid(i-1, j) == true){
-            if (isDestination(i-1, j, dest) == true){
+        if(isValid(i-1, j)){
+            if (isDestination(i-1, j, dest)){
                 // Set the Parent of the destination cell
                 cellDetails[i-1][j].parent_i = i;
                 cellDetails[i-1][j].parent_j = j;
@@ -187,8 +187,7 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
                 foundDest = true;
                 return;
             }
-            else if (closedList[i-1][j] == false &&
-                     isUnBlocked(grid, i-1, j) == true)
+            else if (!closedList[i-1][j] && isUnBlocked(grid, i-1, j))
             {
                 gNew = cellDetails[i][j].g + 1.0;
                 hNew = calculateHValue (i-1, j, dest);
@@ -211,8 +210,8 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
         }
 
         //----------- 2nd Successor (South) ------------
-        if (isValid(i+1, j) == true){
-            if (isDestination(i+1, j, dest) == true){
+        if (isValid(i+1, j)){
+            if (isDestination(i+1, j, dest)){
                 // Set the Parent of the destination cell
                 cellDetails[i+1][j].parent_i = i;
                 cellDetails[i+1][j].parent_j = j;
@@ -221,8 +220,7 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
                 foundDest = true;
                 return;
             }
-            else if (closedList[i+1][j] == false &&
-                     isUnBlocked(grid, i+1, j) == true)
+            else if (!closedList[i+1][j] && isUnBlocked(grid, i+1, j))
             {
                 gNew = cellDetails[i][j].g + 1.0;
                 hNew = calculateHValue(i+1, j, dest);
@@ -243,8 +241,8 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
         }
 
         //----------- 3rd Successor (East) ------------
-        if (isValid (i, j+1) == true){
-            if (isDestination(i, j+1, dest) == true){
+        if (isValid (i, j+1)){
+            if (isDestination(i, j+1, dest)){
                 // Set the Parent of the destination cell
                 cellDetails[i][j+1].parent_i = i;
                 cellDetails[i][j+1].parent_j = j;
@@ -254,8 +252,7 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
                 return;
             }
 
-            else if (closedList[i][j+1] == false &&
-                     isUnBlocked (grid, i, j+1) == true)
+            else if (!closedList[i][j+1] && isUnBlocked (grid, i, j+1))
             {
                 gNew = cellDetails[i][j].g + 1.0;
                 hNew = calculateHValue (i, j+1, dest);
@@ -278,8 +275,8 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
         }
 
         //----------- 4th Successor (West) ------------
-        if (isValid(i, j-1) == true){
-            if (isDestination(i, j-1, dest) == true){
+        if (isValid(i, j-1)){
+            if (isDestination(i, j-1, dest)){
                 // Set the Parent of the destination cell
                 cellDetails[i][j-1].parent_i = i;
                 cellDetails[i][j-1].parent_j = j;
@@ -289,8 +286,7 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
                 return;
             }
 
-            else if (closedList[i][j-1] == false &&
-                     isUnBlocked(grid, i, j-1) == true)
+            else if (!closedList[i][j-1] && isUnBlocked(grid, i, j-1))
             {
                 gNew = cellDetails[i][j].g + 1.0;
                 hNew = calculateHValue(i, j-1, dest);
@@ -318,7 +314,7 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
     // list is empty, then we conclude that we failed to
     // reach the destiantion cell. This may happen when the
     // there is no way to destination cell (due to blockages)
-    if (foundDest == false)
+    if (!foundDest)
         printf("Failed to find the Destination Cell\n");
 
     return;
