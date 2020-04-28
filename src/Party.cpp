@@ -45,7 +45,9 @@ Party::Party():
     Aspen.addInventoryObject(60, 20); // monsterLoot
 	Aspen.addInventoryObject(47, 1); // potion
 	Aspen.addInventoryObject(11); // helmet
-    Aspen.addInventoryObject(30); // boots
+    Aspen.addInventoryObject(29); // boots
+    Aspen.addInventoryObject(35); // Projectile
+
     
 	rocksCollider.setStyle(Style::Separated);
     setInventoryItem();
@@ -818,11 +820,9 @@ sf::Color Party::setItemLvl(unsigned id){
         case 1:
             return sf::Color::Magenta;
             break;
-        case 2:
-            return sf::Color::Transparent;
-            break;
 
         default:
+            return sf::Color::White;
             break;
     }
 }
@@ -907,7 +907,7 @@ void Party::setInventoryItem(){
                     item.setTexture(*getTexture("35"));
                 else
                     item.setTexture(*getTexture("38"));
-                item.scale(50.f/128.f, 50.f/128.f);
+                item.scale(50.f/64.f, 50.f/64.f);
             }
             if(type == Object::Type::amulet){
                 if(id < 44)
@@ -980,7 +980,7 @@ void Party::setInventoryItem(){
                     item.setTexture(*getTexture("35"));
                 else
                     item.setTexture(*getTexture("38"));
-                item.scale(50.f/128.f, 50.f/128.f);
+                item.scale(50.f/64.f, 50.f/64.f);
             }
             if(type == Object::Type::amulet){
                 if(id < 44)
@@ -1010,12 +1010,15 @@ void Party::setInventoryItem(){
 }
 
 void Party::setChestItem(Room& curRoom){
-    sf::RectangleShape item;
+    sf::Sprite item;
     Chest* chest = curRoom.getChest();
 
     chestInventory.setSize({480.f, 280.f});
     chestInventory.setPosition(arch.chestInventory[0], arch.chestInventory[1]);
     chestInventory.setTexture(getTexture("ChestInventory"));
+
+    unsigned id;
+    Object::Type type;
 
     sf::Text txt;
     txt.setFont(objectsFont);
@@ -1030,11 +1033,67 @@ void Party::setChestItem(Room& curRoom){
 
         for (unsigned i = 0; i < chestSize; ++i){
             const Object* object = chest->getItem(i);
+            sf::Sprite item;
 
             if(object){
-                item.setSize({50.f, 50.f});
                 item.setPosition(arch.itemChest[i][0], arch.itemChest[i][1]);
-                item.setFillColor(sf::Color::Red);
+
+                id = object->getId();
+                type = object->getType();
+
+                item.setColor(setItemLvl(id));
+
+                if(type == Object::Type::potion){
+                    item.setTexture(*getTexture(std::to_string(id)));
+                    item.scale(50.f/128.f, 50.f/128.f);
+                }
+                if(type == Object::Type::monsterLoot){
+                    item.setTexture(*getTexture(std::to_string(id)));
+                    item.scale(50.f/64.f, 50.f/64.f);
+                }
+                if(type == Object::Type::helmet){
+                    if(id < 14)
+                        item.setTexture(*getTexture("11"));
+                    else
+                        item.setTexture(*getTexture("14"));
+                    item.scale(50.f/128.f, 50.f/128.f);
+                }
+                if(type == Object::Type::chestplate){
+                    if(id < 20)
+                        item.setTexture(*getTexture("17"));
+                    else
+                        item.setTexture(*getTexture("20"));
+                    item.scale(50.f/128.f, 50.f/128.f);
+                }
+                if(type == Object::Type::leggings){
+                    if(id < 26)
+                        item.setTexture(*getTexture("23"));
+                    else
+                        item.setTexture(*getTexture("26"));
+                    item.scale(50.f/128.f, 50.f/128.f);
+                }
+                if(type == Object::Type::boots){
+                    if(id < 32)
+                        item.setTexture(*getTexture("29"));
+                    else
+                        item.setTexture(*getTexture("32"));
+                    item.scale(50.f/128.f, 50.f/128.f);
+                }
+                if(type == Object::Type::projectile){
+                    if(id < 38)
+                        item.setTexture(*getTexture("35"));
+                    else
+                        item.setTexture(*getTexture("38"));
+                    item.scale(50.f/64.f, 50.f/64.f);
+                }
+                if(type == Object::Type::amulet){
+                    if(id < 44)
+                        item.setTexture(*getTexture("41"));
+                    else
+                        item.setTexture(*getTexture("44"));
+                    item.scale(50.f/128.f, 50.f/128.f);
+                }
+
                 chestItem.emplace(i, item);
 
                 if (object->getObjectNumber() > 1){
@@ -1042,14 +1101,14 @@ void Party::setChestItem(Room& curRoom){
 
                     sf::FloatRect bounds = txt.getLocalBounds();
                     txt.setOrigin({bounds.width, bounds.height});
-                    txt.setPosition(arch.itemChest[i][0] + 48.f, arch.itemChest[i][1] + 48.f);
-                    chestObjectNumber.emplace(i, txt);
+                    txt.setPosition(arch.itemBag[i][0] + 48.f, arch.itemBag[i][1] + 48.f);
+
+                    objectsNumber.emplace(i, txt);
                 }
             }
             else{
-                item.setSize({50.f, 50.f});
                 item.setPosition(arch.itemChest[i][0], arch.itemChest[i][1]);
-                item.setFillColor(sf::Color::Yellow);
+                item.setTexture(*getTexture("Nothing"));
                 chestItem.emplace(i, item);
             }
         }

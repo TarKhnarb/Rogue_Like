@@ -208,7 +208,7 @@ private:
 
 	std::map<unsigned, sf::Sprite> bagItem;
 	std::map<unsigned, sf::Sprite> stuffItem;
-	std::map<unsigned, sf::RectangleShape> chestItem; // Si pas d'item, le rectangleShape est blanc, unsigned -> place dans l'inventaire
+	std::map<unsigned, sf::Sprite> chestItem; // Si pas d'item, le rectangleShape est blanc, unsigned -> place dans l'inventaire
 	std::map<unsigned, sf::Text> objectsNumber;
 	std::map<unsigned, sf::Text> chestObjectNumber;
 	sf::Font objectsFont;
