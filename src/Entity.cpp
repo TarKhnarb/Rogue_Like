@@ -39,6 +39,7 @@ void Entity::getStatistics() {
 
             case 3:
                 maxLife = entityStats.at(i);
+                life = maxLife;
                 break;
 
             case 4:
