@@ -112,6 +112,7 @@ public :
     unsigned getSpeed() const;
 
     int getLife() const;
+    void removeLife(int);
     void setLife(int);
 
     /**

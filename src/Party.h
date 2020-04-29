@@ -77,6 +77,7 @@ private:
 	void setRockChoice(Room&);
     void setRockRectangleShape(Room&);
     void setMonsterRectangleShape(Room&);
+    void updateMonsters();
     void setChestRectangleShape(Room&);
     void setTrapRectangleShape(Room&);
     sf::Texture* selectProjectileTexture(const Entity&, unsigned);
@@ -109,6 +110,7 @@ private:
     */
     void entityCollision();
 
+    void removeLife(Projectile*, Entity*);
     void projectileCollision();
 
     /**

@@ -29,7 +29,7 @@ public:
      * @param[in] speed : speed of the projectile
      * @param[in] collisions : number of collisions before destroying the projectile
      * */
-    Projectile(const float, const float, const unsigned, const unsigned, const float, const unsigned);
+    Projectile(const float, const float, const unsigned, const unsigned, const float, const unsigned, const float);
 
     /**
      *  @brief destructor
@@ -78,13 +78,15 @@ public:
      * @brief get type of projectile
      * @return an unsigned int related to the enum
      */
-     unsigned getProjectileType() const;
+     EntityType getProjectileType() const;
 
     /**
     * @brief get orientation of projectile
     * @return an unsigned int related to the enum
     */
     unsigned getProjectileOrientation() const;
+
+    float getAttack() const;
     
     /**
      * @brief display stats of projectile //good for debug
@@ -95,6 +97,7 @@ private:
     Position<float> *positionProjectile;
     unsigned nbCollision;
     float speedProjectile;
+    float attack;
     EntityType entityType; // O : player, 1 : monster
     Orientation orientation; //0 = North, 1 = East, 2 = South, 3 = West
     unsigned collisionNb;

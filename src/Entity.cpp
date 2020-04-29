@@ -213,6 +213,10 @@ int Entity::getLife() const{
     return life;
 }
 
+void Entity::removeLife(int value){
+    life -= value;
+}
+
 void Entity::setLife(int value){
     life = value;
 }

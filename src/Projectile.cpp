@@ -1,9 +1,10 @@
 #include "Projectile.h"
 
-Projectile::Projectile(const float entityX, const float entityY, const unsigned o, const unsigned type, const float speed, const unsigned collision) :
+Projectile::Projectile(const float entityX, const float entityY, const unsigned o, const unsigned type, const float speed, const unsigned collision, const float attack) :
         positionProjectile(new Position<float>(entityX,entityY)), //puts bullet at the entity position
         nbCollision(0),
         speedProjectile(speed),
+        attack(attack),
         entityType(static_cast<EntityType>(type)),
         orientation(static_cast<Orientation>(o)),
         collisionNb(collision){}
@@ -68,12 +69,16 @@ unsigned Projectile::getSpeedProjectile() const{
     return speedProjectile;
 }
 
-unsigned Projectile::getProjectileType() const{
+Projectile::EntityType Projectile::getProjectileType() const{
     return entityType;
 }
 
 unsigned Projectile::getProjectileOrientation() const{
     return orientation;
+}
+
+float Projectile::getAttack() const{
+    return attack;
 }
 
 void Projectile::displayProjectile() {
