@@ -34,7 +34,7 @@ Npc::~Npc() {
 }
 
     // Blacksmith
-void Npc::ActionsBlacksmith(Entity hero){ // A appeler à chaque fois que l'on parle au NPC
+void Npc::ActionsBlacksmith(Entity* hero){ // A appeler à chaque fois que l'on parle au NPC
 
     if(blacksmithInventoryUpgrade.size() != 0){
         for(unsigned i = 0; i < blacksmithInventoryUpgrade.size(); ++i){ // On nettoie les upgrades possible -> permet de prendre en compte les objects present sur le joueur au moment où il interpel le joueur
@@ -48,40 +48,40 @@ void Npc::ActionsBlacksmith(Entity hero){ // A appeler à chaque fois que l'on p
 
     for(unsigned i = minIdEquipment; i < maxIdPotion; i+=3){
         addMake(i);                             // tous les premier niveaux
-        if(hero.isItOnEntity(i,1))
+        if(hero->isItOnEntity(i,1))
             addUpgrade(i+1);
-        if(hero.isItOnEntity(i+1,1))
+        if(hero->isItOnEntity(i+1,1))
             addUpgrade(i+2);
     }
 }
 
-void Npc::makeBlacksmith(Entity &hero, unsigned index){
+void Npc::makeBlacksmith(Entity *hero, unsigned index){
 
     if(CanMake(hero, blacksmithInventoryMake[index]->getId())) {
         std::vector<unsigned> requiredResources = blacksmithInventoryMake[index]->getResource();
 
-        for(unsigned i = 1; i < 8; i+=2){
+        for(unsigned i = 1; i < requiredResources.size(); i+=2){
             if(requiredResources[i] != 0)
-                hero.removeInventoryObjectNb(requiredResources[i], requiredResources[i+1]); // on enlève les object de l'inventaire du joueur
+                hero->removeInventoryObjectNb(requiredResources[i], requiredResources[i+1]); // on enlève les object de l'inventaire du joueur
         }
 
-        hero.buyObject(blacksmithInventoryMake[index]->getId(), 1); // pace l'object dans l'inventaire du joueur et le fait payer
+        hero->buyObject(blacksmithInventoryMake[index]->getId(), 1); // pace l'object dans l'inventaire du joueur et le fait payer
 
     }
     else
         throw std::runtime_error ("Npc::makeBlacksmith(Entity&, unsigned index)(" + std::to_string(index) + ") - Cannot make this object, not enought items");
 }
 
-void Npc::upgradeBlacksmith(Entity &hero,unsigned index){
+void Npc::upgradeBlacksmith(Entity *hero,unsigned index){
 
     if(CanUpgrade(hero, blacksmithInventoryUpgrade[index]->getId())) {
         std::vector<unsigned> requiredResources = blacksmithInventoryUpgrade[index]->getResource();
 
-        for(unsigned i = 1; i < 8; i+=2){
+        for(unsigned i = 1; i < requiredResources.size(); i+=2){
             if(requiredResources[i] != 0)
-                hero.removeInventoryObjectNb(requiredResources[i], requiredResources[i+1]);
+                hero->removeInventoryObjectNb(requiredResources[i], requiredResources[i+1]);
         }
-        hero.buyObject(blacksmithInventoryUpgrade[index]->getId(), 1);
+        hero->buyObject(blacksmithInventoryUpgrade[index]->getId(), 1);
     }
     else
         throw std::runtime_error {"Npc::upgradeBlacksmith(Entity&, unsigned index)(" + std::to_string(index) + ") - Cannot upgrade this object, not enought items"};
@@ -95,21 +95,21 @@ void Npc::ActionsWitch(){ // A appeler dans le constructeur de Map seulement
     }
 }
 
-void Npc::buyPotion(Entity &hero, unsigned index, unsigned Nb) {
-    hero.buyObject(witchInventory[index]->getId(), Nb);
+void Npc::buyPotion(Entity *hero, unsigned index, unsigned Nb) {
+    hero->buyObject(witchInventory[index]->getId(), Nb);
 }
 
-void Npc::makePotion(Entity &hero, unsigned index) {
+void Npc::makePotion(Entity *hero, unsigned index) {
 
     if(CanMakePotion(hero, witchInventoryMake[index]->getId())) {
         std::vector<unsigned> requiredResources = witchInventoryMake[index]->getResource();
 
-        for(unsigned i = 1; i < 8; i+=2){
+        for(unsigned i = 1; i < requiredResources.size(); i+=2){
             if(requiredResources[i] != 0)
-                hero.removeInventoryObjectNb(requiredResources[i], requiredResources[i+1]);
+                hero->removeInventoryObjectNb(requiredResources[i], requiredResources[i+1]);
         }
 
-        hero.buyObject(witchInventoryMake[index]->getId(), 1);
+        hero->buyObject(witchInventoryMake[index]->getId(), 1);
     }
     else
         throw std::runtime_error("Npc::buyPotion(Entity&, unsigned index)(" + std::to_string(index) + ") - Cannot make this potion, not enought items");
@@ -123,13 +123,13 @@ void Npc::ActionsTrader(){ // A appeler dans le constructeur de Map uniquement
     }
 }
 
-void Npc::buyLoot(Entity &hero, unsigned index){
-    hero.buyObject(traderInventory[index]->getId(), 1);
+void Npc::buyLoot(Entity *hero, unsigned index){
+    hero->buyObject(traderInventory[index]->getId(), 1);
     traderInventory[index] = nullptr; // On donne la possibilité de n'acher qu'une seul fois l'object on refresh le shop en resortant du donjon
 }
 
-void Npc::sellLoot(Entity &hero, unsigned index) {
-    hero.sellObject(index, hero.getInventoryObject(index)->getObjectNumber()); // vent tous les objets de la case
+void Npc::sellLoot(Entity *hero, unsigned index) {
+    hero->sellObject(index, hero->getInventoryObject(index)->getObjectNumber()); // vent tous les objets de la case
 }
 
 /*  // Crafter TODO
@@ -160,26 +160,26 @@ void Npc::addLoot(unsigned id){
     traderInventory.push_back(new Object(id));
 }
 
-bool Npc::CanUpgrade(Entity hero, unsigned index) const{
+bool Npc::CanUpgrade(Entity *hero, unsigned index){
     bool Can = true;
     std::vector<unsigned> Need = blacksmithInventoryUpgrade[index]->getResource();
 
-    for(unsigned i = 1; i < resourcesSize; i+=2){
+    for(unsigned i = 1; i < Need.size(); i+=2){
         if(Can && Need[i] != 0)
-            if(!(hero.isItOnEntity(Need[i],Need[i+1])))
+            if(!(hero->isItOnEntity(Need[i],Need[i+1])))
                 Can = false;
     }
     return Can;
 }
 
-bool Npc::CanMake(Entity hero, unsigned index) const{
+bool Npc::CanMake(Entity *hero, unsigned index){
     bool Can = true;
     std::vector<unsigned> ressourceNeed = blacksmithInventoryMake[index]->getResource();
 
-    for(unsigned i = 1; i < resourcesSize; i+=2){
+    for(unsigned i = 1; i < ressourceNeed.size(); i+=2){
         if(Can && ressourceNeed[i] != 0) {
             std::cout << ressourceNeed[i] << " / " << ressourceNeed[i+1] << std::endl;
-            if (!(hero.isItOnEntity(ressourceNeed[i], ressourceNeed[i + 1])))
+            if (!(hero->isItOnEntity(ressourceNeed[i], ressourceNeed[i + 1])))
                 Can = false;
         }
         std::cout << Can << std::endl;
@@ -187,13 +187,13 @@ bool Npc::CanMake(Entity hero, unsigned index) const{
     return Can;
 }
 
-bool Npc::CanMakePotion(Entity hero, unsigned index) const{
+bool Npc::CanMakePotion(Entity *hero, unsigned index){
     bool Can = true;
     std::vector<unsigned> ressourceNeed = witchInventoryMake[index]->getResource();
 
-    for(unsigned i = 1; i < resourcesSize; i+=2){
+    for(unsigned i = 1; i < ressourceNeed.size(); i+=2){
         if(Can && ressourceNeed[i] != 0)
-            if(!(hero.isItOnEntity(ressourceNeed[i],ressourceNeed[i+1])))
+            if(!(hero->isItOnEntity(ressourceNeed[i],ressourceNeed[i+1])))
                 Can = false;
     }
     return Can;

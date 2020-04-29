@@ -1852,7 +1852,7 @@ void Party::projectileCollision(){
                     removeLife(p->first, monster[c.second]);
                     if (monster[c.second]->getLife() <= 0) {
                         resetCollider = true;
-                        monster.erase(monster.begin() + c.second);
+                        curRoom->getMonsters().erase(monster.begin() + c.second);
                         sMonsters.erase(sMonsters.begin() + c.second);
                     }
                 }

@@ -49,28 +49,28 @@ public:
     ~Npc();
 
         // Blacksmith
-    void ActionsBlacksmith(Entity hero);
-    void makeBlacksmith(Entity&, unsigned);
-    void upgradeBlacksmith(Entity&, unsigned);
+    void ActionsBlacksmith(Entity* hero);
+    void makeBlacksmith(Entity*, unsigned);
+    void upgradeBlacksmith(Entity*, unsigned);
 
         // Witch
     void ActionsWitch();
-    void buyPotion(Entity&, unsigned, unsigned);
-    void makePotion(Entity&, unsigned index);
+    void buyPotion(Entity*, unsigned, unsigned);
+    void makePotion(Entity*, unsigned index);
 
         // Trader
     void ActionsTrader();
-    void buyLoot(Entity&, unsigned);
-    void sellLoot(Entity&, unsigned);
+    void buyLoot(Entity*, unsigned);
+    void sellLoot(Entity*, unsigned);
 
         // Crafter TODO
     //void ActionsCrafter(Entity hero);
     //void makeCraft(Entity&, unsigned);
 
 private:
-    bool CanUpgrade(Entity, unsigned) const;
-    bool CanMake(Entity, unsigned) const;
-    bool CanMakePotion(Entity, unsigned) const;
+    bool CanUpgrade(Entity*, unsigned);
+    bool CanMake(Entity*, unsigned);
+    bool CanMakePotion(Entity*, unsigned);
 
 public:
     void display(Action);
