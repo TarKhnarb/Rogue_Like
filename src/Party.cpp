@@ -1793,13 +1793,12 @@ void Party::entityCollision(){
 }
 
 void Party::removeLife(Projectile *projectile, Entity *entityShoot){
-    if(projectile->getProjectileType() == Projectile::EntityType::player){ // Tiré par un monstre
+    if(projectile->getProjectileType() == Projectile::EntityType::monster){ // Tiré par un monstre
         if(entityShoot->getName() == "Aspen")
             Aspen.removeLife(projectile->getAttack());
     }
-    if(projectile->getProjectileType() == Projectile::EntityType::monster){
-        if(entityShoot->getName() != "Aspen")
-            entityShoot->removeLife(projectile->getAttack());
+    if(projectile->getProjectileType() == Projectile::EntityType::player){
+        entityShoot->removeLife(projectile->getAttack());
     }
 }
 
@@ -1849,15 +1848,17 @@ void Party::projectileCollision(){
 
                 std::vector<Entity*> monster = curRoom->getMonsters();
 
-                for (auto c : projCollisions) {
-                    removeLife(p->first, monster[(unsigned)c.second]);
+                for (auto &c : projCollisions){
+                    removeLife(p->first, monster[c.second]);
                     if (monster[c.second]->getLife() <= 0) {
                         resetCollider = true;
-                        monster.erase(monster.begin() + (unsigned)c.second);
+                        monster.erase(monster.begin() + c.second);
+                        sMonsters.erase(sMonsters.begin() + c.second);
                     }
                 }
 
                 if (resetCollider) {
+                    std::cout << "kill" << std::endl;
                     setMonsterRectangleShape(*curRoom);
                 }
                 p = sProjectiles.erase(p);
