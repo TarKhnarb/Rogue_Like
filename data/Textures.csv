@@ -2,12 +2,12 @@ data/Textures/Entity/AspenBack.png,AspenBack
 data/Textures/Entity/AspenFront.png,AspenFront
 data/Textures/Entity/AspenLeft.png,AspenLeft
 data/Textures/Entity/AspenRight.png,AspenRight
-data/Textures/Entity/Mobs/2.png,Grippe Espagnole
-data/Textures/Entity/Mobs/3.png,Peste Noire
+data/Textures/Entity/Mobs/2.png,Grippe-Espagnole
+data/Textures/Entity/Mobs/3.png,Peste-Noire
 data/Textures/Entity/Mobs/4.png,Tenia
 data/Textures/Entity/Mobs/5.png,Listeria
 data/Textures/Entity/Mobs/6.png,Blob
-data/Textures/Entity/Boss/7.png,Cymothoa exigua
+data/Textures/Entity/Boss/7.png,Cymothoa-exigua
 data/Textures/Entity/Boss/8.png,H1N1
 data/Textures/Entity/Boss/9.png,VIH
 data/Textures/Entity/Boss/10.png,COVID-19
