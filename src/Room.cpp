@@ -231,7 +231,7 @@ std::vector<Door*> Room::getDoors() {
     return Doors;
 }
 
-std::vector<Entity*> Room::getMonsters() {
+std::vector<Entity*>& Room::getMonsters() {
     return monsters;
 }
 

@@ -561,6 +561,7 @@ void Party::setRockRectangleShape(Room& curRoom){
         }
     }
     
+    rocksCollider.clean();
     rocksCollider.pushBodies(sRocks.begin(), sRocks.end());
 }
 
@@ -581,7 +582,8 @@ void Party::setMonsterRectangleShape(Room& curRoom){
             sMonsters.push_back(monst);
         }
     }
-
+    
+    monstersCollider.clean();
     monstersCollider.pushBodies(sMonsters.begin(), sMonsters.end());
 }
 
@@ -638,6 +640,7 @@ void Party::setChestRectangleShape(Room& curRoom){  //sf::chest le mettre en vec
         sChest.push_back(ches);
     }
     
+    chestsCollider.clean();
     chestsCollider.pushBodies(sChest.begin(), sChest.end());
 
 }
@@ -656,6 +659,7 @@ void Party::setTrapRectangleShape(Room& curRoom){
         sTrap.push_back(trap);
     }
     
+    trapCollider.clean();
     trapCollider.pushBodies(sTrap.begin(), sTrap.end());
 }
 
@@ -1793,12 +1797,15 @@ void Party::entityCollision(){
 }
 
 void Party::removeLife(Projectile *projectile, Entity *entityShoot){
-    if(projectile->getProjectileType() == Projectile::EntityType::monster){ // Tiré par un monstre
-        if(entityShoot->getName() == "Aspen")
-            Aspen.removeLife(projectile->getAttack());
-    }
-    if(projectile->getProjectileType() == Projectile::EntityType::player){
-        entityShoot->removeLife(projectile->getAttack());
+    if(entityShoot && projectile){
+        if(projectile->getProjectileType() == Projectile::EntityType::monster){ // Tiré par un monstre
+            if(entityShoot->getName() == "Aspen")
+                Aspen.removeLife(projectile->getAttack());
+        }
+        if(projectile->getProjectileType() == Projectile::EntityType::player){
+            entityShoot->removeLife(projectile->getAttack());
+            std::cout << entityShoot->getLife() << std::endl;
+        }
     }
 }
 
@@ -1846,21 +1853,24 @@ void Party::projectileCollision(){
 
             if (projCol.checkCollision(monstersCollider, projCollisions, 0.f)) {
 
-                std::vector<Entity*> monster = curRoom->getMonsters();
+                std::vector<Entity*>& monster = curRoom->getMonsters();
 
                 for (auto &c : projCollisions){
                     removeLife(p->first, monster[c.second]);
+                    
                     if (monster[c.second]->getLife() <= 0) {
+                        delete monster[c.second];
+                        monster[c.second] = nullptr;
+                        monster.erase(monster.begin() + c.second);
+                        
                         resetCollider = true;
-                        curRoom->getMonsters().erase(monster.begin() + c.second);
-                        sMonsters.erase(sMonsters.begin() + c.second);
                     }
                 }
 
                 if (resetCollider) {
-                    std::cout << "kill" << std::endl;
                     setMonsterRectangleShape(*curRoom);
                 }
+                
                 p = sProjectiles.erase(p);
                 continue;
             }
