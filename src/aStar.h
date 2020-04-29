@@ -8,8 +8,8 @@
 #include <set>
 #include <cfloat>
 
-#define ROW 10
-#define COL 10
+#define ROW 20
+#define COL 40
 
 typedef std::pair<int, int> Pair;
 typedef std::pair<double, std::pair<int, int>> pPair;
@@ -27,14 +27,14 @@ struct cell{
     double f, g, h;    // f = g + h
 };
 
-/**
+/** TODO change this oxygen
  * @brief called to know what axis value(x or y) must take entity, NEVER NEVER call this function before aStarSearch
  * @param xORy if true, return x axis value, false y axis value
  * @return if true, return x axis value, false y axis value
  */
 unsigned pathX();
+unsigned pathY();
 
-unsigned pathY()
 /**
  * @brief check if cell is an obstacle
  * @param row row value to check

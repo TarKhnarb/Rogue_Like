@@ -587,9 +587,203 @@ void Party::setMonsterRectangleShape(Room& curRoom){
     monstersCollider.pushBodies(sMonsters.begin(), sMonsters.end());
 }
 
+void Party::setAStar(Room& room)
+{
+    for (unsigned i = 0; i < 40; ++i){
+        for (unsigned j = 0; j < 20; ++j){
+            grid[j][i] = 0;
+        }
+    }
+    
+    unsigned x;
+    unsigned y;
+    
+    std::vector<Rock>& rocks = room.getRocks();
+    for (const auto& rock : rocks){
+        if (!rock.getState())
+            continue;
+        
+        x = (rock.getPosition(true) - 240) / 20;
+        y = (rock.getPosition(false) - 160) / 20;
+        
+        // rocks are 40 * 40 px
+        for (unsigned i = 0; i <= 1; ++i){
+            for (unsigned j = 0; j <= 1; ++j){
+                grid[y + j][x + i] = 1;
+            }
+        }
+    }
+    
+    roomType type = room.getType();
+    switch (type){
+
+        case Room2NS1:
+            for (unsigned k = 0; k < 28; ++k){
+                x = int(arch.Hole2NS1[k][0] - 240) / 20;
+                y = int(arch.Hole2NS1[k][1] - 160) / 20;
+                
+                // holes are 60 * 60 px
+                for (unsigned i = 0; i <= 2; ++i){
+                    for (unsigned j = 0; j <= 2; ++j){
+                        grid[y +j][x + i] = 1;
+                    }
+                }
+            }
+            break;
+        
+        case Room2WE1:
+            for (unsigned k = 0; k < 19; ++k){
+                x = int(arch.Hole2WE1[k][0] - 240) / 20;
+                y = int(arch.Hole2WE1[k][1] - 160) / 20;
+                
+                // holes are 60 * 60 px
+                for (unsigned i = 0; i <= 2; ++i){
+                    for (unsigned j = 0; j <= 2; ++j){
+                        grid[y +j][x + i] = 1;
+                    }
+                }
+            }
+            break;
+            
+        case Room1N:
+            for (unsigned k = 0; k < 20; ++k){
+                x = int(arch.Hole1N[k][0] - 240) / 20;
+                y = int(arch.Hole1N[k][1] - 160) / 20;
+                
+                // holes are 60 * 60 px
+                for (unsigned i = 0; i <= 2; ++i){
+                    for (unsigned j = 0; j <= 2; ++j){
+                        grid[y +j][x + i] = 1;
+                    }
+                }
+            }
+            
+            x = (arch.Chest1N[0] - 240) / 20;
+            y = (arch.Chest1N[1] - 160) / 20;
+            
+            // chests are 40 * 40 px
+            for (unsigned i = 0; i <= 1; ++i){
+                for (unsigned j = 0; j <= 1; ++j){
+                    grid[y + j][x + i] = 1;
+                }
+            }
+            break;
+        
+        case Room1E:
+            x = (arch.Chest1E[0] - 240) / 20;
+            y = (arch.Chest1E[1] - 160) / 20;
+            
+            // chests are 40 * 40 px
+            for (unsigned i = 0; i <= 1; ++i){
+                for (unsigned j = 0; j <= 1; ++j){
+                    grid[y + j][x + i] = 1;
+                }
+            }
+            break;
+        
+        case Room1S:
+            for (unsigned k = 0; k < 22; ++k){
+                x = int(arch.Hole1S[k][0] - 240) / 20;
+                y = int(arch.Hole1S[k][1] - 160) / 20;
+                
+                // holes are 60 * 60 px
+                for (unsigned i = 0; i <= 2; ++i){
+                    for (unsigned j = 0; j <= 2; ++j){
+                        grid[y +j][x + i] = 1;
+                    }
+                }
+            }
+            
+            x = (arch.Chest1S[0] - 240) / 20;
+            y = (arch.Chest1S[1] - 160) / 20;
+            
+            // chests are 40 * 40 px
+            for (unsigned i = 0; i <= 1; ++i){
+                for (unsigned j = 0; j <= 1; ++j){
+                    grid[y + j][x + i] = 1;
+                }
+            }
+            break;
+            
+        case Room1W:
+            for (unsigned k = 0; k < 16; ++k){
+                x = int(arch.Hole1W[k][0] - 240) / 20;
+                y = int(arch.Hole1W[k][1] - 160) / 20;
+                
+                // holes are 60 * 60 px
+                for (unsigned i = 0; i <= 2; ++i){
+                    for (unsigned j = 0; j <= 2; ++j){
+                        grid[y +j][x + i] = 1;
+                    }
+                }
+            }
+            
+            x = (arch.Chest1W[0] - 240) / 20;
+            y = (arch.Chest1W[1] - 160) / 20;
+            
+            // chests are 40 * 40 px
+            for (unsigned i = 0; i <= 1; ++i){
+                for (unsigned j = 0; j <= 1; ++j){
+                    grid[y + j][x + i] = 1;
+                }
+            }
+            break;
+        
+        case Room3ESW:
+            for (unsigned k = 0; k < 12; ++k){
+                x = int(arch.Hole3ESW[k][0] - 240) / 20;
+                y = int(arch.Hole3ESW[k][1] - 160) / 20;
+                
+                // holes are 60 * 60 px
+                for (unsigned i = 0; i <= 2; ++i){
+                    for (unsigned j = 0; j <= 2; ++j){
+                        grid[y +j][x + i] = 1;
+                    }
+                }
+            }
+            
+            x = (arch.Chest3ESW[0] - 240) / 20;
+            y = (arch.Chest3ESW[1] - 160) / 20;
+            
+            // chests are 40 * 40 px
+            for (unsigned i = 0; i <= 1; ++i){
+                for (unsigned j = 0; j <= 1; ++j){
+                    grid[y + j][x + i] = 1;
+                }
+            }
+            break;
+        
+        case Room3NEW:
+            for (unsigned k = 0; k < 10; ++k){
+                x = int(arch.Hole3NEW[k][0] - 240) / 20;
+                y = int(arch.Hole3NEW[k][1] - 160) / 20;
+                
+                // holes are 60 * 60 px
+                for (unsigned i = 0; i <= 2; ++i){
+                    for (unsigned j = 0; j <= 2; ++j){
+                        grid[y +j][x + i] = 1;
+                    }
+                }
+            }
+            break;
+        
+        default:
+            break;
+    }
+    
+    std::cout << "========================================" << std::endl;
+    for (unsigned j = 0; j < 20; ++j){
+        for (unsigned i = 0; i < 40; ++i){
+            std::cout << grid[j][i] << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+        
+
 void Party::updateMonsters(){
     for(unsigned i = 0; i < sMonsters.size(); ++i){
-        sf::FloatRect monst = sMonsters[i].getGlobalBounds();
+        //sf::FloatRect monst = sMonsters[i].getGlobalBounds();
         // A modif avec A*
     }
 }
@@ -721,6 +915,7 @@ sf::Texture* Party::selectProjectileTexture(const Entity& entity, unsigned orien
             break;
 
         default:
+            return nullptr;
             break;
     }
 }
@@ -1710,6 +1905,8 @@ void Party::reloadRoom(){
     setRectangleShapeForCurrentRoom();
 	
 	setChestItem(*curRoom);
+    
+    setAStar(*curRoom);
 }
 
 void Party::loadNextStage(){
@@ -1734,17 +1931,17 @@ void Party::entityCollision(){
 	Collider playerCol (sPlayerCol);
 	
     playerCol.checkCollision(wallsCollider, colDirection, 0.f);
+    
+    if (!Aspen.entityCanFly()){
+		playerCol.checkCollision(holesCollider, colDirection, 0.f);
+        playerCol.checkCollision(rocksCollider, colDirection, 0.f);
+	}
 
 	if(playerCol.checkCollision(chestsCollider, colDirection, 0.f)){
 	    inventoryOpen = true;
 	    chestOpen = true;
 		inventoryValue = 2;
         inventoryIndex = 0;
-	}
-
-	if (!Aspen.entityCanFly()){
-		playerCol.checkCollision(holesCollider, colDirection, 0.f);
-        playerCol.checkCollision(rocksCollider, colDirection, 0.f);
 	}
 
 	if (!sTrap.empty())
@@ -1804,7 +2001,6 @@ void Party::removeLife(Projectile *projectile, Entity *entityShoot){
         }
         if(projectile->getProjectileType() == Projectile::EntityType::player){
             entityShoot->removeLife(projectile->getAttack());
-            std::cout << entityShoot->getLife() << std::endl;
         }
     }
 }
@@ -1836,6 +2032,7 @@ void Party::projectileCollision(){
                 
                 if (resetCollider){
                     setRockRectangleShape(*curRoom);
+                    setAStar(*curRoom);
                 }
                 
                 continue;

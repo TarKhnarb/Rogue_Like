@@ -22,6 +22,7 @@
 #include "Room.h"
 #include "Door.h"
 #include "Chest.h"
+#include "aStar.h"
 
 class Party{
 
@@ -74,9 +75,10 @@ private:
     void setHole(Room&);
     void setDoorOpenRectangleShape(Room&);
     void setDoorCloseRectangleShape(Room&);
-	void setRockChoice(Room&);
+    void setRockChoice(Room&);
     void setRockRectangleShape(Room&);
     void setMonsterRectangleShape(Room&);
+    void setAStar(Room&);
     void updateMonsters();
     void setChestRectangleShape(Room&);
     void setTrapRectangleShape(Room&);
@@ -236,6 +238,8 @@ private:
 	bool moveObjectOpen = false;
 	sf::RectangleShape moveCursor;
 	unsigned moveObjectIndex;
+    
+    int grid[20][40];
 };
 
 #endif

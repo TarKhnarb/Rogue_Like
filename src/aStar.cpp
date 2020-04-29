@@ -7,7 +7,7 @@ unsigned pathX(){
 }
 
 unsigned pathY(){
-    return result.b
+    return result.b;
 }
 
 bool isValid(int row, int col){
@@ -86,7 +86,7 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
 
     unsigned  i,j;
     for(unsigned i = 0; i < ROW; i++){
-        for (unsigne j = 0; j < COL; j++){
+        for (unsigned j = 0; j < COL; j++){
             cellDetails[i][j].f = FLT_MAX;
             cellDetails[i][j].g = FLT_MAX;
             cellDetails[i][j].h = FLT_MAX;
