@@ -564,7 +564,7 @@ void Party::setRockRectangleShape(Room& curRoom){
     rocksCollider.pushBodies(sRocks.begin(), sRocks.end());
 }
 
-void Party::setMonsterRectangleShape(Room curRoom){
+void Party::setMonsterRectangleShape(Room& curRoom){
     std::vector<Entity*> monster = curRoom.getMonsters();
 
     sf::RectangleShape monst({40.f, 80.f});
@@ -574,9 +574,11 @@ void Party::setMonsterRectangleShape(Room curRoom){
         sMonsters.pop_back();
 
     for(unsigned i = 0; i < monster.size(); ++i){
-        monst.setFillColor(sf::Color::Red);
-        monst.setPosition(monster[i]->getPosition(true) - 20.f, monster[i]->getPosition(false) - 40.f);
-        sMonsters.push_back(monst);
+        if(monster[i]){
+            monst.setFillColor(sf::Color::Red);
+            monst.setPosition(monster[i]->getPosition(true) - 20.f, monster[i]->getPosition(false) - 40.f);
+            sMonsters.push_back(monst);
+        }
     }
 
     monstersCollider.pushBodies(sMonsters.begin(), sMonsters.end());
@@ -1968,41 +1970,40 @@ void Party::update(sf::Time deltaTime){
 void Party::render(){
 
     mWindow.clear();
-	
-	mWindow.draw(sRoom);
-
-	for(const auto &r : sRocks)
-		mWindow.draw(r);
     
-	for(const auto &r : sNoRocks)
-		mWindow.draw(r);
+    mWindow.draw(sRoom);
 
-	for(const auto &f : sFrames)
-		mWindow.draw(f);
+    for(const auto &r : sRocks)
+        mWindow.draw(r);
+    
+    for(const auto &r : sNoRocks)
+        mWindow.draw(r);
 
-	for(const auto &d : sDoors)
-		mWindow.draw(d);
+    for(const auto &f : sFrames)
+        mWindow.draw(f);
 
-	for(const auto &c : sChest)
-		mWindow.draw(c);
+    for(const auto &d : sDoors)
+        mWindow.draw(d);
 
-	for(const auto &t : sTrap)
-		mWindow.draw(t);
-	
+    for(const auto &c : sChest)
+        mWindow.draw(c);
+
+    for(const auto &t : sTrap)
+        mWindow.draw(t);
+    
     drawProjectile();
 
-   /* for(const auto &m : sMonsters)
-        mWindow.draw(m);*/
+   for(const auto &m : sMonsters)
+        mWindow.draw(m);
     
-	mWindow.draw(aspenAnimated);
-	
-	if(inventoryOpen) {
+    mWindow.draw(aspenAnimated);
+    
+    if(inventoryOpen) {
         if(chestOpen){
             drawChestInventory();
         }
-		drawPlayerInventory();
-
-	}
-		
+        drawPlayerInventory();
+    }
+    
     mWindow.display();
 }

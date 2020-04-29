@@ -199,7 +199,7 @@ const Object* Inventory::getStuff(unsigned stuffIndex) const{
 	return static_cast<const Object*>(stuff[stuffIndex]);
 }
 
-Object* Inventory::getObject(unsigned bagIndex) const{
+const Object* Inventory::getObject(unsigned bagIndex) const{
 
 	assert(bagIndex < bag.size());
 
