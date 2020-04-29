@@ -993,8 +993,10 @@ void Party::setRectangleShapeForCurrentRoom(){
 
         setWall();
         setHole(*curRoom);
-        setDoorOpenRectangleShape(*curRoom);
-        //setDoorCloseRectangleShape(*curRoom);
+        if(curRoom->getMonsters().empty())
+            setDoorOpenRectangleShape(*curRoom);
+        else
+            setDoorCloseRectangleShape(*curRoom);
         setRockChoice(*curRoom);
         setRockRectangleShape(*curRoom);
         setMonsterRectangleShape(*curRoom);
@@ -1944,7 +1946,7 @@ void Party::entityCollision(){
         inventoryIndex = 0;
 	}
 
-	if (!sTrap.empty())
+	if (donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty() && !sTrap.empty())
 	{
 		sf::RectangleShape& trap = sTrap[0];
         sf::RectangleShape sTrapCol ({trap.getSize().x, trap.getSize().y / 2.f});
@@ -1958,7 +1960,7 @@ void Party::entityCollision(){
     }
 	
 	std::vector<Door*> door = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getDoors();
-	if (playerCol.checkCollision(doorsCollider, colDirection, 0.f))
+	if (donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty() && playerCol.checkCollision(doorsCollider, colDirection, 0.f))
 	{
 		if (colDirection.y < 0.f && door[0] && door[0]->getOpen()){
 			posDonjon.move(-1, 0);
@@ -1985,6 +1987,9 @@ void Party::entityCollision(){
             aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
 			reloadRoom();
 		}
+	}
+	else{
+        playerCol.checkCollision(doorsCollider, colDirection, 0.f);
 	}
 	
 	sf::Vector2f posEnd = sPlayerCol.getPosition();
@@ -2066,13 +2071,15 @@ void Party::projectileCollision(){
 
                 if (resetCollider) {
                     setMonsterRectangleShape(*curRoom);
+                    if(curRoom->getMonsters().empty())
+                        setDoorOpenRectangleShape(*curRoom);
                 }
                 
                 p = sProjectiles.erase(p);
                 continue;
             }
 
-                // Walls
+            // Walls
             if(projCol.checkCollision(wallsCollider, 0.f)){
                 p = sProjectiles.erase(p);
                 continue;
@@ -2205,8 +2212,7 @@ void Party::update(sf::Time deltaTime){
 	posAspen.move(movement.x * deltaTime.asSeconds(), movement.y * deltaTime.asSeconds());
     aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
 
-	if (noKeyWasPressed)
-	{
+	if (noKeyWasPressed){
 		aspenAnimated.stop();
 	}
 	noKeyWasPressed = true;
@@ -2238,8 +2244,9 @@ void Party::render(){
     for(const auto &c : sChest)
         mWindow.draw(c);
 
-    for(const auto &t : sTrap)
-        mWindow.draw(t);
+    if(donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty())
+        for(const auto &t : sTrap)
+            mWindow.draw(t);
     
     drawProjectile();
 
