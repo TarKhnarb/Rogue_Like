@@ -40,9 +40,9 @@ struct Archetype{
 
         // Player Spawn
     const float PlayerN[2] = {620, 135};
-    const float PlayerE[2] = {980, 310};
+    const float PlayerE[2] = {980, 300};
     const float PlayerS[2] = {620, 450};
-    const float PlayerW[2] = {260, 310};
+    const float PlayerW[2] = {260, 300};
 
         //__________ Walls __________
     const float Walls[8][4] =
@@ -68,7 +68,7 @@ struct Archetype{
         //__________ Room2NS1 __________
 
     const float Monster2NS1[6][2] =
-            {{640, 320}, {640, 400}, {450, 260}, {850, 460}, {450, 460}, {850, 260}};
+            {{640, 320}, {640, 400}, {300, 260}, {1000, 460}, {300, 460}, {1000, 260}};
 
     const float Hole2NS1[28][2] =
             {{360, 160}, {360, 220}, {360, 280}, {360, 340}, {360, 400}, {360, 460}, {360, 520},

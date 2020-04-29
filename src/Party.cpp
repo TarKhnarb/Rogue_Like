@@ -567,7 +567,7 @@ void Party::setRockRectangleShape(Room& curRoom){
 void Party::setMonsterRectangleShape(Room& curRoom){
     std::vector<Entity*> monster = curRoom.getMonsters();
 
-    sf::RectangleShape monst({40.f, 80.f});
+    sf::RectangleShape monst({80.f, 80.f});
 
     unsigned size = sMonsters.size();
     for (unsigned i = 0 ; i < size ; ++i)
@@ -575,8 +575,9 @@ void Party::setMonsterRectangleShape(Room& curRoom){
 
     for(unsigned i = 0; i < monster.size(); ++i){
         if(monster[i]){
-            monst.setFillColor(sf::Color::Red);
-            monst.setPosition(monster[i]->getPosition(true) - 20.f, monster[i]->getPosition(false) - 40.f);
+
+            monst.setTexture(getTexture(monster[i]->getName()));
+            monst.setPosition(monster[i]->getPosition(true) - 40.f, monster[i]->getPosition(false) - 40.f);
             sMonsters.push_back(monst);
         }
     }
