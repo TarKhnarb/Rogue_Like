@@ -31,10 +31,14 @@ void Entity::getStatistics() {
 
             case 1:
                 attack = entityStats.at(i);
+                if(attack <= 0)
+                    attack = 1;
                 break;
 
             case 2:
                 attackSpeed = entityStats.at(i);
+                if(attackSpeed <= 0)
+                    attackSpeed = 1;
                 break;
 
             case 3:
@@ -44,10 +48,14 @@ void Entity::getStatistics() {
 
             case 4:
                 defence = entityStats.at(i);
+                if(defence <= 0)
+                    defence = 1;
                 break;
 
             case 5:
                 speed = entityStats.at(i);
+                if(speed <= 0)
+                    speed = 1;
                 break;
 
             default:
@@ -186,27 +194,27 @@ std::string Entity::getName() const {
     return name;
 }
 
-unsigned Entity::getMoney() const{
+int Entity::getMoney() const{
     return money;
 }
 
-unsigned Entity::getMaxLife() const{
+int Entity::getMaxLife() const{
     return maxLife;
 }
 
-unsigned Entity::getAttack() const{
+int Entity::getAttack() const{
     return attack;
 }
 
-unsigned Entity::getAttackSpeed() const{
+int Entity::getAttackSpeed() const{
     return attackSpeed;
 }
 
-unsigned Entity::getDefence() const{
+int Entity::getDefence() const{
     return defence;
 }
 
-unsigned Entity::getSpeed() const{
+int Entity::getSpeed() const{
     return speed;
 }
 

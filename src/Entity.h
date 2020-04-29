@@ -103,13 +103,13 @@ public :
     bool inventoryEmpty();
 
     std::string getName() const;
-    unsigned getMoney() const;
-    unsigned addMoney(unsigned);
-    unsigned getMaxLife() const;
-    unsigned getAttack() const;
-    unsigned getAttackSpeed() const;
-    unsigned getDefence() const;
-    unsigned getSpeed() const;
+    int getMoney() const;
+    int addMoney(unsigned);
+    int getMaxLife() const;
+    int getAttack() const;
+    int getAttackSpeed() const;
+    int getDefence() const;
+    int getSpeed() const;
 
     int getLife() const;
     void removeLife(int);
@@ -132,11 +132,11 @@ private:
     Orientation orientation; //0 = North, 1 = East, 2 = South, 3 = West
 
     int life;
-    unsigned maxLife;
-    unsigned attack;
-    unsigned attackSpeed;
-    unsigned defence;
-    unsigned speed;
+    int maxLife;
+    int attack;
+    int attackSpeed;
+    int defence;
+    int speed;
     bool fly;
 
 };
