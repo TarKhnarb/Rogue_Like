@@ -149,7 +149,7 @@ private:
     bool mIsShootingDown = false;
 	bool noKeyWasPressed = true;
 
-    float PlayerSpeed = 250.f;
+    float PlayerSpeed;
 
 private:
 

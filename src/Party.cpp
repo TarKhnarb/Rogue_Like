@@ -2181,6 +2181,7 @@ void Party::updateForShooting(sf::Time deltaTime){
 void Party::update(sf::Time deltaTime){
 
 	sf::Vector2f movement(0.f, 0.f);
+	PlayerSpeed = Aspen.getSpeed() + 100.f;
 
 	if(mIsMovingUp){
 		currentAnimation = &walkingAspenUp;

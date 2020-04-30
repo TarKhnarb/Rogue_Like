@@ -130,7 +130,7 @@ void Entity::usePotion(unsigned index){
 
     unsigned heal = (inventory.getObject(index)->getStats()).at(3); // récupère la vie a rendre au joueur
 
-    if((life + heal) <= maxLife)
+    if((life + (int)heal) <= maxLife)
         life += heal;
     else
         life = maxLife;
@@ -223,7 +223,7 @@ int Entity::getLife() const{
 }
 
 void Entity::removeLife(int value){
-    life -= value;
+    life -= (int)((float)value*(1.f - defence/100.f));
 }
 
 void Entity::setLife(int value){
