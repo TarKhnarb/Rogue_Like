@@ -586,6 +586,7 @@ void Party::setMonsterRectangleShape(Room& curRoom){
             sMonsters.push_back(monst);
             
             if(handleTime){
+                destinationMonster.push_back(sf::Vector2f ());
                 actionTimeMonster.push_back(sf::Time::Zero);
                 pauseTimeMonster.push_back(sf::Time::Zero);
                 inActionMonster.push_back(false);
@@ -801,39 +802,13 @@ void Party::setAStar(Room& room){
     }
 }
 
-/*void Party::updateGrippeEspagnole(Entity &entity){ // monstre volant qui dash sur aspen (check coord x / y)
-
-    float DeltaX = posAspen.getPosition(true) - entity.getPosition(true);
-    float DeltaY = posAspen.getPosition(false) - entity.getPosition(false);
-
-    if(abs(DeltaX) > abs(DeltaY)){ // on rejoint Y aspen
-        if(DeltaY > 0.f){ // entity en haut a gauche d'aspen
-            entity.moveEntity(0, entity.getSpeed()*3);
-        }
-        else{ // entity en bas d'aspen
-            entity.moveEntity(0, -entity.getSpeed()*3);
-        }
-    }
-    else{ // on rejoint X aspen
-        if(DeltaX > 0.f){ // entity à gauche d'aspen
-            entity.moveEntity(entity.getSpeed()*3, 0);
-        }
-        else{ // entity a droite d'aspen
-            entity.moveEntity(-entity.getSpeed()*3, 0);
-        }
-    }
-}*/
-
-void Party::updateGrippeEspagnole(Entity &entity, sf::Time deltaTime){
-    float deltaX = posAspen.getPosition(true) - entity.getPosition(true);
-    float deltaY = posAspen.getPosition(false) - entity.getPosition(false);
-    
-    if(deltaX == 0.f)
-        deltaX = 1.e-5;
+void Party::updateGrippeEspagnole(Entity &entity, sf::Time deltaTime, unsigned index){
+    float deltaX = destinationMonster[index].x - entity.getPosition(true);
+    float deltaY = destinationMonster[index].y - entity.getPosition(false);
     
     float angle = atan2(deltaY, deltaX);
-    float realDeltaX = cos(angle) * entity.getSpeed() * 50.f * deltaTime.asSeconds();
-    float realDeltaY = sin(angle) * entity.getSpeed() * 50.f * deltaTime.asSeconds();
+    float realDeltaX = cos(angle) * entity.getSpeed() * 120.f * deltaTime.asSeconds();
+    float realDeltaY = sin(angle) * entity.getSpeed() * 120.f * deltaTime.asSeconds();
     
     entity.moveEntity(realDeltaX, realDeltaY);
 }
@@ -862,22 +837,25 @@ void Party::updateMonsters(sf::Time deltaTime){
             
             if(inActionMonster[i]){
                 actionTimeMonster[i] += deltaTime;
-                updateGrippeEspagnole(*monster[i], deltaTime);
-                sMonsters[i].setPosition(monster[i]->getPosition(true) - 40.f, monster[i]->getPosition(false) - 40.f);
+                updateGrippeEspagnole(*monster[i], deltaTime, i);
                 
                 if(actionTimeMonster[i] > sf::seconds(2.f)){
-                    inActionMonster[i] = false;
                     actionTimeMonster[i] = sf::Time::Zero;
+                    inActionMonster[i] = false;
                 }
             }
             else{
                 pauseTimeMonster[i] += deltaTime;
                 
                 if(pauseTimeMonster[i] > sf::seconds(2.f)){
-                    inActionMonster[i] = true;
                     pauseTimeMonster[i] = sf::Time::Zero;
+                    inActionMonster[i] = true;
+                    
+                    destinationMonster[i] = sf::Vector2f (posAspen.getPosition(true) + 20.f, posAspen.getPosition(false) + 40.f);
                 }
             }
+            
+            sMonsters[i].setPosition(monster[i]->getPosition(true) - 40.f, monster[i]->getPosition(false) - 40.f);
         }
         else{
             // autres monstres
@@ -2038,8 +2016,11 @@ void Party::entityCollision(){
     std::vector<std::pair<std::size_t, std::size_t>> collisions;
 
     std::vector<Entity*>& monst = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters();
-
-    if(!monst.empty() && playerCol.checkCollision(monstersCollider, collisions, 1.f)){
+    std::vector<sf::Vector2f> monstPos;
+    for (const auto& m : sMonsters)
+        monstPos.push_back(m.getPosition());
+    
+    if(!monst.empty() && playerCol.checkCollision(monstersCollider, collisions, 0.5f)){
         for (auto c : collisions) {
             if (monst[c.second]) {
                 Aspen.removeLife((int) (monst[c.second]->getAttack() * (1.f - (Aspen.getDefence() - 100.f) / 100.f)));
@@ -2048,7 +2029,16 @@ void Party::entityCollision(){
         if(Aspen.getLife() < 0)
             throw std::runtime_error ("Party::entityCollision(" + std::to_string(Aspen.getLife()) + ") - Game Over You died");
     }
-
+    
+    monstersCollider.checkCollision(holesCollider, 0.f);
+    monstersCollider.checkCollision(chestsCollider, 0.f);
+    monstersCollider.checkCollision(wallsCollider, 0.f);
+    monstersCollider.checkCollision(rocksCollider, 0.f);
+    
+    for (unsigned i = 0; i < sMonsters.size(); ++i){
+        monst[i]->moveEntity(sMonsters[i].getPosition().x - monstPos[i].x, sMonsters[i].getPosition().y - monstPos[i].y);
+    }
+    
     if (!Aspen.entityCanFly()){
 		playerCol.checkCollision(holesCollider, colDirection, 0.f);
         playerCol.checkCollision(rocksCollider, colDirection, 0.f);
@@ -2181,6 +2171,7 @@ void Party::projectileCollision(){
                         delete monster[c.second];
                         monster[c.second] = nullptr;
                         monster.erase(monster.begin() + c.second);
+                        destinationMonster.erase(destinationMonster.begin() + c.second);
                         actionTimeMonster.erase(actionTimeMonster.begin() + c.second);
                         pauseTimeMonster.erase(pauseTimeMonster.begin() + c.second);
                         inActionMonster.erase(inActionMonster.begin() + c.second);

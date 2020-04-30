@@ -82,7 +82,7 @@ private:
     void updateLife();
 
     void setAStar(Room&);
-    void updateGrippeEspagnole(Entity&, sf::Time);
+    void updateGrippeEspagnole(Entity&, sf::Time, unsigned);
     void updatePesteNoire(Entity&, sf::Time);
     void updateTenia(Entity&, sf::Time);
     void updateListeria(Entity&, sf::Time);
@@ -190,6 +190,7 @@ private:
     std::vector<sf::RectangleShape> Walls;
     std::vector<sf::RectangleShape> Holes;
     std::vector<sf::RectangleShape> sMonsters;
+    std::vector<sf::Vector2f> destinationMonster;
     std::vector<bool> inActionMonster;
     std::vector<sf::Time> actionTimeMonster;
     std::vector<sf::Time> pauseTimeMonster;
