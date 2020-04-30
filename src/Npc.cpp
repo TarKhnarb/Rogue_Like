@@ -37,16 +37,15 @@ Npc::~Npc() {
 void Npc::ActionsBlacksmith(Entity* hero){ // A appeler à chaque fois que l'on parle au NPC
 
     if(blacksmithInventoryUpgrade.size() != 0){
-        for(unsigned i = 0; i < blacksmithInventoryUpgrade.size(); ++i){ // On nettoie les upgrades possible -> permet de prendre en compte les objects present sur le joueur au moment où il interpel le joueur
+        for(auto &b : blacksmithInventoryUpgrade){ // On nettoie les upgrades possible -> permet de prendre en compte les objects present sur le joueur au moment où il interpel le joueur
 
-            if(blacksmithInventoryUpgrade[i]){
-                delete blacksmithInventoryUpgrade[i];
-                blacksmithInventoryUpgrade[i] = nullptr;
-            }
+            if(b)
+                delete b;
+            b = nullptr;
         }
     }
 
-    for(unsigned i = minIdEquipment; i < maxIdPotion; i+=3){
+    for(unsigned i = minIdEquipment; i < minIdPotion; i+=3){
         addMake(i);                             // tous les premier niveaux
         if(hero->isItOnEntity(i,1))
             addUpgrade(i+1);

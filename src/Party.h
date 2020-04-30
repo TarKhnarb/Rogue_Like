@@ -78,17 +78,19 @@ private:
     void setRockChoice(Room&);
     void setRockRectangleShape(Room&);
     void setMonsterRectangleShape(Room&);
+    void setLifeRectangleShape();
+    void updateLife();
 
     void setAStar(Room&);
-    void setAStarGrippeEspagnole(Room&);
-    void setAStarPesteNoire(Room&);
-    void setAStarTenia(Room&);
-    void setAStarListeria(Room&);
-    void setAStarBlob(Room&);
-    void setAStarCymothoaExigua(Room&);
-    void setAStarH1N1(Room&);
-    void setAStarVIH(Room&);
-    void setAStarCOVID19(Room&);
+    void setAStarGrippeEspagnole(Entity&);
+    void setAStarPesteNoire(Entity&);
+    void setAStarTenia(Entity&);
+    void setAStarListeria(Entity&);
+    void setAStarBlob(Entity&);
+    void setAStarCymothoaExigua(Entity&);
+    void setAStarH1N1(Entity&);
+    void setAStarVIH(Entity&);
+    void setAStarCOVID19(Entity&);
 
     void updateMonsters();
     void setChestRectangleShape(Room&);
@@ -212,6 +214,10 @@ private:
 	Animation walkingAspenRight;
 	Animation walkingAspenDown;
 	Animation walkingAspenLeft;
+
+	    // Aspen Life
+	sf::RectangleShape sMaxLife;
+	sf::RectangleShape sLife;
 
 	    // Inventory / Chest
 	bool inventoryOpen = false; // si l'inventaire est ouvert bloque les mouvements du player et ne permet que les mouvements dans l'inventaire

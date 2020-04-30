@@ -587,6 +587,26 @@ void Party::setMonsterRectangleShape(Room& curRoom){
     monstersCollider.pushBodies(sMonsters.begin(), sMonsters.end());
 }
 
+void Party::setLifeRectangleShape(){
+    //sf::RectangleShape sMaxLife;
+    //sf::RectangleShape sLife;
+
+
+    sMaxLife.setSize({102.f, 22.f});
+    sMaxLife.setPosition(9.f, 9.f);
+    sMaxLife.setFillColor(sf::Color::Transparent);
+    sMaxLife.setOutlineColor(sf::Color::White);
+    sMaxLife.setOutlineThickness(4.f);
+
+    sLife.setSize({100.f * (1.f - (Aspen.getMaxLife()-Aspen.getLife())/Aspen.getMaxLife()), 20.f});
+    sLife.setPosition(10.f, 10.f);
+    sLife.setFillColor(sf::Color::Green);
+}
+
+void Party::updateLife(){
+    sLife.setSize({100.f * (1.f - (float)(Aspen.getMaxLife()-Aspen.getLife())/(float)Aspen.getMaxLife()), 20.f});
+}
+
 void Party::setAStar(Room& room){
     for (unsigned i = 0; i < 40; ++i){
         for (unsigned j = 0; j < 20; ++j){
@@ -779,25 +799,44 @@ void Party::setAStar(Room& room){
     }
 }
 
-void Party::setAStarGrippeEspagnole(Room&){
+void Party::setAStarGrippeEspagnole(Entity &entity){ // monstre volant qui dash sur aspen (check coord x / y)
 
+    float DeltaX = posAspen.getPosition(true) - entity.getPosition(true);
+    float DeltaY = posAspen.getPosition(false) - entity.getPosition(false);
+
+    if(abs(DeltaX) > abs(DeltaY)){ // on rejoint Y aspen
+        if(DeltaY > 0.f){ // entity en haut a gauche d'aspen
+            entity.moveEntity(0, entity.getSpeed()*3);
+        }
+        else{ // entity en bas d'aspen
+            entity.moveEntity(0, -entity.getSpeed()*3);
+        }
+    }
+    else{ // on rejoint X aspen
+        if(DeltaX > 0.f){ // entity à gauche d'aspen
+            entity.moveEntity(entity.getSpeed()*3, 0);
+        }
+        else{ // entity a droite d'aspen
+            entity.moveEntity(-entity.getSpeed()*3, 0);
+        }
+    }
 }
 
-void Party::setAStarPesteNoire(Room&){}
+void Party::setAStarPesteNoire(Entity&){}
 
-void Party::setAStarTenia(Room&){}
+void Party::setAStarTenia(Entity&){}
 
-void Party::setAStarListeria(Room&){}
+void Party::setAStarListeria(Entity&){}
 
-void Party::setAStarBlob(Room&){}
+void Party::setAStarBlob(Entity&){}
 
-void Party::setAStarCymothoaExigua(Room&){}
+void Party::setAStarCymothoaExigua(Entity&){}
 
-void Party::setAStarH1N1(Room&){}
+void Party::setAStarH1N1(Entity&){}
 
-void Party::setAStarVIH(Room&){}
+void Party::setAStarVIH(Entity&){}
 
-void Party::setAStarCOVID19(Room&){}
+void Party::setAStarCOVID19(Entity&){}
 
 void Party::updateMonsters(){
     for(unsigned i = 0; i < sMonsters.size(); ++i){
@@ -1008,7 +1047,6 @@ void Party::setRectangleShapeForCurrentRoom(){
     Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
 
     if (curRoom) {
-
         setWall();
         setHole(*curRoom);
         if(curRoom->getMonsters().empty())
@@ -1020,6 +1058,7 @@ void Party::setRectangleShapeForCurrentRoom(){
         setMonsterRectangleShape(*curRoom);
         setChestRectangleShape(*curRoom);
         setTrapRectangleShape(*curRoom);
+        setLifeRectangleShape();
     }
 }
 
@@ -1951,7 +1990,21 @@ void Party::entityCollision(){
 	Collider playerCol (sPlayerCol);
 	
     playerCol.checkCollision(wallsCollider, colDirection, 0.f);
-    
+
+    std::vector<std::pair<std::size_t, std::size_t>> collisions;
+
+    std::vector<Entity*>& monst = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters();
+
+    if(!monst.empty() && playerCol.checkCollision(monstersCollider, collisions, 1.f)){
+        for (auto c : collisions) {
+            if (monst[c.second]) {
+                Aspen.removeLife((int) (monst[c.second]->getAttack() * (1.f - (Aspen.getDefence() - 100.f) / 100.f)));
+            }
+        }
+        if(Aspen.getLife() < 0)
+            throw std::runtime_error ("Party::entityCollision(" + std::to_string(Aspen.getLife()) + ") - Game Over You died");
+    }
+
     if (!Aspen.entityCanFly()){
 		playerCol.checkCollision(holesCollider, colDirection, 0.f);
         playerCol.checkCollision(rocksCollider, colDirection, 0.f);
@@ -2011,6 +2064,7 @@ void Party::entityCollision(){
 	}
 	
 	sf::Vector2f posEnd = sPlayerCol.getPosition();
+    updateLife();
 		
 	posAspen.move(posEnd.x - posBegin.x, posEnd.y - posBegin.y);
     aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
@@ -2026,6 +2080,7 @@ void Party::removeLife(Projectile *projectile, Entity *entityShoot){
             entityShoot->removeLife(projectile->getAttack());
         }
     }
+    updateLife();
 }
 
 void Party::projectileCollision(){
@@ -2280,6 +2335,9 @@ void Party::render(){
         }
         drawPlayerInventory();
     }
+
+    mWindow.draw(sMaxLife);
+    mWindow.draw(sLife);
     
     mWindow.display();
 }
