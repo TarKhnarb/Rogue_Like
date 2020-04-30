@@ -50,6 +50,8 @@ Party::Party():
 
     
 	rocksCollider.setStyle(Style::Separated);
+    monstersCollider.setStyle(Style::Separated);
+    
     setInventoryItem();
 	reloadRoom();
 }
@@ -567,6 +569,8 @@ void Party::setRockRectangleShape(Room& curRoom){
 
 void Party::setMonsterRectangleShape(Room& curRoom){
     std::vector<Entity*> monster = curRoom.getMonsters();
+    
+    bool handleTime = actionTimeMonster.empty();
 
     sf::RectangleShape monst({80.f, 80.f});
 
@@ -580,6 +584,12 @@ void Party::setMonsterRectangleShape(Room& curRoom){
             monst.setTexture(getTexture(monster[i]->getName()));
             monst.setPosition(monster[i]->getPosition(true) - 40.f, monster[i]->getPosition(false) - 40.f);
             sMonsters.push_back(monst);
+            
+            if(handleTime){
+                actionTimeMonster.push_back(sf::Time::Zero);
+                pauseTimeMonster.push_back(sf::Time::Zero);
+                inActionMonster.push_back(false);
+            }
         }
     }
     
@@ -789,17 +799,9 @@ void Party::setAStar(Room& room){
         default:
             break;
     }
-    
-    std::cout << "========================================" << std::endl;
-    for (unsigned j = 0; j < 20; ++j){
-        for (unsigned i = 0; i < 40; ++i){
-            std::cout << grid[j][i] << " ";
-        }
-        std::cout << std::endl;
-    }
 }
 
-void Party::setAStarGrippeEspagnole(Entity &entity){ // monstre volant qui dash sur aspen (check coord x / y)
+/*void Party::updateGrippeEspagnole(Entity &entity){ // monstre volant qui dash sur aspen (check coord x / y)
 
     float DeltaX = posAspen.getPosition(true) - entity.getPosition(true);
     float DeltaY = posAspen.getPosition(false) - entity.getPosition(false);
@@ -820,28 +822,66 @@ void Party::setAStarGrippeEspagnole(Entity &entity){ // monstre volant qui dash 
             entity.moveEntity(-entity.getSpeed()*3, 0);
         }
     }
+}*/
+
+void Party::updateGrippeEspagnole(Entity &entity, sf::Time deltaTime){
+    float deltaX = posAspen.getPosition(true) - entity.getPosition(true);
+    float deltaY = posAspen.getPosition(false) - entity.getPosition(false);
+    
+    if(deltaX == 0.f)
+        deltaX = 1.e-5;
+    
+    float angle = atan2(deltaY, deltaX);
+    float realDeltaX = cos(angle) * entity.getSpeed() * 50.f * deltaTime.asSeconds();
+    float realDeltaY = sin(angle) * entity.getSpeed() * 50.f * deltaTime.asSeconds();
+    
+    entity.moveEntity(realDeltaX, realDeltaY);
 }
 
-void Party::setAStarPesteNoire(Entity&){}
+void Party::updatePesteNoire(Entity&, sf::Time deltaTime){}
 
-void Party::setAStarTenia(Entity&){}
+void Party::updateTenia(Entity&, sf::Time deltaTime){}
 
-void Party::setAStarListeria(Entity&){}
+void Party::updateListeria(Entity&, sf::Time deltaTime){}
 
-void Party::setAStarBlob(Entity&){}
+void Party::updateBlob(Entity&, sf::Time deltaTime){}
 
-void Party::setAStarCymothoaExigua(Entity&){}
+void Party::updateCymothoaExigua(Entity&, sf::Time deltaTime){}
 
-void Party::setAStarH1N1(Entity&){}
+void Party::updateH1N1(Entity&, sf::Time deltaTime){}
 
-void Party::setAStarVIH(Entity&){}
+void Party::updateVIH(Entity&, sf::Time deltaTime){}
 
-void Party::setAStarCOVID19(Entity&){}
+void Party::updateCOVID19(Entity&, sf::Time deltaTime){}
 
-void Party::updateMonsters(){
+void Party::updateMonsters(sf::Time deltaTime){
+    std::vector<Entity*>& monster = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters();
+    
     for(unsigned i = 0; i < sMonsters.size(); ++i){
-        //sf::FloatRect monst = sMonsters[i].getGlobalBounds();
-        // A modif avec A*
+        if(monster[i] && monster[i]->getName() == "Grippe-Espagnole"){
+            
+            if(inActionMonster[i]){
+                actionTimeMonster[i] += deltaTime;
+                updateGrippeEspagnole(*monster[i], deltaTime);
+                sMonsters[i].setPosition(monster[i]->getPosition(true) - 40.f, monster[i]->getPosition(false) - 40.f);
+                
+                if(actionTimeMonster[i] > sf::seconds(2.f)){
+                    inActionMonster[i] = false;
+                    actionTimeMonster[i] = sf::Time::Zero;
+                }
+            }
+            else{
+                pauseTimeMonster[i] += deltaTime;
+                
+                if(pauseTimeMonster[i] > sf::seconds(2.f)){
+                    inActionMonster[i] = true;
+                    pauseTimeMonster[i] = sf::Time::Zero;
+                }
+            }
+        }
+        else{
+            // autres monstres
+        }
     }
 }
 
@@ -1977,6 +2017,10 @@ void Party::loadNextStage(){
     reloadRoom();
 }
 
+void Party::playerDies(){
+    // TODO à changer quand la map existera
+}
+
 void Party::entityCollision(){
 
 	sf::RectangleShape sPlayerCol ({(aspenAnimated.getLocalBounds()).width, (aspenAnimated.getLocalBounds()).height / 2.f});
@@ -2137,6 +2181,9 @@ void Party::projectileCollision(){
                         delete monster[c.second];
                         monster[c.second] = nullptr;
                         monster.erase(monster.begin() + c.second);
+                        actionTimeMonster.erase(actionTimeMonster.begin() + c.second);
+                        pauseTimeMonster.erase(pauseTimeMonster.begin() + c.second);
+                        inActionMonster.erase(inActionMonster.begin() + c.second);
                         
                         resetCollider = true;
                     }
@@ -2292,6 +2339,7 @@ void Party::update(sf::Time deltaTime){
 	noKeyWasPressed = true;
 
 	aspenAnimated.update(deltaTime);
+    updateMonsters(deltaTime);
     updateProjectile();
 	entityCollision();
     projectileCollision();
