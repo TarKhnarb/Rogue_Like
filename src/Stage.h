@@ -16,20 +16,55 @@ const unsigned maxRooms = 20;
 class Stage{
     
 public:
-    
+
+    /**
+     * @brief Construct a stage according the player
+     * @param Entity* Reference to Entity class
+     */
     Stage(Entity*);
     ~Stage();
 
+    /**
+     * @brief Generate a stage of Room in a C 2D Array according stage number
+     * @param unsigned& Stage number
+     */
     void generate(unsigned &); // Génère le Stage
-    
+
+    /**
+     * @brief Set the seed for the stage generation
+     * @param unsigned Reference to new seed
+     */
     void setSeed(unsigned);
+
+    /**
+     * @brief Return the seed of the stage
+     * @return unsigned Corresponding to stage's seed
+     */
     unsigned getSeed() const;
 
+    /**
+     * @brief Set Random for the seed if it isn't set before gernerate
+     * @param bool True or False
+     */
     void setRandom(bool);
+
+    /**
+     * @brief Get the boolean of random set
+     * @return bool if random has been set
+     */
     bool getRandom() const;
 
+    /**
+     * @brief Return Reference on a Room according its coordonates in C 2D Array
+     * @param unsigned i coordonate of the Array
+     * @param unsigned j coordonate of the Array
+     * @return Room* Reference to Room class
+     */
     Room* getRoom(unsigned, unsigned);
 
+    /**
+     * @brief Affectect at each room of the stage a type depending Room's number and position; monsters, chest and rocks depending type of room
+     */
     void affectRoomTypeMonsterObject(); // Affecte a chaque salles un type en fonction de son nombre de portes (tableau)
 
 private:

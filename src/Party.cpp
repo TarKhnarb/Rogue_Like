@@ -587,8 +587,7 @@ void Party::setMonsterRectangleShape(Room& curRoom){
     monstersCollider.pushBodies(sMonsters.begin(), sMonsters.end());
 }
 
-void Party::setAStar(Room& room)
-{
+void Party::setAStar(Room& room){
     for (unsigned i = 0; i < 40; ++i){
         for (unsigned j = 0; j < 20; ++j){
             grid[j][i] = 0;
@@ -779,7 +778,26 @@ void Party::setAStar(Room& room)
         std::cout << std::endl;
     }
 }
-        
+
+void Party::setAStarGrippeEspagnole(Room&){
+
+}
+
+void Party::setAStarPesteNoire(Room&){}
+
+void Party::setAStarTenia(Room&){}
+
+void Party::setAStarListeria(Room&){}
+
+void Party::setAStarBlob(Room&){}
+
+void Party::setAStarCymothoaExigua(Room&){}
+
+void Party::setAStarH1N1(Room&){}
+
+void Party::setAStarVIH(Room&){}
+
+void Party::setAStarCOVID19(Room&){}
 
 void Party::updateMonsters(){
     for(unsigned i = 0; i < sMonsters.size(); ++i){

@@ -78,7 +78,18 @@ private:
     void setRockChoice(Room&);
     void setRockRectangleShape(Room&);
     void setMonsterRectangleShape(Room&);
+
     void setAStar(Room&);
+    void setAStarGrippeEspagnole(Room&);
+    void setAStarPesteNoire(Room&);
+    void setAStarTenia(Room&);
+    void setAStarListeria(Room&);
+    void setAStarBlob(Room&);
+    void setAStarCymothoaExigua(Room&);
+    void setAStarH1N1(Room&);
+    void setAStarVIH(Room&);
+    void setAStarCOVID19(Room&);
+
     void updateMonsters();
     void setChestRectangleShape(Room&);
     void setTrapRectangleShape(Room&);
