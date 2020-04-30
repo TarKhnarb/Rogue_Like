@@ -82,17 +82,17 @@ private:
     void updateLife();
 
     void setAStar(Room&);
-    void setAStarGrippeEspagnole(Entity&);
-    void setAStarPesteNoire(Entity&);
-    void setAStarTenia(Entity&);
-    void setAStarListeria(Entity&);
-    void setAStarBlob(Entity&);
-    void setAStarCymothoaExigua(Entity&);
-    void setAStarH1N1(Entity&);
-    void setAStarVIH(Entity&);
-    void setAStarCOVID19(Entity&);
+    void updateGrippeEspagnole(Entity&, sf::Time);
+    void updatePesteNoire(Entity&, sf::Time);
+    void updateTenia(Entity&, sf::Time);
+    void updateListeria(Entity&, sf::Time);
+    void updateBlob(Entity&, sf::Time);
+    void updateCymothoaExigua(Entity&, sf::Time);
+    void updateH1N1(Entity&, sf::Time);
+    void updateVIH(Entity&, sf::Time);
+    void updateCOVID19(Entity&, sf::Time);
 
-    void updateMonsters();
+    void updateMonsters(sf::Time);
     void setChestRectangleShape(Room&);
     void setTrapRectangleShape(Room&);
     sf::Texture* selectProjectileTexture(const Entity&, unsigned);
@@ -119,6 +119,8 @@ private:
 	 * @brief loads the next stage, sets apsen to the new position, loads next stage, calls realoadRoom
     */
     void loadNextStage();
+	
+	void playerDies();
 
     /**
      * @brief check for collisions
@@ -188,6 +190,9 @@ private:
     std::vector<sf::RectangleShape> Walls;
     std::vector<sf::RectangleShape> Holes;
     std::vector<sf::RectangleShape> sMonsters;
+    std::vector<bool> inActionMonster;
+    std::vector<sf::Time> actionTimeMonster;
+    std::vector<sf::Time> pauseTimeMonster;
     std::vector<sf::RectangleShape> sRocks;
 	std::vector<sf::RectangleShape> sNoRocks;
 	std::vector<unsigned> rocksChoice;
