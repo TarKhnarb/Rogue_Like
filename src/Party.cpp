@@ -911,8 +911,8 @@ void Party::updateGrippeEspagnole(Entity &entity, sf::Time deltaTime, unsigned i
     float deltaY = destinationMonster[index].y - entity.getPosition(false);
     
     float angle = atan2(deltaY, deltaX);
-    float realDeltaX = cos(angle) * entity.getSpeed() * 120.f * deltaTime.asSeconds();
-    float realDeltaY = sin(angle) * entity.getSpeed() * 120.f * deltaTime.asSeconds();
+    float realDeltaX = cos(angle) * entity.getSpeed() * 100.f * deltaTime.asSeconds();
+    float realDeltaY = sin(angle) * entity.getSpeed() * 100.f * deltaTime.asSeconds();
     
     entity.moveEntity(realDeltaX, realDeltaY);
 }
@@ -938,7 +938,7 @@ void Party::updateMonsters(sf::Time deltaTime){
     
     for(unsigned i = 0; i < sMonsters.size(); ++i){
         if(monster[i] && monster[i]->getName() == "Grippe-Espagnole"){
-            
+
             if(inActionMonster[i]){
                 actionTimeMonster[i] += deltaTime;
                 updateGrippeEspagnole(*monster[i], deltaTime, i);
@@ -961,7 +961,7 @@ void Party::updateMonsters(sf::Time deltaTime){
             
             sMonsters[i].setPosition(monster[i]->getPosition(true) - 40.f, monster[i]->getPosition(false) - 40.f);
         }
-        else{
+        else if(monster[i]){
             // autres monstres
         }
     }
@@ -1456,8 +1456,6 @@ void Party::setChestItem(Room& curRoom){
                 id = object->getId();
                 type = object->getType();
 
-                item.setColor(setItemLvl(id));
-
                 if(type == Object::Type::potion){
                     item.setTexture(*getTexture(std::to_string(id)));
                     item.scale(50.f/128.f, 50.f/128.f);
@@ -1467,6 +1465,7 @@ void Party::setChestItem(Room& curRoom){
                     item.scale(50.f/64.f, 50.f/64.f);
                 }
                 if(type == Object::Type::helmet){
+                    item.setColor(setItemLvl(id));
                     if(id < 14)
                         item.setTexture(*getTexture("11"));
                     else
@@ -1474,6 +1473,7 @@ void Party::setChestItem(Room& curRoom){
                     item.scale(50.f/128.f, 50.f/128.f);
                 }
                 if(type == Object::Type::chestplate){
+                    item.setColor(setItemLvl(id));
                     if(id < 20)
                         item.setTexture(*getTexture("17"));
                     else
@@ -1481,6 +1481,7 @@ void Party::setChestItem(Room& curRoom){
                     item.scale(50.f/128.f, 50.f/128.f);
                 }
                 if(type == Object::Type::leggings){
+                    item.setColor(setItemLvl(id));
                     if(id < 26)
                         item.setTexture(*getTexture("23"));
                     else
@@ -1488,6 +1489,7 @@ void Party::setChestItem(Room& curRoom){
                     item.scale(50.f/128.f, 50.f/128.f);
                 }
                 if(type == Object::Type::boots){
+                    item.setColor(setItemLvl(id));
                     if(id < 32)
                         item.setTexture(*getTexture("29"));
                     else
@@ -1495,6 +1497,7 @@ void Party::setChestItem(Room& curRoom){
                     item.scale(50.f/128.f, 50.f/128.f);
                 }
                 if(type == Object::Type::projectile){
+                    item.setColor(setItemLvl(id));
                     if(id < 38)
                         item.setTexture(*getTexture("35"));
                     else
@@ -1502,6 +1505,7 @@ void Party::setChestItem(Room& curRoom){
                     item.scale(50.f/64.f, 50.f/64.f);
                 }
                 if(type == Object::Type::amulet){
+                    item.setColor(setItemLvl(id));
                     if(id < 44)
                         item.setTexture(*getTexture("41"));
                     else
