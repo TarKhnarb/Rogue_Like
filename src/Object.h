@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 
 const unsigned statSize = 6;
 const unsigned maxIdObject = 65;

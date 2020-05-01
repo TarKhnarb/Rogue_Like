@@ -43,7 +43,7 @@ void Donjon::nextStage() {
         std::cout << currentStage;
     }
     else
-        throw std::runtime_error ("Donjon::nextStage(" + std::to_string(stage) + ") - Bravo ! Vous êtes arrivé à bout de ce donjon !");
+        throw std::range_error ("Bravo ! Vous êtes arrivé à bout de ce donjon !");
 
 }
 

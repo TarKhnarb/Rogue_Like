@@ -3,8 +3,8 @@
 Upgrade::Upgrade(unsigned id) {
 
     std::ifstream file;
-
-    file.open("data/Upgrades.csv");
+    std::string filename = "data/Upgrades.csv";
+    file.open(filename);
 
     if (file.is_open()) {
         std::string csvItem;
@@ -26,7 +26,7 @@ Upgrade::Upgrade(unsigned id) {
 
     }
     else{
-        std::cerr << " something went wrong " << std::endl;
+        throw std::runtime_error ("Failed to load " + filename);
     }
 
     file.close();

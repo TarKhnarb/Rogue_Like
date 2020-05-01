@@ -36,9 +36,13 @@ Party::Party():
 
     loadRectangleShape("Trap");
 
-    scroll.loadFromFile("data/Font/verdana.ttf"); // charge le police d'écriture verdana
-    objectsFont.loadFromFile("data/Font/verdana.ttf");
-	statsFont.loadFromFile("data/Font/verdana.ttf");
+    if (scroll.loadFromFile("data/Font/verdana.ttf")){ // charge le police d'écriture verdana
+        objectsFont.loadFromFile("data/Font/verdana.ttf");
+        statsFont.loadFromFile("data/Font/verdana.ttf");
+    }
+    else{
+        throw std::runtime_error ("Failed to load data/Font/verdana.ttf");
+    }
 
     loadAnimation();
     
@@ -88,18 +92,30 @@ void Party::run(){
 		while (timeSinceLastUpdate > TimePerFrame){
 			timeSinceLastUpdate -= TimePerFrame;
 			
-			if(!inventoryOpen){ // game state
+			if(!inventoryOpen && !exceptionState){ // game state
 				processEvents();
 				update(TimePerFrame);
                 
                 if (inventoryOpen) // late update
                     updateInventory();
-			}
-			else if (!scrollingMenuOpen){ // inventory state
-				updateInventory();
                 
-                if (scrollingMenuOpen) // late update
-                    updateScrollingMenu();
+                if (exceptionState) // late update too
+                    updateException();
+			}
+			else if (exceptionState){ // exception state
+                updateException();
+            }
+			else if (!scrollingMenuOpen){ // inventory state
+                try{
+                    updateInventory();
+                    
+                    if (scrollingMenuOpen) // late update
+                        updateScrollingMenu();
+                    }
+                catch (std::logic_error& err){
+                    exceptionText = std::string(err.what());
+                    exceptionState = true;
+                }
 			}
 			else if (!moveObjectOpen){ // srolling menu state
                 updateScrollingMenu();
@@ -125,7 +141,8 @@ std::string Party::returnCsvItem(std::istringstream & ss){
 
 void Party::loadTextures(){ // load dans le constructeur
     std::ifstream file;
-    file.open("data/Textures.csv");
+    std::string filename = "data/Textures.csv";
+    file.open(filename);
 
     if (file.is_open()) {
         std::string csvItem;
@@ -144,7 +161,7 @@ void Party::loadTextures(){ // load dans le constructeur
         }
     }
     else
-        std::cerr <<" something went wrong "<< std::endl;
+        throw std::runtime_error ("Failed to load " + filename);
 
     file.close();
 }
@@ -152,7 +169,7 @@ void Party::loadTextures(){ // load dans le constructeur
 sf::Texture* Party::getTexture(const std::string& nameText){ // récupere un etexture quand on en a besoin
     auto found = textures.find(nameText);
     if(found == textures.end())
-        throw std::runtime_error ("Party::getTexture(const std::string&) - Aucune texture de ce nom " + nameText);
+        throw std::runtime_error ("Aucune texture de ce nom " + nameText);
 
     return found->second; // ( si pas * on retourne un pointeur de texture)
 }
@@ -174,7 +191,7 @@ void Party::loadSprites(std::string name){
 sf::Sprite Party::getSprite(const std::string& name){
     auto found = sprites.find(name);
     if(found == sprites.end())
-        throw std::runtime_error ("Party::getSprite(const std::string&) - Aucun sprite de ce nom " + name);
+        throw std::runtime_error ("Aucun sprite de ce nom " + name);
 
     return found->second;
 }
@@ -197,7 +214,7 @@ void Party::loadRectangleShape(std::string name){
 sf::RectangleShape Party::getRectangleShape(const std::string& name){
     auto found = rectangleShapes.find(name);
     if(found == rectangleShapes.end())
-        throw std::runtime_error ("Party::getRectangleShape(const std::string&) - Aucun rectangleShape de ce nom " + name);
+        throw std::runtime_error ("Aucun rectangleShape de ce nom " + name);
 
     return *found->second;
 }
@@ -1142,7 +1159,6 @@ void Party::setProjectileRectangleShape(const Entity& entity, unsigned orient){ 
             break;
 
         default:
-            std::cout << "default" << std::endl;
             break;
     }
 }
@@ -2067,6 +2083,50 @@ void Party::drawPlayerInventory(){ // 1: stuff, 2: bag, 3: chest
         mWindow.draw(txt);
 }
 
+void Party::updateException(){
+    sf::Event event;
+    
+    while (mWindow.pollEvent(event)){
+        if (event.type == sf::Event::Closed){
+            mWindow.close();
+        }
+        else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter){
+            inventoryOpen = false;
+            scrollingMenuOpen = false;
+            moveObjectOpen = false;
+            chestOpen = false;
+            mIsMovingUp = false;
+            mIsMovingDown = false;
+            mIsMovingLeft = false;
+            mIsMovingRight = false;
+            mIsShootingUp = false;
+            mIsShootingDown = false;
+            mIsShootingLeft = false;
+            mIsShootingRight = false;
+            exceptionState = false;
+        }
+    }
+}
+
+void Party::drawException(){
+    sf::RectangleShape rect ({400.f, 150.f});
+    rect.setFillColor(sf::Color::White);
+    rect.setOrigin({200.f, 75.f});
+    rect.setPosition(mWindow.getSize().x / 2.f, mWindow.getSize().y / 2.f);
+    
+    sf::Text exception;
+    exception.setFont(statsFont);
+    exception.setCharacterSize(15);
+    exception.setString(exceptionText);
+    
+    sf::FloatRect textBounds = exception.getLocalBounds();
+    exception.setOrigin(textBounds.left + textBounds.width / 2.f, textBounds.top + textBounds.height / 2.f);
+    exception.setPosition(rect.getPosition());
+    
+    mWindow.draw(rect);
+    mWindow.draw(exception);
+}
+
 void Party::reloadRoom(){
 
     for(auto p = sProjectiles.begin(); p != sProjectiles.end();){
@@ -2108,10 +2168,6 @@ void Party::loadNextStage(){
     reloadRoom();
 }
 
-void Party::playerDies(){
-    // TODO à changer quand la map existera
-}
-
 void Party::entityCollision(){
 
 	sf::RectangleShape sPlayerCol ({(aspenAnimated.getLocalBounds()).width, (aspenAnimated.getLocalBounds()).height / 2.f});
@@ -2140,7 +2196,7 @@ void Party::entityCollision(){
             }
         }
         if(Aspen.getLife() < 0)
-            throw std::runtime_error ("Party::entityCollision(" + std::to_string(Aspen.getLife()) + ") - Game Over You died");
+            throw std::range_error ("Game Over You died");
     }
 
     std::vector<std::pair<std::size_t, std::size_t>> lootCollisions;
@@ -2148,7 +2204,13 @@ void Party::entityCollision(){
     if(monst.empty() && !Aspen.inventoryEmpty()){
         if(playerCol.checkCollision(lootCollider, lootCollisions, 0.f)){
             for(auto c : lootCollisions){
-                Aspen.addInventoryObject(sLoot[c.second], 1);
+                try{ // pour laisser les objets au sol, il faut mettre tout le bloc dans le if
+                    Aspen.addInventoryObject(sLoot[c.second], 1);
+                }
+                catch (std::logic_error& err){
+                    exceptionState = true;
+                    exceptionText = std::string(err.what());
+                }
                 sLoot.erase(sLoot.begin() + c.second);
                 Loots.erase(Loots.begin() + c.second);
                 hitBoxLoots.erase(hitBoxLoots.begin() + c.second);
@@ -2512,6 +2574,10 @@ void Party::render(){
 
     mWindow.draw(sMaxLife);
     mWindow.draw(sLife);
+    
+    if(exceptionState){
+        drawException();
+    }
     
     mWindow.display();
 }

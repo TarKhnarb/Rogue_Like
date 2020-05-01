@@ -117,6 +117,9 @@ private:
     void updateInventory();
     void drawChestInventory();
     void drawPlayerInventory();
+    
+    void updateException();
+    void drawException();
 	
 	void reloadRoom();
 	
@@ -124,8 +127,6 @@ private:
 	 * @brief loads the next stage, sets apsen to the new position, loads next stage, calls realoadRoom
     */
     void loadNextStage();
-	
-	void playerDies();
 
     /**
      * @brief check for collisions
@@ -272,6 +273,9 @@ private:
 	unsigned moveObjectIndex;
     
     int grid[20][40];
+    
+    bool exceptionState = false;
+    std::string exceptionText;
 };
 
 #endif
