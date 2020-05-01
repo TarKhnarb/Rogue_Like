@@ -598,13 +598,13 @@ void Party::setMonsterRectangleShape(Room& curRoom){
     monstersCollider.pushBodies(sMonsters.begin(), sMonsters.end());
 }
 
-void Party::setLootOTheFloor(Entity& entity){
-    unsigned  id;
-    unsigned rand = rand()4; // 0, 1, 2, 3
-    if(rand == 0){
+void Party::setLootOnTheFloor(Entity& entity){
+    unsigned  id = 0;
+    unsigned random = rand()%4; // 0, 1, 2, 3
+    if(random == 0){
         id = 58;
     }
-    else if(rand == 1){
+    else if(random == 1){
         //Loot l'object caractéristique
         switch(entity.getEntityId()){
                 // Monsters
@@ -660,7 +660,7 @@ void Party::setLootOTheFloor(Entity& entity){
 
             case 8: // H1N1
                 // Toxine botulique id: 56
-                id = 56
+                id = 56;
                 break;
 
             case 9: // VIH
@@ -670,30 +670,35 @@ void Party::setLootOTheFloor(Entity& entity){
 
             case 10: // COVID-19
                 // Novichok id: 52
-                id = 52
+                id = 52;
                 break;
 
             default:
                 break;
         }
     }
-    sLoot.push_back(id);
 
-    sf::RectangleShape item({20.f, 20.f});
-    item.setPosition(entity.getPosition(true) - 10.f, entity.getPosition(false) - 10.f);
-    item.setTexture(*getTexture(std::to_string(id)));
-    item.scale(50.f/64.f, 50.f/64.f);
+    if(id != 0){
+        sLoot.push_back(id);
 
-    Loots.push_back(item);
+        sf::Sprite item(*getTexture(std::to_string(id)));
+        item.setPosition(entity.getPosition(true) - 10.f, entity.getPosition(false) - 10.f);
+        item.scale(20.f/64.f, 20.f/64.f);
+
+        sf::RectangleShape hitbox({20.f, 20.f});
+        hitbox.setPosition(entity.getPosition(true) - 10.f, entity.getPosition(false) - 10.f);
+
+        hitBoxLoots.push_back(hitbox);
+        Loots.push_back(item);
+    }
 
     lootCollider.clean();
-    lootCollider.pushBodies(Loots.begin(), Loots.end());
+    lootCollider.pushBodies(hitBoxLoots.begin(), hitBoxLoots.end());
 }
 
 void Party::drawLootOnTheFloor(){
     for(auto &l : Loots)
-        if(l)
-            mWindow.draw(l);
+        mWindow.draw(l);
 }
 
 void Party::setLifeRectangleShape(){

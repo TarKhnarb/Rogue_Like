@@ -9,6 +9,7 @@
 #include <map>
 #include <utility>
 #include <cmath>
+#include <cstdlib>
 
 #include "AnimatedSprite.h"
 
@@ -194,8 +195,9 @@ private:
     std::vector<sf::RectangleShape> Walls;
     std::vector<sf::RectangleShape> Holes;
     std::vector<sf::RectangleShape> sMonsters;
-    std::vector<unsigned> sLoot;
-    std::vector<sf::RectangleShape> Loots;
+    std::vector<unsigned> sLoot; // Id des objets
+    std::vector<sf::Sprite> Loots; // Image des objets
+    std::vector<sf::RectangleShape> hitBoxLoots; // retangle shape pour les collision avec le joueur
     std::vector<sf::Vector2f> destinationMonster;
     std::vector<bool> inActionMonster;
     std::vector<sf::Time> actionTimeMonster;

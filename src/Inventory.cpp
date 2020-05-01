@@ -206,7 +206,7 @@ const Object* Inventory::getObject(unsigned bagIndex) const{
 	return static_cast<const Object*>(bag[bagIndex]);
 }
 
-unsigned Inventory::getBasicStatId(){
+unsigned Inventory::getBasicStatId() const{
     return basicStat.getId();
 }
 
