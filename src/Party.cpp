@@ -2094,7 +2094,7 @@ void Party::updateException(){
         if (event.type == sf::Event::Closed){
             mWindow.close();
         }
-        else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter){
+        else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Return){
             inventoryOpen = false;
             scrollingMenuOpen = false;
             moveObjectOpen = false;
@@ -2119,6 +2119,7 @@ void Party::drawException(){
     rect.setPosition(mWindow.getSize().x / 2.f, mWindow.getSize().y / 2.f);
     
     sf::Text exception;
+    exception.setFillColor(sf::Color::Black);
     exception.setFont(statsFont);
     exception.setCharacterSize(15);
     exception.setString(exceptionText);
