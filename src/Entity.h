@@ -111,6 +111,8 @@ public :
     int getDefence() const;
     int getSpeed() const;
 
+    unsigned getEntityId() const;
+
     int getLife() const;
     void removeLife(int);
     void setLife(int);

@@ -597,6 +597,101 @@ void Party::setMonsterRectangleShape(Room& curRoom){
     monstersCollider.pushBodies(sMonsters.begin(), sMonsters.end());
 }
 
+void Party::setLootOTheFloor(Entity& entity){
+    unsigned  id;
+    unsigned rand = rand()4; // 0, 1, 2, 3
+    if(rand == 0){
+        id = 58;
+    }
+    else if(rand == 1){
+        //Loot l'object caractéristique
+        switch(entity.getEntityId()){
+                // Monsters
+            case 2: // Grippe-Espagnole
+                // Loot ADN id: 60
+                // Cellules id: 51
+                if(rand()%2 == 0)
+                    id = 60;
+                else
+                    id = 51;
+                break;
+
+            case 3: // Peste-Noire
+                // loot sang infecté id: 57
+                // loot Ribosomes id: 61
+                if(rand()%2 == 0)
+                    id = 57;
+                else
+                    id = 61;
+                break;
+
+            case 4: // Tenia
+                // Hydroxyde de sodium id: 64
+                // Membrane plasmique id: 54
+                if(rand()%2 == 0)
+                    id = 64;
+                else
+                    id = 54;
+                break;
+
+            case 5: // Listeria
+                // Cytoplasme id: 59
+                // Acide nucléique id: 50
+                if(rand()%2 == 0)
+                    id = 60;
+                else
+                    id = 51;
+                break;
+            case 6: // Blob
+                // Spores id: 62
+                // Cellulose id: 63
+                if(rand()%2 == 0)
+                    id = 62;
+                else
+                    id = 63;
+                break;
+
+                // Boss
+            case 7: // Cymothoa-exigua
+                // Noyau id: 53
+                id = 53;
+                break;
+
+            case 8: // H1N1
+                // Toxine botulique id: 56
+                id = 56
+                break;
+
+            case 9: // VIH
+                // Cyanure id: 55
+                id = 55;
+                break;
+
+            case 10: // COVID-19
+                // Novichok id: 52
+                id = 52
+                break;
+
+            default:
+                break;
+        }
+    }
+    sLoot.push_back(id);
+
+    sf::RectangleShape item({20.f, 20.f});
+    item.setPosition(entity.getPosition(true) - 10.f, entity.getPosition(false) - 10.f);
+    item.setTexture(*getTexture(std::to_string(id)));
+    item.scale(50.f/64.f, 50.f/64.f);
+
+    Loots.push_back(item);
+}
+
+void Party::drawLootOnTheFloor(){
+    for(auto &l : Loots)
+        if(l)
+            mWindow.draw(l);
+}
+
 void Party::setLifeRectangleShape(){
     //sf::RectangleShape sMaxLife;
     //sf::RectangleShape sLife;

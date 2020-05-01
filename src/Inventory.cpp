@@ -206,6 +206,10 @@ const Object* Inventory::getObject(unsigned bagIndex) const{
 	return static_cast<const Object*>(bag[bagIndex]);
 }
 
+unsigned Inventory::getBasicStatId(){
+    return basicStat.getId();
+}
+
 std::string Inventory::getBasicStatName() const {
     return basicStat.getName();
 }

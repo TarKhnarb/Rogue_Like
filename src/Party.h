@@ -77,7 +77,11 @@ private:
     void setDoorCloseRectangleShape(Room&);
     void setRockChoice(Room&);
     void setRockRectangleShape(Room&);
+
     void setMonsterRectangleShape(Room&);
+    void setLootOnTheFloor(Entity&);
+    void drawLootOnTheFloor();
+
     void setLifeRectangleShape();
     void updateLife();
 
@@ -190,6 +194,8 @@ private:
     std::vector<sf::RectangleShape> Walls;
     std::vector<sf::RectangleShape> Holes;
     std::vector<sf::RectangleShape> sMonsters;
+    std::vector<unsigned> sLoot;
+    std::vector<sf::RectangleShape> Loots;
     std::vector<bool> inActionMonster;
     std::vector<sf::Time> actionTimeMonster;
     std::vector<sf::Time> pauseTimeMonster;

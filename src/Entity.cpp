@@ -218,6 +218,10 @@ int Entity::getSpeed() const{
     return speed;
 }
 
+unsigned Entity::getEntityId() const{
+    return inventory.getBasicStatId();
+}
+
 int Entity::getLife() const{
     return life;
 }

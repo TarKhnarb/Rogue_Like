@@ -60,6 +60,8 @@ class Inventory
         bool isEmpty();
         bool isFull();
 
+        unsigned getBasicStatId();
+
 		std::string getBasicStatName() const;
 		/**
 		 * @brief display for debug purpose
