@@ -110,6 +110,7 @@ void Party::run(){
             else{ // move object state
                 updateMoveObject();
             }
+            updateLife();
 		}
 		
         render();
@@ -2079,7 +2080,12 @@ void Party::reloadRoom(){
 	rocksCollider.clean();
 	doorsCollider.clean();
 	monstersCollider.clean();
+    lootCollider.clean();
 	chestsCollider.clean();
+
+    sLoot.clear();
+    Loots.clear();
+    hitBoxLoots.clear();
 	
 	setSpritesForCurrentRoom();
     setRectangleShapeForCurrentRoom();
@@ -2131,6 +2137,24 @@ void Party::entityCollision(){
         }
         if(Aspen.getLife() < 0)
             throw std::runtime_error ("Party::entityCollision(" + std::to_string(Aspen.getLife()) + ") - Game Over You died");
+    }
+
+    std::vector<std::pair<std::size_t, std::size_t>> lootCollisions;
+
+    if(monst.empty() && !Aspen.inventoryEmpty()){
+        if(playerCol.checkCollision(lootCollider, lootCollisions, 0.f)){
+            for(auto c : lootCollisions){
+                Aspen.addInventoryObject(sLoot[c.second], 1);
+                sLoot.erase(sLoot.begin() + c.second);
+                Loots.erase(Loots.begin() + c.second);
+                hitBoxLoots.erase(hitBoxLoots.begin() + c.second);
+
+                setInventoryItem();
+
+                lootCollider.clean();
+                lootCollider.pushBodies(hitBoxLoots.begin(), hitBoxLoots.end());
+            }
+        }
     }
     
     monstersCollider.checkCollision(holesCollider, 0.f);
@@ -2201,7 +2225,6 @@ void Party::entityCollision(){
 	}
 	
 	sf::Vector2f posEnd = sPlayerCol.getPosition();
-    updateLife();
 		
 	posAspen.move(posEnd.x - posBegin.x, posEnd.y - posBegin.y);
     aspenAnimated.setPosition(posAspen.getPosition(true), posAspen.getPosition(false));
@@ -2271,6 +2294,9 @@ void Party::projectileCollision(){
                     removeLife(p->first, monster[c.second]);
                     
                     if (monster[c.second]->getLife() <= 0) {
+
+                        setLootOnTheFloor(*monster[c.second]);
+
                         delete monster[c.second];
                         monster[c.second] = nullptr;
                         monster.erase(monster.begin() + c.second);
@@ -2465,6 +2491,8 @@ void Party::render(){
             mWindow.draw(t);
     
     drawProjectile();
+
+    drawLootOnTheFloor();
 
    for(const auto &m : sMonsters)
         mWindow.draw(m);
