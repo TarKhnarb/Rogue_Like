@@ -211,6 +211,7 @@ private:
     Collider wallsCollider;
     Collider holesCollider;
     Collider monstersCollider;
+    Collider lootCollider;
     Collider rocksCollider;
     Collider doorsCollider;
     Collider chestsCollider;

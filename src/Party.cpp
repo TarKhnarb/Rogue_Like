@@ -684,6 +684,9 @@ void Party::setLootOTheFloor(Entity& entity){
     item.scale(50.f/64.f, 50.f/64.f);
 
     Loots.push_back(item);
+
+    lootCollider.clean();
+    lootCollider.pushBodies(Loots.begin(), Loots.end());
 }
 
 void Party::drawLootOnTheFloor(){
