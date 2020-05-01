@@ -293,8 +293,8 @@ std::string Room::getStringType() const{
 
         case roomType::Room3NES:
             return "Room3NES";
-
+        
         default:
-            throw std::runtime_error ("Room::getStringType(roomType type) const - Sélectionnez un type valide");
+            throw std::runtime_error ("CommonStart room is not playable");
     }
 }

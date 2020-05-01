@@ -53,9 +53,11 @@ void Inventory::equip(unsigned bagIndex){
 
         case Object::Type::amulet:
             stuffIndex = 5;
+            break;
 
 		default:
-			throw std::runtime_error ("Inventory::equip(" + std::to_string(bagIndex) + ") - Unequipable object"); // penser a fair ele catch
+			throw std::logic_error ("Unequipable object"); // penser a fair ele catch
+            break;
 	}
 
 	swapStuffBag(stuffIndex, bagIndex);
@@ -67,7 +69,7 @@ void Inventory::unequip(unsigned stuffIndex)
 
 	auto found = std::find(bag.begin(), bag.end(), nullptr);
 	if (found == bag.end())
-		throw std::runtime_error ("Inventory::unequip(" + std::to_string(stuffIndex) + ") - Bag is full");
+		throw std::logic_error ("Bag is full");
 
 	*found = stuff[stuffIndex];
 	stuff[stuffIndex] = nullptr;
@@ -85,7 +87,7 @@ void Inventory::addObject(unsigned id, unsigned objectNb){
         else{ // Si on ne trouve pas
             found = std::find(bag.begin(), bag.end(), nullptr); // On cherche les cases vides
             if (found == bag.end()) // Si aucune case n'est vide
-                throw std::runtime_error ("Inventory::addObject(" + std::to_string(id) + ") - Bag is full"); // Erreur a afficher plus tard pour le joueur
+                throw std::logic_error ("Bag is full"); // Erreur a afficher plus tard pour le joueur
 
             *found = new Object {id}; // On créer un nouvel object a la case trouvée
             objectNb -= 1; // On désincrémente car quand on créer un object, on l'init a 1 car sinon il ne peut exister (trivial quand on le sait)

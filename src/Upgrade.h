@@ -6,6 +6,7 @@
 #include <sstream>
 #include <cassert>
 #include <vector>
+#include <stdexcept>
 
 const unsigned resourcesSize = 9;
 const unsigned minIdEquipment = 11;

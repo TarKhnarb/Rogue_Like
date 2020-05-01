@@ -48,7 +48,7 @@ void Chest::loadChest(std::string fileName) {
     unsigned line = 0;
 
     if (!file.is_open())
-        throw std::runtime_error ("Chest::loadChest(std::string) - Failed to load from" + fileName);
+        throw std::runtime_error ("Failed to chest load from" + fileName);
 
     while (line < chestSize){
 
@@ -77,7 +77,7 @@ void Chest::saveChest(std::string fileName) {
     std::ofstream file (fileName);
     if (!file.is_open())
     {
-        throw std::runtime_error ("Chest::saveChest(std::string) - Failed to save in : " + fileName);
+        throw std::runtime_error ("Failed to save chest in " + fileName);
     }
 
     for(unsigned i = 0; i < chestSize; ++i){

@@ -3,7 +3,8 @@
 Object::Object(unsigned id){
 
     std::ifstream file;
-    file.open("data/Objects.csv");
+    std::string filename ("data/Objects.csv");
+    file.open(filename);
 
     if (file.is_open()) {
         std::string csvItem;
@@ -11,7 +12,7 @@ Object::Object(unsigned id){
         unsigned i = 0;
         while (i != id){
             if(file.eof()){
-                std::cout << "The object id you are searching for is too big" << std::endl;
+                throw std::runtime_error ("Failed to load id " + std::to_string(id));
             }
             getline(file,csvItem);
             i++;
@@ -62,7 +63,7 @@ Object::Object(unsigned id){
     }
 
     else{
-        std::cerr <<" something went wrong "<< std::endl;
+        throw std::runtime_error ("Failed to load " + filename);
     }
     file.close();
 }

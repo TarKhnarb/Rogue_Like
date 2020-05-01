@@ -68,7 +68,7 @@ void Npc::makeBlacksmith(Entity *hero, unsigned index){
 
     }
     else
-        throw std::runtime_error ("Npc::makeBlacksmith(Entity&, unsigned index)(" + std::to_string(index) + ") - Cannot make this object, not enought items");
+        throw std::logic_error ("Cannot make this object, not enought items");
 }
 
 void Npc::upgradeBlacksmith(Entity *hero,unsigned index){
@@ -83,7 +83,7 @@ void Npc::upgradeBlacksmith(Entity *hero,unsigned index){
         hero->buyObject(blacksmithInventoryUpgrade[index]->getId(), 1);
     }
     else
-        throw std::runtime_error {"Npc::upgradeBlacksmith(Entity&, unsigned index)(" + std::to_string(index) + ") - Cannot upgrade this object, not enought items"};
+        throw std::logic_error {"Cannot upgrade this object, not enought items"};
 }
 
     // Witch
@@ -111,7 +111,7 @@ void Npc::makePotion(Entity *hero, unsigned index) {
         hero->buyObject(witchInventoryMake[index]->getId(), 1);
     }
     else
-        throw std::runtime_error("Npc::buyPotion(Entity&, unsigned index)(" + std::to_string(index) + ") - Cannot make this potion, not enought items");
+        throw std::logic_error("Cannot make this potion, not enought items");
 }
 
     // Trader
