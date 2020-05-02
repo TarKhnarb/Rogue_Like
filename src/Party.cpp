@@ -593,15 +593,9 @@ void Party::setMonsterRectangleShape(Room& curRoom){
 
     sf::RectangleShape monst({80.f, 80.f});
 
-    for(auto &m : flyMonst){
-        if(m)
-            m = nullptr;
-    }
+    flyMonst.clear();
 
-    for(auto &m : walkMonst){
-        if(m)
-            m = nullptr;
-    }
+    walkMonst.clear();
 
     unsigned sizeF = sFlyingMonsters.size();
     for (unsigned i = 0; i < sizeF; ++i)
@@ -2296,7 +2290,7 @@ void Party::entityCollision(){
         // Loots
     std::vector<std::pair<std::size_t, std::size_t>> lootCollisions;
 
-    if(flyMonst.empty() && walkMonst.empty() && !Aspen.inventoryEmpty()){
+    if(donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty() && !Aspen.inventoryEmpty()){
         if(playerCol.checkCollision(lootCollider, lootCollisions, 0.f)){
             for(auto c : lootCollisions){
                 try{ // pour laisser les objets au sol, il faut mettre tout le bloc dans le if
@@ -2347,7 +2341,7 @@ void Party::entityCollision(){
         inventoryIndex = 0;
 	}
 
-	if (flyMonst.empty() && walkMonst.empty() && !sTrap.empty())
+	if (donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty() && !sTrap.empty())
 	{
 		sf::RectangleShape& trap = sTrap[0];
         sf::RectangleShape sTrapCol ({trap.getSize().x, trap.getSize().y / 2.f});
@@ -2361,7 +2355,7 @@ void Party::entityCollision(){
     }
 	
 	std::vector<Door*> door = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getDoors();
-	if (flyMonst.empty() && walkMonst.empty() && playerCol.checkCollision(doorsCollider, colDirection, 0.f))
+	if (donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty() && playerCol.checkCollision(doorsCollider, colDirection, 0.f))
 	{
 		if (colDirection.y < 0.f && door[0] && door[0]->getOpen()){
 			posDonjon.move(-1, 0);
@@ -2464,9 +2458,9 @@ void Party::projectileCollision(){
 
                         setLootOnTheFloor(*flyMonst[c.second]);
 
-                        delete flyMonst[c.second];
-                        std::vector<Entity*> roomMonsters = curRoom->getMonsters();
+                        std::vector<Entity*> &roomMonsters = curRoom->getMonsters();
                         auto found = std::find(roomMonsters.begin(), roomMonsters.end(), flyMonst[c.second]);
+                        delete flyMonst[c.second];
                         *found = nullptr;
                         roomMonsters.erase(found);
 
@@ -2482,7 +2476,7 @@ void Party::projectileCollision(){
 
                 if (resetCollider) {
                     setMonsterRectangleShape(*curRoom);
-                    if(flyMonst.empty() && walkMonst.empty())
+                    if(donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty())
                         setDoorOpenRectangleShape(*curRoom);
                 }
 
@@ -2502,9 +2496,9 @@ void Party::projectileCollision(){
 
                         setLootOnTheFloor(*walkMonst[c.second]);
 
-                        delete walkMonst[c.second];
                         std::vector<Entity*> roomMonsters = curRoom->getMonsters();
                         auto found = std::find(roomMonsters.begin(), roomMonsters.end(), walkMonst[c.second]);
+                        delete walkMonst[c.second];
                         *found = nullptr;
                         roomMonsters.erase(found);
 
@@ -2520,7 +2514,7 @@ void Party::projectileCollision(){
 
                 if (resetCollider) {
                     setMonsterRectangleShape(*curRoom);
-                    if(flyMonst.empty() && walkMonst.empty())
+                    if(donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty())
                         setDoorOpenRectangleShape(*curRoom);
                 }
 
@@ -2715,7 +2709,7 @@ void Party::render(){
     for(const auto &c : sChest)
         mWindow.draw(c);
 
-    if(flyMonst.empty() && walkMonst.empty())
+    if(donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty())
         for(const auto &t : sTrap)
             mWindow.draw(t);
     
