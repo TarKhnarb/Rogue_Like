@@ -54,8 +54,9 @@ Party::Party():
 
     
 	rocksCollider.setStyle(Style::Separated);
-    monstersCollider.setStyle(Style::Separated);
-    
+    flyingMonstersCollider.setStyle(Style::Separated);
+    walkingMonstersCollider.setStyle(Style::Separated);
+
     setInventoryItem();
 	reloadRoom();
 }
@@ -592,17 +593,28 @@ void Party::setMonsterRectangleShape(Room& curRoom){
 
     sf::RectangleShape monst({80.f, 80.f});
 
-    unsigned size = sMonsters.size();
-    for (unsigned i = 0 ; i < size ; ++i)
-        sMonsters.pop_back();
+    unsigned sizeF = sFlyingMonsters.size();
+    for (unsigned i = 0; i < sizeF; ++i)
+        sFlyingMonsters.pop_back();
+
+    unsigned sizeW = sWalkingMonsters.size();
+    for (unsigned i = 0; i < sizeW; ++i)
+        sWalkingMonsters.pop_back();
+
+    flyingMonstersCollider.clean();
+    walkingMonstersCollider.clean();
 
     for(unsigned i = 0; i < monster.size(); ++i){
         if(monster[i]){
 
             monst.setTexture(getTexture(monster[i]->getName()));
             monst.setPosition(monster[i]->getPosition(true) - 40.f, monster[i]->getPosition(false) - 40.f);
-            sMonsters.push_back(monst);
-            
+
+            if(monster[i]->entityCanFly())
+                sFlyingMonsters.push_back(monst);
+            else
+                sWalkingMonsters.push_back(monst);
+
             if(handleTime){
                 destinationMonster.push_back(sf::Vector2f ());
                 actionTimeMonster.push_back(sf::Time::Zero);
@@ -611,9 +623,10 @@ void Party::setMonsterRectangleShape(Room& curRoom){
             }
         }
     }
-    
-    monstersCollider.clean();
-    monstersCollider.pushBodies(sMonsters.begin(), sMonsters.end());
+
+    flyingMonstersCollider.pushBodies(sFlyingMonsters.begin(), sFlyingMonsters.end());
+    walkingMonstersCollider.pushBodies(sWalkingMonsters.begin(), sWalkingMonsters.end());
+
 }
 
 void Party::setLootOnTheFloor(Entity& entity){
@@ -914,13 +927,13 @@ void Party::updatePesteNoire(Entity &entity, sf::Time deltaTime, unsigned index,
         }
     }
     else{
-        if(deltaY > -40.f && deltaY < 40.f){
+        if(deltaY > -20.f && deltaY < 20.f){
             // on tire
             if(tirs < 5){
-                if(deltaX < 0.f)
+                if(deltaX < 0.f && tirs < 5)
                     setProjectileRectangleShape(entity, 3); // shoot a gauche
                 else
-                    setProjectileRectangleShape(entity, 1); // shoot a droite
+                    setProjectileRectangleShape(entity, 1); // shoot en bas
 
                 ++tirs;
             }
@@ -951,56 +964,53 @@ void Party::updateVIH(Entity &entity, sf::Time deltaTime, unsigned index){}
 void Party::updateCOVID19(Entity &entity, sf::Time deltaTime, unsigned index){}
 
 void Party::updateMonsters(sf::Time deltaTime){
-    std::vector<Entity*>& monster = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters();
-    
-    for(unsigned i = 0; i < sMonsters.size(); ++i){
-        if(monster[i] && monster[i]->getName() == "Grippe-Espagnole"){
 
-            if(inActionMonster[i]){
+    for(unsigned i = 0; i < flyMonst.size(); ++i) {
+        if (flyMonst[i] && flyMonst[i]->getName() == "Grippe-Espagnole") {
+
+            if (inActionMonster[i]) {
                 actionTimeMonster[i] += deltaTime;
-                updateGrippeEspagnole(*monster[i], deltaTime, i);
-                
-                if(actionTimeMonster[i] > sf::seconds(2.f)){
+                updateGrippeEspagnole(*flyMonst[i], deltaTime, i);
+
+                if (actionTimeMonster[i] > sf::seconds(2.f)) {
                     actionTimeMonster[i] = sf::Time::Zero;
                     inActionMonster[i] = false;
                 }
-            }
-            else{
+            } else {
                 pauseTimeMonster[i] += deltaTime;
-                
-                if(pauseTimeMonster[i] > sf::seconds(2.f)){
+
+                if (pauseTimeMonster[i] > sf::seconds(2.f)) {
                     pauseTimeMonster[i] = sf::Time::Zero;
                     inActionMonster[i] = true;
-                    
-                    destinationMonster[i] = sf::Vector2f (posAspen.getPosition(true) + 20.f, posAspen.getPosition(false) + 40.f);
+
+                    destinationMonster[i] = sf::Vector2f(posAspen.getPosition(true) + 20.f,
+                                                         posAspen.getPosition(false) + 40.f);
                 }
             }
-            
-            sMonsters[i].setPosition(monster[i]->getPosition(true) - 40.f, monster[i]->getPosition(false) - 40.f);
-        }
-        else if(monster[i] && monster[i]->getName() == "Peste-Noire"){
+
+            sFlyingMonsters[i].setPosition(flyMonst[i]->getPosition(true) - 40.f, flyMonst[i]->getPosition(false) - 40.f);
+        } else if (flyMonst[i] && flyMonst[i]->getName() == "Peste-Noire") {
             unsigned tirs = 0;
-            if(inActionMonster[i]){
+            if (inActionMonster[i]) {
                 actionTimeMonster[i] += deltaTime;
-                updatePesteNoire(*monster[i], deltaTime, i, tirs);
+                updatePesteNoire(*flyMonst[i], deltaTime, i, tirs);
 
-                if(actionTimeMonster[i] > sf::seconds(1.5f)){
+                if (actionTimeMonster[i] > sf::seconds(1.5f)) {
                     actionTimeMonster[i] = sf::Time::Zero;
                     inActionMonster[i] = false;
                 }
-            }
-            else{
+            } else {
                 pauseTimeMonster[i] += deltaTime;
 
-                if(pauseTimeMonster[i] > sf::seconds(2.f)){
+                if (pauseTimeMonster[i] > sf::seconds(2.f)) {
                     pauseTimeMonster[i] = sf::Time::Zero;
                     inActionMonster[i] = true;
 
-                    destinationMonster[i] = sf::Vector2f (posAspen.getPosition(true), posAspen.getPosition(false));
+                    destinationMonster[i] = sf::Vector2f(posAspen.getPosition(true), posAspen.getPosition(false));
                 }
             }
 
-            sMonsters[i].setPosition(monster[i]->getPosition(true) - 40.f, monster[i]->getPosition(false) - 40.f);
+            sFlyingMonsters[i].setPosition(flyMonst[i]->getPosition(true) - 40.f, flyMonst[i]->getPosition(false) - 40.f);
         }
     }
 }
@@ -1226,6 +1236,14 @@ void Party::setRectangleShapeForCurrentRoom(){
     Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
 
     if (curRoom) {
+        for(auto &m : curRoom->getMonsters()){
+            if(m){
+                if(m->entityCanFly())
+                    flyMonst.push_back(m);
+                else
+                    walkMonst.push_back(m);
+            }
+        }
         setWall();
         setHole(*curRoom);
         if(curRoom->getMonsters().empty())
@@ -2189,7 +2207,8 @@ void Party::reloadRoom(){
 	holesCollider.clean();
 	rocksCollider.clean();
 	doorsCollider.clean();
-	monstersCollider.clean();
+	flyingMonstersCollider.clean();
+	walkingMonstersCollider.clean();
     lootCollider.clean();
 	chestsCollider.clean();
 
@@ -2230,15 +2249,29 @@ void Party::entityCollision(){
 
     std::vector<std::pair<std::size_t, std::size_t>> collisions;
 
-    std::vector<Entity*>& monst = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters();
-    std::vector<sf::Vector2f> monstPos;
-    for (const auto& m : sMonsters)
-        monstPos.push_back(m.getPosition());
+    std::vector<sf::Vector2f> flyMonstPos;
+    std::vector<sf::Vector2f> walkMonstPos;
+
+    for (const auto& m : sFlyingMonsters)
+        flyMonstPos.push_back(m.getPosition());
+
+    for (const auto& m : sWalkingMonsters)
+        walkMonstPos.push_back(m.getPosition());
     
-    if(!monst.empty() && playerCol.checkCollision(monstersCollider, collisions, 0.5f)){
+    if(!flyMonst.empty() && playerCol.checkCollision(flyingMonstersCollider, collisions, 0.5f)){
         for (auto c : collisions) {
-            if (monst[c.second]) {
-                Aspen.removeLife((int) (monst[c.second]->getAttack() * (1.f - (Aspen.getDefence() - 100.f) / 100.f)));
+            if (flyMonst[c.second]) {
+                Aspen.removeLife((int) (flyMonst[c.second]->getAttack() * (1.f - (Aspen.getDefence() - 100.f) / 100.f)));
+            }
+        }
+        if(Aspen.getLife() < 0)
+            throw std::range_error ("Game Over You died");
+    }
+
+    if(!walkMonst.empty() && playerCol.checkCollision(walkingMonstersCollider, collisions, 0.5f)){
+        for (auto c : collisions) {
+            if (walkMonst[c.second]) {
+                Aspen.removeLife((int) (walkMonst[c.second]->getAttack() * (1.f - (Aspen.getDefence() - 100.f) / 100.f)));
             }
         }
         if(Aspen.getLife() < 0)
@@ -2247,7 +2280,7 @@ void Party::entityCollision(){
 
     std::vector<std::pair<std::size_t, std::size_t>> lootCollisions;
 
-    if(monst.empty() && !Aspen.inventoryEmpty()){
+    if(flyMonst.empty() && walkMonst.empty() && !Aspen.inventoryEmpty()){
         if(playerCol.checkCollision(lootCollider, lootCollisions, 0.f)){
             for(auto c : lootCollisions){
                 try{ // pour laisser les objets au sol, il faut mettre tout le bloc dans le if
@@ -2269,15 +2302,19 @@ void Party::entityCollision(){
         }
     }
     
-    monstersCollider.checkCollision(holesCollider, 0.f);
-    monstersCollider.checkCollision(chestsCollider, 0.f);
-    monstersCollider.checkCollision(wallsCollider, 0.f);
-    monstersCollider.checkCollision(rocksCollider, 0.f);
+    walkingMonstersCollider.checkCollision(holesCollider, 0.f);
+    walkingMonstersCollider.checkCollision(wallsCollider, 0.f);
+    walkingMonstersCollider.checkCollision(rocksCollider, 0.f);
+
+    flyingMonstersCollider.checkCollision(wallsCollider, 0.f);
     
-    for (unsigned i = 0; i < sMonsters.size(); ++i){
-        monst[i]->moveEntity(sMonsters[i].getPosition().x - monstPos[i].x, sMonsters[i].getPosition().y - monstPos[i].y);
+    for (unsigned i = 0; i < sFlyingMonsters.size(); ++i){
+        flyMonst[i]->moveEntity(sFlyingMonsters[i].getPosition().x - flyMonstPos[i].x, sFlyingMonsters[i].getPosition().y - flyMonstPos[i].y);
     }
-    
+    for (unsigned i = 0; i < sWalkingMonsters.size(); ++i){
+        walkMonst[i]->moveEntity(sWalkingMonsters[i].getPosition().x - walkMonstPos[i].x, sWalkingMonsters[i].getPosition().y - walkMonstPos[i].y);
+    }
+
     if (!Aspen.entityCanFly()){
 		playerCol.checkCollision(holesCollider, colDirection, 0.f);
         playerCol.checkCollision(rocksCollider, colDirection, 0.f);
@@ -2398,7 +2435,7 @@ void Party::projectileCollision(){
             std::vector<std::pair<std::size_t, std::size_t>> projCollisions;
             resetCollider = false;
 
-            if (projCol.checkCollision(monstersCollider, projCollisions, 0.f)) {
+            if (projCol.checkCollision(flyingMonstersCollider, projCollisions, 0.f) || projCol.checkCollision(walkingMonstersCollider, projCollisions, 0.f)) {
 
                 std::vector<Entity*>& monster = curRoom->getMonsters();
 
@@ -2606,7 +2643,10 @@ void Party::render(){
 
     drawLootOnTheFloor();
 
-   for(const auto &m : sMonsters)
+   for(const auto &m : sWalkingMonsters)
+        mWindow.draw(m);
+
+   for(const auto &m : sFlyingMonsters)
         mWindow.draw(m);
     
     mWindow.draw(aspenAnimated);

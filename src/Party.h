@@ -191,11 +191,15 @@ private:
     sf::Time elapsedTime;
     sf::Time aspenAttackSpeed;
 
+    std::vector<Entity*> flyMonst;
+    std::vector<Entity*> walkMonst;
+
     // Différents sprites/rectangleShape pouvant être sur la map
     sf::Sprite sRoom;
     std::vector<sf::RectangleShape> Walls;
     std::vector<sf::RectangleShape> Holes;
-    std::vector<sf::RectangleShape> sMonsters;
+    std::vector<sf::RectangleShape> sFlyingMonsters;
+    std::vector<sf::RectangleShape> sWalkingMonsters;
     std::vector<unsigned> sLoot; // Id des objets
     std::vector<sf::Sprite> Loots; // Image des objets
     std::vector<sf::RectangleShape> hitBoxLoots; // retangle shape pour les collision avec le joueur
@@ -214,7 +218,8 @@ private:
 
     Collider wallsCollider;
     Collider holesCollider;
-    Collider monstersCollider;
+    Collider flyingMonstersCollider;
+    Collider walkingMonstersCollider;
     Collider lootCollider;
     Collider rocksCollider;
     Collider doorsCollider;
