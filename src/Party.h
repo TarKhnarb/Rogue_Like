@@ -7,6 +7,7 @@
 #include <sstream>
 #include <string>
 #include <map>
+#include <algorithm>
 #include <utility>
 #include <cmath>
 #include <cstdlib>

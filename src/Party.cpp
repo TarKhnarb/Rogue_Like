@@ -587,11 +587,21 @@ void Party::setRockRectangleShape(Room& curRoom){
 }
 
 void Party::setMonsterRectangleShape(Room& curRoom){
-    std::vector<Entity*> monster = curRoom.getMonsters();
+    std::vector<Entity*>& monster = curRoom.getMonsters();
     
     bool handleTime = actionTimeMonster.empty();
 
     sf::RectangleShape monst({80.f, 80.f});
+
+    for(auto &m : flyMonst){
+        if(m)
+            m = nullptr;
+    }
+
+    for(auto &m : walkMonst){
+        if(m)
+            m = nullptr;
+    }
 
     unsigned sizeF = sFlyingMonsters.size();
     for (unsigned i = 0; i < sizeF; ++i)
@@ -610,10 +620,15 @@ void Party::setMonsterRectangleShape(Room& curRoom){
             monst.setTexture(getTexture(monster[i]->getName()));
             monst.setPosition(monster[i]->getPosition(true) - 40.f, monster[i]->getPosition(false) - 40.f);
 
-            if(monster[i]->entityCanFly())
+            if(monster[i]->entityCanFly()){
                 sFlyingMonsters.push_back(monst);
-            else
+                flyMonst.push_back(monster[i]);
+            }
+            else{
                 sWalkingMonsters.push_back(monst);
+                walkMonst.push_back(monster[i]);
+            }
+
 
             if(handleTime){
                 destinationMonster.push_back(sf::Vector2f ());
@@ -986,17 +1001,17 @@ void Party::updateMonsters(sf::Time deltaTime){
                     pauseTimeMonster[i] = sf::Time::Zero;
                     inActionMonster[i] = true;
 
-                    destinationMonster[i] = sf::Vector2f(posAspen.getPosition(true) + 20.f,
-                                                         posAspen.getPosition(false) + 40.f);
+                    destinationMonster[i] = sf::Vector2f(posAspen.getPosition(true) + 20.f, posAspen.getPosition(false) + 40.f);
                 }
             }
 
             sFlyingMonsters[i].setPosition(flyMonst[i]->getPosition(true) - 40.f, flyMonst[i]->getPosition(false) - 40.f);
-        } else if (flyMonst[i] && flyMonst[i]->getName() == "Peste-Noire") {
+        }
+        else if (flyMonst[i] && flyMonst[i]->getName() == "Peste-Noire") {
             unsigned tirs = 0;
             if (inActionMonster[i]) {
                 actionTimeMonster[i] += deltaTime;
-                updatePesteNoire(*monster[i], deltaTime, i, tirs);
+                updatePesteNoire(*flyMonst[i], deltaTime, i, tirs);
 
                 if(actionTimeMonster[i] > sf::seconds(1.5f)){
                     actionTimeMonster[i] = sf::Time::Zero;
@@ -1240,14 +1255,6 @@ void Party::setRectangleShapeForCurrentRoom(){
     Room* curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
 
     if (curRoom) {
-        for(auto &m : curRoom->getMonsters()){
-            if(m){
-                if(m->entityCanFly())
-                    flyMonst.push_back(m);
-                else
-                    walkMonst.push_back(m);
-            }
-        }
         setWall();
         setHole(*curRoom);
         if(curRoom->getMonsters().empty())
@@ -2248,20 +2255,18 @@ void Party::entityCollision(){
 	sf::Vector2f posBegin = sPlayerCol.getPosition();
     
 	Collider playerCol (sPlayerCol);
-	
+
+	    // Walls
     playerCol.checkCollision(wallsCollider, colDirection, 0.f);
 
+        // Monsters
     std::vector<std::pair<std::size_t, std::size_t>> collisions;
 
     std::vector<sf::Vector2f> flyMonstPos;
-    std::vector<sf::Vector2f> walkMonstPos;
 
     for (const auto& m : sFlyingMonsters)
         flyMonstPos.push_back(m.getPosition());
 
-    for (const auto& m : sWalkingMonsters)
-        walkMonstPos.push_back(m.getPosition());
-    
     if(!flyMonst.empty() && playerCol.checkCollision(flyingMonstersCollider, collisions, 0.5f)){
         for (auto c : collisions) {
             if (flyMonst[c.second]) {
@@ -2271,6 +2276,12 @@ void Party::entityCollision(){
         if(Aspen.getLife() < 0)
             throw std::range_error ("Game Over You died");
     }
+
+
+    std::vector<sf::Vector2f> walkMonstPos;
+
+    for (const auto& m : sWalkingMonsters)
+        walkMonstPos.push_back(m.getPosition());
 
     if(!walkMonst.empty() && playerCol.checkCollision(walkingMonstersCollider, collisions, 0.5f)){
         for (auto c : collisions) {
@@ -2282,6 +2293,7 @@ void Party::entityCollision(){
             throw std::range_error ("Game Over You died");
     }
 
+        // Loots
     std::vector<std::pair<std::size_t, std::size_t>> lootCollisions;
 
     if(flyMonst.empty() && walkMonst.empty() && !Aspen.inventoryEmpty()){
@@ -2305,16 +2317,20 @@ void Party::entityCollision(){
             }
         }
     }
-    
-    walkingMonstersCollider.checkCollision(holesCollider, 0.f);
-    walkingMonstersCollider.checkCollision(wallsCollider, 0.f);
-    walkingMonstersCollider.checkCollision(rocksCollider, 0.f);
 
+
+        // Collision for flying Monsters
     flyingMonstersCollider.checkCollision(wallsCollider, 0.f);
-    
+        // Monsters fly
     for (unsigned i = 0; i < sFlyingMonsters.size(); ++i){
         flyMonst[i]->moveEntity(sFlyingMonsters[i].getPosition().x - flyMonstPos[i].x, sFlyingMonsters[i].getPosition().y - flyMonstPos[i].y);
     }
+
+        // Collision for walking Monsters
+    walkingMonstersCollider.checkCollision(holesCollider, 0.f);
+    walkingMonstersCollider.checkCollision(wallsCollider, 0.f);
+    walkingMonstersCollider.checkCollision(rocksCollider, 0.f);
+        // Monsters walk
     for (unsigned i = 0; i < sWalkingMonsters.size(); ++i){
         walkMonst[i]->moveEntity(sWalkingMonsters[i].getPosition().x - walkMonstPos[i].x, sWalkingMonsters[i].getPosition().y - walkMonstPos[i].y);
     }
@@ -2331,7 +2347,7 @@ void Party::entityCollision(){
         inventoryIndex = 0;
 	}
 
-	if (donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty() && !sTrap.empty())
+	if (flyMonst.empty() && walkMonst.empty() && !sTrap.empty())
 	{
 		sf::RectangleShape& trap = sTrap[0];
         sf::RectangleShape sTrapCol ({trap.getSize().x, trap.getSize().y / 2.f});
@@ -2345,7 +2361,7 @@ void Party::entityCollision(){
     }
 	
 	std::vector<Door*> door = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getDoors();
-	if (donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty() && playerCol.checkCollision(doorsCollider, colDirection, 0.f))
+	if (flyMonst.empty() && walkMonst.empty() && playerCol.checkCollision(doorsCollider, colDirection, 0.f))
 	{
 		if (colDirection.y < 0.f && door[0] && door[0]->getOpen()){
 			posDonjon.move(-1, 0);
@@ -2439,36 +2455,77 @@ void Party::projectileCollision(){
             std::vector<std::pair<std::size_t, std::size_t>> projCollisions;
             resetCollider = false;
 
-            if (projCol.checkCollision(flyingMonstersCollider, projCollisions, 0.f) || projCol.checkCollision(walkingMonstersCollider, projCollisions, 0.f)) {
-
-                std::vector<Entity*>& monster = curRoom->getMonsters();
+            if(projCol.checkCollision(flyingMonstersCollider, projCollisions, 0.f)){
 
                 for (auto &c : projCollisions){
-                    removeLife(p->first, monster[c.second]);
-                    
-                    if (monster[c.second]->getLife() <= 0) {
+                    removeLife(p->first, flyMonst[c.second]);
 
-                        setLootOnTheFloor(*monster[c.second]);
+                    if (flyMonst[c.second]->getLife() <= 0) {
 
-                        delete monster[c.second];
-                        monster[c.second] = nullptr;
-                        monster.erase(monster.begin() + c.second);
+                        setLootOnTheFloor(*flyMonst[c.second]);
+
+                        delete flyMonst[c.second];
+                        std::vector<Entity*> roomMonsters = curRoom->getMonsters();
+                        auto found = std::find(roomMonsters.begin(), roomMonsters.end(), flyMonst[c.second]);
+                        *found = nullptr;
+                        roomMonsters.erase(found);
+
+                        flyMonst.erase(flyMonst.begin() + c.second);
                         destinationMonster.erase(destinationMonster.begin() + c.second);
                         actionTimeMonster.erase(actionTimeMonster.begin() + c.second);
                         pauseTimeMonster.erase(pauseTimeMonster.begin() + c.second);
                         inActionMonster.erase(inActionMonster.begin() + c.second);
-                        
+
                         resetCollider = true;
                     }
                 }
 
                 if (resetCollider) {
                     setMonsterRectangleShape(*curRoom);
-                    if(curRoom->getMonsters().empty())
+                    if(flyMonst.empty() && walkMonst.empty())
                         setDoorOpenRectangleShape(*curRoom);
                 }
-                
+
                 p = sProjectiles.erase(p);
+                projCollisions.clear();
+                continue;
+            }
+
+            resetCollider = false;
+
+            if (projCol.checkCollision(walkingMonstersCollider, projCollisions, 0.f)) {
+
+                for (auto &c : projCollisions){
+                    removeLife(p->first, walkMonst[c.second]);
+
+                    if (walkMonst[c.second]->getLife() <= 0) {
+
+                        setLootOnTheFloor(*walkMonst[c.second]);
+
+                        delete walkMonst[c.second];
+                        std::vector<Entity*> roomMonsters = curRoom->getMonsters();
+                        auto found = std::find(roomMonsters.begin(), roomMonsters.end(), walkMonst[c.second]);
+                        *found = nullptr;
+                        roomMonsters.erase(found);
+
+                        walkMonst.erase(walkMonst.begin() + c.second);
+                        destinationMonster.erase(destinationMonster.begin() + flyMonst.size() + c.second);
+                        actionTimeMonster.erase(actionTimeMonster.begin() + flyMonst.size() + c.second);
+                        pauseTimeMonster.erase(pauseTimeMonster.begin() + flyMonst.size() + c.second);
+                        inActionMonster.erase(inActionMonster.begin() + flyMonst.size() + c.second);
+
+                        resetCollider = true;
+                    }
+                }
+
+                if (resetCollider) {
+                    setMonsterRectangleShape(*curRoom);
+                    if(flyMonst.empty() && walkMonst.empty())
+                        setDoorOpenRectangleShape(*curRoom);
+                }
+
+                p = sProjectiles.erase(p);
+                projCollisions.clear();
                 continue;
             }
 
@@ -2658,7 +2715,7 @@ void Party::render(){
     for(const auto &c : sChest)
         mWindow.draw(c);
 
-    if(donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty())
+    if(flyMonst.empty() && walkMonst.empty())
         for(const auto &t : sTrap)
             mWindow.draw(t);
     
