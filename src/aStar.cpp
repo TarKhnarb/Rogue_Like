@@ -55,7 +55,7 @@ void tracePath(cell cellDetails[][COL], Pair dest){
     std::pair<int,int> p = Path.top();
     result.a = p.first;
     result.b = p.second;
-        
+
     return;
 }
 
@@ -382,9 +382,9 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
         std::cerr << "Failed to find the destination cell" << std::endl;
         result.a = src.first;
         result.b = src.second;
-        
+
         return;
     }
-    
+
     tracePath(cellDetails, dest);
 }

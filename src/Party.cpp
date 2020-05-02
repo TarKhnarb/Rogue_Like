@@ -967,7 +967,7 @@ void Party::updateTenia(Entity &entity, sf::Time deltaTime){
     float y = pathX() - (float)src.first;
 
     sf::Vector2f movement (x, y);
-    movement *= entity.getSpeed() * 5.f * deltaTime.asSeconds();
+    movement *= entity.getSpeed() * deltaTime.asSeconds();
 
     entity.moveEntity(movement.x, movement.y);
 }
@@ -1038,9 +1038,12 @@ void Party::updateMonsters(sf::Time deltaTime){
     for(unsigned i = 0; i < walkMonst.size(); ++i) {
         if (walkMonst[i] && walkMonst[i]->getName() == "Tenia") {
             updateTenia(*walkMonst[i], deltaTime);
-        }
 
-        sWalkingMonsters[i].setPosition(walkMonst[i]->getPosition(true) - 40.f, walkMonst[i]->getPosition(false) - 40.f);
+            sWalkingMonsters[i].setPosition(walkMonst[i]->getPosition(true) - 40.f, walkMonst[i]->getPosition(false) - 40.f);
+        }
+        //else if(){
+
+        //}
     }
 
 }
