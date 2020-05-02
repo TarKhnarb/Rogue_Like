@@ -915,7 +915,7 @@ void Party::updateGrippeEspagnole(Entity &entity, sf::Time deltaTime, unsigned i
     entity.moveEntity(realDeltaX, realDeltaY);
 }
 
-void Party::updatePesteNoire(Entity &entity, sf::Time deltaTime, unsigned index, unsigned &tirs){
+void Party::updatePesteNoire(Entity &entity, sf::Time deltaTime, unsigned index){
     float deltaX = destinationMonster[index].x - entity.getPosition(true);
     float deltaY = destinationMonster[index].y - entity.getPosition(false);
 
@@ -926,17 +926,12 @@ void Party::updatePesteNoire(Entity &entity, sf::Time deltaTime, unsigned index,
 
         if(deltaX > -20.f && deltaX < 20.f){
             // on tire
-            if(tirs < 5){
-                if(deltaY < 0.f)
-                    setProjectileRectangleShape(entity, 0); // shoot en haut
-                else
-                    setProjectileRectangleShape(entity, 2); //shoot en bas
-
-                ++tirs;
-            }
+            if(deltaY < 0.f)
+                setProjectileRectangleShape(entity, 0); // shoot en haut
+            else
+                setProjectileRectangleShape(entity, 2); //shoot en bas
         }
         else{
-            tirs = 0;
             //on se déplace suivant le signe de deltaX
             if(deltaX < 0.f)
                 entity.moveEntity(-realDeltaX, 0);
@@ -947,17 +942,12 @@ void Party::updatePesteNoire(Entity &entity, sf::Time deltaTime, unsigned index,
     else{
         if(deltaY > -40.f && deltaY < 40.f){
             // on tire
-            if(tirs < 5){
-                if(deltaX < 0.f)
-                    setProjectileRectangleShape(entity, 3); // shoot a gauche
-                else
-                    setProjectileRectangleShape(entity, 1); // shoot a droite
-
-                ++tirs;
-            }
+            if(deltaX < 0.f)
+                setProjectileRectangleShape(entity, 3); // shoot a gauche
+            else
+                setProjectileRectangleShape(entity, 1); // shoot a droite
         }
         else{
-            tirs = 0;
             //on se déplace suivant le signe de deltaY
             if(deltaY < 0.f)
                 entity.moveEntity(0, -realDeltaY);
@@ -968,14 +958,17 @@ void Party::updatePesteNoire(Entity &entity, sf::Time deltaTime, unsigned index,
 }
 
 void Party::updateTenia(Entity &entity, sf::Time deltaTime){
-
+    std::cout << "update" << std::endl;
     Pair src = std::make_pair((int)((entity.getPosition(false) - 160.f)/20.f), (int)((entity.getPosition(true) - 240.f)/20.f));
+    std::cout << src.first << " " << src.second << std::endl;
     Pair dest = std::make_pair((int)((Aspen.getPosition(false) - 120.f)/20.f), (int)((Aspen.getPosition(true) - 220.f)/20.f));
+    std::cout << dest.first << " " << dest.second << std::endl;
 
     aStarSearch(grid, src, dest);
 
-    float x = pathX() - src.second;
-    float y = pathY() - src.first;
+    float x = pathX() - src.first;
+    float y = pathY() - src.second;
+    std::cout << x << " " << y << std::endl;
 
     sf::Vector2f movement (x, y);
     movement *= entity.getSpeed() * deltaTime.asSeconds();
@@ -1022,10 +1015,9 @@ void Party::updateMonsters(sf::Time deltaTime){
             sFlyingMonsters[i].setPosition(flyMonst[i]->getPosition(true) - 40.f, flyMonst[i]->getPosition(false) - 40.f);
         }
         else if (flyMonst[i] && flyMonst[i]->getName() == "Peste-Noire") {
-            unsigned tirs = 0;
             if (inActionMonster[i]) {
                 actionTimeMonster[i] += deltaTime;
-                updatePesteNoire(*flyMonst[i], deltaTime, i, tirs);
+                updatePesteNoire(*flyMonst[i], deltaTime, i);
 
                 if(actionTimeMonster[i] > sf::seconds(1.5f)){
                     actionTimeMonster[i] = sf::Time::Zero;
@@ -1050,12 +1042,9 @@ void Party::updateMonsters(sf::Time deltaTime){
     for(unsigned i = 0; i < walkMonst.size(); ++i) {
         if (walkMonst[i] && walkMonst[i]->getName() == "Tenia") {
             updateTenia(*walkMonst[i], deltaTime);
-
-            sWalkingMonsters[i].setPosition(walkMonst[i]->getPosition(true) - 40.f, walkMonst[i]->getPosition(false) - 40.f);
         }
-        //else if(){
 
-        //}
+        sWalkingMonsters[i].setPosition(walkMonst[i]->getPosition(true) - 40.f, walkMonst[i]->getPosition(false) - 40.f);
     }
 
 }

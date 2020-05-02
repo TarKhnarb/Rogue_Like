@@ -6,7 +6,7 @@ on va beaucoup trop lentement ^^ maintenant la grippe espagnole c'est mortel, ç
 
 on peut ouvrir les coffres avant d'avoir tué tous les monstres
 
-quand on enlève un item, on repasse full vie
+quand on enlève ou équipe un item, on repasse full vie
 
 la peste noir vise (et se place) trop haut quand on est à droite ou à gauche (elle tire juste au-dessus de nous mais ne nous touche pas)
 elle vise également trop à notre gauche quand on est au-dessus
@@ -15,3 +15,5 @@ elle peut également ne peut pas tirer alors qu'on est à son exacte gauche ou d
 Dans les menus déroulants dans l'inventaire, on peut descendre en dessous du dernier choix (pas dans le stuff)
 
 Quand on tire en descendant (pas les autres directions), on se blesse avec notre projectile !
+
+Quand on entre dans l'inventaire et qu'on revient en jeu, on devient insensible aux dégâts de projectiles pendant quelques secondes (2 - 3), sauf si on se dirige seulement dans la direction du projectile, auquel cas c'est infini

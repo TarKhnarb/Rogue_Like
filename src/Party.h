@@ -89,7 +89,7 @@ private:
 
     void setAStar(Room&);
     void updateGrippeEspagnole(Entity&, sf::Time, unsigned);
-    void updatePesteNoire(Entity&, sf::Time, unsigned, unsigned&);
+    void updatePesteNoire(Entity&, sf::Time, unsigned);
     void updateTenia(Entity&, sf::Time);
     void updateListeria(Entity&, sf::Time, unsigned);
     void updateBlob(Entity&, sf::Time, unsigned);
