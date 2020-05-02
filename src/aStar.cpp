@@ -253,7 +253,7 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
     if (!foundDest)
         std::cerr << "Failed to find the destination cell" << std::endl;
     
-    tracePath(cellDetails, dest);
+    //tracePath(cellDetails, dest);
     
     return;
 }

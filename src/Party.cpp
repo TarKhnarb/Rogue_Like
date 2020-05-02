@@ -89,10 +89,10 @@ void Party::run(){
 
     while (mWindow.isOpen()){
         timeSinceLastUpdate += clock.restart();
-        
+
         while (timeSinceLastUpdate > TimePerFrame){
             timeSinceLastUpdate -= TimePerFrame;
-            
+
             if(!inventoryOpen && !exceptionState){ // game state
                 processEvents();
                 update(TimePerFrame);
@@ -117,18 +117,12 @@ void Party::run(){
                     exceptionText = std::string(err.what());
                     exceptionState = true;
                 }
-            }
-            else if (!moveObjectOpen){ // srolling menu state
-                try{
-                    updateScrollingMenu();
-                    
-                    if (moveObjectOpen) // late update
-                        updateMoveObject();
-                }
-                catch (std::logic_error& err){
-                    exceptionText = std::string(err.what());
-                    exceptionState = true;
-                }
+			}
+			else if (!moveObjectOpen){ // srolling menu state
+                updateScrollingMenu();
+                
+                if (moveObjectOpen) // late update
+                    updateMoveObject();
             }
             else{ // move object state
                 try{
@@ -141,7 +135,7 @@ void Party::run(){
             }
             updateLife();
         }
-        
+
         render();
     }
 }
@@ -605,15 +599,9 @@ void Party::setMonsterRectangleShape(Room& curRoom){
 
     sf::RectangleShape monst({80.f, 80.f});
 
-    for(auto &m : flyMonst){
-        if(m)
-            m = nullptr;
-    }
+    flyMonst.clear();
 
-    for(auto &m : walkMonst){
-        if(m)
-            m = nullptr;
-    }
+    walkMonst.clear();
 
     unsigned sizeF = sFlyingMonsters.size();
     for (unsigned i = 0; i < sizeF; ++i)
@@ -625,9 +613,6 @@ void Party::setMonsterRectangleShape(Room& curRoom){
 
     flyingMonstersCollider.clean();
     walkingMonstersCollider.clean();
-    
-    flyMonst.resize(0);
-    walkMonst.resize(0);
 
     for(unsigned i = 0; i < monster.size(); ++i){
         if(monster[i]){
@@ -820,7 +805,7 @@ void Party::setAStar(Room& room){
                 // holes are 60 * 60 px
                 for (unsigned i = 0; i <= 2; ++i){
                     for (unsigned j = 0; j <= 2; ++j){
-                        grid[y +j][x + i] = 1;
+                        grid[y + j][x + i] = 1;
                     }
                 }
             }
@@ -834,7 +819,7 @@ void Party::setAStar(Room& room){
                 // holes are 60 * 60 px
                 for (unsigned i = 0; i <= 2; ++i){
                     for (unsigned j = 0; j <= 2; ++j){
-                        grid[y +j][x + i] = 1;
+                        grid[y + j][x + i] = 1;
                     }
                 }
             }
@@ -848,7 +833,7 @@ void Party::setAStar(Room& room){
                 // holes are 60 * 60 px
                 for (unsigned i = 0; i <= 2; ++i){
                     for (unsigned j = 0; j <= 2; ++j){
-                        grid[y +j][x + i] = 1;
+                        grid[y + j][x + i] = 1;
                     }
                 }
             }
@@ -862,7 +847,7 @@ void Party::setAStar(Room& room){
                 // holes are 60 * 60 px
                 for (unsigned i = 0; i <= 2; ++i){
                     for (unsigned j = 0; j <= 2; ++j){
-                        grid[y +j][x + i] = 1;
+                        grid[y + j][x + i] = 1;
                     }
                 }
             }
@@ -876,7 +861,7 @@ void Party::setAStar(Room& room){
                 // holes are 60 * 60 px
                 for (unsigned i = 0; i <= 2; ++i){
                     for (unsigned j = 0; j <= 2; ++j){
-                        grid[y +j][x + i] = 1;
+                        grid[y + j][x + i] = 1;
                     }
                 }
             }
@@ -890,7 +875,7 @@ void Party::setAStar(Room& room){
                 // holes are 60 * 60 px
                 for (unsigned i = 0; i <= 2; ++i){
                     for (unsigned j = 0; j <= 2; ++j){
-                        grid[y +j][x + i] = 1;
+                        grid[y + j][x + i] = 1;
                     }
                 }
             }
@@ -904,7 +889,7 @@ void Party::setAStar(Room& room){
                 // holes are 60 * 60 px
                 for (unsigned i = 0; i <= 2; ++i){
                     for (unsigned j = 0; j <= 2; ++j){
-                        grid[y +j][x + i] = 1;
+                        grid[y + j][x + i] = 1;
                     }
                 }
             }
@@ -982,7 +967,21 @@ void Party::updatePesteNoire(Entity &entity, sf::Time deltaTime, unsigned index,
     }
 }
 
-void Party::updateTenia(Entity &entity, sf::Time deltaTime, unsigned index){}
+void Party::updateTenia(Entity &entity, sf::Time deltaTime, unsigned index){
+
+    Pair src = std::make_pair((int)((entity.getPosition(true) - 240.f)/20.f) , (int)((entity.getPosition(false) - 160.f)/20.f));
+    Pair dest = std::make_pair((int)((Aspen.getPosition(true) - 240.f)/20.f) , (int)((Aspen.getPosition(false) - 160.f)/20.f));
+
+    aStarSearch(grid, src, dest);
+
+    float x = pathX() - src.first;
+    float y = pathY() - src.second;
+
+    sf::Vector2f movement (x, y);
+    movement *= entity.getSpeed() * deltaTime.asSeconds();
+
+    entity.moveEntity(movement.x, movement.y);
+}
 
 void Party::updateListeria(Entity &entity, sf::Time deltaTime, unsigned index){}
 
@@ -1047,6 +1046,35 @@ void Party::updateMonsters(sf::Time deltaTime){
             sFlyingMonsters[i].setPosition(flyMonst[i]->getPosition(true) - 40.f, flyMonst[i]->getPosition(false) - 40.f);
         }
     }
+
+    for(unsigned i = 0; i < walkMonst.size(); ++i) {
+        if (walkMonst[i] && walkMonst[i]->getName() == "Tenia") {
+            if (inActionMonster[i + flyMonst.size()]) {
+                actionTimeMonster[i + flyMonst.size()] += deltaTime;
+                updateTenia(*walkMonst[i], deltaTime, i);
+
+                if (actionTimeMonster[i + flyMonst.size()] > sf::seconds(0.5f)) {
+                    actionTimeMonster[i + flyMonst.size()] = sf::Time::Zero;
+                    inActionMonster[i + flyMonst.size()] = false;
+                }
+            } else {
+                pauseTimeMonster[i + flyMonst.size()] += deltaTime;
+
+                if (pauseTimeMonster[i + flyMonst.size()] > sf::seconds(0.2f)) {
+                    pauseTimeMonster[i + flyMonst.size()] = sf::Time::Zero;
+                    inActionMonster[i + flyMonst.size()] = true;
+
+
+                }
+            }
+
+            sWalkingMonsters[i].setPosition(walkMonst[i]->getPosition(true) - 40.f, walkMonst[i]->getPosition(false) - 40.f);
+        }
+        //else if(){
+
+        //}
+    }
+
 }
 
 void Party::setChestRectangleShape(Room& curRoom){  //sf::chest le mettre en vector
@@ -2311,7 +2339,7 @@ void Party::entityCollision(){
         // Loots
     std::vector<std::pair<std::size_t, std::size_t>> lootCollisions;
 
-    if(flyMonst.empty() && walkMonst.empty() && !Aspen.inventoryEmpty()){
+    if(donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty() && !Aspen.inventoryEmpty()){
         if(playerCol.checkCollision(lootCollider, lootCollisions, 0.f)){
             for(auto c : lootCollisions){
                 try{ // pour laisser les objets au sol, il faut mettre tout le bloc dans le if
@@ -2362,7 +2390,7 @@ void Party::entityCollision(){
         inventoryIndex = 0;
 	}
 
-	if (flyMonst.empty() && walkMonst.empty() && !sTrap.empty())
+	if (donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty() && !sTrap.empty())
 	{
 		sf::RectangleShape& trap = sTrap[0];
         sf::RectangleShape sTrapCol ({trap.getSize().x, trap.getSize().y / 2.f});
@@ -2376,7 +2404,7 @@ void Party::entityCollision(){
     }
 	
 	std::vector<Door*> door = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getDoors();
-	if (flyMonst.empty() && walkMonst.empty() && playerCol.checkCollision(doorsCollider, colDirection, 0.f))
+	if (donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty() && playerCol.checkCollision(doorsCollider, colDirection, 0.f))
 	{
 		if (colDirection.y < 0.f && door[0] && door[0]->getOpen()){
 			posDonjon.move(-1, 0);
@@ -2478,7 +2506,7 @@ void Party::projectileCollision(){
                     if (flyMonst[c.second]->getLife() <= 0) {
 
                         setLootOnTheFloor(*flyMonst[c.second]);
-                        
+
                         std::vector<Entity*>& roomMonsters = curRoom->getMonsters();
                         auto found = std::find(roomMonsters.begin(), roomMonsters.end(), flyMonst[c.second]);
                         delete flyMonst[c.second];
@@ -2497,7 +2525,7 @@ void Party::projectileCollision(){
 
                 if (resetCollider) {
                     setMonsterRectangleShape(*curRoom);
-                    if(flyMonst.empty() && walkMonst.empty())
+                    if(donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty())
                         setDoorOpenRectangleShape(*curRoom);
                 }
 
@@ -2505,7 +2533,7 @@ void Party::projectileCollision(){
                 projCollisions.clear();
                 continue;
             }
-            
+
             projCollisions.resize(0);
             resetCollider = false;
 
@@ -2536,7 +2564,7 @@ void Party::projectileCollision(){
 
                 if (resetCollider) {
                     setMonsterRectangleShape(*curRoom);
-                    if(flyMonst.empty() && walkMonst.empty())
+                    if(donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty())
                         setDoorOpenRectangleShape(*curRoom);
                 }
 
@@ -2666,7 +2694,7 @@ void Party::updateForShooting(sf::Time deltaTime){
 void Party::update(sf::Time deltaTime){
 
 	sf::Vector2f movement(0.f, 0.f);
-	PlayerSpeed = Aspen.getSpeed() + 100.f;
+	PlayerSpeed = Aspen.getSpeed() + 130.f;
 
 	if(mIsMovingUp){
 		currentAnimation = &walkingAspenUp;
@@ -2731,7 +2759,7 @@ void Party::render(){
     for(const auto &c : sChest)
         mWindow.draw(c);
 
-    if(flyMonst.empty() && walkMonst.empty())
+    if(donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty())
         for(const auto &t : sTrap)
             mWindow.draw(t);
     
