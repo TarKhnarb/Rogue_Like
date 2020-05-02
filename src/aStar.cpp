@@ -245,6 +245,133 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
                 }
             }
         }
+        
+        //----------- 5th Successor (North-East) ------------ 
+  
+        if (isValid(i-1, j+1) == true) 
+        { 
+            if (isDestination(i-1, j+1, dest) == true) 
+            { 
+                cellDetails[i-1][j+1].parent_i = i; 
+                cellDetails[i-1][j+1].parent_j = j; 
+                tracePath (cellDetails, dest); 
+                foundDest = true; 
+                return; 
+            } 
+  
+            else if (closedList[i-1][j+1] == false && isUnBlocked(grid, i-1, j+1) == true) 
+            { 
+                gNew = cellDetails[i][j].g + 1.414; 
+                hNew = calculateHValue(i-1, j+1, dest); 
+                fNew = gNew + hNew; 
+  
+                if (cellDetails[i-1][j+1].f == FLT_MAX || cellDetails[i-1][j+1].f > fNew) 
+                { 
+                    openList.insert( std::make_pair (fNew, std::make_pair(i-1, j+1))); 
+  
+                    cellDetails[i-1][j+1].f = fNew; 
+                    cellDetails[i-1][j+1].g = gNew; 
+                    cellDetails[i-1][j+1].h = hNew; 
+                    cellDetails[i-1][j+1].parent_i = i; 
+                    cellDetails[i-1][j+1].parent_j = j; 
+                } 
+            } 
+        } 
+  
+        //----------- 6th Successor (North-West) ------------ 
+  
+        if (isValid (i-1, j-1) == true) 
+        { 
+            if (isDestination (i-1, j-1, dest) == true) 
+            {  
+                cellDetails[i-1][j-1].parent_i = i; 
+                cellDetails[i-1][j-1].parent_j = j; 
+                tracePath (cellDetails, dest); 
+                foundDest = true; 
+                return; 
+            } 
+  
+            else if (closedList[i-1][j-1] == false && isUnBlocked(grid, i-1, j-1) == true) 
+            { 
+                gNew = cellDetails[i][j].g + 1.414; 
+                hNew = calculateHValue(i-1, j-1, dest); 
+                fNew = gNew + hNew; 
+  
+                if (cellDetails[i-1][j-1].f == FLT_MAX || cellDetails[i-1][j-1].f > fNew) 
+                { 
+                    openList.insert( std::make_pair (fNew, std::make_pair (i-1, j-1))); 
+                    cellDetails[i-1][j-1].f = fNew; 
+                    cellDetails[i-1][j-1].g = gNew; 
+                    cellDetails[i-1][j-1].h = hNew; 
+                    cellDetails[i-1][j-1].parent_i = i; 
+                    cellDetails[i-1][j-1].parent_j = j; 
+                } 
+            } 
+        } 
+  
+        //----------- 7th Successor (South-East) ------------ 
+  
+        if (isValid(i+1, j+1) == true) 
+        { 
+            if (isDestination(i+1, j+1, dest) == true) 
+            { 
+                cellDetails[i+1][j+1].parent_i = i; 
+                cellDetails[i+1][j+1].parent_j = j; 
+                tracePath (cellDetails, dest); 
+                foundDest = true; 
+                return; 
+            } 
+  
+            else if (closedList[i+1][j+1] == false && isUnBlocked(grid, i+1, j+1) == true) 
+            { 
+                gNew = cellDetails[i][j].g + 1.414; 
+                hNew = calculateHValue(i+1, j+1, dest); 
+                fNew = gNew + hNew; 
+  
+                if (cellDetails[i+1][j+1].f == FLT_MAX || cellDetails[i+1][j+1].f > fNew) 
+                { 
+                    openList.insert(std::make_pair(fNew, std::make_pair (i+1, j+1))); 
+  
+                    cellDetails[i+1][j+1].f = fNew; 
+                    cellDetails[i+1][j+1].g = gNew; 
+                    cellDetails[i+1][j+1].h = hNew; 
+                    cellDetails[i+1][j+1].parent_i = i; 
+                    cellDetails[i+1][j+1].parent_j = j; 
+                } 
+            } 
+        } 
+  
+        //----------- 8th Successor (South-West) ------------ 
+  
+        if (isValid (i+1, j-1) == true) 
+        { 
+            if (isDestination(i+1, j-1, dest) == true) 
+            { 
+                cellDetails[i+1][j-1].parent_i = i; 
+                cellDetails[i+1][j-1].parent_j = j; 
+                tracePath(cellDetails, dest); 
+                foundDest = true; 
+                return; 
+            } 
+  
+            else if (closedList[i+1][j-1] == false && isUnBlocked(grid, i+1, j-1) == true) 
+            { 
+                gNew = cellDetails[i][j].g + 1.414; 
+                hNew = calculateHValue(i+1, j-1, dest); 
+                fNew = gNew + hNew;
+                
+                if (cellDetails[i+1][j-1].f == FLT_MAX || cellDetails[i+1][j-1].f > fNew) 
+                { 
+                    openList.insert(std::make_pair(fNew, std::make_pair(i+1, j-1))); 
+  
+                    cellDetails[i+1][j-1].f = fNew; 
+                    cellDetails[i+1][j-1].g = gNew; 
+                    cellDetails[i+1][j-1].h = hNew; 
+                    cellDetails[i+1][j-1].parent_i = i; 
+                    cellDetails[i+1][j-1].parent_j = j; 
+                } 
+            } 
+        } 
     }
 
     // When the destination cell is not found and the open
