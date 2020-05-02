@@ -613,6 +613,9 @@ void Party::setMonsterRectangleShape(Room& curRoom){
 
     flyingMonstersCollider.clean();
     walkingMonstersCollider.clean();
+    
+    flyMonst.resize(0);
+    walkMonst.resize(0);
 
     for(unsigned i = 0; i < monster.size(); ++i){
         if(monster[i]){
@@ -2463,10 +2466,10 @@ void Party::projectileCollision(){
                     if (flyMonst[c.second]->getLife() <= 0) {
 
                         setLootOnTheFloor(*flyMonst[c.second]);
-
-                        delete flyMonst[c.second];
-                        std::vector<Entity*> roomMonsters = curRoom->getMonsters();
+                        
+                        std::vector<Entity*>& roomMonsters = curRoom->getMonsters();
                         auto found = std::find(roomMonsters.begin(), roomMonsters.end(), flyMonst[c.second]);
+                        delete flyMonst[c.second];
                         *found = nullptr;
                         roomMonsters.erase(found);
 
@@ -2490,7 +2493,8 @@ void Party::projectileCollision(){
                 projCollisions.clear();
                 continue;
             }
-
+            
+            projCollisions.resize(0);
             resetCollider = false;
 
             if (projCol.checkCollision(walkingMonstersCollider, projCollisions, 0.f)) {
@@ -2502,9 +2506,9 @@ void Party::projectileCollision(){
 
                         setLootOnTheFloor(*walkMonst[c.second]);
 
-                        delete walkMonst[c.second];
-                        std::vector<Entity*> roomMonsters = curRoom->getMonsters();
+                        std::vector<Entity*>& roomMonsters = curRoom->getMonsters();
                         auto found = std::find(roomMonsters.begin(), roomMonsters.end(), walkMonst[c.second]);
+                        delete walkMonst[c.second];
                         *found = nullptr;
                         roomMonsters.erase(found);
 
