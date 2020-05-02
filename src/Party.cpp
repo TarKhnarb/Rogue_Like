@@ -88,48 +88,60 @@ void Party::run(){
     sf::Time TimePerFrame = sf::seconds(1.f / 30.f);
 
     while (mWindow.isOpen()){
-		timeSinceLastUpdate += clock.restart();
-		
-		while (timeSinceLastUpdate > TimePerFrame){
-			timeSinceLastUpdate -= TimePerFrame;
-			
-			if(!inventoryOpen && !exceptionState){ // game state
-				processEvents();
-				update(TimePerFrame);
+        timeSinceLastUpdate += clock.restart();
+        
+        while (timeSinceLastUpdate > TimePerFrame){
+            timeSinceLastUpdate -= TimePerFrame;
+            
+            if(!inventoryOpen && !exceptionState){ // game state
+                processEvents();
+                update(TimePerFrame);
                 
                 if (inventoryOpen) // late update
                     updateInventory();
                 
                 if (exceptionState) // late update too
                     updateException();
-			}
-			else if (exceptionState){ // exception state
+            }
+            else if (exceptionState){ // exception state
                 updateException();
             }
-			else if (!scrollingMenuOpen){ // inventory state
+            else if (!scrollingMenuOpen){ // inventory state
                 try{
                     updateInventory();
                     
                     if (scrollingMenuOpen) // late update
                         updateScrollingMenu();
-                    }
+                }
                 catch (std::logic_error& err){
                     exceptionText = std::string(err.what());
                     exceptionState = true;
                 }
-			}
-			else if (!moveObjectOpen){ // srolling menu state
-                updateScrollingMenu();
-                
-                if (moveObjectOpen) // late update
-                    updateMoveObject();
+            }
+            else if (!moveObjectOpen){ // srolling menu state
+                try{
+                    updateScrollingMenu();
+                    
+                    if (moveObjectOpen) // late update
+                        updateMoveObject();
+                }
+                catch (std::logic_error& err){
+                    exceptionText = std::string(err.what());
+                    exceptionState = true;
+                }
             }
             else{ // move object state
-                updateMoveObject();
+                try{
+                    updateMoveObject();
+                }
+                catch (std::logic_error& err){
+                    exceptionText = std::string(err.what());
+                    exceptionState = true;
+                }
             }
             updateLife();
-		}
-		
+        }
+        
         render();
     }
 }

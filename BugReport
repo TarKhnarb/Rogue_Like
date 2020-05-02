@@ -1,0 +1,17 @@
+il y a encore une erreur de segmentation quand on quitte le jeu de temps en temps, mais je crois que ça vient de mon "while(true)", quand il y aura une map ou au moins un menu on pourra mieux gérer les exceptions
+
+faut faire gaffe à la salle 1N, quand on arrive on perd quasiment toute notre vie à cause de collisions avec les mobs qui sont à l'entrée
+
+on va beaucoup trop lentement ^^ maintenant la grippe espagnole c'est mortel, ça peut nous bloquer dans les coins dès l'arrivée
+
+on peut ouvrir les coffres avant d'avoir tué tous les monstres
+
+quand on enlève un item, on repasse full vie
+
+la peste noir vise (et se place) trop haut quand on est à droite ou à gauche (elle tire juste au-dessus de nous mais ne nous touche pas)
+elle vise également trop à notre gauche quand on est au-dessus
+elle peut également ne peut pas tirer alors qu'on est à son exacte gauche ou droite
+
+Dans les menus déroulants dans l'inventaire, on peut descendre en dessous du dernier choix (pas dans le stuff)
+
+Quand on tire en descendant (pas les autres directions), on se blesse avec notre projectile !
