@@ -958,17 +958,17 @@ void Party::updatePesteNoire(Entity &entity, sf::Time deltaTime, unsigned index)
 }
 
 void Party::updateTenia(Entity &entity, sf::Time deltaTime){
-    std::cout << "update" << std::endl;
+   // std::cout << "update" << std::endl;
     Pair src = std::make_pair((int)((entity.getPosition(false) - 160.f)/20.f), (int)((entity.getPosition(true) - 240.f)/20.f));
-    std::cout << src.first << " " << src.second << std::endl;
-    Pair dest = std::make_pair((int)((Aspen.getPosition(false) - 120.f)/20.f), (int)((Aspen.getPosition(true) - 220.f)/20.f));
-    std::cout << dest.first << " " << dest.second << std::endl;
+   // std::cout << src.first << " " << src.second << std::endl;
+    Pair dest = std::make_pair((int)((posAspen.getPosition(false) - 120.f)/20.f), (int)((posAspen.getPosition(true) - 220.f)/20.f));
+   // std::cout << dest.first << " " << dest.second << std::endl;
 
     aStarSearch(grid, src, dest);
 
-    float x = pathX() - src.first;
-    float y = pathY() - src.second;
-    std::cout << x << " " << y << std::endl;
+    float y = pathX() - (float)src.first;
+    float x = pathY() - (float)src.second;
+   // std::cout << x << " " << y << std::endl;
 
     sf::Vector2f movement (x, y);
     movement *= entity.getSpeed() * deltaTime.asSeconds();
@@ -1042,9 +1042,12 @@ void Party::updateMonsters(sf::Time deltaTime){
     for(unsigned i = 0; i < walkMonst.size(); ++i) {
         if (walkMonst[i] && walkMonst[i]->getName() == "Tenia") {
             updateTenia(*walkMonst[i], deltaTime);
-        }
 
-        sWalkingMonsters[i].setPosition(walkMonst[i]->getPosition(true) - 40.f, walkMonst[i]->getPosition(false) - 40.f);
+            sWalkingMonsters[i].setPosition(walkMonst[i]->getPosition(true) - 40.f, walkMonst[i]->getPosition(false) - 40.f);
+        }
+        //else if(){
+
+        //}
     }
 
 }
