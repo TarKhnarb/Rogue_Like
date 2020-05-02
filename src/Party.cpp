@@ -887,7 +887,6 @@ void Party::updatePesteNoire(Entity &entity, sf::Time deltaTime, unsigned index,
     float deltaX = destinationMonster[index].x - entity.getPosition(true);
     float deltaY = destinationMonster[index].y - entity.getPosition(false);
 
-
     float realDeltaX = entity.getSpeed() * 50.f * deltaTime.asSeconds();
     float realDeltaY = entity.getSpeed() * 50.f * deltaTime.asSeconds();
 
@@ -996,7 +995,7 @@ void Party::updateMonsters(sf::Time deltaTime){
                     pauseTimeMonster[i] = sf::Time::Zero;
                     inActionMonster[i] = true;
 
-                    destinationMonster[i] = sf::Vector2f (posAspen.getPosition(true), posAspen.getPosition(false));
+                    destinationMonster[i] = sf::Vector2f (posAspen.getPosition(true) + 20.f, posAspen.getPosition(false) + 40.f);
                 }
             }
 
@@ -1154,7 +1153,7 @@ void Party::setProjectileRectangleShape(const Entity& entity, unsigned orient){ 
             if(type == 0)
                 posProjectile.setPosition(posAspen.getPosition(true) + ((40.f - proj.getGlobalBounds().width)/2.f), posAspen.getPosition(false) + (80.f*(2.f/3.f) - proj.getGlobalBounds().height));
             else
-                posProjectile.setPosition(entity.getPosition(true) + ((80.f - proj.getGlobalBounds().width)/2.f), entity.getPosition(false) - proj.getGlobalBounds().height);
+                posProjectile.setPosition(entity.getPosition(true) - proj.getGlobalBounds().width/2.f, entity.getPosition(false) - (80.f + proj.getGlobalBounds().height) / 2.f);
 
             proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
             sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision, attack), proj);
@@ -1167,7 +1166,7 @@ void Party::setProjectileRectangleShape(const Entity& entity, unsigned orient){ 
             if(type == 0)
                 posProjectile.setPosition(posAspen.getPosition(true) + 40.f, posAspen.getPosition(false) + (80.f*(5.f/6.f) - (proj.getGlobalBounds().height/2.f)));
             else
-                posProjectile.setPosition(entity.getPosition(true) + 80.f, entity.getPosition(false) + (80.f - proj.getGlobalBounds().height)/2.f);
+                posProjectile.setPosition(entity.getPosition(true) + (80.f + proj.getGlobalBounds().width) / 2.f, entity.getPosition(false) + proj.getGlobalBounds().height / 2.f);
 
             proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
             sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision, attack), proj);
@@ -1180,7 +1179,7 @@ void Party::setProjectileRectangleShape(const Entity& entity, unsigned orient){ 
             if(type == 0)
                 posProjectile.setPosition(posAspen.getPosition(true) + ((40.f - proj.getGlobalBounds().width)/2.f), posAspen.getPosition(false) + 80.f);
             else
-                posProjectile.setPosition(entity.getPosition(true) + ((80.f - proj.getGlobalBounds().width)/2.f), entity.getPosition(false) + 80.f);
+                posProjectile.setPosition(entity.getPosition(true) - proj.getGlobalBounds().width/2.f, entity.getPosition(false) + (80.f + proj.getGlobalBounds().height) / 2.f);
 
             proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
             sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision, attack), proj);
@@ -1193,7 +1192,7 @@ void Party::setProjectileRectangleShape(const Entity& entity, unsigned orient){ 
             if(type == 0)
                 posProjectile.setPosition(posAspen.getPosition(true) - proj.getGlobalBounds().width, posAspen.getPosition(false) + (80.f*(5.f/6.f) - (proj.getGlobalBounds().height/2.f)));
             else
-                posProjectile.setPosition(entity.getPosition(true) - proj.getGlobalBounds().width, entity.getPosition(false) + (80.f - proj.getGlobalBounds().height)/2.f);
+                posProjectile.setPosition(entity.getPosition(true) + (80.f + proj.getGlobalBounds().width) / 2.f, entity.getPosition(false) + proj.getGlobalBounds().height / 2.f);
 
             proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
             sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision, attack), proj);
@@ -2430,7 +2429,22 @@ void Party::projectileCollision(){
                 p = sProjectiles.erase(p);
                 continue;
             }
-
+            
+            // Aspen
+            
+            sf::RectangleShape sPlayerCol ({(aspenAnimated.getLocalBounds()).width, (aspenAnimated.getLocalBounds()).height / 2.f});
+            sPlayerCol.setOrigin({0.f, sPlayerCol.getSize().y});
+            sPlayerCol.setPosition(posAspen.getPosition(true), posAspen.getPosition(false) + (aspenAnimated.getLocalBounds()).height);
+            sPlayerCol.move(0.f, (aspenAnimated.getLocalBounds()).height / 6.f);
+            Collider playerCol (sPlayerCol);
+            
+            if (projCol.checkCollision(playerCol, 0.f)){
+                removeLife(p->first, &Aspen);
+                
+                p = sProjectiles.erase(p);
+                continue;
+            }
+            
             // Walls
             if(projCol.checkCollision(wallsCollider, 0.f)){
                 p = sProjectiles.erase(p);
@@ -2445,6 +2459,10 @@ void Party::projectileCollision(){
         }
         
         ++p;
+    }
+    
+    if (Aspen.getLife() <= 0.f){
+        throw std::range_error ("Game overe you died !");
     }
 }
 
