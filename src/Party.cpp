@@ -805,7 +805,7 @@ void Party::setAStar(Room& room){
                 // holes are 60 * 60 px
                 for (unsigned i = 0; i <= 2; ++i){
                     for (unsigned j = 0; j <= 2; ++j){
-                        grid[y +j][x + i] = 1;
+                        grid[y + j][x + i] = 1;
                     }
                 }
             }
@@ -819,7 +819,7 @@ void Party::setAStar(Room& room){
                 // holes are 60 * 60 px
                 for (unsigned i = 0; i <= 2; ++i){
                     for (unsigned j = 0; j <= 2; ++j){
-                        grid[y +j][x + i] = 1;
+                        grid[y + j][x + i] = 1;
                     }
                 }
             }
@@ -833,7 +833,7 @@ void Party::setAStar(Room& room){
                 // holes are 60 * 60 px
                 for (unsigned i = 0; i <= 2; ++i){
                     for (unsigned j = 0; j <= 2; ++j){
-                        grid[y +j][x + i] = 1;
+                        grid[y + j][x + i] = 1;
                     }
                 }
             }
@@ -847,7 +847,7 @@ void Party::setAStar(Room& room){
                 // holes are 60 * 60 px
                 for (unsigned i = 0; i <= 2; ++i){
                     for (unsigned j = 0; j <= 2; ++j){
-                        grid[y +j][x + i] = 1;
+                        grid[y + j][x + i] = 1;
                     }
                 }
             }
@@ -861,7 +861,7 @@ void Party::setAStar(Room& room){
                 // holes are 60 * 60 px
                 for (unsigned i = 0; i <= 2; ++i){
                     for (unsigned j = 0; j <= 2; ++j){
-                        grid[y +j][x + i] = 1;
+                        grid[y + j][x + i] = 1;
                     }
                 }
             }
@@ -875,7 +875,7 @@ void Party::setAStar(Room& room){
                 // holes are 60 * 60 px
                 for (unsigned i = 0; i <= 2; ++i){
                     for (unsigned j = 0; j <= 2; ++j){
-                        grid[y +j][x + i] = 1;
+                        grid[y + j][x + i] = 1;
                     }
                 }
             }
@@ -889,7 +889,7 @@ void Party::setAStar(Room& room){
                 // holes are 60 * 60 px
                 for (unsigned i = 0; i <= 2; ++i){
                     for (unsigned j = 0; j <= 2; ++j){
-                        grid[y +j][x + i] = 1;
+                        grid[y + j][x + i] = 1;
                     }
                 }
             }
@@ -967,7 +967,21 @@ void Party::updatePesteNoire(Entity &entity, sf::Time deltaTime, unsigned index,
     }
 }
 
-void Party::updateTenia(Entity &entity, sf::Time deltaTime, unsigned index){}
+void Party::updateTenia(Entity &entity, sf::Time deltaTime, unsigned index){
+
+    Pair src = std::make_pair((int)((entity.getPosition(true) - 240.f)/20.f) , (int)((entity.getPosition(false) - 160.f)/20.f));
+    Pair dest = std::make_pair((int)((Aspen.getPosition(true) - 240.f)/20.f) , (int)((Aspen.getPosition(false) - 160.f)/20.f));
+
+    aStarSearch(grid, src, dest);
+
+    float x = pathX() - src.first;
+    float y = pathY() - src.second;
+
+    sf::Vector2f movement (x, y);
+    movement *= entity.getSpeed() * deltaTime.asSeconds();
+
+    entity.moveEntity(movement.x, movement.y);
+}
 
 void Party::updateListeria(Entity &entity, sf::Time deltaTime, unsigned index){}
 
@@ -1032,6 +1046,35 @@ void Party::updateMonsters(sf::Time deltaTime){
             sFlyingMonsters[i].setPosition(flyMonst[i]->getPosition(true) - 40.f, flyMonst[i]->getPosition(false) - 40.f);
         }
     }
+
+    for(unsigned i = 0; i < walkMonst.size(); ++i) {
+        if (walkMonst[i] && walkMonst[i]->getName() == "Tenia") {
+            if (inActionMonster[i + flyMonst.size()]) {
+                actionTimeMonster[i + flyMonst.size()] += deltaTime;
+                updateTenia(*walkMonst[i], deltaTime, i);
+
+                if (actionTimeMonster[i + flyMonst.size()] > sf::seconds(0.5f)) {
+                    actionTimeMonster[i + flyMonst.size()] = sf::Time::Zero;
+                    inActionMonster[i + flyMonst.size()] = false;
+                }
+            } else {
+                pauseTimeMonster[i + flyMonst.size()] += deltaTime;
+
+                if (pauseTimeMonster[i + flyMonst.size()] > sf::seconds(0.2f)) {
+                    pauseTimeMonster[i + flyMonst.size()] = sf::Time::Zero;
+                    inActionMonster[i + flyMonst.size()] = true;
+
+
+                }
+            }
+
+            sWalkingMonsters[i].setPosition(walkMonst[i]->getPosition(true) - 40.f, walkMonst[i]->getPosition(false) - 40.f);
+        }
+        //else if(){
+
+        //}
+    }
+
 }
 
 void Party::setChestRectangleShape(Room& curRoom){  //sf::chest le mettre en vector
@@ -2651,7 +2694,7 @@ void Party::updateForShooting(sf::Time deltaTime){
 void Party::update(sf::Time deltaTime){
 
 	sf::Vector2f movement(0.f, 0.f);
-	PlayerSpeed = Aspen.getSpeed() + 100.f;
+	PlayerSpeed = Aspen.getSpeed() + 130.f;
 
 	if(mIsMovingUp){
 		currentAnimation = &walkingAspenUp;
