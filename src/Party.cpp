@@ -976,7 +976,42 @@ void Party::updateTenia(Entity &entity, sf::Time deltaTime){
     entity.moveEntity(movement.x, movement.y);
 }
 
-void Party::updateListeria(Entity &entity, sf::Time deltaTime, unsigned index){}
+void Party::updateListeria(Entity &entity, sf::Time deltaTime){
+    float deltaX = posAspen.getPosition(true) - entity.getPosition(true);
+    float deltaY = posAspen.getPosition(false) - entity.getPosition(false);
+
+    Pair src = std::make_pair((int)((entity.getPosition(false) - 160.f)/20.f), (int)((entity.getPosition(true) - 240.f)/20.f));
+    Pair dest;
+
+    if(abs(deltaX) < abs(deltaY))
+        dest = std::make_pair((int)((entity.getPosition(false) - 160.f)/20.f), (int)((posAspen.getPosition(true) - 220.f)/20.f));
+    else
+        dest = std::make_pair((int)((posAspen.getPosition(false) - 120.f)/20.f), (int)((entity.getPosition(true) - 240.f)/20.f));
+
+    aStarSearch(grid, src, dest);
+
+    float y = pathX() - (float)src.first;
+    float x = pathY() - (float)src.second;
+
+    sf::Vector2f movement (x, y);
+    movement *= entity.getSpeed() * deltaTime.asSeconds();
+
+    entity.moveEntity(movement.x, movement.y);
+
+    if(deltaX > -20.f && deltaX < 20.f){
+        if(deltaY < 0.f)
+            setProjectileRectangleShape(entity, 0);
+        else
+            setProjectileRectangleShape(entity, 2);
+    }
+    else if(deltaY > -40.f && deltaY < 40.f){
+        if(deltaX < 0.f)
+            setProjectileRectangleShape(entity, 3);
+        else
+            setProjectileRectangleShape(entity, 1);
+    }
+
+}
 
 void Party::updateBlob(Entity &entity, sf::Time deltaTime, unsigned index){}
 
@@ -1045,9 +1080,11 @@ void Party::updateMonsters(sf::Time deltaTime){
 
             sWalkingMonsters[i].setPosition(walkMonst[i]->getPosition(true) - 40.f, walkMonst[i]->getPosition(false) - 40.f);
         }
-        //else if(){
+        else if(walkMonst[i] && walkMonst[i]->getName() == "Listeria"){
+            updateListeria(*walkMonst[i], deltaTime);
 
-        //}
+            sWalkingMonsters[i].setPosition(walkMonst[i]->getPosition(true) - 40.f, walkMonst[i]->getPosition(false) - 40.f);
+        }
     }
 
 }
