@@ -47,14 +47,15 @@ void tracePath(cell cellDetails[][COL], Pair dest){
     }
     Path.push (std::make_pair (row, col));
 
-    for(unsigned i = 0; i < 2; ++i){ //to have the next value (if i=3 have 2 step, i=4 have 3 step)
+    // Compute result
+    if (Path.size() > 1){
         Path.pop();
-        std::pair<int,int> p = Path.top();
-        if(i == 0){
-            result.a = p.first;
-            result.b = p.second;
-        }
     }
+
+    std::pair<int,int> p = Path.top();
+    result.a = p.first;
+    result.b = p.second;
+        
     return;
 }
 
@@ -250,10 +251,13 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
     // list is empty, then we conclude that we failed to
     // reach the destiantion cell. This may happen when the
     // there is no way to destination cell (due to blockages)
-    if (!foundDest)
+    if (!foundDest){
         std::cerr << "Failed to find the destination cell" << std::endl;
+        result.a = src.first;
+        result.b = src.second;
+        
+        return;
+    }
     
-    //tracePath(cellDetails, dest);
-    
-    return;
+    tracePath(cellDetails, dest);
 }

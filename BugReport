@@ -16,4 +16,4 @@ Dans les menus déroulants dans l'inventaire, on peut descendre en dessous du de
 
 Quand on tire en descendant (pas les autres directions), on se blesse avec notre projectile !
 
-Quand on entre dans l'inventaire et qu'on revient en jeu, on devient insensible aux dégâts de projectiles pendant quelques secondes (2 - 3)
+Quand on entre dans l'inventaire et qu'on revient en jeu, on devient insensible aux dégâts de projectiles pendant quelques secondes (2 - 3), sauf si on se dirige seulement dans la direction du projectile, auquel cas c'est infini

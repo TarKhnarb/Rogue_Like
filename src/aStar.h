@@ -15,8 +15,8 @@ typedef std::pair<int, int> Pair;
 typedef std::pair<double, std::pair<int, int>> pPair;
 
 struct Result{
-    int a;
-    int b;
+    int a = 0;
+    int b = 0;
 };
 
 /**
