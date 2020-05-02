@@ -766,6 +766,7 @@ void Party::setAStar(Room& room){
     }
     
     roomType type = room.getType();
+    // On ne net pas les coffre pour eviter de bloquer les monstres
     switch (type){
 
         case Room2NS1:
@@ -808,28 +809,6 @@ void Party::setAStar(Room& room){
                     }
                 }
             }
-            
-            x = (arch.Chest1N[0] - 240) / 20;
-            y = (arch.Chest1N[1] - 160) / 20;
-            
-            // chests are 40 * 40 px
-            for (unsigned i = 0; i <= 1; ++i){
-                for (unsigned j = 0; j <= 1; ++j){
-                    grid[y + j][x + i] = 1;
-                }
-            }
-            break;
-        
-        case Room1E:
-            x = (arch.Chest1E[0] - 240) / 20;
-            y = (arch.Chest1E[1] - 160) / 20;
-            
-            // chests are 40 * 40 px
-            for (unsigned i = 0; i <= 1; ++i){
-                for (unsigned j = 0; j <= 1; ++j){
-                    grid[y + j][x + i] = 1;
-                }
-            }
             break;
         
         case Room1S:
@@ -842,16 +821,6 @@ void Party::setAStar(Room& room){
                     for (unsigned j = 0; j <= 2; ++j){
                         grid[y +j][x + i] = 1;
                     }
-                }
-            }
-            
-            x = (arch.Chest1S[0] - 240) / 20;
-            y = (arch.Chest1S[1] - 160) / 20;
-            
-            // chests are 40 * 40 px
-            for (unsigned i = 0; i <= 1; ++i){
-                for (unsigned j = 0; j <= 1; ++j){
-                    grid[y + j][x + i] = 1;
                 }
             }
             break;
@@ -868,16 +837,6 @@ void Party::setAStar(Room& room){
                     }
                 }
             }
-            
-            x = (arch.Chest1W[0] - 240) / 20;
-            y = (arch.Chest1W[1] - 160) / 20;
-            
-            // chests are 40 * 40 px
-            for (unsigned i = 0; i <= 1; ++i){
-                for (unsigned j = 0; j <= 1; ++j){
-                    grid[y + j][x + i] = 1;
-                }
-            }
             break;
         
         case Room3ESW:
@@ -890,16 +849,6 @@ void Party::setAStar(Room& room){
                     for (unsigned j = 0; j <= 2; ++j){
                         grid[y +j][x + i] = 1;
                     }
-                }
-            }
-            
-            x = (arch.Chest3ESW[0] - 240) / 20;
-            y = (arch.Chest3ESW[1] - 160) / 20;
-            
-            // chests are 40 * 40 px
-            for (unsigned i = 0; i <= 1; ++i){
-                for (unsigned j = 0; j <= 1; ++j){
-                    grid[y + j][x + i] = 1;
                 }
             }
             break;
@@ -934,21 +883,72 @@ void Party::updateGrippeEspagnole(Entity &entity, sf::Time deltaTime, unsigned i
     entity.moveEntity(realDeltaX, realDeltaY);
 }
 
-void Party::updatePesteNoire(Entity&, sf::Time deltaTime){}
+void Party::updatePesteNoire(Entity &entity, sf::Time deltaTime, unsigned index, unsigned &tirs){
+    float deltaX = destinationMonster[index].x - entity.getPosition(true);
+    float deltaY = destinationMonster[index].y - entity.getPosition(false);
 
-void Party::updateTenia(Entity&, sf::Time deltaTime){}
 
-void Party::updateListeria(Entity&, sf::Time deltaTime){}
+    float realDeltaX = entity.getSpeed() * 50.f * deltaTime.asSeconds();
+    float realDeltaY = entity.getSpeed() * 50.f * deltaTime.asSeconds();
 
-void Party::updateBlob(Entity&, sf::Time deltaTime){}
+    if(abs(deltaX) < abs(deltaY)){
 
-void Party::updateCymothoaExigua(Entity&, sf::Time deltaTime){}
+        if(deltaX > -20.f && deltaX < 20.f){
+            // on tire
+            if(tirs < 5){
+                if(deltaY < 0.f)
+                    setProjectileRectangleShape(entity, 0); // shoot en haut
+                else
+                    setProjectileRectangleShape(entity, 2); //shoot en bas
 
-void Party::updateH1N1(Entity&, sf::Time deltaTime){}
+                ++tirs;
+            }
+        }
+        else{
+            tirs = 0;
+            //on se déplace suivant le signe de deltaX
+            if(deltaX < 0.f)
+                entity.moveEntity(-realDeltaX, 0);
+            else
+                entity.moveEntity(realDeltaX, 0);
+        }
+    }
+    else{
+        if(deltaY > -40.f && deltaY < 40.f){
+            // on tire
+            if(tirs < 5){
+                if(deltaX < 0.f)
+                    setProjectileRectangleShape(entity, 3); // shoot a gauche
+                else
+                    setProjectileRectangleShape(entity, 1); // shoot a droite
 
-void Party::updateVIH(Entity&, sf::Time deltaTime){}
+                ++tirs;
+            }
+        }
+        else{
+            tirs = 0;
+            //on se déplace suivant le signe de deltaY
+            if(deltaY < 0.f)
+                entity.moveEntity(0, -realDeltaY);
+            else
+                entity.moveEntity(0, realDeltaY);
+        }
+    }
+}
 
-void Party::updateCOVID19(Entity&, sf::Time deltaTime){}
+void Party::updateTenia(Entity &entity, sf::Time deltaTime, unsigned index){}
+
+void Party::updateListeria(Entity &entity, sf::Time deltaTime, unsigned index){}
+
+void Party::updateBlob(Entity &entity, sf::Time deltaTime, unsigned index){}
+
+void Party::updateCymothoaExigua(Entity &entity, sf::Time deltaTime, unsigned index){}
+
+void Party::updateH1N1(Entity &entity, sf::Time deltaTime, unsigned index){}
+
+void Party::updateVIH(Entity &entity, sf::Time deltaTime, unsigned index){}
+
+void Party::updateCOVID19(Entity &entity, sf::Time deltaTime, unsigned index){}
 
 void Party::updateMonsters(sf::Time deltaTime){
     std::vector<Entity*>& monster = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters();
@@ -978,8 +978,29 @@ void Party::updateMonsters(sf::Time deltaTime){
             
             sMonsters[i].setPosition(monster[i]->getPosition(true) - 40.f, monster[i]->getPosition(false) - 40.f);
         }
-        else if(monster[i]){
-            // autres monstres
+        else if(monster[i] && monster[i]->getName() == "Peste-Noire"){
+            unsigned tirs = 0;
+            if(inActionMonster[i]){
+                actionTimeMonster[i] += deltaTime;
+                updatePesteNoire(*monster[i], deltaTime, i, tirs);
+
+                if(actionTimeMonster[i] > sf::seconds(1.5f)){
+                    actionTimeMonster[i] = sf::Time::Zero;
+                    inActionMonster[i] = false;
+                }
+            }
+            else{
+                pauseTimeMonster[i] += deltaTime;
+
+                if(pauseTimeMonster[i] > sf::seconds(2.f)){
+                    pauseTimeMonster[i] = sf::Time::Zero;
+                    inActionMonster[i] = true;
+
+                    destinationMonster[i] = sf::Vector2f (posAspen.getPosition(true), posAspen.getPosition(false));
+                }
+            }
+
+            sMonsters[i].setPosition(monster[i]->getPosition(true) - 40.f, monster[i]->getPosition(false) - 40.f);
         }
     }
 }
@@ -1129,7 +1150,12 @@ void Party::setProjectileRectangleShape(const Entity& entity, unsigned orient){ 
         case 0:
             proj.setSize({10.f, 40.f});
             proj.setTexture(selectProjectileTexture(entity, orient));
-            posProjectile.setPosition(posAspen.getPosition(true) + ((40 - proj.getGlobalBounds().width)/2.f), posAspen.getPosition(false) + (80.f*(2.f/3.f) - proj.getGlobalBounds().height));
+
+            if(type == 0)
+                posProjectile.setPosition(posAspen.getPosition(true) + ((40.f - proj.getGlobalBounds().width)/2.f), posAspen.getPosition(false) + (80.f*(2.f/3.f) - proj.getGlobalBounds().height));
+            else
+                posProjectile.setPosition(entity.getPosition(true) + ((80.f - proj.getGlobalBounds().width)/2.f), entity.getPosition(false) - proj.getGlobalBounds().height);
+
             proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
             sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision, attack), proj);
             break;
@@ -1137,7 +1163,12 @@ void Party::setProjectileRectangleShape(const Entity& entity, unsigned orient){ 
         case 1:
             proj.setSize({40.f, 10.f});
             proj.setTexture(selectProjectileTexture(entity, orient));
-            posProjectile.setPosition(posAspen.getPosition(true) + 40.f, posAspen.getPosition(false) + (80.f*(5.f/6.f) - (proj.getGlobalBounds().height/2.f)));
+
+            if(type == 0)
+                posProjectile.setPosition(posAspen.getPosition(true) + 40.f, posAspen.getPosition(false) + (80.f*(5.f/6.f) - (proj.getGlobalBounds().height/2.f)));
+            else
+                posProjectile.setPosition(entity.getPosition(true) + 80.f, entity.getPosition(false) + (80.f - proj.getGlobalBounds().height)/2.f);
+
             proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
             sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision, attack), proj);
             break;
@@ -1145,7 +1176,12 @@ void Party::setProjectileRectangleShape(const Entity& entity, unsigned orient){ 
         case 2:
             proj.setSize({10.f, 40.f});
             proj.setTexture(selectProjectileTexture(entity, orient));
-            posProjectile.setPosition(posAspen.getPosition(true) + ((40.f - proj.getGlobalBounds().width)/2.f), posAspen.getPosition(false) + 80.f);
+
+            if(type == 0)
+                posProjectile.setPosition(posAspen.getPosition(true) + ((40.f - proj.getGlobalBounds().width)/2.f), posAspen.getPosition(false) + 80.f);
+            else
+                posProjectile.setPosition(entity.getPosition(true) + ((80.f - proj.getGlobalBounds().width)/2.f), entity.getPosition(false) + 80.f);
+
             proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
             sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision, attack), proj);
             break;
@@ -1153,7 +1189,12 @@ void Party::setProjectileRectangleShape(const Entity& entity, unsigned orient){ 
         case 3:
             proj.setSize({40.f, 10.f});
             proj.setTexture(selectProjectileTexture(entity, orient));
-            posProjectile.setPosition(posAspen.getPosition(true) - proj.getGlobalBounds().width, posAspen.getPosition(false) + (80.f*(5.f/6.f) - (proj.getGlobalBounds().height/2.f)));
+
+            if(type == 0)
+                posProjectile.setPosition(posAspen.getPosition(true) - proj.getGlobalBounds().width, posAspen.getPosition(false) + (80.f*(5.f/6.f) - (proj.getGlobalBounds().height/2.f)));
+            else
+                posProjectile.setPosition(entity.getPosition(true) - proj.getGlobalBounds().width, entity.getPosition(false) + (80.f - proj.getGlobalBounds().height)/2.f);
+
             proj.setPosition(posProjectile.getPosition(true), posProjectile.getPosition(false));
             sProjectiles.emplace(new Projectile(posProjectile.getPosition(true), posProjectile.getPosition(false), orient, type, speed, nbCollision, attack), proj);
             break;

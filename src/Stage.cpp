@@ -7,10 +7,8 @@
 Stage::Stage(Entity* aspen):
         hero(aspen){
     
-    for(unsigned i = 0; i < maxSize; i++)
-    {
-        for(unsigned j = 0; j < maxSize; j++)
-        {
+    for(unsigned i = 0; i < maxSize; i++){
+        for(unsigned j = 0; j < maxSize; j++){
             RoomsMap[i][j] = nullptr;
         }
     }

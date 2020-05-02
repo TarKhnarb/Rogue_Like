@@ -73,7 +73,7 @@ void Entity::buyObject(unsigned id, unsigned objectNum) {
         money -= thePrice;
     }
     else
-        throw std::logic_error ("You do not have enough money to buy this object");
+        throw std::runtime_error ("Entity::buyObject(" + std::to_string(money) + ") - You do not have enough money to buy this object");
 
 }
 
@@ -84,7 +84,7 @@ void Entity::sellObject(unsigned id, unsigned number) {
         money += number*Object(id).getResalePrice();
     }
     else
-        throw std::logic_error ("Not enough item in inventory"); // Erreur a afficher plus tard pour le joueur
+        throw std::runtime_error ("Entity::sellObject(" + std::to_string(id) + ") - Not enough item in inventory"); // Erreur a afficher plus tard pour le joueur
 }
 
 void Entity::equipObject(unsigned inventoryIndex) {
@@ -220,6 +220,10 @@ int Entity::getSpeed() const{
 
 unsigned Entity::getEntityId() const{
     return inventory.getBasicStatId();
+}
+
+bool Entity::getState() const {
+    return life !=0;
 }
 
 int Entity::getLife() const{

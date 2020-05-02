@@ -68,15 +68,17 @@ public:
     //void makeCraft(Entity&, unsigned);
 
 private:
-    bool CanUpgrade(Entity*, unsigned);
-    bool CanMake(Entity*, unsigned);
-    bool CanMakePotion(Entity*, unsigned);
+    bool CanUpgrade(Entity*, unsigned) const;
+    bool CanMake(Entity*, unsigned) const ;
+    bool CanMakePotion(Entity*, unsigned) const ;
 
 public:
     void display(Action);
 
     unsigned returnIndex(const unsigned id, Action) const;
 
+
+    void testRegression(Entity*, unsigned);
 
 private:
 
@@ -90,6 +92,7 @@ private:
     void addPotionMake(unsigned id);
 
     void addLoot(unsigned id);
+
 
     //void addCraft(const unsigned);
 

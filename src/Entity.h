@@ -113,6 +113,8 @@ public :
 
     unsigned getEntityId() const;
 
+    bool getState() const;
+
     int getLife() const;
     void removeLife(int);
     void setLife(int);

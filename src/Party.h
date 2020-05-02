@@ -88,14 +88,14 @@ private:
 
     void setAStar(Room&);
     void updateGrippeEspagnole(Entity&, sf::Time, unsigned);
-    void updatePesteNoire(Entity&, sf::Time);
-    void updateTenia(Entity&, sf::Time);
-    void updateListeria(Entity&, sf::Time);
-    void updateBlob(Entity&, sf::Time);
-    void updateCymothoaExigua(Entity&, sf::Time);
-    void updateH1N1(Entity&, sf::Time);
-    void updateVIH(Entity&, sf::Time);
-    void updateCOVID19(Entity&, sf::Time);
+    void updatePesteNoire(Entity&, sf::Time, unsigned, unsigned&);
+    void updateTenia(Entity&, sf::Time, unsigned);
+    void updateListeria(Entity&, sf::Time, unsigned);
+    void updateBlob(Entity&, sf::Time, unsigned);
+    void updateCymothoaExigua(Entity&, sf::Time, unsigned);
+    void updateH1N1(Entity&, sf::Time, unsigned);
+    void updateVIH(Entity&, sf::Time, unsigned);
+    void updateCOVID19(Entity&, sf::Time, unsigned);
 
     void updateMonsters(sf::Time);
     void setChestRectangleShape(Room&);

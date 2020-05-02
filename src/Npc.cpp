@@ -159,7 +159,7 @@ void Npc::addLoot(unsigned id){
     traderInventory.push_back(new Object(id));
 }
 
-bool Npc::CanUpgrade(Entity *hero, unsigned index){
+bool Npc::CanUpgrade(Entity *hero, unsigned index) const{
     bool Can = true;
     std::vector<unsigned> Need = blacksmithInventoryUpgrade[index]->getResource();
 
@@ -171,7 +171,7 @@ bool Npc::CanUpgrade(Entity *hero, unsigned index){
     return Can;
 }
 
-bool Npc::CanMake(Entity *hero, unsigned index){
+bool Npc::CanMake(Entity *hero, unsigned index) const{
     bool Can = true;
     std::vector<unsigned> ressourceNeed = blacksmithInventoryMake[index]->getResource();
 
@@ -186,7 +186,7 @@ bool Npc::CanMake(Entity *hero, unsigned index){
     return Can;
 }
 
-bool Npc::CanMakePotion(Entity *hero, unsigned index){
+bool Npc::CanMakePotion(Entity *hero, unsigned index) const{
     bool Can = true;
     std::vector<unsigned> ressourceNeed = witchInventoryMake[index]->getResource();
 
