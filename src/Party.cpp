@@ -958,20 +958,16 @@ void Party::updatePesteNoire(Entity &entity, sf::Time deltaTime, unsigned index)
 }
 
 void Party::updateTenia(Entity &entity, sf::Time deltaTime){
-    std::cout << "update" << std::endl;
     Pair src = std::make_pair((int)((entity.getPosition(false) - 160.f)/20.f), (int)((entity.getPosition(true) - 240.f)/20.f));
-    std::cout << src.first << " " << src.second << std::endl;
-    Pair dest = std::make_pair((int)((Aspen.getPosition(false) - 120.f)/20.f), (int)((Aspen.getPosition(true) - 220.f)/20.f));
-    std::cout << dest.first << " " << dest.second << std::endl;
+    Pair dest = std::make_pair((int)((posAspen.getPosition(false) - 120.f)/20.f), (int)((posAspen.getPosition(true) - 220.f)/20.f));
 
     aStarSearch(grid, src, dest);
 
-    float x = pathX() - src.first;
-    float y = pathY() - src.second;
-    std::cout << x << " " << y << std::endl;
+    float x = pathY() - (float)src.second;
+    float y = pathX() - (float)src.first;
 
     sf::Vector2f movement (x, y);
-    movement *= entity.getSpeed() * deltaTime.asSeconds();
+    movement *= entity.getSpeed() * 5.f * deltaTime.asSeconds();
 
     entity.moveEntity(movement.x, movement.y);
 }
@@ -1008,7 +1004,7 @@ void Party::updateMonsters(sf::Time deltaTime){
                     pauseTimeMonster[i] = sf::Time::Zero;
                     inActionMonster[i] = true;
 
-                    destinationMonster[i] = sf::Vector2f(posAspen.getPosition(true) + 20.f, posAspen.getPosition(false) + 40.f);
+                    destinationMonster[i] = sf::Vector2f(posAspen.getPosition(true) + 20.f, posAspen.getPosition(false) + 54.f);
                 }
             }
 
