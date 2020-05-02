@@ -967,15 +967,15 @@ void Party::updatePesteNoire(Entity &entity, sf::Time deltaTime, unsigned index,
     }
 }
 
-void Party::updateTenia(Entity &entity, sf::Time deltaTime, unsigned index){
+void Party::updateTenia(Entity &entity, sf::Time deltaTime){
 
-    Pair src = std::make_pair((int)((entity.getPosition(true) - 240.f)/20.f) , (int)((entity.getPosition(false) - 160.f)/20.f));
-    Pair dest = std::make_pair((int)((Aspen.getPosition(true) - 240.f)/20.f) , (int)((Aspen.getPosition(false) - 160.f)/20.f));
+    Pair src = std::make_pair((int)((entity.getPosition(false) - 160.f)/20.f), (int)((entity.getPosition(true) - 240.f)/20.f));
+    Pair dest = std::make_pair((int)((Aspen.getPosition(false) - 120.f)/20.f), (int)((Aspen.getPosition(true) - 220.f)/20.f));
 
     aStarSearch(grid, src, dest);
 
-    float x = pathX() - src.first;
-    float y = pathY() - src.second;
+    float x = pathX() - src.second;
+    float y = pathY() - src.first;
 
     sf::Vector2f movement (x, y);
     movement *= entity.getSpeed() * deltaTime.asSeconds();
@@ -1049,24 +1049,7 @@ void Party::updateMonsters(sf::Time deltaTime){
 
     for(unsigned i = 0; i < walkMonst.size(); ++i) {
         if (walkMonst[i] && walkMonst[i]->getName() == "Tenia") {
-            if (inActionMonster[i + flyMonst.size()]) {
-                actionTimeMonster[i + flyMonst.size()] += deltaTime;
-                updateTenia(*walkMonst[i], deltaTime, i);
-
-                if (actionTimeMonster[i + flyMonst.size()] > sf::seconds(0.5f)) {
-                    actionTimeMonster[i + flyMonst.size()] = sf::Time::Zero;
-                    inActionMonster[i + flyMonst.size()] = false;
-                }
-            } else {
-                pauseTimeMonster[i + flyMonst.size()] += deltaTime;
-
-                if (pauseTimeMonster[i + flyMonst.size()] > sf::seconds(0.2f)) {
-                    pauseTimeMonster[i + flyMonst.size()] = sf::Time::Zero;
-                    inActionMonster[i + flyMonst.size()] = true;
-
-
-                }
-            }
+            updateTenia(*walkMonst[i], deltaTime);
 
             sWalkingMonsters[i].setPosition(walkMonst[i]->getPosition(true) - 40.f, walkMonst[i]->getPosition(false) - 40.f);
         }
