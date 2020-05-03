@@ -62,23 +62,23 @@ void tracePath(cell cellDetails[][COL], Pair dest, unsigned parameter){
 
 void aStarSearch(int grid[][COL], Pair src, Pair dest, unsigned parameter){
     if (!isValid(src.first, src.second)){//this is maybe useless in out case
-        std::cerr << "Source is invalid" << std::endl;
+        //std::cerr << "Source is invalid" << std::endl;
         return;
     }
     if (!isValid (dest.first, dest.second)){ //also this
-        std::cerr << "Destination is invalid" << std::endl;
+        //std::cerr << "Destination is invalid" << std::endl;
         return;
     }
 
     //check if the start or destination is blocked (surrounded with obstacles >> impossible to reach)
     if (!isUnBlocked(grid, src.first, src.second) || !isUnBlocked(grid, dest.first, dest.second)){
-        std::cerr << "Source or the destination is blocked" << std::endl;
+        //std::cerr << "Source or the destination is blocked" << std::endl;
         return;
     }
 
     // If the destination cell is the same as source cell
     if (isDestination(src.first, src.second, dest)){
-        std::cerr << "We are already at the destination" << std::endl;
+        //std::cerr << "We are already at the destination" << std::endl;
         return;
     }
 
@@ -380,7 +380,7 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest, unsigned parameter){
     // reach the destiantion cell. This may happen when the
     // there is no way to destination cell (due to blockages)
     if (!foundDest){
-        std::cerr << "Failed to find the destination cell" << std::endl;
+        //std::cerr << "Failed to find the destination cell" << std::endl;
         result.a = src.first;
         result.b = src.second;
 

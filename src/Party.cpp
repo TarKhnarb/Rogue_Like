@@ -2659,45 +2659,6 @@ void Party::projectileCollision(){
             std::vector<std::pair<std::size_t, std::size_t>> projCollisions;
             resetCollider = false;
 
-            if(projCol.checkCollision(flyingMonstersCollider, projCollisions, 0.f)){
-
-                for (auto &c : projCollisions){
-                    removeLife(p->first, flyMonst[c.second]);
-
-                    if (flyMonst[c.second]->getLife() <= 0) {
-
-                        setLootOnTheFloor(*flyMonst[c.second]);
-
-                        std::vector<Entity*>& roomMonsters = curRoom->getMonsters();
-                        auto found = std::find(roomMonsters.begin(), roomMonsters.end(), flyMonst[c.second]);
-                        delete flyMonst[c.second];
-                        *found = nullptr;
-                        roomMonsters.erase(found);
-
-                        flyMonst.erase(flyMonst.begin() + c.second);
-                        destinationMonster.erase(destinationMonster.begin() + c.second);
-                        actionTimeMonster.erase(actionTimeMonster.begin() + c.second);
-                        pauseTimeMonster.erase(pauseTimeMonster.begin() + c.second);
-                        inActionMonster.erase(inActionMonster.begin() + c.second);
-
-                        resetCollider = true;
-                    }
-                }
-
-                if (resetCollider) {
-                    setMonsterRectangleShape(*curRoom);
-                    if(donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty())
-                        setDoorOpenRectangleShape(*curRoom);
-                }
-
-                p = sProjectiles.erase(p);
-                projCollisions.clear();
-                continue;
-            }
-
-            projCollisions.resize(0);
-            resetCollider = false;
-
             if (projCol.checkCollision(walkingMonstersCollider, projCollisions, 0.f)) {
 
                 for (auto &c : projCollisions){
@@ -2718,6 +2679,45 @@ void Party::projectileCollision(){
                         actionTimeMonster.erase(actionTimeMonster.begin() + flyMonst.size() + c.second);
                         pauseTimeMonster.erase(pauseTimeMonster.begin() + flyMonst.size() + c.second);
                         inActionMonster.erase(inActionMonster.begin() + flyMonst.size() + c.second);
+
+                        resetCollider = true;
+                    }
+                }
+
+                if (resetCollider) {
+                    setMonsterRectangleShape(*curRoom);
+                    if(donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false))->getMonsters().empty())
+                        setDoorOpenRectangleShape(*curRoom);
+                }
+
+                p = sProjectiles.erase(p);
+                projCollisions.clear();
+                continue;
+            }
+
+            projCollisions.resize(0);
+            resetCollider = false;
+
+            if(projCol.checkCollision(flyingMonstersCollider, projCollisions, 0.f)){
+
+                for (auto &c : projCollisions){
+                    removeLife(p->first, flyMonst[c.second]);
+
+                    if (flyMonst[c.second]->getLife() <= 0) {
+
+                        setLootOnTheFloor(*flyMonst[c.second]);
+
+                        std::vector<Entity*>& roomMonsters = curRoom->getMonsters();
+                        auto found = std::find(roomMonsters.begin(), roomMonsters.end(), flyMonst[c.second]);
+                        delete flyMonst[c.second];
+                        *found = nullptr;
+                        roomMonsters.erase(found);
+
+                        flyMonst.erase(flyMonst.begin() + c.second);
+                        destinationMonster.erase(destinationMonster.begin() + c.second);
+                        actionTimeMonster.erase(actionTimeMonster.begin() + c.second);
+                        pauseTimeMonster.erase(pauseTimeMonster.begin() + c.second);
+                        inActionMonster.erase(inActionMonster.begin() + c.second);
 
                         resetCollider = true;
                     }
