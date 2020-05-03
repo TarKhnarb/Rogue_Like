@@ -189,7 +189,7 @@ private:
     sf::RenderWindow mWindow;
 
     // Pour le VIH
-    unsigned stat[6] = {1, 2, 2, 3, 3, 3};
+    unsigned stat[7] = {1, 2, 2, 3, 3, 3, 3};
     std::vector<std::pair<unsigned, sf::Vector2f>> vectorVIH; // (etat, Vector de direction)
 
     // Pour les projectiles

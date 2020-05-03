@@ -634,7 +634,7 @@ void Party::setMonsterRectangleShape(Room& curRoom){
             if(monster[i]->getName() == "VIH"){
                 float angle;
 
-                for(unsigned i = 0; i < 6; ++i) {
+                for(unsigned i = 0; i < 7; ++i) {
                     angle = (rand() % 360) * (4.f * atan(1.f) / 180.f);
                     vectorVIH.push_back(std::make_pair(
                             stat[i],
@@ -1060,7 +1060,12 @@ void Party::updateVIH(Entity &entity, sf::Time deltaTime, unsigned i){
         if(entity.getLife() > entity.getMaxLife() - partLife){
             realDeltaX = vectorVIH[i].second.x * entity.getSpeed() * 100.f * deltaTime.asSeconds();
             realDeltaY = vectorVIH[i].second.y * entity.getSpeed() * 100.f * deltaTime.asSeconds();
-            entity.moveEntity(realDeltaX, realDeltaY);
+            if(entity.getPosition(true) < 199.f || entity.getPosition(true) > 999.f)
+                entity.moveEntity(-realDeltaX, realDeltaY);
+            else if(entity.getPosition(false) < 119.f || entity.getPosition(false) > 519.f)
+                entity.moveEntity(realDeltaX, -realDeltaY);
+            else
+                entity.moveEntity(realDeltaX, realDeltaY);
         }
 }
 
@@ -1196,10 +1201,10 @@ void Party::updateMonsters(sf::Time deltaTime){
             float partLife = walkMonst[i]->getLife() * (1.f/5.f);
 
             if(vectorVIH[i].first < 4 && (walkMonst[i]->getLife() < walkMonst[i]->getMaxLife() - partLife) && (walkMonst[i]->getLife() > walkMonst[i]->getMaxLife() - 2.f*partLife)){
-
+                std::cout << "1" << std::endl;
                 Entity *monst = new Entity(walkMonst[i]->getPosition(true), walkMonst[i]->getPosition(false), 9);
                 monst->setMaxLife(walkMonst[i]->getMaxLife() - (int)partLife);
-
+                std::cout << "2" << std::endl;
                 Room *curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
 
                 std::vector<Entity*>& roomMonsters = curRoom->getMonsters();
@@ -1210,16 +1215,17 @@ void Party::updateMonsters(sf::Time deltaTime){
                 sWalkingMonsters.erase(sWalkingMonsters.begin() + i);
                 vectorVIH.erase(vectorVIH.begin());
 
-
+                std::cout << "3" << std::endl;
                 roomMonsters.push_back(monst);
                 roomMonsters.push_back(monst);
-
+                std::cout << "4" << std::endl;
                 setMonsterRectangleShape(*curRoom);
+                std::cout << "5" << std::endl;
                 for(auto &m : sWalkingMonsters) {
                     m.scale(m.getSize().x / (2^vectorVIH[i].first),
                             m.getSize().y / (2^vectorVIH[i].first));
                 }
-
+                std::cout << "6" << std::endl;
             }
             else if(walkMonst[i]->getLife() < 0){ // A voir si ca ne pose pas de problème
                 Room *curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
