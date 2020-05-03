@@ -1049,7 +1049,7 @@ void Party::updateH1N1(Entity &entity, sf::Time deltaTime, unsigned index){
      */
 }
 
-void Party::updateVIH(Entity &entity, sf::Time deltaTime){
+void Party::updateVIH(Entity &entity, sf::Time deltaTime, unsigned i){
     /*
      * part du centre de la salle et rebondi sur les murs, quand il perd 1/5 de sa vie,
      * il se divise en lui même plus petit et continue
@@ -1057,57 +1057,46 @@ void Party::updateVIH(Entity &entity, sf::Time deltaTime){
         float realDeltaX, realDeltaY;
         float partLife = entity.getLife() * (1.f/5.f);
 
-        for(unsigned i = 0; i < walkMonst.size(); ++i){
-            if(entity.getLife() > entity.getMaxLife() - partLife){ // stat: 1
-                realDeltaX = vectorVIH[i].second.x * entity.getSpeed() * 100.f * deltaTime.asSeconds();
-                realDeltaY = vectorVIH[i].second.y * entity.getSpeed() * 100.f * deltaTime.asSeconds();
-
-                entity.moveEntity(realDeltaX, realDeltaY);
-
-            }
-            else if(vectorVIH[i].first < 4 && (entity.getLife() < entity.getMaxLife() - partLife) && (entity.getLife() > entity.getMaxLife() - 2.f*partLife)){
-
-                Entity *monst = new Entity(entity.getPosition(true), entity.getPosition(false), 9);
-                monst->setMaxLife(entity.getMaxLife() - (int)partLife);
-
-                Room *curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
-
-                std::vector<Entity*>& roomMonsters = curRoom->getMonsters();
-                auto found = std::find(roomMonsters.begin(), roomMonsters.end(), walkMonst[i]);
-                delete walkMonst[i];
-                *found = nullptr;
-                roomMonsters.erase(found);
-                sWalkingMonsters.erase(sWalkingMonsters.begin() + i);
-                vectorVIH.erase(vectorVIH.begin());
-
-
-                roomMonsters.push_back(monst);
-                roomMonsters.push_back(monst);
-
-                setMonsterRectangleShape(*curRoom);
-                for(auto &m : sWalkingMonsters) {
-                    m.scale(m.getSize().x / (2^vectorVIH[i].first),
-                            m.getSize().y / (2^vectorVIH[i].first));
-                }
-
-            }
-            else{ // A voir si ca ne pose pas de problème
-                Room *curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
-
-                std::vector<Entity*>& roomMonsters = curRoom->getMonsters();
-                auto found = std::find(roomMonsters.begin(), roomMonsters.end(), walkMonst[i]);
-                delete walkMonst[i];
-                *found = nullptr;
-                roomMonsters.erase(found);
-                sWalkingMonsters.erase(sWalkingMonsters.begin() + i);
-            }
+        if(entity.getLife() > entity.getMaxLife() - partLife){
+            realDeltaX = vectorVIH[i].second.x * entity.getSpeed() * 100.f * deltaTime.asSeconds();
+            realDeltaY = vectorVIH[i].second.y * entity.getSpeed() * 100.f * deltaTime.asSeconds();
+            entity.moveEntity(realDeltaX, realDeltaY);
         }
 }
 
 void Party::updateCOVID19(Entity &entity, sf::Time deltaTime, unsigned index){
-    /*
-     *
-     */
+    float deltaX = destinationMonster[index].x - entity.getPosition(true);
+    float deltaY = destinationMonster[index].y - entity.getPosition(false);
+
+    if(abs(deltaX) < abs(deltaY)){
+
+        if(deltaY > -40.f && deltaY < 40.f){
+            // on tire
+            if(deltaX < 0.f)
+                setProjectileRectangleShape(entity, 3); // shoot a gauche
+            else
+                setProjectileRectangleShape(entity, 1); // shoot a droite
+        }
+        else{
+            //on se déplace sur le y du joueur
+            entity.setPosition(entity.getPosition(false), destinationMonster[index].y);
+
+        }
+    }
+    else{
+
+        if(deltaX > -20.f && deltaX < 20.f){
+            // on tire
+            if(deltaY < 0.f)
+                setProjectileRectangleShape(entity, 0); // shoot en haut
+            else
+                setProjectileRectangleShape(entity, 2); //shoot en bas
+        }
+        else{
+            //on se déplace sur l'axe X
+            entity.setPosition(destinationMonster[index].x, entity.getPosition(false));
+        }
+    }
 }
 
 void Party::updateMonsters(sf::Time deltaTime){
@@ -1159,6 +1148,29 @@ void Party::updateMonsters(sf::Time deltaTime){
 
             sFlyingMonsters[i].setPosition(flyMonst[i]->getPosition(true) - 40.f, flyMonst[i]->getPosition(false) - 40.f);
         }
+        else if (flyMonst[i] && flyMonst[i]->getName() == "Covid-19") {
+            if (inActionMonster[i]) {
+                actionTimeMonster[i] += deltaTime;
+                updateCOVID19(*flyMonst[i], deltaTime, i);
+
+                if(actionTimeMonster[i] > sf::seconds(1.f)){
+                    actionTimeMonster[i] = sf::Time::Zero;
+                    inActionMonster[i] = false;
+                }
+            }
+            else{
+                pauseTimeMonster[i] += deltaTime;
+
+                if(pauseTimeMonster[i] > sf::seconds(0.5f)){
+                    pauseTimeMonster[i] = sf::Time::Zero;
+                    inActionMonster[i] = true;
+
+                    destinationMonster[i] = sf::Vector2f (posAspen.getPosition(true), posAspen.getPosition(false));
+                }
+            }
+
+            sFlyingMonsters[i].setPosition(flyMonst[i]->getPosition(true) - 40.f, flyMonst[i]->getPosition(false) - 40.f);
+        }
     }
 
     for(unsigned i = 0; i < walkMonst.size(); ++i) {
@@ -1178,7 +1190,47 @@ void Party::updateMonsters(sf::Time deltaTime){
             sWalkingMonsters[i].setPosition(walkMonst[i]->getPosition(true) - 40.f, walkMonst[i]->getPosition(false) - 40.f);
         }
         else if(walkMonst[i] && walkMonst[i]->getName() == "VIH"){
-            updateVIH(*walkMonst[i], deltaTime);
+
+            updateVIH(*walkMonst[i], deltaTime, i);
+
+            float partLife = walkMonst[i]->getLife() * (1.f/5.f);
+
+            if(vectorVIH[i].first < 4 && (walkMonst[i]->getLife() < walkMonst[i]->getMaxLife() - partLife) && (walkMonst[i]->getLife() > walkMonst[i]->getMaxLife() - 2.f*partLife)){
+
+                Entity *monst = new Entity(walkMonst[i]->getPosition(true), walkMonst[i]->getPosition(false), 9);
+                monst->setMaxLife(walkMonst[i]->getMaxLife() - (int)partLife);
+
+                Room *curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
+
+                std::vector<Entity*>& roomMonsters = curRoom->getMonsters();
+                auto found = std::find(roomMonsters.begin(), roomMonsters.end(), walkMonst[i]);
+                delete walkMonst[i];
+                *found = nullptr;
+                roomMonsters.erase(found);
+                sWalkingMonsters.erase(sWalkingMonsters.begin() + i);
+                vectorVIH.erase(vectorVIH.begin());
+
+
+                roomMonsters.push_back(monst);
+                roomMonsters.push_back(monst);
+
+                setMonsterRectangleShape(*curRoom);
+                for(auto &m : sWalkingMonsters) {
+                    m.scale(m.getSize().x / (2^vectorVIH[i].first),
+                            m.getSize().y / (2^vectorVIH[i].first));
+                }
+
+            }
+            else if(walkMonst[i]->getLife() < 0){ // A voir si ca ne pose pas de problème
+                Room *curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
+
+                std::vector<Entity*>& roomMonsters = curRoom->getMonsters();
+                auto found = std::find(roomMonsters.begin(), roomMonsters.end(), walkMonst[i]);
+                delete walkMonst[i];
+                *found = nullptr;
+                roomMonsters.erase(found);
+                sWalkingMonsters.erase(sWalkingMonsters.begin() + i);
+            }
 
             sWalkingMonsters[i].setPosition(walkMonst[i]->getPosition(true) - 40.f, walkMonst[i]->getPosition(false) - 40.f);
         }

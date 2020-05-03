@@ -95,7 +95,7 @@ private:
     void updateBlob(Entity&, sf::Time);
     void updateCymothoaExigua(Entity&, sf::Time, unsigned);
     void updateH1N1(Entity&, sf::Time, unsigned);
-    void updateVIH(Entity&, sf::Time);
+    void updateVIH(Entity&, sf::Time, unsigned);
     void updateCOVID19(Entity&, sf::Time, unsigned);
 
     void updateMonsters(sf::Time);
