@@ -631,6 +631,16 @@ void Party::setMonsterRectangleShape(Room& curRoom){
                 walkMonst.push_back(monster[i]);
             }
 
+            if(monster[i]->getName() == "VIH"){
+                float angle;
+
+                for(unsigned i = 0; i < 6; ++i) {
+                    angle = (rand() % 360) * (4.f * atan(1.f) / 180.f);
+                    vectorVIH.push_back(std::make_pair(
+                            stat[i],
+                            sf::Vector2f(cos(angle) * 1.f, sin(angle) * 1.f)));
+                }
+            }
 
             if(handleTime){
                 destinationMonster.push_back(sf::Vector2f ());
@@ -1026,13 +1036,79 @@ void Party::updateBlob(Entity &entity, sf::Time deltaTime){
     entity.moveEntity(movement.x, movement.y);
 }
 
-void Party::updateCymothoaExigua(Entity &entity, sf::Time deltaTime, unsigned index){}
+void Party::updateCymothoaExigua(Entity &entity, sf::Time deltaTime, unsigned index){
+    /*
+     * On fait déplacer le monstre avec A*, si le monstre est proche du joueur lui rush dessus
+     * sinon il tire sur le joueur
+     */
+}
 
-void Party::updateH1N1(Entity &entity, sf::Time deltaTime, unsigned index){}
+void Party::updateH1N1(Entity &entity, sf::Time deltaTime, unsigned index){
+    /*
+     * se déplace en volant aléatoirement et quand il est aligné avec le joueur tir
+     */
+}
 
-void Party::updateVIH(Entity &entity, sf::Time deltaTime, unsigned index){}
+void Party::updateVIH(Entity &entity, sf::Time deltaTime){
+    /*
+     * part du centre de la salle et rebondi sur les murs, quand il perd 1/5 de sa vie,
+     * il se divise en lui même plus petit et continue
+     */
+        float realDeltaX, realDeltaY;
+        float partLife = entity.getLife() * (1.f/5.f);
 
-void Party::updateCOVID19(Entity &entity, sf::Time deltaTime, unsigned index){}
+        for(unsigned i = 0; i < walkMonst.size(); ++i){
+            if(entity.getLife() > entity.getMaxLife() - partLife){ // stat: 1
+                realDeltaX = vectorVIH[i].second.x * entity.getSpeed() * 100.f * deltaTime.asSeconds();
+                realDeltaY = vectorVIH[i].second.y * entity.getSpeed() * 100.f * deltaTime.asSeconds();
+
+                entity.moveEntity(realDeltaX, realDeltaY);
+
+            }
+            else if(vectorVIH[i].first < 4 && (entity.getLife() < entity.getMaxLife() - partLife) && (entity.getLife() > entity.getMaxLife() - 2.f*partLife)){
+
+                Entity *monst = new Entity(entity.getPosition(true), entity.getPosition(false), 9);
+                monst->setMaxLife(entity.getMaxLife() - (int)partLife);
+
+                Room *curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
+
+                std::vector<Entity*>& roomMonsters = curRoom->getMonsters();
+                auto found = std::find(roomMonsters.begin(), roomMonsters.end(), walkMonst[i]);
+                delete walkMonst[i];
+                *found = nullptr;
+                roomMonsters.erase(found);
+                sWalkingMonsters.erase(sWalkingMonsters.begin() + i);
+                vectorVIH.erase(vectorVIH.begin());
+
+
+                roomMonsters.push_back(monst);
+                roomMonsters.push_back(monst);
+
+                setMonsterRectangleShape(*curRoom);
+                for(auto &m : sWalkingMonsters) {
+                    m.scale(m.getSize().x / (2^vectorVIH[i].first),
+                            m.getSize().y / (2^vectorVIH[i].first));
+                }
+
+            }
+            else{ // A voir si ca ne pose pas de problème
+                Room *curRoom = donjon.getRoom(posDonjon.getPosition(true), posDonjon.getPosition(false));
+
+                std::vector<Entity*>& roomMonsters = curRoom->getMonsters();
+                auto found = std::find(roomMonsters.begin(), roomMonsters.end(), walkMonst[i]);
+                delete walkMonst[i];
+                *found = nullptr;
+                roomMonsters.erase(found);
+                sWalkingMonsters.erase(sWalkingMonsters.begin() + i);
+            }
+        }
+}
+
+void Party::updateCOVID19(Entity &entity, sf::Time deltaTime, unsigned index){
+    /*
+     *
+     */
+}
 
 void Party::updateMonsters(sf::Time deltaTime){
 
@@ -1098,6 +1174,11 @@ void Party::updateMonsters(sf::Time deltaTime){
         }
         else if(walkMonst[i] && walkMonst[i]->getName() == "Blob"){
             updateBlob(*walkMonst[i], deltaTime);
+
+            sWalkingMonsters[i].setPosition(walkMonst[i]->getPosition(true) - 40.f, walkMonst[i]->getPosition(false) - 40.f);
+        }
+        else if(walkMonst[i] && walkMonst[i]->getName() == "VIH"){
+            updateVIH(*walkMonst[i], deltaTime);
 
             sWalkingMonsters[i].setPosition(walkMonst[i]->getPosition(true) - 40.f, walkMonst[i]->getPosition(false) - 40.f);
         }

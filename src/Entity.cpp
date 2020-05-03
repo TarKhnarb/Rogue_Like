@@ -238,6 +238,11 @@ void Entity::setLife(int value){
     life = value;
 }
 
+void Entity::setMaxLife(int value){
+    life = value;
+    maxLife = value;
+}
+
 void Entity::displayEntity() {
     std::cout << "      Aspen " << std::endl;
     std::cout << "          Money : " << money << std::endl;

@@ -118,6 +118,7 @@ public :
     int getLife() const;
     void removeLife(int);
     void setLife(int);
+    void setMaxLife(int);
 
     /**
      * @brief displays the statistics of the entity

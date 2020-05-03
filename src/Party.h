@@ -95,7 +95,7 @@ private:
     void updateBlob(Entity&, sf::Time);
     void updateCymothoaExigua(Entity&, sf::Time, unsigned);
     void updateH1N1(Entity&, sf::Time, unsigned);
-    void updateVIH(Entity&, sf::Time, unsigned);
+    void updateVIH(Entity&, sf::Time);
     void updateCOVID19(Entity&, sf::Time, unsigned);
 
     void updateMonsters(sf::Time);
@@ -187,6 +187,10 @@ private:
     std::map<std::string, sf::RectangleShape*> rectangleShapes;
 
     sf::RenderWindow mWindow;
+
+    // Pour le VIH
+    unsigned stat[6] = {1, 2, 2, 3, 3, 3};
+    std::vector<std::pair<unsigned, sf::Vector2f>> vectorVIH; // (etat, Vector de direction)
 
     // Pour les projectiles
     sf::Time elapsedTime;
