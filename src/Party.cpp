@@ -46,11 +46,13 @@ Party::Party():
 
     loadAnimation();
     
-    Aspen.addInventoryObject(60, 20); // monsterLoot
+    Aspen.addInventoryObject(16); // monsterLoot
 	Aspen.addInventoryObject(47, 1); // potion
-	Aspen.addInventoryObject(11); // helmet
-    Aspen.addInventoryObject(29); // boots
-    Aspen.addInventoryObject(35); // Projectile
+	Aspen.addInventoryObject(22); // helmet
+    Aspen.addInventoryObject(25); // boots
+    Aspen.addInventoryObject(37); // Projectile
+    Aspen.addInventoryObject(43); // Projectile
+    Aspen.addInventoryObject(34); // Projectile
 
     
 	rocksCollider.setStyle(Style::Separated);
@@ -1013,7 +1015,7 @@ void Party::updateBlob(Entity &entity, sf::Time deltaTime){
     Pair src = std::make_pair((int)((entity.getPosition(false) - 160.f)/20.f), (int)((entity.getPosition(true) - 240.f)/20.f));
     Pair dest = std::make_pair((int)((posAspen.getPosition(false) - 120.f)/20.f), (int)((posAspen.getPosition(true) - 220.f)/20.f));
 
-    aStarSearch(grid, src, dest, 8);
+    aStarSearch(grid, src, dest, 10);
 
     float x = pathY() - (float)src.second;
     float y = pathX() - (float)src.first;
