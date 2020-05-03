@@ -75,7 +75,7 @@ double calculateHValue(int row, int col, Pair dest);
  * @param cellDetails
  * @param dest Pair cell containing x,y value of destination
  */
-void tracePath(cell cellDetails[][COL], Pair dest);
+void tracePath(cell cellDetails[][COL], Pair dest, unsigned parameter = 1);
 
 /**
  * @brief the aStar algorithm
@@ -83,6 +83,6 @@ void tracePath(cell cellDetails[][COL], Pair dest);
  * @param src start Pair
  * @param dest destination Pair (goal)
  */
-void aStarSearch(int grid[][COL], Pair src, Pair dest);
+void aStarSearch(int grid[][COL], Pair src, Pair dest, unsigned parameter = 1);
 
 #endif // ASTAR_H

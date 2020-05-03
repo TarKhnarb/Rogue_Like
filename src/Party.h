@@ -92,7 +92,7 @@ private:
     void updatePesteNoire(Entity&, sf::Time, unsigned);
     void updateTenia(Entity&, sf::Time);
     void updateListeria(Entity&, sf::Time);
-    void updateBlob(Entity&, sf::Time, unsigned);
+    void updateBlob(Entity&, sf::Time);
     void updateCymothoaExigua(Entity&, sf::Time, unsigned);
     void updateH1N1(Entity&, sf::Time, unsigned);
     void updateVIH(Entity&, sf::Time, unsigned);

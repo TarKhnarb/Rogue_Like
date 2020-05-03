@@ -32,7 +32,7 @@ double calculateHValue(int row, int col, Pair dest){
     return ((double)(abs(row-dest.first) + abs(col-dest.second)));
 }
 
-void tracePath(cell cellDetails[][COL], Pair dest){
+void tracePath(cell cellDetails[][COL], Pair dest, unsigned parameter){
     int row = dest.first;
     int col = dest.second;
 
@@ -48,7 +48,8 @@ void tracePath(cell cellDetails[][COL], Pair dest){
     Path.push (std::make_pair (row, col));
 
     // Compute result
-    if (Path.size() > 1){
+    while (parameter >= 1 && Path.size() >= 2){
+        parameter--;
         Path.pop();
     }
 
@@ -59,7 +60,7 @@ void tracePath(cell cellDetails[][COL], Pair dest){
     return;
 }
 
-void aStarSearch(int grid[][COL], Pair src, Pair dest){
+void aStarSearch(int grid[][COL], Pair src, Pair dest, unsigned parameter){
     if (!isValid(src.first, src.second)){//this is maybe useless in out case
         std::cerr << "Source is invalid" << std::endl;
         return;
@@ -386,5 +387,5 @@ void aStarSearch(int grid[][COL], Pair src, Pair dest){
         return;
     }
 
-    tracePath(cellDetails, dest);
+    tracePath(cellDetails, dest, parameter);
 }
