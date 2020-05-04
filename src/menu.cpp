@@ -2,13 +2,14 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <vector>
 
 menu::menu(){
     X=800;
     Y=800;
     sf::RenderWindow mWindow(sf::VideoMode(X,Y),name);
     mWindow.setFramerateLimit(60);
-    font.loadFromFile("data/font/font.ttf");
+    font.loadFromFile("data/Font/font.ttf");
     currentMenu = 0;
     menuGame();
     displayRule();
@@ -33,6 +34,7 @@ menu::menu(){
                         if(checkPos(rectangleBackOption,globalPosition,0)){}
                     }
                     move();
+                    //call map
                     break;
                 case 2://option-menu
                     if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
@@ -41,11 +43,12 @@ menu::menu(){
 
                         if(checkPos(rectanglePosNeg[0],globalPosition)){
                             sound = true;
+                            musicCheck();
                         }
                         if(checkPos(rectanglePosNeg[1],globalPosition)){
                             sound = false;
+                            musicCheck();
                         }
-                        musicCheck();
                     }
                     break;
                 case 3://rule-map
@@ -72,9 +75,10 @@ menu::menu(){
                 mWindow.draw(rectangleRule);
                 break;
             case 1:
-                mWindow.draw(rectangleMainMap);
-                mWindow.draw(rectangleBackOption);
-                break;
+              //  mWindow.draw(rectangleMainMap);
+              //  mWindow.draw(rectangleBackOption);
+              //  break;
+              //call map
             case 2:
                 mWindow.draw(rectangleBackResize);
                 mWindow.draw(rectangleBackOption);
@@ -96,7 +100,7 @@ menu::menu(){
 
 void menu::musicFCT(){
     sound = true;
-    music.openFromFile("data/Music/sound_music.wav");
+    music.openFromFile("data/Audio/sound_music.wav");
     music.play();
     music.setLoop(true);
 }
@@ -139,17 +143,20 @@ bool menu::checkPos(sf::RectangleShape r,sf::Vector2i g) {
         return false;
 }
 
-void menu::loadTexture(sf::RectangleShape & name, sf::Texture & name_, unsigned X, unsigned Y, std::string path){
+void menu::loadTexture(sf::RectangleShape & name, sf::Texture & name_,const unsigned X,const unsigned Y,const std::string path){
     name.setSize(sf::Vector2f(X,Y));
     name_.loadFromFile(path);
     name.setTexture(&name_);
 }
 
+
+
 void menu::menuGame(){
     loadTexture(rectangleBack,backgroundTexture,X,Y,"data/Textures/Menu/menu_background.png");
 
     loadTexture(rectangleStart,startTexture,300,150,"data/Textures/Menu/start.png");
-    rectangleStart.setPosition(3*(X/10),2*(Y/10));
+    rectangleStart.scale(0.5,0.5);
+    rectangleStart.setPosition(3.8*(X/10),2.5*(Y/10));
 
     loadTexture(rectangleOption,optionTexture,300,150,"data/Textures/Menu/option.png");
     rectangleOption.scale(0.5,0.5);
@@ -176,7 +183,6 @@ void menu::displayMusicOption(){
     text.setString(musicText);
     text.setCharacterSize(50);
     text.setOutlineThickness(2);
-    text.setLineSpacing(1);
     text.setOutlineColor(sf::Color::Black);
     text.setPosition(1.5*(X/10),2*(Y/10));
     text.setFillColor(sf::Color::White);
@@ -188,8 +194,8 @@ void menu::displayMusicOption(){
             rectanglePosNeg[i].scale(0.2,0.2);
         }else{
             loadTexture(rectanglePosNeg[i],texturePosNeg[i],X,Y,"data/Textures/Menu/red.png");
-           rectanglePosNeg[i].setPosition(6*(X / 10), 5 * (Y / 10));
-           rectanglePosNeg[i].scale(0.2,0.2);
+            rectanglePosNeg[i].setPosition(6*(X / 10), 5 * (Y / 10));
+            rectanglePosNeg[i].scale(0.2,0.2);
         }
     }
 }
@@ -221,6 +227,5 @@ void menu::move(){
     }
     rectangleMainMap.move(x,y);
 }
-
 
 

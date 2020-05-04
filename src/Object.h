@@ -33,34 +33,39 @@ public :
         monsterLoot // 8
     };
 
+    /**
+     * @brief Get basic stats of an object
+     * @return std::vector<int> Corresponding to fly, attack, attackSpeed, hp, defense, speed
+     */
     std::vector<int> getStats() const;
-    /**
-     * @brief get the id of the desired object
-     * @return the id
-     **/
 
-    unsigned getId() const;
     /**
-     * @brief get the name of the object
-     * @return a string containing the name
+     * @brief Get the id of the desired object
+     * @return unsigned The id
+     **/
+    unsigned getId() const;
+
+    /**
+     * @brief Get the name of the object
+     * @return std::string Containing the name
      **/
     std::string getName() const;
 
     /**
-     * @brief price of object
-     * @return the price
+     * @brief Price of object
+     * @return unsigned The price
      **/
     unsigned getPrice() const;
 
     /**
      * @brief get the resale price of the object
-     * @return the resale price
+     * @return unsigned The resale price
      **/
     unsigned getResalePrice() const;
 
     /**
-     * @brief return the object type
-     * @return ...........
+     * @brief Return the object type
+     * @return Object::Type A enumeration of object's type
      **/
     Type getType() const;
 
@@ -70,6 +75,11 @@ public :
      **/
     void setObjectNumber(unsigned);
 
+    /**
+     * @brief Add an number to object number to stack them
+     * @param unsigned Number of object to add
+     * @return unsigned Number of object whick cannot been added
+     */
 	unsigned addObjectNumber(unsigned);
 
     /**
@@ -80,6 +90,7 @@ public :
 
     /**
      * @brief get the max stack
+     * @return unsigned Max stack of an object
      **/
     unsigned getMaxStack() const;
 

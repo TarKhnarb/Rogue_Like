@@ -1,6 +1,12 @@
-1,Obtenir un object
-2,Obtenir une potion
-3,Accomplir les quêtes 1 et 2
-4,Tuer un ennemi
-5, Accomplir les quêtes 3 et 4
-//idQuest, quest
+1,Obtain an object,0,0,1
+2,Obtain a potion,0,2,1
+3,Accomplir les quêtes 1 et 2,1,5,0
+4,Obtain a loot,0,1,1
+5,Obtain two objects,0,0,2
+6, Accomplir les quêtes 3 et 4,1,5,0
+7,Obtain two loot,0,1,2
+8,Obtain an upgrade,0,3,1
+9,Obtain a specific object,0,4,36
+//idQuest, quest, TypeQuest, typeObtainQuest, nbCopyOrid
+
+

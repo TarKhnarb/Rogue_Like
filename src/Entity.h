@@ -57,20 +57,58 @@ public :
      * @param[in] id : id of the object to be bought
      */
     void buyObject(unsigned, unsigned objectNb = 1);
+    
+    /**
+     * @brief equips an object
+     * @param[in] : the unsigned value of the object to be equiped
+     */
+    void equipObject(unsigned);
+    
+    /**
+     * @brief de-equips an object
+     * @param[in] : the unsigned value of the object to be de-equiped
+     */
+    void unequipObject(unsigned); 
+    
+    /**
+     * @return an object according to index of inventory
+     * @param[in] : the index of the inventory to be returned
+     */ 
+    const Object* getInventoryObject(unsigned) const;
+    
+    /**
+     * @return an object equipement according to index of inventory
+     * @param[in] : the index of the inventory to be returned
+     */ 
+    const Object* getInventoryStuff(unsigned) const;
 
-    void equipObject(unsigned); //  equip un object en fonction de son index d'inventaire
+    /**
+     * @brief add object to inventory
+     * @param[in] : the object id to be added
+     * @param[in] : the number of object to be added
+     */ 
+    void addInventoryObject(unsigned id, unsigned objectNb = 1);
+    
+    /**
+     * @brief add object to inventory
+     * @param[in] : the object id to be added
+     * @param[in] : the number of object to be added
+     * @return : the number of object not added if problem
+     */ 
+    unsigned addInventoryObjectNb(unsigned id, unsigned objectNb = 1);
 
-    void unequipObject(unsigned); // deséquipe un object en fonction de son index d'equipement
-
-    const Object* getInventoryObject(unsigned) const; // Retourne un object de l'inventaire en fonction de son index
-
-    const Object* getInventoryStuff(unsigned) const; // Retourne un object de l'equipementdu joueur
-
-    void addInventoryObject(unsigned id, unsigned objectNb = 1); // Ajoute un object a l'inventaire en fonction de son id et du nb (par defaut à 1)
-    unsigned addInventoryObjectNb(unsigned id, unsigned objectNb = 1); // // Ajoute un object a l'inventaire en fonction de son id et du nb (par defaut à 1) ET retourne le nb d'object qui n'a pas pu être ajoutés
-
-    void removeInventoryObject(unsigned); // Vide la case de l'inventaire de l'index passé en paramètre
-    unsigned removeInventoryObjectNb(unsigned id, unsigned objectNb = 1); // Enlève un object de l'inventaire avec un Id et un nombre d'éléments et retourne le nombre d'éléments manquants
+    /**
+     * @brief empties the inventory cell of array 
+     * @param[in] : the index of the cell to be emptied
+     */ 
+    void removeInventoryObject(unsigned); 
+    
+    /**
+     * @brief empties the inventory cell of array 
+     * @param[in] : the index of the cell to be emptied
+     * @return the number of object that could not be taken away
+     */ 
+    unsigned removeInventoryObjectNb(unsigned id, unsigned objectNb = 1);
 	
 	void swapObjects(unsigned, unsigned);
 
@@ -94,30 +132,97 @@ public :
      */
     void moveEntity(const float&, const float&);
 
+    /**
+     * @brief set position entity according to x ad y
+    */
+    
     void setPosition(float, float);
+    /**
+        * @brief get position entity according to x ad y
+    */
     int getPosition(bool) const;
 
+    
     bool isItOnEntity(unsigned, unsigned);
+    
+    /**
+     * @brief return true if entity can upgrade
+     */
     bool canUpgrade(std::vector<unsigned>);
+    
+    /**
+     * @brief test if there is object at that index
+     */ 
     bool testIndex(unsigned);
+    
+    /**
+     * @brief return true if inventory is empty
+     */ 
     bool inventoryEmpty();
 
+    /**
+     * @brief get name of entity
+     */
     std::string getName() const;
+    
+    /**
+     * @return money available to entity
+     */ 
     int getMoney() const;
+    
+    /**
+     * @brief add certain amount of money to entity according to the unsigned value in parameter
+     */
     int addMoney(unsigned);
+    
+    /**
+     * @brief get the life of entity
+     */ 
     int getMaxLife() const;
+    
+    /**
+     * @brief get the attck of entity
+     */ 
     int getAttack() const;
+    
+    /**
+     * @brief get attack speed of entity
+     */ 
     int getAttackSpeed() const;
+    
+    /**
+     * @brief get defence 
+     */ 
     int getDefence() const;
+    
+    /**
+     * @brief get speed
+     */ 
     int getSpeed() const;
 
+    
     unsigned getEntityId() const;
 
     bool getState() const;
-
+    
+    /**
+     * @brief get life
+    */
     int getLife() const;
+    
+    /**
+     * @brief remove life when called to entity
+     */ 
     void removeLife(int);
+    
+    /**
+     * @brief gives life from parameter when called
+     */ 
     void setLife(int);
+    
+    /**
+     * @brief set max life to entity
+     */ 
     void setMaxLife(int);
 
     /**

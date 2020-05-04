@@ -22,100 +22,70 @@ Mission::Mission(unsigned id){
         Quest = returnCsvItem(iss);
         Complete = false;
 
-
-        /*
-        idObject = returnCsvItemSTOI(iss);
-        price = returnCsvItemSTOI(iss);
-        resalePrice = returnCsvItemSTOI(iss);
-        objectNumber = 1;
-
-        for(unsigned i=0;i<statSize;++i){
-            unsigned t = returnCsvItemSTOI(iss);
-            stats.push_back(t);
-        }
         unsigned t = returnCsvItemSTOI(iss);
         switch (t){
             case 0:
-                type = Type::basicStat;
+                typeQuest = Type::obtain;
                 break;
             case 1:
-                type = Type::helmet;
+                typeQuest = Type::step;
                 break;
-            case 2:
-                type = Type::chestplate;
-                break;
-            case 3:
-                type = Type::leggings;
-                break;
-            case 4:
-                type = Type::boots;
-                break;
-            case 5:
-                type = Type::projectile;
-                break;
-            case 6:
-                type = Type::amulet;
-                break;
-            case 7:
-                type = Type::potion;
-                break;
-            case 8:
-                type = Type::monsterLoot;
             default:
                 break;
         }
-
-        name = returnCsvItem(iss);
-         */
+        if(typeQuest == Type::obtain) {
+            unsigned w = returnCsvItemSTOI(iss);
+            switch (w) {
+                case 0:
+                    typeObtainQuest = TypeObtain::object;
+                    break;
+                case 1:
+                    typeObtainQuest = TypeObtain::loot;
+                    break;
+                case 2:
+                    typeObtainQuest = TypeObtain::potion;
+                    break;
+                case 3:
+                    typeObtainQuest = TypeObtain::upgrade;
+                    break;
+                case 4:
+                    typeObtainQuest = TypeObtain::specific;
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+            typeObtainQuest = TypeObtain::nullO;
+        nbCopyORid = returnCsvItemSTOI(iss);
+        nbCopyObtain = 0;
     }
-
     else{
         std::cerr <<" something went wrong "<< std::endl;
     }
     file.close();
 }
 
-void Mission::Upgrade(const Entity& hero,Mission mis1,Mission mis2){
-    switch(idQuest){
-        case 1 :
-            for(unsigned i = 11; i < 47 ; i+=3)
-            {
-                if(hero.isItOnEntity(i,1))
+
+void Mission::update(Entity* hero,Mission mis1,Mission mis2){
+    if(!Complete){
+        switch(typeQuest){
+            case Type::obtain :
+                updateTypeObtain(hero);
+                break;
+            case Type::step :
+                if((mis1.Complete)&&(mis2.Complete))
                 {
                     Complete = true;
                 }
-            }
-            break;
-        case 2 :
-            for(unsigned i = 47; i < 50 ; i++)
-            {
-                if(hero.isItOnEntity(i,1))
-                {
-                    Complete = true;
-                }
-            }
-            break;
-        case 3 :
-            if((mis1.Complete)&&(mis2.Complete))
-            {
-                Complete = true;
-            }
-            break;
-        case 4 :
-            /*if(hero.isDead())
-            {
-                Complete = true;
-            }*/
-            break;
-        case 5 :
-            std::cout << idQuest;
-            break;
-        default :
-            break;
+                break;
+            default :
+                break;
+        }
     }
 }
 
-void Mission::isComplete(){
+void Mission::isComplete() const{
     if(Complete){
         std::cout << std::endl;
         std::cout << "La mission a été réussie";
@@ -140,7 +110,65 @@ std::string Mission::returnCsvItem(std::istringstream & ss){
 }
 
 
-void Mission::setComplete(bool t)
-{
-   Complete = t;
+bool Mission::getComplete() const {
+    return Complete;
+}
+
+
+void Mission::updateTypeObtain(Entity* hero){
+    switch(typeObtainQuest)
+    {
+        case TypeObtain::object :
+            for(unsigned i = 11; i < 47 ; i+=3)
+            {
+                if(hero->isItOnEntity(i,1)) nbCopyObtain++;
+                if(nbCopyORid==nbCopyObtain)
+                {
+                    Complete = true;
+                    i = 47;
+                }
+            }
+            break;
+        case TypeObtain::loot :
+            for(unsigned i = 50; i < 64 ; i++)
+            {
+                if(hero->isItOnEntity(i,1)) nbCopyObtain++;
+                if(nbCopyORid==nbCopyObtain)
+                {
+                    Complete = true;
+                    i = 64;
+                }
+            }
+            break;
+        case TypeObtain::potion :
+            for(unsigned i = 47; i < 50 ; i++)
+            {
+                if(hero->isItOnEntity(i,1)) nbCopyObtain++;
+                if(nbCopyORid==nbCopyObtain)
+                {
+                    Complete = true;
+                    i = 50;
+                }
+            }
+            break;
+        case TypeObtain::upgrade :
+            for(unsigned i = 12; i < 47 ; i+=3)
+            {
+                if(hero->isItOnEntity(i,1)) nbCopyObtain++;
+                if(hero->isItOnEntity(i+1,1)) nbCopyObtain++;
+                if(nbCopyORid==nbCopyObtain)
+                {
+                    Complete = true;
+                    i = 47;
+                }
+            }
+            break;
+        case TypeObtain::specific :
+            if(hero->isItOnEntity(nbCopyORid,1))
+            {
+                Complete = true;
+            }
+        default :
+            break;
+    }
 }

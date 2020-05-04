@@ -58,7 +58,7 @@ if(num1.getId() == num2.getId() &&
 success = true;
 }
 
-if(success == false)
+if(!success)
     std::cout << " There is a problem here with the stats " <<std::endl;
 
 delete num2;
@@ -78,7 +78,7 @@ if(proj.getProjectileOrientation != 0)
 
 proj.displayProjectile();
 std::cout << "Does anything display 1(yes), 0 (no)?" std::endl;
-cin >> response ;
+cin >> response;
 if(reponse != 1)
     std::cout << "Something is wrong then "<< std::endl;
 

@@ -12,7 +12,6 @@
 class Mission {
     enum Type {
         obtain, //achète, trouve
-        perform, //fait quelque chose
         step, //faire les quetes précédantes pour pouvoir completer celles qui suivent
     };
 
@@ -21,22 +20,21 @@ class Mission {
         loot,
         potion,
         upgrade,
-
+        specific,
+        nullO,
     };
 
 public:
     Mission(unsigned);
 
-    void Upgrade(const Entity& ,Mission,Mission);
+    void update(Entity* ,Mission,Mission);
 
-    void isComplete();
+    void isComplete() const;
 
-    void setComplete(bool);
-    /*
-    void upgradeQuest();
+    bool getComplete() const;
 
+    void updateTypeObtain(Entity*);
 
-    */
 private:
     std::string returnCsvItem(std::istringstream &);
     unsigned returnCsvItemSTOI(std::istringstream &);
@@ -44,13 +42,15 @@ private:
     unsigned idQuest;
     std::string Quest;
 
-    bool Complete;
-    /*
-    bool Active;
+    Type typeQuest;
+    TypeObtain typeObtainQuest;
+    unsigned nbCopyORid;
+    unsigned nbCopyObtain;
 
-    std::string fonction;
-    std::string object;
-    */
+
+    bool Complete;
+
+    //bool Active;
 };
 
 
@@ -143,3 +143,5 @@ std::cout << std::endl;
 
 
  */
+
+

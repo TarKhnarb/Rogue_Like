@@ -3,10 +3,22 @@ O = obj
 S = src
 FLAGS = -c -Wall
 
-all: $(O) $(B) $(B)/Aspen
+all: $(O) $(B) $(B)/Aspen $(B)/mainMap $(B)/mainMenu
 
 $(B)/Aspen: $(O)/Party.o $(O)/Base.o $(O)/Npc.o
 	g++ -ggdb $(S)/Aspen.cpp -o $(B)/Aspen $(O)/*.o -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+	
+$(B)/mainMap: $(O)/map.o
+	g++ -ggdb $(S)/mainMap.cpp -o $(B)/mainMap $(O)/*.o -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+
+$(B)/mainMenu: $(O)/menu.o
+	g++ -ggdb $(S)/mainMenu.cpp -o $(B)/mainMenu $(O)/*.o -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+	
+$(O)/menu.o:
+	g++ $(FLAGS) $(S)/menu.cpp -o $(O)/menu.o
+
+$(O)/map.o: $(O)/Entity.o $(O)/Collider.o $(O)/AnimatedSprite.o
+	g++ $(FLAGS) $(S)/map.cpp -o $(O)/map.o
 
 $(O)/Party.o: $(O)/Donjon.o $(O)/Entity.o $(O)/Collider.o $(O)/AnimatedSprite.o $(O)/Projectile.o $(O)/aStar.o
 	g++ $(FLAGS) $(S)/Party.cpp -o $(O)/Party.o

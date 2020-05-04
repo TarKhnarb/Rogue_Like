@@ -1,19 +1,11 @@
-#include <iostream>
-#include <istream>
-
-#include "Party.h"
-#include "Entity.h"
-#include "Donjon.h"
-#include "Npc.h"
-#include "Stage.h"
 #include "map.h"
 
 int main(){
-    // TODO remove this loop when Map will be created
+
     while(true){
         try{
-            Party game;
-            game.run();
+            map test;
+            test.run();
         }
         catch (std::range_error& err){ // player finished the dungeon or dies
             std::cerr << err.what() << std::endl;
@@ -23,9 +15,9 @@ int main(){
             std::cerr << err.what() << std::endl;
             break;
         }
-        
+
         break;
     }
-    
+
     return 0;
 }
